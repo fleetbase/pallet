@@ -38,13 +38,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Fleetbase\\Pallet\\": "src/",
-            "Fleetbase\\Pallet\\Seeds\\": "seeds/"
+            "Fleetbase\\Pallet\\": "server/src/",
+            "Fleetbase\\Pallet\\Seeds\\": "server/seeds/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Fleetbase\\Pallet\\Tests\\": "tests/"
+            "Fleetbase\\Pallet\\Tests\\": "server/tests/"
         }
     },
     "minimum-stability": "dev",
