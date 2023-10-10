@@ -1,7 +1,7 @@
 {
-    "name": "@fleetbase/pallet",
+    "name": "@fleetbase/pallet-engine",
     "version": "0.0.1",
-    "description": "Pallet is a Fleetbase extension which provides inventory management.",
+    "description": "Inventory & Warehouse Management Extension for Fleetbase",
     "keywords": [
         "fleetbase-extension",
         "inventory",

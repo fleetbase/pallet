@@ -1,1 +1,1 @@
-export { default } from '@fleetbase/pallet/adapters/pallet-product';
+export { default } from '@fleetbase/pallet-engine/adapters/pallet-product';

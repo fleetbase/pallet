@@ -1,1 +1,1 @@
-export { default } from '@fleetbase/pallet/serializers/sales-order';
+export { default } from '@fleetbase/pallet-engine/serializers/sales-order';

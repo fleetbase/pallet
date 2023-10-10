@@ -1,1 +1,1 @@
-export { default } from '@fleetbase/pallet/templates/audits/index';
+export { default } from '@fleetbase/pallet-engine/templates/audits/index';

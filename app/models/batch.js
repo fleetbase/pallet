@@ -1,1 +1,1 @@
-export { default } from '@fleetbase/pallet/models/batch';
+export { default } from '@fleetbase/pallet-engine/models/batch';

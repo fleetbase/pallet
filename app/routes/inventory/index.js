@@ -1,1 +1,1 @@
-export { default } from '@fleetbase/pallet/routes/inventory/index';
+export { default } from '@fleetbase/pallet-engine/routes/inventory/index';

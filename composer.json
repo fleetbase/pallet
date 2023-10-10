@@ -1,7 +1,7 @@
 {
     "name": "fleetbase/pallet-api",
     "version": "0.0.1",
-    "description": "Enables Pallet API, the inventory management extension for Fleetbase.",
+    "description": "Inventory & Warehouse Management Extension for Fleetbase",
     "keywords": [
         "fleetbase",
         "fleetbase-extension",

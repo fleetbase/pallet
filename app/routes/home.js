@@ -1,1 +1,1 @@
-export { default } from '@fleetbase/pallet/routes/home';
+export { default } from '@fleetbase/pallet-engine/routes/home';

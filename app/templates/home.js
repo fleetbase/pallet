@@ -1,1 +1,1 @@
-export { default } from '@fleetbase/pallet/templates/home';
+export { default } from '@fleetbase/pallet-engine/templates/home';
