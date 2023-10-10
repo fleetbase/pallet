@@ -1,0 +1,21 @@
+<EmberWormhole @to="sidebar-menu-items">
+    <Layout::Sidebar::Panel @open={{true}} @title="Pallet">
+        <Layout::Sidebar::Item @route="console.pallet.home" @icon="home">Dashboard</Layout::Sidebar::Item>
+        <Layout::Sidebar::Item @route="console.pallet.products.index" @icon="boxes-stacked">Products</Layout::Sidebar::Item>
+        <Layout::Sidebar::Item @route="console.pallet.warehouses" @icon="warehouse">Warehouses</Layout::Sidebar::Item>
+        <Layout::Sidebar::Item @route="console.pallet.suppliers" @icon="user-tie">Suppliers</Layout::Sidebar::Item>
+        <Layout::Sidebar::Item @route="console.pallet.batch" @icon="layer-group">Batch</Layout::Sidebar::Item>
+    </Layout::Sidebar::Panel>
+    <Layout::Sidebar::Panel @open={{true}} @title="Transact">
+        <Layout::Sidebar::Item @route="console.pallet.sales-orders" @icon="cash-register">Sales</Layout::Sidebar::Item>
+        <Layout::Sidebar::Item @route="console.pallet.purchase-orders" @icon="file-invoice-dollar">Purchases</Layout::Sidebar::Item>
+    </Layout::Sidebar::Panel>
+    <Layout::Sidebar::Panel @open={{true}} @title="Research">
+        <Layout::Sidebar::Item @route="console.pallet.audits" @icon="magnifying-glass">Audits</Layout::Sidebar::Item>
+        <Layout::Sidebar::Item @route="console.pallet.reports" @icon="chart-line">Reports</Layout::Sidebar::Item>
+    </Layout::Sidebar::Panel>
+</EmberWormhole>
+
+<Layout::Section::Container>
+    {{outlet}}
+</Layout::Section::Container>

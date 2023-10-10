@@ -1,0 +1,82 @@
+{
+    "name": "fleetbase/pallet-api",
+    "version": "0.0.1",
+    "description": "Enables Pallet API, the inventory management extension for Fleetbase.",
+    "keywords": [
+        "fleetbase",
+        "fleetbase-extension",
+        "inventory",
+        "inventory management",
+        "stock management",
+        "ecommerce",
+        "inventory management api",
+        "inventory system"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Fleetbase Pte Ltd.",
+            "email": "hello@fleetbase.io"
+        },
+        {
+            "name": "Ronald A. Richardson",
+            "email": "ron@fleetbase.io"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "fleetbase/core-api": "^1.2.6",
+        "php-http/guzzle7-adapter": "^1.0",
+        "psr/http-factory-implementation": "*"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.34.1",
+        "nunomaduro/collision": "^5.11.0|^6.4.0",
+        "pestphp/pest": "^1.22.6",
+        "phpstan/phpstan": "^1.10.38",
+        "symfony/var-dumper": "^5.4.29"
+    },
+    "autoload": {
+        "psr-4": {
+            "Fleetbase\\Pallet\\": "src/",
+            "Fleetbase\\Pallet\\Seeds\\": "seeds/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Fleetbase\\Pallet\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Fleetbase\\Pallet\\Providers\\PalletServiceProvider"
+            ]
+        },
+        "fleetbase": {
+            "sandbox-migrations": false
+        }
+    },
+    "config": {
+        "vendor-dir": "./server_vendor",
+        "sort-packages": true,
+        "preferred-install": "dist",
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
+        }
+    },
+    "scripts": {
+        "lint": "php-cs-fixer fix -v",
+        "test:lint": "php-cs-fixer fix -v --dry-run",
+        "test:types": "phpstan analyse --ansi --memory-limit=0",
+        "test:unit": "pest --colors=always",
+        "test": [
+            "@test:lint",
+            "@test:types",
+            "@test:unit"
+        ]
+    }
+}
