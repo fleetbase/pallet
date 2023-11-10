@@ -20,14 +20,14 @@ export default class ProductsIndexDetailsController extends Controller {
     @tracked queryParams = ['view'];
 
     /**
-     * Transitions back to the "management.products.index" route.
+     * Transitions back to the "products.index" route.
      *
      * @method
      * @action
      * @returns {Transition} The transition object representing the route change.
      */
     @action transitionBack() {
-        return this.transitionToRoute('management.products.index');
+        return this.transitionToRoute('products.index');
     }
 
     /**
@@ -39,7 +39,7 @@ export default class ProductsIndexDetailsController extends Controller {
      * @returns {Transition} The transition object representing the route change.
      */
     @action onEdit(product) {
-        return this.transitionToRoute('management.products.index.edit', product);
+        return this.transitionToRoute('products.index.edit', product);
     }
 
     /**
