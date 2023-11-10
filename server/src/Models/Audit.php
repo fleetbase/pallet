@@ -17,7 +17,7 @@ class Audit extends Model
      */
     protected $table = 'pallet_audits';
 
-     /**
+    /**
      * The singularName overwrite.
      *
      * @var string
