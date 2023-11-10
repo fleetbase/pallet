@@ -1,7 +1,8 @@
 <EmberWormhole @to="sidebar-menu-items">
     <Layout::Sidebar::Panel @open={{true}} @title="Pallet">
         <Layout::Sidebar::Item @route="console.pallet.home" @icon="home">Dashboard</Layout::Sidebar::Item>
-        <Layout::Sidebar::Item @route="console.pallet.products.index" @icon="boxes-stacked">Products</Layout::Sidebar::Item>
+        <Layout::Sidebar::Item @route="console.pallet.products" @icon="boxes-stacked">Products</Layout::Sidebar::Item>
+        <Layout::Sidebar::Item @route="console.pallet.inventory" @icon="barcode">Inventory</Layout::Sidebar::Item>
         <Layout::Sidebar::Item @route="console.pallet.warehouses" @icon="warehouse">Warehouses</Layout::Sidebar::Item>
         <Layout::Sidebar::Item @route="console.pallet.suppliers" @icon="user-tie">Suppliers</Layout::Sidebar::Item>
         <Layout::Sidebar::Item @route="console.pallet.batch" @icon="layer-group">Batch</Layout::Sidebar::Item>
@@ -19,3 +20,4 @@
 <Layout::Section::Container>
     {{outlet}}
 </Layout::Section::Container>
+<ContextPanel />

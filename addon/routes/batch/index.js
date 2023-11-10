@@ -13,6 +13,6 @@ export default class BatchIndexRoute extends Route {
     };
 
     model(params) {
-        return this.store.query('batch', params);
+        return this.store.query('pallet-product', params);
     }
 }

@@ -13,6 +13,6 @@ export default class SalesOrdersIndexRoute extends Route {
     };
 
     model(params) {
-        return this.store.query('sales-order', params);
+        return this.store.query('pallet-product', params);
     }
 }

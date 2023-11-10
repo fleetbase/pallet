@@ -7,6 +7,13 @@ import { task, timeout } from 'ember-concurrency';
 
 export default class ProductsIndexController extends Controller {
     /**
+     * Inject the `contextPanel` service
+     *
+     * @var {Service}
+     */
+    @service contextPanel;
+
+    /**
      * Inject the `notifications` service
      *
      * @var {Service}
@@ -221,23 +228,18 @@ export default class ProductsIndexController extends Controller {
      * @param {Object} options
      * @void
      */
-    @action viewProduct(product, options) {
-        // do code
-        console.log('viewProduct()', product, options);
+    @action viewProduct(product) {
+        return this.transitionToRoute('products.index.details', product);
     }
 
     /**
      * Create a new `product` in modal
      *
-     * @param {Object} options
      * @void
      */
-    @action createProduct(options = {}) {
-        const product = this.store.createRecord('pallet-product');
-
-        return this.editProduct(product, options);
+    @action createProduct() {
+        return this.transitionToRoute('products.index.new');
     }
-
     /**
      * Edit a `product` details
      *
@@ -245,9 +247,8 @@ export default class ProductsIndexController extends Controller {
      * @param {Object} options
      * @void
      */
-    @action async editProduct(product, options = {}) {
-        // do code
-        console.log('editProduct()', product, options);
+    @action async editProduct(product) {
+        return this.transitionToRoute('products.index.edit', product);
     }
 
     /**

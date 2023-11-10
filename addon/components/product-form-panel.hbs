@@ -1,0 +1,72 @@
+<Overlay
+    @onLoad={{this.setOverlayContext}}
+    @position="right"
+    @noBackdrop={{true}}
+    @fullHeight={{true}}
+    @isResizeble={{or this.isResizable @isResizable}}
+    @width={{or this.width @width "600px"}}
+>
+    <Overlay::Header @hideLeftSection={{true}} @actionsWrapperClass="flex-1 flex-col py-3" class="h-auto-i min-h-[127px]">
+        <div class="flex flex-row items-center justify-between w-full mb-4">
+            <div class="flex flex-1 space-x-2">
+                {{#if this.product.id}}
+                    <Button @type="default" @icon="id-card" @helpText="View product details" @onClick={{this.onViewDetails}} />
+                {{/if}}
+            </div>
+            <div class="flex flex-1 justify-end">
+                <div class="mr-2">
+                    <Button @icon={{if this.product.id "save" "check"}} @type="primary" @text={{if this.product.id "Save Product" "Create Product"}} @onClick={{this.save}} />
+                </div>
+                <Button @type="default" @icon="times" @helpText={{if this.product.id "Cancel edit product" "Cancel new product"}} @onClick={{this.onPressCancel}} />
+            </div>
+        </div>
+        <div class="flex flex-row justify-between w-full">
+            <div class="flex flex-col flex-1 w-3/4">
+                <div class="flex flex-row">
+                    <div class="w-14">
+                        <div class="w-12 h-12 flex items-center justify-start relative hover:bg-gray-100 transition-all rounded-lg overflow-hidden">
+                            <img src={{this.product.photo_url}} alt={{this.product.name}} height="48" width="48" class="h-12 w-12 rounded-lg shadow-sm" />
+                            <Attach::Tooltip @class="clean" @animation="scale" @placement="top">
+                                <InputInfo @text={{this.product.public_id}} />
+                            </Attach::Tooltip>
+                            <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity bg-gray-600 bg-opacity-50 rounded-lg">
+                                <UploadButton
+                                    @name="photos"
+                                    @accept="image/*"
+                                    @onFileAdded={{this.onUploadNewPhoto}}
+                                    @icon="upload"
+                                    @hideButtonText={{true}}
+                                    @labelClass="upload-avatar-label-overlay"
+                                    class="w-12 btn-reset"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <h1 class="text-gray-900 dark:text-white text-2xl">
+                            {{#if this.product.id}}
+                                {{this.product.name}}
+                            {{else}}
+                                {{#if this.product.name}}
+                                    {{this.product.name}}
+                                {{else}}
+                                    <span>New Product</span>
+                                {{/if}}
+                            {{/if}}
+                        </h1>
+                        <div class="-mt-1">
+                            <div class="flex flex-row items-center">
+                                <span class="text-sm dark:text-blue-400 text-blue-600">{{n-a this.product.title (smart-humanize this.product.type)}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-end w-1/4">
+                <Badge @status={{this.product.status}} @type="info" @hideStatusDot={{true}} />
+            </div>
+        </div>
+    </Overlay::Header>
+
+    <Overlay::Body @wrapperClass="new-service-rate-overlay-body px-4 pt-4" @increaseInnerBodyHeightBy={{700}} />
+</Overlay>
