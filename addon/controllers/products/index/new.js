@@ -35,9 +35,9 @@ export default class ProductsIndexNewController extends Controller {
     /**
      * The product being created.
      *
-     * @var {productModel}
+     * @var {EntityModel}
      */
-    @tracked product = this.store.createRecord('product', { type: 'product', status: 'active' });
+    @tracked product = this.store.createRecord('pallet-product', { type: 'pallet-product' });
 
     /**
      * Set the overlay component context object.
@@ -83,6 +83,6 @@ export default class ProductsIndexNewController extends Controller {
      * @memberof ProductsIndexNewController
      */
     resetForm() {
-        this.product = this.store.createRecord('product', { type: 'product', status: 'active' });
+        this.product = this.store.createRecord('pallet-product', { type: 'pallet-product', status: 'active' });
     }
 }

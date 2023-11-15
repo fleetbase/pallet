@@ -20,4 +20,8 @@ export default class PalletProductSerializer extends ApplicationSerializer.exten
 
         return modelName;
     }
+
+    payloadKeyFromModelName() {
+        return 'product';
+    }
 }

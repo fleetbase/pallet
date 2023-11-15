@@ -37,7 +37,7 @@ export default class ProductsIndexEditController extends Controller {
             return this.confirmContinueWithUnsavedChanges(product, {
                 confirm: () => {
                     product.rollbackAttributes();
-                    return this.transitionToRoute('management.products.index');
+                    return this.transitionToRoute('products.index');
                 },
             });
         }

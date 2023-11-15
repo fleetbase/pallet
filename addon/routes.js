@@ -10,7 +10,13 @@ export default buildRoutes(function () {
         });
     });
     this.route('inventory', function () {});
-    this.route('warehouses', function () {});
+    this.route('warehouses', function () {
+        this.route('index', { path: '/' }, function () {
+            this.route('new');
+            this.route('details', { path: '/:public_id' });
+            this.route('edit', { path: '/edit/:public_id' });
+        });
+    });
     this.route('suppliers', function () {});
     this.route('sales-orders', function () {});
     this.route('purchase-orders', function () {});

@@ -17,7 +17,7 @@ class StockTransaction extends Model
      */
     protected $table = 'pallet_stock_transactions';
 
-     /**
+    /**
      * The singularName overwrite.
      *
      * @var string
@@ -29,14 +29,25 @@ class StockTransaction extends Model
      *
      * @var array
      */
-    protected $searchableColumns = [];
+    protected $searchableColumns = ['uuid', 'product_uuid', 'transaction_type', 'quantity', 'transaction_date'];
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'uuid',
+        'product_uuid',
+        'transaction_type',
+        'quantity',
+        'transaction_date_at',
+        'source_uuid',
+        'source_type',
+        'destination_uuid',
+        'created_at',
+        'updated_at',
+    ];
 
     /**
      * The attributes that should be cast to native types.

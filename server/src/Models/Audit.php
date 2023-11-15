@@ -2,9 +2,10 @@
 
 namespace Fleetbase\Pallet\Models;
 
-use Fleetbase\Traits\HasUuid;
-use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Models\Model;
+use Fleetbase\Traits\HasApiModelBehavior;
+use Fleetbase\Traits\HasUuid;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Audit extends Model
 {
@@ -18,6 +19,13 @@ class Audit extends Model
     protected $table = 'pallet_audits';
 
     /**
+     * The primary key for the model.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'uuid';
+
+    /**
      * The singularName overwrite.
      *
      * @var string
@@ -29,14 +37,24 @@ class Audit extends Model
      *
      * @var array
      */
-    protected $searchableColumns = [];
+    protected $searchableColumns = ['uuid', 'user_uuid', 'action', 'auditable_type', 'auditable_uuid', 'created_at'];
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'uuid',
+        'user_uuid',
+        'action',
+        'auditable_type',
+        'auditable_uuid',
+        'old_values',
+        'new_values',
+        'created_at',
+        'updated_at',
+    ];
 
     /**
      * The attributes that should be cast to native types.
@@ -44,6 +62,13 @@ class Audit extends Model
      * @var array
      */
     protected $casts = [];
+
+    /**
+     * The relationships to be eager loaded.
+     *
+     * @var array
+     */
+    protected $with = ['user'];
 
     /**
      * Dynamic attributes that are appended to object
@@ -58,4 +83,14 @@ class Audit extends Model
      * @var array
      */
     protected $hidden = [];
+
+    /**
+     * Get the user that performed the audit.
+     *
+     * @return BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'user_uuid');
+    }
 }

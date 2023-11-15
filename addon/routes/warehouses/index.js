@@ -9,7 +9,17 @@ export default class WarehousesIndexRoute extends Route {
         limit: { refreshModel: true },
         sort: { refreshModel: true },
         query: { refreshModel: true },
-        status: { refreshModel: true },
+        country: { refreshModel: true },
+        name: { refreshModel: true },
+        address: { refreshModel: true },
+        public_id: { refreshModel: true },
+        city: { refreshModel: true },
+        phone: { refreshModel: true },
+        neighborhood: { refreshModel: true },
+        postal_code: { refreshModel: true },
+        state: { refreshModel: true },
+        createdAt: { refreshModel: true },
+        updatedAt: { refreshModel: true },
     };
 
     model(params) {

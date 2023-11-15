@@ -1,3 +1,3 @@
-import Model from '@ember-data/model';
+import PlaceModel from '@fleetbase/fleetops-data/models/place';
 
-export default class WarehouseModel extends Model {}
+export default class WarehouseModel extends PlaceModel {}

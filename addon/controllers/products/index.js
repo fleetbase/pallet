@@ -67,7 +67,25 @@ export default class ProductsIndexController extends Controller {
      *
      * @var {Array}
      */
-    queryParams = ['page', 'limit', 'sort', 'query', 'status', 'sku', 'created_at', 'updated_at'];
+    queryParams = [
+        'page',
+        'limit',
+        'sort',
+        'query',
+        'internal_id',
+        'public_id',
+        'sku',
+        'created_at',
+        'updated_at',
+        'name',
+        'price',
+        'sale_price',
+        'declared_value',
+        'length',
+        'width',
+        'height',
+        'weight',
+    ];
 
     /**
      * The current page of data being viewed
@@ -98,11 +116,74 @@ export default class ProductsIndexController extends Controller {
     @tracked sku;
 
     /**
-     * The filterable param `status`
+     * The filterable param `name`
      *
      * @var {String}
      */
-    @tracked status;
+    @tracked name;
+
+    /**
+     * The filterable param `product_id`
+     *
+     * @var {String}
+     */
+    @tracked product_id;
+
+    /**
+     * The filterable param `internal_id`
+     *
+     * @var {String}
+     */
+    @tracked internal_id;
+
+    /**
+     * The filterable param `price`
+     *
+     * @var {String}
+     */
+    @tracked price;
+
+    /**
+     * The filterable param `sale_price`
+     *
+     * @var {String}
+     */
+    @tracked sale_price;
+
+    /**
+     * The filterable param `declared_value`
+     *
+     * @var {String}
+     */
+    @tracked declared_value;
+
+    /**
+     * The filterable param `length`
+     *
+     * @var {String}
+     */
+    @tracked length;
+
+    /**
+     * The filterable param `width`
+     *
+     * @var {String}
+     */
+    @tracked width;
+
+    /**
+     * The filterable param `heigth`
+     *
+     * @var {String}
+     */
+    @tracked heigth;
+
+    /**
+     * The filterable param `weigth`
+     *
+     * @var {String}
+     */
+    @tracked weigth;
 
     /**
      * All columns applicable for orders
@@ -113,8 +194,9 @@ export default class ProductsIndexController extends Controller {
         {
             label: 'Name',
             valuePath: 'name',
-            width: '200px',
-            cellComponent: 'table/cell/anchor',
+            width: '170px',
+            cellComponent: 'table/cell/media-name',
+            action: this.viewProduct,
             resizable: true,
             sortable: true,
             filterable: true,
@@ -133,6 +215,86 @@ export default class ProductsIndexController extends Controller {
         {
             label: 'SKU',
             valuePath: 'sku',
+            cellComponent: 'click-to-copy',
+            width: '120px',
+            resizable: true,
+            sortable: true,
+            filterable: true,
+            filterComponent: 'filter/string',
+        },
+        {
+            label: 'Internal ID',
+            valuePath: 'internal_id',
+            cellComponent: 'click-to-copy',
+            width: '120px',
+            resizable: true,
+            sortable: true,
+            filterable: true,
+            filterComponent: 'filter/string',
+        },
+        {
+            label: 'Price',
+            valuePath: 'price',
+            cellComponent: 'click-to-copy',
+            width: '120px',
+            resizable: true,
+            sortable: true,
+            filterable: true,
+            filterComponent: 'filter/string',
+        },
+        {
+            label: 'Sale Price',
+            valuePath: 'sale_price',
+            cellComponent: 'click-to-copy',
+            width: '120px',
+            resizable: true,
+            sortable: true,
+            filterable: true,
+            filterComponent: 'filter/string',
+        },
+        {
+            label: 'Declared Value',
+            valuePath: 'declared_value',
+            cellComponent: 'click-to-copy',
+            width: '120px',
+            resizable: true,
+            sortable: true,
+            filterable: true,
+            filterComponent: 'filter/string',
+        },
+        {
+            label: 'Length',
+            valuePath: 'length',
+            cellComponent: 'click-to-copy',
+            width: '120px',
+            resizable: true,
+            sortable: true,
+            filterable: true,
+            filterComponent: 'filter/string',
+        },
+        {
+            label: 'Width',
+            valuePath: 'width',
+            cellComponent: 'click-to-copy',
+            width: '120px',
+            resizable: true,
+            sortable: true,
+            filterable: true,
+            filterComponent: 'filter/string',
+        },
+        {
+            label: 'Height',
+            valuePath: 'height',
+            cellComponent: 'click-to-copy',
+            width: '120px',
+            resizable: true,
+            sortable: true,
+            filterable: true,
+            filterComponent: 'filter/string',
+        },
+        {
+            label: 'Weight',
+            valuePath: 'weight',
             cellComponent: 'click-to-copy',
             width: '120px',
             resizable: true,

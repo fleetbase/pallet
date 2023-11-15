@@ -9,6 +9,6 @@ export default class ProductsIndexDetailsRoute extends Route {
     };
 
     model({ public_id }) {
-        return this.store.findRecord('product', public_id);
+        return this.store.findRecord('pallet-product', public_id);
     }
 }

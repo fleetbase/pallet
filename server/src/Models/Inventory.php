@@ -17,7 +17,7 @@ class Inventory extends Model
      */
     protected $table = 'pallet_inventories';
 
-     /**
+    /**
      * The singularName overwrite.
      *
      * @var string
@@ -29,14 +29,22 @@ class Inventory extends Model
      *
      * @var array
      */
-    protected $searchableColumns = [];
+    protected $searchableColumns = ['uuid', 'product_uuid', 'warehouse_uuid', 'quantity', 'min_quantity', 'created_at'];
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'uuid',
+        'product_uuid',
+        'warehouse_uuid',
+        'quantity',
+        'min_quantity',
+        'created_at',
+        'updated_at',
+    ];
 
     /**
      * The attributes that should be cast to native types.

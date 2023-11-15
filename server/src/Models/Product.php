@@ -18,5 +18,5 @@ class Product extends Entity
      *
      * @var string
      */
-    protected $publicIdType = 'product';
+    public $publicIdType = 'product';
 }

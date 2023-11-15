@@ -5,6 +5,6 @@ export default class ProductsIndexEditRoute extends Route {
     @service store;
 
     model({ public_id }) {
-        return this.store.findRecord('product', public_id);
+        return this.store.findRecord('pallet-product', public_id);
     }
 }

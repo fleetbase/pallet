@@ -73,7 +73,7 @@ export default class WarehousePanelComponent extends Component {
      */
     get tabs() {
         const registeredTabs = this.universe.getMenuItemsFromRegistry('component:warehouse-panel');
-        // this.universe._createMenuItem('Tracking', null, { icon: 'satellite-dish', component: WarehousePanelTrackingComponent }),
+        // this.universe._createMenuItem('Tracking', null, { icon: 'satellite-dish', component: warehousePanelTrackingComponent }),
         const defaultTabs = [this.universe._createMenuItem('Details', null, { icon: 'circle-info', component: WarehousePanelDetailComponent })];
 
         if (isArray(registeredTabs)) {

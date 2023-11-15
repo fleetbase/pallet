@@ -17,7 +17,7 @@ class Batch extends Model
      */
     protected $table = 'pallet_batches';
 
-     /**
+    /**
      * The singularName overwrite.
      *
      * @var string
@@ -29,14 +29,23 @@ class Batch extends Model
      *
      * @var array
      */
-    protected $searchableColumns = [];
+    protected $searchableColumns = ['uuid', 'batch_number', 'product_uuid', 'manufacture_date_at', 'expiry_date_at', 'quantity', 'created_at'];
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'uuid',
+        'batch_number',
+        'product_uuid',
+        'manufacture_date_at',
+        'expiry_date_at',
+        'quantity',
+        'created_at',
+        'updated_at',
+    ];
 
     /**
      * The attributes that should be cast to native types.

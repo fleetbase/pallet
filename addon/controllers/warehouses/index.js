@@ -60,7 +60,7 @@ export default class WarehousesIndexController extends Controller {
      *
      * @var {Array}
      */
-    queryParams = ['page', 'limit', 'sort', 'query', 'status', 'sku', 'created_at', 'updated_at'];
+    queryParams = ['name', 'page', 'limit', 'sort', 'query', 'public_id', 'country', 'phone', 'created_at', 'updated_at', 'city', 'neighborhood', 'state'];
 
     /**
      * The current page of data being viewed
@@ -84,18 +84,53 @@ export default class WarehousesIndexController extends Controller {
     @tracked sort = '-created_at';
 
     /**
-     * The filterable param `sku`
+     * The filterable param `public_id`
      *
      * @var {String}
      */
-    @tracked sku;
+    @tracked public_id;
 
     /**
-     * The filterable param `status`
+     * The filterable param `public_id`
      *
      * @var {String}
      */
-    @tracked status;
+    @tracked postal_code;
+
+    /**
+     * The filterable param `phone`
+     *
+     * @var {String}
+     */
+    @tracked phone;
+
+    /**
+     * The filterable param `city`
+     *
+     * @var {String}
+     */
+    @tracked city;
+
+    /**
+     * The filterable param `name`
+     *
+     * @var {String}
+     */
+    @tracked name;
+
+    /**
+     * The filterable param `country`
+     *
+     * @var {String}
+     */
+    @tracked country;
+
+    /**
+     * The filterable param `country`
+     *
+     * @var {String}
+     */
+    @tracked neighborhood;
 
     /**
      * All columns applicable for orders
@@ -108,9 +143,47 @@ export default class WarehousesIndexController extends Controller {
             valuePath: 'name',
             width: '200px',
             cellComponent: 'table/cell/anchor',
+            action: this.viewWarehouse,
             resizable: true,
             sortable: true,
             filterable: true,
+            filterParam: 'name',
+            filterComponent: 'filter/string',
+        },
+        {
+            label: 'Address',
+            valuePath: 'address',
+            cellComponent: 'table/cell/anchor',
+            action: this.viewWarehouse,
+            width: '320px',
+            resizable: true,
+            sortable: true,
+            filterable: true,
+            filterParam: 'address',
+            filterComponent: 'filter/string',
+        },
+        {
+            label: 'State',
+            valuePath: 'state',
+            cellComponent: 'table/cell/anchor',
+            action: this.viewWarehouse,
+            width: '100px',
+            resizable: true,
+            sortable: true,
+            filterable: true,
+            filterParam: 'state',
+            filterComponent: 'filter/string',
+        },
+        {
+            label: 'City',
+            valuePath: 'city',
+            cellComponent: 'table/cell/anchor',
+            action: this.viewWarehouse,
+            width: '100px',
+            resizable: true,
+            sortable: true,
+            filterable: true,
+            filterParam: 'city',
             filterComponent: 'filter/string',
         },
         {
@@ -124,10 +197,46 @@ export default class WarehousesIndexController extends Controller {
             filterComponent: 'filter/string',
         },
         {
-            label: 'SKU',
-            valuePath: 'sku',
-            cellComponent: 'click-to-copy',
+            label: 'Phone',
+            valuePath: 'phone',
+            cellComponent: 'table/cell/base',
             width: '120px',
+            resizable: true,
+            sortable: true,
+            hidden: true,
+            filterable: true,
+            filterComponent: 'filter/string',
+        },
+        {
+            label: 'Country',
+            valuePath: 'country_name',
+            cellComponent: 'table/cell/base',
+            cellClassNames: 'uppercase',
+            width: '120px',
+            resizable: true,
+            sortable: true,
+            filterable: true,
+            filterComponent: 'filter/country',
+            filterParam: 'country',
+        },
+        {
+            label: 'Neighborhood',
+            valuePath: 'neighborhood',
+            cellComponent: 'table/cell/anchor',
+            action: this.viewWarehouse,
+            width: '100px',
+            resizable: true,
+            sortable: true,
+            filterable: true,
+            filterParam: 'neighborhood',
+            filterComponent: 'filter/string',
+        },
+        {
+            label: 'Postal Code',
+            valuePath: 'postal_code',
+            cellComponent: 'table/cell/anchor',
+            action: this.viewWarehouse,
+            width: '100px',
             resizable: true,
             sortable: true,
             filterable: true,
@@ -154,6 +263,7 @@ export default class WarehousesIndexController extends Controller {
             filterable: true,
             filterComponent: 'filter/date',
         },
+
         {
             label: '',
             cellComponent: 'table/cell/dropdown',
@@ -166,12 +276,26 @@ export default class WarehousesIndexController extends Controller {
             width: '10%',
             actions: [
                 {
-                    label: 'View Warehouse',
+                    label: 'View Warehouse Details',
                     fn: this.viewWarehouse,
                 },
                 {
                     label: 'Edit Warehouse',
-                    fn: this.editWarehouse,
+                    fn: this.viewWarehouse,
+                },
+                {
+                    separator: true,
+                },
+                {
+                    label: 'View Warehouse on Map',
+                    fn: this.viewWarehouse,
+                },
+                {
+                    separator: true,
+                },
+                {
+                    label: 'Delete Warehouse',
+                    fn: this.deleteWarehouse,
                 },
             ],
             sortable: false,
@@ -221,9 +345,8 @@ export default class WarehousesIndexController extends Controller {
      * @param {Object} options
      * @void
      */
-    @action viewWarehouse(warehouse, options) {
-        // do code
-        console.log('viewWarehouse()', warehouse, options);
+    @action viewWarehouse(warehouse) {
+        this.transitionToRoute('warehouses.index.details', warehouse);
     }
 
     /**
@@ -232,10 +355,8 @@ export default class WarehousesIndexController extends Controller {
      * @param {Object} options
      * @void
      */
-    @action createWarehouse(options = {}) {
-        const warehouse = this.store.createRecord('pallet-warehouse');
-
-        return this.editWarehouse(warehouse, options);
+    @action createWarehouse() {
+        this.transitionToRoute('warehouses.index.new');
     }
 
     /**
@@ -245,9 +366,8 @@ export default class WarehousesIndexController extends Controller {
      * @param {Object} options
      * @void
      */
-    @action async editWarehouse(warehouse, options = {}) {
-        // do code
-        console.log('editWarehouse()', warehouse, options);
+    @action async editWarehouse(warehouse) {
+        this.transitionToRoute('warehouses.index.edit', warehouse);
     }
 
     /**
@@ -276,11 +396,40 @@ export default class WarehousesIndexController extends Controller {
         const selected = this.table.selectedRows;
 
         this.crud.bulkDelete(selected, {
-            modelNamePath: `name`,
-            acceptButtonText: 'Delete Warehouses',
+            modelNamePath: `address`,
+            acceptButtonText: 'Delete Warehouse',
             onSuccess: () => {
                 return this.hostRouter.refresh();
             },
+        });
+    }
+
+    /**
+     * Prompt user to assign a `vendor` to a `place`
+     *
+     * @param {PlaceModel} place
+     * @param {Object} options
+     * @void
+     */
+
+    /**
+     * View a place location on map
+     *
+     * @param {WarehouseModel} place
+     * @param {Object} options
+     * @void
+     */
+    @action viewOnMap(warehouse, options = {}) {
+        const { latitude, longitude } = warehouse;
+
+        this.modalsManager.show('modals/point-map', {
+            title: `Location of ${warehouse.name}`,
+            acceptButtonText: 'Done',
+            hideDeclineButton: true,
+            latitude,
+            longitude,
+            location: [latitude, longitude],
+            ...options,
         });
     }
 }

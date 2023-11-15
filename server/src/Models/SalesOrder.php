@@ -17,7 +17,7 @@ class SalesOrder extends Model
      */
     protected $table = 'pallet_sales_order';
 
-     /**
+    /**
      * The singularName overwrite.
      *
      * @var string
@@ -29,14 +29,22 @@ class SalesOrder extends Model
      *
      * @var array
      */
-    protected $searchableColumns = [];
+    protected $searchableColumns = ['uuid', 'customer_uuid', 'order_date', 'delivery_date', 'status', 'created_at'];
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'uuid',
+        'customer_uuid',
+        'order_date',
+        'delivery_date',
+        'status',
+        'created_at',
+        'updated_at',
+    ];
 
     /**
      * The attributes that should be cast to native types.

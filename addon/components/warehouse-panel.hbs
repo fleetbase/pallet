@@ -6,51 +6,9 @@
     @isResizable={{or this.isResizable @isResizable}}
     @width={{or this.width @width "600px"}}
 >
-    <Overlay::Header @hideLeftSection={{true}} @actionsWrapperClass="flex-1 flex-col py-3" class="h-auto-i">
-        <div class="flex flex-row items-center justify-between w-full mb-4">
-            <div class="flex flex-1 space-x-2">
-                <Button @type="default" @icon="pen" @helpText="Edit warehouse" @onClick={{this.onEdit}} />
-            </div>
-            <div class="flex flex-1 justify-end">
-                <Button @type="default" @icon="times" @helpText="Close warehouse details" @onClick={{this.onPressCancel}} />
-            </div>
-        </div>
-        <div class="flex flex-row justify-between w-full">
-            <div class="flex flex-1 flex-row">
-                <div class="w-14">
-                    <div class="w-12 h-12 flex items-center justify-start rounded-lg">
-                        <Image
-                            src={{this.warehouse.logo_url}}
-                            @fallbackSrc={{config "defaultValues.warehouseImage"}}
-                            alt={{this.warehouse.name}}
-                            height="48"
-                            width="48"
-                            class="h-12 w-12 rounded-lg shadow-sm"
-                        />
-                        <Attach::Tooltip @class="clean" @animation="scale" @placement="top">
-                            <InputInfo @text={{this.warehouse.name}} />
-                        </Attach::Tooltip>
-                    </div>
-                </div>
-                <div class="flex flex-col">
-                    <h1 class="text-gray-900 dark:text-white text-2xl">
-                        {{#if this.warehouse.id}}
-                            {{this.warehouse.name}}
-                        {{else}}
-                            <span>New Warehouse</span>
-                        {{/if}}
-                    </h1>
-                    <div class="-mt-1">
-                        <div class="flex flex-row items-center">
-                            <span class="text-sm dark:text-gray-500 text-gray-700 mr-3">{{n-a (smart-humanize this.warehouse.type)}}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="flex justify-end">
-                <Badge @status={{this.warehouse.status}} />
-            </div>
-        </div>
+    <Overlay::Header @title={{this.warehouse.name}} @status={{this.warehouse.public_id}} @hideStatusDot={{true}} @createdAt={{this.warehouse.createdAt}}>
+        <Button @type="default" @icon="pen" @helpText="Edit warehouse" @onClick={{this.onEdit}} @wrapperClass="mr-2" />
+        <Button @type="default" @icon="times" @helpText={{if this.warehouse.id "Cancel edit warehouse" "Cancel new warehouse"}} @onClick={{this.onPressCancel}} />
     </Overlay::Header>
     <Overlay::Body class="no-padding" @increaseInnerBodyHeightBy={{1000}}>
         <div class="section-header-actions w-full overflow-x-scroll lg:overflow-x-auto">
@@ -66,7 +24,7 @@
             </div>
         </div>
         <div class="tab-content tab-{{this.tab.slug}}">
-            {{component this.tab.component warehouse=this.warehouse tabOptions=this.tab params=this.tab.componentParams}}
+            {{component this.tab.component warehouse=this.warehouse tabOptions=this.tab options=this.tab.componentParams}}
         </div>
     </Overlay::Body>
 </Overlay>
