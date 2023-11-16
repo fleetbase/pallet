@@ -15,15 +15,16 @@ class CreateAuditsTable extends Migration
     {
         Schema::create('pallet_audits', function (Blueprint $table) {
             $table->increments('id');
-            $table->uuid('uuid', 191)->nullable()->index();
-            $table->foreignUuid('user_uuid', 191)->nullable()->index()->references('uuid')->on('users');
+            $table->uuid('uuid')->nullable()->unique();
+            $table->foreignUuid('user_uuid')->nullable()->index()->references('uuid')->on('users');
             $table->string('action')->nullabe();
             $table->string('auditable_type')->nullabe();
-            $table->uuid('auditable_uuid', 191)->nullabe()->index();
+            $table->uuid('auditable_uuid')->nullabe()->index();
             $table->json('old_values')->nullable();
             $table->json('new_values')->nullable();
             $table->timestamp('created_at')->nullable()->index();
             $table->timestamp('updated_at')->nullable();
+            $table->softDeletes();
         });
     }
 

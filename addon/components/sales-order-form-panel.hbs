@@ -1,1 +1,41 @@
-{{yield}}
+<Overlay
+    @onLoad={{this.setOverlayContext}}
+    @position="right"
+    @noBackdrop={{true}}
+    @fullHeight={{true}}
+    @isResizeble={{or this.isResizable @isResizable}}
+    @width={{or this.width @width "600px"}}
+>
+    <Overlay::Header @hideLeftSection={{true}} @actionsWrapperClass="flex-1 flex-col py-3" class="h-auto-i min-h-[127px]">
+        <div class="flex flex-row items-center justify-between w-full mb-4">
+            <div class="flex flex-1 space-x-2">
+                {{#if this.salesOrder.id}}
+                    <Button @type="default" @icon="box" @helpText="View sales order details" @onClick={{this.onViewDetails}} />
+                {{/if}}
+            </div>
+            <div class="flex flex-1 justify-end">
+                <div class="mr-2">
+                    <Button @icon={{if this.salesOrder.id "save" "check"}} @type="primary" @text={{if this.salesOrder.id "Save Sales Order" "Create Sales Order"}} @onClick={{this.save}} />
+                </div>
+                <Button @type="default" @icon="times" @helpText={{if this.salesOrder.id "Cancel edit Sales Order" "Cancel new Sales Order"}} @onClick={{this.onPressCancel}} />
+            </div>
+        </div>
+        <div class="flex flex-row justify-between w-full">
+            <div class="flex justify-end w-1/4">
+                <Badge @status={{this.salesOrder.status}} @type="info" @hideStatusDot={{true}} />
+            </div>
+        </div>
+    </Overlay::Header>
+
+    <Overlay::Body @wrapperClass="new-service-rate-overlay-body px-4 pt-4" @increaseInnerBodyHeightBy={{700}}>
+        <div class="flex-1 space-y-4">
+            <ContentPanel @title="Details" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
+                <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-2">
+                    <InputGroup @name="Status" @helpText="Select the status of the fleet.">
+                        <Select @options={{this.statusOptions}} @value={{this.salesOrder.status}} @onSelect={{fn (mut this.salesOrder.status)}} @placeholder="Select status" class="w-full" />
+                    </InputGroup>
+                </div>
+            </ContentPanel>
+        </div>
+    </Overlay::Body>
+</Overlay>

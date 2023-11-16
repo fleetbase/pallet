@@ -15,7 +15,7 @@ class CreateBatchesTable extends Migration
     {
         Schema::create('pallet_batches', function (Blueprint $table) {
             $table->increments('id');
-            $table->uuid('uuid', 191)->nullable()->index();
+            $table->uuid('uuid')->nullable()->unique();
             $table->string('batch_number')->nullabe();
             $table->foreignUuid('product_uuid')->nullable()->index()->references('uuid')->on('entities');
             $table->timestamp('manufacture_date_at')->nullable();
@@ -23,6 +23,7 @@ class CreateBatchesTable extends Migration
             $table->integer('quantity')->nullable();
             $table->timestamp('created_at')->nullable()->index();
             $table->timestamp('updated_at')->nullable();
+            $table->softDeletes();
         });
     }
 

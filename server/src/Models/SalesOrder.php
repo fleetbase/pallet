@@ -15,7 +15,7 @@ class SalesOrder extends Model
      *
      * @var string
      */
-    protected $table = 'pallet_sales_order';
+    protected $table = 'pallet_sales_orders';
 
     /**
      * The singularName overwrite.
@@ -23,6 +23,20 @@ class SalesOrder extends Model
      * @var string
      */
     protected $singularName = 'sales-order';
+
+    /**
+     * Overwrite both entity resource name with `payloadKey`
+     *
+     * @var string
+     */
+    protected $payloadKey = 'sales_order';
+
+    /**
+     * The type of public Id to generate
+     *
+     * @var string
+     */
+    public $publicIdType = 'sales_order';
 
     /**
      * These attributes that can be queried

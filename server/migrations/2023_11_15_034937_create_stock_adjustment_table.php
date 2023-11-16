@@ -15,12 +15,13 @@ class CreateStockAdjustmentTable extends Migration
     {
         Schema::create('pallet_stock_adjustment', function (Blueprint $table) {
             $table->increments('id');
-            $table->uuid('uuid')->nullable()->index();
+            $table->uuid('uuid')->nullable()->unique();
             $table->foreignUuid('product_uuid')->nullable()->index()->references('uuid')->on('entities');
             $table->integer('quantity')->nullabe();
             $table->string('reason')->nullabe();
             $table->timestamp('created_at')->nullable()->index();
             $table->timestamp('updated_at')->nullable();
+            $table->softDeletes();
         });
     }
 

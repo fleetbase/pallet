@@ -7,43 +7,43 @@ export default class SuppliersIndexNewController extends Controller {
     /**
      * Inject the `store` service
      *
-     * @memberof SuppliersIndexNewController
+     * @memberof ManagementSupplierIndexNewController
      */
     @service store;
 
     /**
      * Inject the `hostRouter` service
      *
-     * @memberof SuppliersIndexNewController
+     * @memberof ManagementSupplierIndexNewController
      */
     @service hostRouter;
 
     /**
      * Inject the `hostRouter` service
      *
-     * @memberof SuppliersIndexNewController
+     * @memberof ManagementSupplierIndexNewController
      */
     @service modalsManager;
 
     /**
      * The overlay component context.
      *
-     * @memberof SuppliersIndexNewController
+     * @memberof ManagementSupplierIndexNewController
      */
     @tracked overlay;
 
     /**
      * The supplier being created.
      *
-     * @var {EntityModel}
+     * @var {SupplierModel}
      */
-    @tracked supplier = this.store.createRecord('pallet-supplier', { type: 'pallet-supplier' });
+    @tracked supplier = this.store.createRecord('supplier', { status: 'active' });
 
     /**
      * Set the overlay component context object.
      *
      * @param {OverlayContext} overlay
-     * @memberof SuppliersIndexNewController
+     * @memberof ManagementSuppliersIndexNewController
      */
     @action setOverlayContext(overlay) {
         this.overlay = overlay;
@@ -53,7 +53,7 @@ export default class SuppliersIndexNewController extends Controller {
      * When exiting the overlay.
      *
      * @return {Transition}
-     * @memberof SuppliersIndexNewController
+     * @memberof ManagementSupplierIndexNewController
      */
     @action transitionBack() {
         return this.transitionToRoute('suppliers.index');
@@ -62,9 +62,9 @@ export default class SuppliersIndexNewController extends Controller {
     /**
      * Trigger a route refresh and focus the new supplier created.
      *
-     * @param {supplierModel} supplier
+     * @param {SupplierModel} supplier
      * @return {Promise}
-     * @memberof SuppliersIndexNewController
+     * @memberof ManagementSuppliersIndexNewController
      */
     @action onAfterSave(supplier) {
         if (this.overlay) {
@@ -80,9 +80,9 @@ export default class SuppliersIndexNewController extends Controller {
     /**
      * Resets the form with a new supplier record
      *
-     * @memberof SuppliersIndexNewController
+     * @memberof ManagementSupplierIndexNewController
      */
     resetForm() {
-        this.supplier = this.store.createRecord('pallet-supplier', { type: 'pallet-supplier', status: 'active' });
+        this.supplier = this.store.createRecord('supplier', { status: 'active' });
     }
 }

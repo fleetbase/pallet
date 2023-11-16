@@ -124,16 +124,6 @@ export default class SalesOrdersIndexController extends Controller {
             filterComponent: 'filter/string',
         },
         {
-            label: 'SKU',
-            valuePath: 'sku',
-            cellComponent: 'click-to-copy',
-            width: '120px',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterComponent: 'filter/string',
-        },
-        {
             label: 'Created At',
             valuePath: 'createdAt',
             sortParam: 'created_at',
@@ -221,9 +211,8 @@ export default class SalesOrdersIndexController extends Controller {
      * @param {Object} options
      * @void
      */
-    @action viewSalesOrder(salesOrder, options) {
-        // do code
-        console.log('viewSalesOrder()', salesOrder, options);
+    @action viewSalesOrder(salesOrder) {
+        return this.transitionToRoute('salesOrders.index.details',salesOrder);
     }
 
     /**
@@ -232,10 +221,8 @@ export default class SalesOrdersIndexController extends Controller {
      * @param {Object} options
      * @void
      */
-    @action createSalesOrder(options = {}) {
-        const salesOrder = this.store.createRecord('pallet-salesOrder');
-
-        return this.editSalesOrder(salesOrder, options);
+    @action createSalesOrder() {
+        return this.transitionToRoute('salesOrders.index.new');
     }
 
     /**
@@ -245,9 +232,8 @@ export default class SalesOrdersIndexController extends Controller {
      * @param {Object} options
      * @void
      */
-    @action async editSalesOrder(salesOrder, options = {}) {
-        // do code
-        console.log('editSalesOrder()', salesOrder, options);
+    @action async editSalesOrder(salesOrder) {
+        return this.transitionToRoute('salesOrders.index.edit',salesOrder);
     }
 
     /**
@@ -277,7 +263,7 @@ export default class SalesOrdersIndexController extends Controller {
 
         this.crud.bulkDelete(selected, {
             modelNamePath: `name`,
-            acceptButtonText: 'Delete SalesOrders',
+            acceptButtonText: 'Delete sales Orders',
             onSuccess: () => {
                 return this.hostRouter.refresh();
             },

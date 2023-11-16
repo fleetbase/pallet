@@ -15,7 +15,7 @@ class CreateStockTransactionsTable extends Migration
     {
         Schema::create('pallet_stock_transactions', function (Blueprint $table) {
             $table->increments('id');
-            $table->uuid('uuid', 191)->nullable()->index();
+            $table->uuid('uuid')->nullable()->unique();
             $table->foreignUuid('product_uuid')->nullable()->index()->references('uuid')->on('entities');
             $table->foreignUuid('destination_uuid')->nullable()->index()->references('uuid')->on('places');
             $table->uuid('source_uuid')->nullable()->index();
@@ -25,6 +25,7 @@ class CreateStockTransactionsTable extends Migration
             $table->timestamp('transaction_created_at')->nullabe();
             $table->timestamp('created_at')->nullable()->index();
             $table->timestamp('updated_at')->nullable();
+            $table->softDeletes();
         });
     }
 

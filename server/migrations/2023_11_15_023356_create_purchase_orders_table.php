@@ -15,12 +15,14 @@ class CreatePurchaseOrdersTable extends Migration
     {
         Schema::create('pallet_purchase_orders', function (Blueprint $table) {
             $table->increments('id');
+            $table->uuid('uuid')->nullable()->unique();
             $table->foreignUuid('supplier_uuid')->nullable()->index()->references('uuid')->on('vendors');
             $table->string('status')->nullable();
             $table->timestamp('order_created_at')->nullable();
             $table->timestamp('expected_delivery_at')->nullable();
             $table->timestamp('created_at')->nullable()->index();
             $table->timestamp('updated_at')->nullable();
+            $table->softDeletes();
         });
     }
 

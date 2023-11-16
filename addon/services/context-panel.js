@@ -27,6 +27,36 @@ export default class ContextPanelService extends Service {
                 componentArguments: [{ isResizable: true }, { width: '600px' }],
             },
         },
+        warehouse: {
+            viewing: {
+                component: 'warehouse-panel',
+                componentArguments: [{ isResizable: true }, { width: '600px' }],
+            },
+            editing: {
+                component: 'warehouse-form-panel',
+                componentArguments: [{ isResizable: true }, { width: '600px' }],
+            },
+        },
+        supplier: {
+            viewing: {
+                component: 'supplier-panel',
+                componentArguments: [{ isResizable: true }, { width: '600px' }],
+            },
+            editing: {
+                component: 'supplier-form-panel',
+                componentArguments: [{ isResizable: true }, { width: '600px' }],
+            },
+        },
+        salesOrder: {
+            viewing: {
+                component: 'sales-order-panel',
+                componentArguments: [{ isResizable: true }, { width: '600px' }],
+            },
+            editing: {
+                component: 'sales-order-form-panel',
+                componentArguments: [{ isResizable: true }, { width: '600px' }],
+            },
+        },
     };
 
     /**

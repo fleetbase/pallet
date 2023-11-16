@@ -20,7 +20,7 @@ export default class SuppliersIndexDetailsController extends Controller {
     @tracked queryParams = ['view'];
 
     /**
-     * Transitions back to the "suppliers.index" route.
+     * Transitions back to the "supplier.index" route.
      *
      * @method
      * @action
