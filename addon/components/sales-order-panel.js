@@ -1,11 +1,12 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
 import { isArray } from '@ember/array';
-import SalesOrderPanelDetailComponent from './salesOrder-panel/details';
+import SalesOrderPanelDetailsComponent from './sales-order-panel/details';
 import contextComponentCallback from '../utils/context-component-callback';
 import applyContextComponentArguments from '../utils/apply-context-component-arguments';
+
 
 export default class SalesOrderPanelComponent extends Component {
     /**
@@ -59,12 +60,12 @@ export default class SalesOrderPanelComponent extends Component {
     @tracked tab;
 
     /**
-     * The salesOrder being displayed or edited.
+     * The fuel-report being displayed or edited.
      *
-     * @type {salesOrderModel}
+     * @type {fuelReport}
      * @tracked
      */
-    @tracked salesOrder;
+    @tracked fuelReport;
 
     /**
      * Returns the array of tabs available for the panel.
@@ -72,8 +73,8 @@ export default class SalesOrderPanelComponent extends Component {
      * @type {Array}
      */
     get tabs() {
-        const registeredTabs = this.universe.getMenuItemsFromRegistry('component:salesOrder-panel');
-        const defaultTabs = [this.universe._createMenuItem('Details', null, { icon: 'circle-info', component: SalesOrderPanelDetailComponent })];
+        const registeredTabs = this.universe.getMenuItemsFromRegistry('component:sales-order-panel');
+        const defaultTabs = [this.universe._createMenuItem('Details', null, { icon: 'circle-info', component: SalesOrderPanelDetailsComponent })];
 
         if (isArray(registeredTabs)) {
             return [...defaultTabs, ...registeredTabs];
@@ -83,11 +84,11 @@ export default class SalesOrderPanelComponent extends Component {
     }
 
     /**
-     * Initializes the salesOrder panel component.
+     * Initializes the fuel-report panel component.
      */
     constructor() {
         super(...arguments);
-        this.salesOrder = this.args.salesOrder;
+        this.fuelReport = this.args.fuelReport;
         this.tab = this.getTabUsingSlug(this.args.tab);
         applyContextComponentArguments(this);
     }
@@ -116,7 +117,7 @@ export default class SalesOrderPanelComponent extends Component {
     }
 
     /**
-     * Handles edit action for the salesOrder.
+     * Handles edit action for the fuel-report.
      *
      * @method
      * @action
@@ -125,7 +126,7 @@ export default class SalesOrderPanelComponent extends Component {
         const isActionOverrided = contextComponentCallback(this, 'onEdit', this.salesOrder);
 
         if (!isActionOverrided) {
-            this.contextPanel.focus(this.salesOrder, 'editing', {
+            this.contextPanel.focus(this.fuelReport, 'editing', {
                 onAfterSave: () => {
                     this.contextPanel.clear();
                 },

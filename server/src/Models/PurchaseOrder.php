@@ -25,12 +25,29 @@ class PurchaseOrder extends Model
     protected $singularName = 'purchase-order';
 
     /**
+     * Overwrite both entity resource name with `payloadKey`
+     *
+     * @var string
+     */
+    protected $payloadKey = 'purchase_order';
+
+    /**
+     * The type of public Id to generate
+     *
+     * @var string
+     */
+    public $publicIdType = 'purchase_order';
+
+    /**
      * These attributes that can be queried
      *
      * @var array
      */
     protected $searchableColumns = [
-        'uuid', 'supplier_uuid', 'order_date', 'expected_delivery', 'status', 'created_at'
+        'uuid', 'public_id', 'company_uuid', 'created_by_uuid', 'supplier_uuid', 'transaction_uuid',
+        'assigned_to_uuid', 'point_of_contact_uuid', 'reference_code', 'reference_url', 'description',
+        'comments', 'currency', 'status', 'meta', 'order_created_at', 'expected_delivery_at', 'created_at',
+        'updated_at', 'deleted_at'
     ];
 
     /**
@@ -40,12 +57,25 @@ class PurchaseOrder extends Model
      */
     protected $fillable = [
         'uuid',
+        'public_id',
+        'company_uuid',
+        'created_by_uuid',
         'supplier_uuid',
-        'order_date_at',
-        'expected_delivery_at',
+        'transaction_uuid',
+        'assigned_to_uuid',
+        'point_of_contact_uuid',
+        'reference_code',
+        'reference_url',
+        'description',
+        'comments',
+        'currency',
         'status',
+        'meta',
+        'order_created_at',
+        'expected_delivery_at',
         'created_at',
         'updated_at',
+        'deleted_at',
     ];
 
     /**
@@ -53,7 +83,11 @@ class PurchaseOrder extends Model
      *
      * @var array
      */
-    protected $casts = [];
+    protected $casts = [
+        'meta' => 'array',
+        'order_created_at' => 'datetime',
+        'expected_delivery_at' => 'datetime',
+    ];
 
     /**
      * Dynamic attributes that are appended to object
@@ -67,5 +101,5 @@ class PurchaseOrder extends Model
      *
      * @var array
      */
-    protected $hidden = [];
+    protected $hidden = ['deleted_at'];
 }

@@ -3,7 +3,8 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { isBlank } from '@ember/utils';
-import { task, timeout } from 'ember-concurrency';
+import { timeout } from 'ember-concurrency';
+import { task } from 'ember-concurrency-decorators';
 
 export default class PurchaseOrdersIndexController extends Controller {
     /**
@@ -21,25 +22,18 @@ export default class PurchaseOrdersIndexController extends Controller {
     @service modalsManager;
 
     /**
+     * Inject the `crud` service
+     *
+     * @var {Service}
+     */
+    @service crud;
+
+    /**
      * Inject the `store` service
      *
      * @var {Service}
      */
     @service store;
-
-    /**
-     * Inject the `fetch` service
-     *
-     * @var {Service}
-     */
-    @service fetch;
-
-    /**
-     * Inject the `filters` service
-     *
-     * @var {Service}
-     */
-    @service filters;
 
     /**
      * Inject the `hostRouter` service
@@ -49,18 +43,32 @@ export default class PurchaseOrdersIndexController extends Controller {
     @service hostRouter;
 
     /**
-     * Inject the `crud` service
+     * Inject the `contextPanel` service
      *
      * @var {Service}
      */
-    @service crud;
+    @service contextPanel;
+
+    /**
+     * Inject the `filters` service
+     *
+     * @var {Service}
+     */
+    @service filters;
+
+    /**
+     * Inject the `loader` service
+     *
+     * @var {Service}
+     */
+    @service loader;
 
     /**
      * Queryable parameters for this controller's model
      *
      * @var {Array}
      */
-    queryParams = ['page', 'limit', 'sort', 'query', 'status', 'sku', 'created_at', 'updated_at'];
+    queryParams = ['page', 'limit', 'sort', 'query', 'public_id', 'created_by', 'updated_by', 'status', 'delivered_at'];
 
     /**
      * The current page of data being viewed
@@ -84,16 +92,16 @@ export default class PurchaseOrdersIndexController extends Controller {
     @tracked sort = '-created_at';
 
     /**
-     * The filterable param `sku`
+     * The filterable param `public_id`
      *
      * @var {String}
      */
-    @tracked sku;
+    @tracked public_id;
 
     /**
      * The filterable param `status`
      *
-     * @var {String}
+     * @var {Array}
      */
     @tracked status;
 
@@ -104,40 +112,33 @@ export default class PurchaseOrdersIndexController extends Controller {
      */
     @tracked columns = [
         {
-            label: 'Name',
-            valuePath: 'name',
-            width: '200px',
-            cellComponent: 'table/cell/anchor',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterComponent: 'filter/string',
-        },
-        {
             label: 'ID',
             valuePath: 'public_id',
-            width: '120px',
-            cellComponent: 'click-to-copy',
+            width: '130px',
+            cellComponent: 'table/cell/anchor',
+            action: this.viewPurchaseOrder,
             resizable: true,
             sortable: true,
             filterable: true,
+            hidden: false,
             filterComponent: 'filter/string',
         },
         {
-            label: 'SKU',
-            valuePath: 'sku',
-            cellComponent: 'click-to-copy',
-            width: '120px',
+            label: 'Status',
+            valuePath: 'status',
+            cellComponent: 'table/cell/status',
+            width: '100px',
             resizable: true,
             sortable: true,
             filterable: true,
-            filterComponent: 'filter/string',
+            filterComponent: 'filter/multi-option',
+            filterOptions: this.statusOption,
         },
         {
             label: 'Created At',
             valuePath: 'createdAt',
-            sortParam: 'created_at',
-            width: '10%',
+            sortParam: 'createdAt',
+            width: '120px',
             resizable: true,
             sortable: true,
             filterable: true,
@@ -147,7 +148,7 @@ export default class PurchaseOrdersIndexController extends Controller {
             label: 'Updated At',
             valuePath: 'updatedAt',
             sortParam: 'updated_at',
-            width: '10%',
+            width: '120px',
             resizable: true,
             sortable: true,
             hidden: true,
@@ -160,18 +161,25 @@ export default class PurchaseOrdersIndexController extends Controller {
             ddButtonText: false,
             ddButtonIcon: 'ellipsis-h',
             ddButtonIconPrefix: 'fas',
-            ddMenuLabel: 'SalesOrder Actions',
+            ddMenuLabel: 'Fuel Report Actions',
             cellClassNames: 'overflow-visible',
             wrapperClass: 'flex items-center justify-end mx-2',
             width: '10%',
             actions: [
                 {
-                    label: 'View SalesOrder',
-                    fn: this.viewSalesOrder,
+                    label: 'View Details',
+                    fn: this.viewPurchaseOrder,
                 },
                 {
-                    label: 'Edit SalesOrder',
-                    fn: this.editSalesOrder,
+                    label: 'Edit Fuel Report',
+                    fn: this.editPurchaseOrder,
+                },
+                {
+                    separator: true,
+                },
+                {
+                    label: 'Delete Fuel Report',
+                    fn: this.deletePurchaseOrder,
                 },
             ],
             sortable: false,
@@ -206,78 +214,72 @@ export default class PurchaseOrdersIndexController extends Controller {
     }
 
     /**
-     * Toggles dialog to export `salesOrder`
+     * Toggles dialog to export a fuel report
      *
      * @void
      */
-    @action exportProcuts() {
-        this.crud.export('salesOrder');
+    @action exportFuelReports() {
+        this.crud.export('purchase-order');
     }
 
     /**
-     * View a `salesOrder` details in overlay
+     * View the selected fuel report
      *
-     * @param {SalesOrderModel} salesOrder
+     * @param {PurchaseOrderModel} fuelReport
      * @param {Object} options
      * @void
      */
-    @action viewSalesOrder(salesOrder, options) {
-        // do code
-        console.log('viewSalesOrder()', salesOrder, options);
+    @action viewPurchaseOrder(purchaseOrder) {
+        this.transitionToRoute('purchase-orders.index.details', purchaseOrder);
     }
 
     /**
-     * Create a new `salesOrder` in modal
+     * Create a new fuel report
      *
-     * @param {Object} options
      * @void
      */
-    @action createSalesOrder(options = {}) {
-        const salesOrder = this.store.createRecord('pallet-salesOrder');
-
-        return this.editSalesOrder(salesOrder, options);
+    @action createPurchaseOrder() {
+        this.transitionToRoute('purchase-orders.index.new');
     }
 
     /**
-     * Edit a `salesOrder` details
+     * Edit a fuel report
      *
-     * @param {SalesOrderModel} salesOrder
-     * @param {Object} options
+     * @param {PurchaseOrderModel} purchaseOrder
      * @void
      */
-    @action async editSalesOrder(salesOrder, options = {}) {
-        // do code
-        console.log('editSalesOrder()', salesOrder, options);
+    @action editPurchaseOrder(purchaseOrder) {
+        this.transitionToRoute('purchase-orders.index.edit',purchaseOrder);
     }
 
     /**
-     * Delete a `salesOrder` via confirm prompt
+     * Prompt to delete a fuel report
      *
-     * @param {SalesOrderModel} salesOrder
+     * @param {PurchaseOrderModel} purchaseOrder
      * @param {Object} options
      * @void
      */
-    @action deleteSalesOrder(salesOrder, options = {}) {
-        this.crud.delete(salesOrder, {
+    @action deletePurchaseOrder(purchaseOrder, options = {}) {
+        this.crud.delete(purchaseOrder, {
             onConfirm: () => {
-                return this.hostRouter.refresh();
+                this.hostRouter.refresh();
             },
             ...options,
         });
     }
 
     /**
-     * Bulk deletes selected `salesOrder` via confirm prompt
+     * Bulk deletes selected fuel report's via confirm prompt
      *
      * @param {Array} selected an array of selected models
      * @void
      */
-    @action bulkDeleteSalesOrders() {
+    @action bulkDeletePurchaseOrder() {
         const selected = this.table.selectedRows;
 
         this.crud.bulkDelete(selected, {
-            modelNamePath: `name`,
-            acceptButtonText: 'Delete SalesOrders',
+            modelNamePath: 'public_id',
+            acceptButtonText: 'Delete Sales Order',
             onSuccess: () => {
                 return this.hostRouter.refresh();
             },

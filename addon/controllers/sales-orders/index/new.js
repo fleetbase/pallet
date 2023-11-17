@@ -12,6 +12,13 @@ export default class SalesOrdersIndexNewController extends Controller {
     @service store;
 
     /**
+     * Inject the `currentUser` service
+     *
+     * @memberof SalesOrdersIndexNewController
+     */
+    @service currentUser;
+
+    /**
      * Inject the `hostRouter` service
      *
      * @memberof SalesOrdersIndexNewController
@@ -33,11 +40,11 @@ export default class SalesOrdersIndexNewController extends Controller {
     @tracked overlay;
 
     /**
-     * The salesOrder being created.
+     * The fuel report being created.
      *
-     * @var {EntityModel}
+     * @var {FuelReportModel}
      */
-    @tracked salesOrder = this.store.createRecord('pallet-salesOrder', { type: 'pallet-salesOrder' });
+    @tracked salesOrder = this.store.createRecord('sales-order');
 
     /**
      * Set the overlay component context object.
@@ -56,13 +63,13 @@ export default class SalesOrdersIndexNewController extends Controller {
      * @memberof SalesOrdersIndexNewController
      */
     @action transitionBack() {
-        return this.transitionToRoute('salesOrders.index');
+        return this.transitionToRoute('sales-orders.index');
     }
 
     /**
-     * Trigger a route refresh and focus the new salesOrder created.
+     * Trigger a route refresh and focus the new fuel report created.
      *
-     * @param {salesOrderModel} salesOrder
+     * @param {SalesOrderModel} salesOrder
      * @return {Promise}
      * @memberof SalesOrdersIndexNewController
      */
@@ -72,13 +79,13 @@ export default class SalesOrdersIndexNewController extends Controller {
         }
 
         this.hostRouter.refresh();
-        return this.transitionToRoute('salesOrders.index.details', salesOrder).then(() => {
+        return this.transitionToRoute('sales-orders.index.details', salesOrder).then(() => {
             this.resetForm();
         });
     }
 
     /**
-     * Resets the form with a new salesOrder record
+     * Resets the form with a new fuel report record
      *
      * @memberof SalesOrdersIndexNewController
      */

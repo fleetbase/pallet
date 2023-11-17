@@ -1,0 +1,70 @@
+<div class="p-4">
+    <ContentPanel @title="Details" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-900">
+        <div class="grid grid-cols-2 gap-2 text-xs md:mb-6 dark:text-gray-100">
+            <div class="field-info-container">
+                <div class="field-name">ID</div>
+                <div class="field-value">{{n-a @purchaseOrder.public_id}}</div>
+            </div>
+            <div class="field-info-container col-span-2">
+                <div class="field-name">Company</div>
+                <div class="field-value">{{n-a @purchaseOrder.company.name}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">Created By</div>
+                <div class="field-value">{{n-a @purchaseOrder.createdBy.name}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">Supplier</div>
+                <div class="field-value">{{n-a @purchaseOrder.supplier.name}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">Transaction</div>
+                <div class="field-value">{{n-a @purchaseOrder.transaction.name}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">Assigned To</div>
+                <div class="field-value">{{n-a @purchaseOrder.assignedTo.name}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">Point of Contact</div>
+                <div class="field-value">{{n-a @purchaseOrder.pointOfContact.name}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">Reference Code</div>
+                <div class="field-value">{{n-a @purchaseOrder.reference_code}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">Reference URL</div>
+                <div class="field-value">{{n-a @purchaseOrder.reference_url}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">Description</div>
+                <div class="field-value">{{n-a @purchaseOrder.description}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">Comments</div>
+                <div class="field-value">{{n-a @purchaseOrder.comments}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">Currency</div>
+                <div class="field-value">{{n-a @purchaseOrder.currency}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">Status</div>
+                <div class="field-value">{{n-a @purchaseOrder.status}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">Meta</div>
+                <div class="field-value">{{n-a @purchaseOrder.meta}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">Order Created At</div>
+                <div class="field-value">{{n-a @purchaseOrder.orderCreatedAt}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">Expected Delivery At</div>
+                <div class="field-value">{{n-a @purchaseOrder.expectedDeliveryAt}}</div>
+            </div>
+        </div>
+    </ContentPanel>
+</div>

@@ -29,20 +29,19 @@ export default class SalesOrdersIndexEditController extends Controller {
      * When exiting the overlay.
      *
      * @return {Transition}
-     * @memberof salesOrdersIndexEditController
+     * @memberof SalesOrdersIndexEditController
      */
     @action transitionBack(salesOrder) {
-        // check if salesOrder record has been edited and prompt for confirmation
         if (salesOrder.hasDirtyAttributes) {
             return this.confirmContinueWithUnsavedChanges(salesOrder, {
                 confirm: () => {
                     salesOrder.rollbackAttributes();
-                    return this.transitionToRoute('salesOrders.index');
+                    return this.transitionToRoute('sales-orders.index');
                 },
             });
         }
 
-        return this.transitionToRoute('salesOrders.index');
+        return this.transitionToRoute('sales-orders.index');
     }
 
     /**
@@ -56,23 +55,23 @@ export default class SalesOrdersIndexEditController extends Controller {
     }
 
     /**
-     * When salesOrder details button is clicked in overlay.
+     * When fuel-report details button is clicked in overlay.
      *
      * @param {SalesOrderModel} salesOrder
      * @return {Promise}
      * @memberof SalesOrdersIndexEditController
      */
     @action onViewDetails(salesOrder) {
-        // check if salesOrder record has been edited and prompt for confirmation
+        // check if fuel-report record has been edited and prompt for confirmation
         if (salesOrder.hasDirtyAttributes) {
             return this.confirmContinueWithUnsavedChanges(salesOrder);
         }
 
-        return this.transitionToRoute('salesOrders.index.details', salesOrder);
+        return this.transitionToRoute('sales-orders.index.details', salesOrder);
     }
 
     /**
-     * Trigger a route refresh and focus the new salesOrder created.
+     * Trigger a route refresh and focus the new fuel-report created.
      *
      * @param {SalesOrderModel} salesOrder
      * @return {Promise}
@@ -84,14 +83,14 @@ export default class SalesOrdersIndexEditController extends Controller {
         }
 
         this.hostRouter.refresh();
-        return this.transitionToRoute('salesOrders.index.details', salesOrder);
+        return this.transitionToRoute('sales-orders.details', salesOrder);
     }
 
     /**
      * Prompts the user to confirm if they wish to continue with unsaved changes.
      *
      * @method
-     * @param {SalesOrderModel} salesOrder - The salesOrder object with unsaved changes.
+     * @param {FuelReportModel} salesOrdert - The fuel-report object with unsaved changes.
      * @param {Object} [options={}] - Additional options for configuring the modal.
      * @returns {Promise} A promise that resolves when the user confirms, and transitions to a new route.
      * @memberof SalesOrdersIndexEditController
@@ -99,11 +98,11 @@ export default class SalesOrdersIndexEditController extends Controller {
     confirmContinueWithUnsavedChanges(salesOrder, options = {}) {
         return this.modalsManager.confirm({
             title: 'Continue Without Saving?',
-            body: 'Unsaved changes to this salesOrder will be lost. Click continue to proceed.',
+            body: 'Unsaved changes to this sales-order will be lost. Click continue to proceed.',
             acceptButtonText: 'Continue without saving',
             confirm: () => {
                 salesOrder.rollbackAttributes();
-                return this.transitionToRoute('salesOrders.index.details', salesOrder);
+                return this.transitionToRoute('sales-orders.index.details', salesOrder);
             },
             ...options,
         });

@@ -16,13 +16,19 @@ class CreateInventoryTable extends Migration
         Schema::create('pallet_inventories', function (Blueprint $table) {
             $table->increments('id');
             $table->uuid('uuid')->nullable()->unique();
+            $table->string('public_id')->nullable()->unique();
+            $table->foreignUuid('company_uuid')->nullable()->index()->references('uuid')->on('companies');
+            $table->foreignUuid('created_by_uuid')->nullable()->index()->references('uuid')->on('users');
             $table->foreignUuid('product_uuid')->nullable()->index()->references('uuid')->on('entities');
             $table->foreignUuid('warehouse_uuid')->nullable()->index()->references('uuid')->on('places');
+            $table->foreignUuid('supplier_uuid')->nullable()->index()->references('uuid')->on('vendors');
+            $table->foreignUuid('batch_uuid')->nullable()->index()->references('uuid')->on('pallet_batches');
+            $table->mediumText('comments')->nullable();
             $table->integer('quantity')->nullable();
             $table->integer('min_quantity')->nullable();
+            $table->json('meta')->nullable();
             $table->timestamp('created_at')->nullable()->index();
             $table->timestamp('updated_at')->nullable();
-            $table->softDeletes();
         });
     }
 

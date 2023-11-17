@@ -3,7 +3,8 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { isBlank } from '@ember/utils';
-import { task, timeout } from 'ember-concurrency';
+import { timeout } from 'ember-concurrency';
+import { task } from 'ember-concurrency-decorators';
 
 export default class SalesOrdersIndexController extends Controller {
     /**
@@ -21,25 +22,18 @@ export default class SalesOrdersIndexController extends Controller {
     @service modalsManager;
 
     /**
+     * Inject the `crud` service
+     *
+     * @var {Service}
+     */
+    @service crud;
+
+    /**
      * Inject the `store` service
      *
      * @var {Service}
      */
     @service store;
-
-    /**
-     * Inject the `fetch` service
-     *
-     * @var {Service}
-     */
-    @service fetch;
-
-    /**
-     * Inject the `filters` service
-     *
-     * @var {Service}
-     */
-    @service filters;
 
     /**
      * Inject the `hostRouter` service
@@ -49,18 +43,32 @@ export default class SalesOrdersIndexController extends Controller {
     @service hostRouter;
 
     /**
-     * Inject the `crud` service
+     * Inject the `contextPanel` service
      *
      * @var {Service}
      */
-    @service crud;
+    @service contextPanel;
+
+    /**
+     * Inject the `filters` service
+     *
+     * @var {Service}
+     */
+    @service filters;
+
+    /**
+     * Inject the `loader` service
+     *
+     * @var {Service}
+     */
+    @service loader;
 
     /**
      * Queryable parameters for this controller's model
      *
      * @var {Array}
      */
-    queryParams = ['page', 'limit', 'sort', 'query', 'status', 'sku', 'created_at', 'updated_at'];
+    queryParams = ['page', 'limit', 'sort', 'query', 'public_id', 'created_by', 'updated_by', 'status', 'delivered_at'];
 
     /**
      * The current page of data being viewed
@@ -84,16 +92,16 @@ export default class SalesOrdersIndexController extends Controller {
     @tracked sort = '-created_at';
 
     /**
-     * The filterable param `sku`
+     * The filterable param `public_id`
      *
      * @var {String}
      */
-    @tracked sku;
+    @tracked public_id;
 
     /**
      * The filterable param `status`
      *
-     * @var {String}
+     * @var {Array}
      */
     @tracked status;
 
@@ -104,30 +112,33 @@ export default class SalesOrdersIndexController extends Controller {
      */
     @tracked columns = [
         {
-            label: 'Name',
-            valuePath: 'name',
-            width: '200px',
+            label: 'ID',
+            valuePath: 'public_id',
+            width: '130px',
             cellComponent: 'table/cell/anchor',
+            action: this.viewSalesOrder,
             resizable: true,
             sortable: true,
             filterable: true,
+            hidden: false,
             filterComponent: 'filter/string',
         },
         {
-            label: 'ID',
-            valuePath: 'public_id',
-            width: '120px',
-            cellComponent: 'click-to-copy',
+            label: 'Status',
+            valuePath: 'status',
+            cellComponent: 'table/cell/status',
+            width: '100px',
             resizable: true,
             sortable: true,
             filterable: true,
-            filterComponent: 'filter/string',
+            filterComponent: 'filter/multi-option',
+            filterOptions: this.statusOption,
         },
         {
             label: 'Created At',
             valuePath: 'createdAt',
-            sortParam: 'created_at',
-            width: '10%',
+            sortParam: 'createdAt',
+            width: '120px',
             resizable: true,
             sortable: true,
             filterable: true,
@@ -137,7 +148,7 @@ export default class SalesOrdersIndexController extends Controller {
             label: 'Updated At',
             valuePath: 'updatedAt',
             sortParam: 'updated_at',
-            width: '10%',
+            width: '120px',
             resizable: true,
             sortable: true,
             hidden: true,
@@ -150,18 +161,25 @@ export default class SalesOrdersIndexController extends Controller {
             ddButtonText: false,
             ddButtonIcon: 'ellipsis-h',
             ddButtonIconPrefix: 'fas',
-            ddMenuLabel: 'SalesOrder Actions',
+            ddMenuLabel: 'Fuel Report Actions',
             cellClassNames: 'overflow-visible',
             wrapperClass: 'flex items-center justify-end mx-2',
             width: '10%',
             actions: [
                 {
-                    label: 'View SalesOrder',
+                    label: 'View Details',
                     fn: this.viewSalesOrder,
                 },
                 {
-                    label: 'Edit SalesOrder',
+                    label: 'Edit Fuel Report',
                     fn: this.editSalesOrder,
+                },
+                {
+                    separator: true,
+                },
+                {
+                    label: 'Delete Fuel Report',
+                    fn: this.deleteSalesOrder,
                 },
             ],
             sortable: false,
@@ -196,48 +214,46 @@ export default class SalesOrdersIndexController extends Controller {
     }
 
     /**
-     * Toggles dialog to export `salesOrder`
+     * Toggles dialog to export a fuel report
      *
      * @void
      */
-    @action exportProcuts() {
-        this.crud.export('salesOrder');
+    @action exportFuelReports() {
+        this.crud.export('sales-order');
     }
 
     /**
-     * View a `salesOrder` details in overlay
+     * View the selected fuel report
      *
-     * @param {SalesOrderModel} salesOrder
+     * @param {SalesOrderModel} fuelReport
      * @param {Object} options
      * @void
      */
     @action viewSalesOrder(salesOrder) {
-        return this.transitionToRoute('salesOrders.index.details',salesOrder);
+        this.transitionToRoute('sales-orders.index.details', salesOrder);
     }
 
     /**
-     * Create a new `salesOrder` in modal
+     * Create a new fuel report
      *
-     * @param {Object} options
      * @void
      */
     @action createSalesOrder() {
-        return this.transitionToRoute('salesOrders.index.new');
+        this.transitionToRoute('sales-orders.index.new');
     }
 
     /**
-     * Edit a `salesOrder` details
+     * Edit a fuel report
      *
      * @param {SalesOrderModel} salesOrder
-     * @param {Object} options
      * @void
      */
-    @action async editSalesOrder(salesOrder) {
-        return this.transitionToRoute('salesOrders.index.edit',salesOrder);
+    @action editSalesOrder(salesOrder) {
+        this.transitionToRoute('sales-orders.index.edit',salesOrder);
     }
 
     /**
-     * Delete a `salesOrder` via confirm prompt
+     * Prompt to delete a fuel report
      *
      * @param {SalesOrderModel} salesOrder
      * @param {Object} options
@@ -246,14 +262,14 @@ export default class SalesOrdersIndexController extends Controller {
     @action deleteSalesOrder(salesOrder, options = {}) {
         this.crud.delete(salesOrder, {
             onConfirm: () => {
-                return this.hostRouter.refresh();
+                this.hostRouter.refresh();
             },
             ...options,
         });
     }
 
     /**
-     * Bulk deletes selected `salesOrder` via confirm prompt
+     * Bulk deletes selected fuel report's via confirm prompt
      *
      * @param {Array} selected an array of selected models
      * @void
@@ -262,8 +278,11 @@ export default class SalesOrdersIndexController extends Controller {
         const selected = this.table.selectedRows;
 
         this.crud.bulkDelete(selected, {
-            modelNamePath: `name`,
-            acceptButtonText: 'Delete sales Orders',
+            modelNamePath: 'public_id',
+            acceptButtonText: 'Delete Sales Order\'s',
+            fetchOptions: {
+                namespace: 'pallet/int/v1'
+            },
             onSuccess: () => {
                 return this.hostRouter.refresh();
             },

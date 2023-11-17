@@ -16,10 +16,23 @@ class CreateSalesOrdersTable extends Migration
         Schema::create('pallet_sales_orders', function (Blueprint $table) {
             $table->increments('id');
             $table->uuid('uuid')->nullable()->unique();
+            $table->string('public_id')->nullable()->unique();
+            $table->foreignUuid('company_uuid')->nullable()->index()->references('uuid')->on('companies');
+            $table->foreignUuid('created_by_uuid')->nullable()->index()->references('uuid')->on('users');
+            $table->foreignUuid('transaction_uuid')->nullable()->index()->references('uuid')->on('transactions');
+            $table->foreignUuid('assigned_to_uuid')->nullable()->index()->references('uuid')->on('users');
+            $table->foreignUuid('point_of_contact_uuid')->nullable()->index()->references('uuid')->on('contacts');
             $table->foreignUuid('customer_uuid')->nullable()->index()->references('uuid')->on('contacts');
+            $table->string('customer_type')->nullable();
+            $table->json('meta')->nullable();
             $table->string('status')->nullable();
-            $table->date('order_created_at')->nullable();
-            $table->date('delivered_at')->nullable();
+            $table->string('customer_reference_code')->nullable();
+            $table->string('reference_code')->nullable();
+            $table->string('reference_url')->nullable();
+            $table->mediumText('description')->nullable();
+            $table->mediumText('comments')->nullable();
+            $table->timestamp('order_date_at')->nullable();
+            $table->timestamp('expected_delivery_at')->nullable();
             $table->timestamp('created_at')->nullable()->index();
             $table->timestamp('updated_at')->nullable();
             $table->softDeletes();

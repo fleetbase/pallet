@@ -3,12 +3,21 @@
 namespace Fleetbase\Pallet\Models;
 
 use Fleetbase\Traits\HasUuid;
+use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasApiModelBehavior;
+use Fleetbase\Traits\HasMetaAttributes;
+use Fleetbase\Traits\Searchable;
+use Fleetbase\Traits\SendsWebhooks;
 use Fleetbase\Models\Model;
 
 class SalesOrder extends Model
 {
-    use HasUuid, HasApiModelBehavior;
+    use HasUuid;
+    use HasApiModelBehavior;
+    use HasPublicId;
+    use SendsWebhooks;
+    use HasMetaAttributes;
+    use Searchable;
 
     /**
      * The database table used by the model.
@@ -43,7 +52,7 @@ class SalesOrder extends Model
      *
      * @var array
      */
-    protected $searchableColumns = ['uuid', 'customer_uuid', 'order_date', 'delivery_date', 'status', 'created_at'];
+    protected $searchableColumns = ['customer_reference_code', 'reference_code'];
 
     /**
      * The attributes that are mass assignable.
@@ -52,12 +61,26 @@ class SalesOrder extends Model
      */
     protected $fillable = [
         'uuid',
+        'public_id',
+        'company_uuid',
+        'created_by_uuid',
+        'transaction_uuid',
+        'assigned_to_uuid',
+        'point_of_contact_uuid',
         'customer_uuid',
-        'order_date',
-        'delivery_date',
+        'customer_type',
+        'meta',
         'status',
+        'customer_reference_code',
+        'reference_code',
+        'reference_url',
+        'description',
+        'comments',
+        'order_date_at',
+        'expected_delivery_at',
         'created_at',
         'updated_at',
+        'deleted_at',
     ];
 
     /**
@@ -65,7 +88,11 @@ class SalesOrder extends Model
      *
      * @var array
      */
-    protected $casts = [];
+    protected $casts = [
+        'meta' => 'array',
+        'order_date_at' => 'datetime',
+        'expected_delivery_at' => 'datetime',
+    ];
 
     /**
      * Dynamic attributes that are appended to object
@@ -79,5 +106,5 @@ class SalesOrder extends Model
      *
      * @var array
      */
-    protected $hidden = [];
+    protected $hidden = ['deleted_at'];
 }

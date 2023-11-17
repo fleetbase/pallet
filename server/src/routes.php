@@ -36,6 +36,9 @@ Route::prefix(config('pallet.api.routing.prefix', 'pallet'))->namespace('Fleetba
                         $router->fleetbaseRoutes('sales-orders', function($router, $controller){
                             $router->delete('bulk-delete', $controller('bulkDelete'));
                         });
+                        $router->fleetbaseRoutes('purchase-orders', function($router, $controller){
+                            $router->delete('bulk-delete', $controller('bulkDelete'));
+                        });
                         $router->fleetbaseRoutes('stock-adjustments');
                         $router->fleetbaseRoutes('suppliers', function($router, $controller){
                             $router->delete('bulk-delete', $controller('bulkDelete'));

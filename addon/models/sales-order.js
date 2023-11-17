@@ -7,55 +7,59 @@ export default class SalesOrderModel extends Model {
     @attr('string') uuid;
 
     /** @attributes */
-    @attr('string') customer_uuid;
+    @attr('string') customerUuid;
     @attr('string') status;
 
     /** @dates */
-    @attr('date') order_created_at;
-    @attr('date') delivered_at;
-    @attr('date') created_at;
-    @attr('date') updated_at;
-    @attr('date') deleted_at;
+    @attr('date') orderCreatedAt;
+    @attr('date') deliveredAt;
+    @attr('date') createdAt;
+    @attr('date') updatedAt;
+    @attr('date') deletedAt;
 
-    @computed('created_at') get createdAgo() {
-        if (!isValidDate(this.created_at)) {
-            return null;
-        }
-        return formatDistanceToNow(this.created_at);
+    @computed('createdAt') get createdAgo() {
+        return this.formatDateDistanceToNow(this.createdAt);
     }
 
-    @computed('created_at') get createdAt() {
-        if (!isValidDate(this.created_at)) {
-            return null;
-        }
-        return formatDate(this.created_at, 'PPP p');
+    @computed('createdAt') get createdAtFormatted() {
+        return this.formatDate(this.createdAt, 'PPP p');
     }
 
-    @computed('created_at') get createdAtShort() {
-        if (!isValidDate(this.created_at)) {
-            return null;
-        }
-        return formatDate(this.created_at, 'PP');
+    @computed('createdAt') get createdAtShort() {
+        return this.formatDate(this.createdAt, 'PP');
     }
 
-    @computed('order_created_at') get orderCreatedAgo() {
-        if (!isValidDate(this.order_created_at)) {
-            return null;
-        }
-        return formatDistanceToNow(this.order_created_at);
+    @computed('orderCreatedAt') get orderCreatedAgo() {
+        return this.formatDateDistanceToNow(this.orderCreatedAt);
     }
 
-    @computed('order_created_at') get orderCreatedAt() {
-        if (!isValidDate(this.order_created_at)) {
-            return null;
-        }
-        return formatDate(this.order_created_at, 'PPP p');
+    @computed('orderCreatedAt') get orderCreatedAtFormatted() {
+        return this.formatDate(this.orderCreatedAt, 'PPP p');
     }
 
-    @computed('order_created_at') get orderCreatedAtShort() {
-        if (!isValidDate(this.order_created_at)) {
+    @computed('orderCreatedAt') get orderCreatedAtShort() {
+        return this.formatDate(this.orderCreatedAt, 'PP');
+    }
+
+    @computed('deliveredAt') get deliveredAtShort() {
+        return this.formatDateDistanceToNow(this.deliveredAt);
+    }
+
+    @computed('deliveredAt') get deliveredAtFormatted() {
+        return this.formatDate(this.deliveredAt, 'PPP p');
+    }
+
+    formatDate(date, formatString) {
+        if (!isValidDate(date)) {
             return null;
         }
-        return formatDate(this.order_created_at, 'PP');
+        return formatDate(date, formatString);
+    }
+
+    formatDateDistanceToNow(date) {
+        if (!isValidDate(date)) {
+            return null;
+        }
+        return formatDistanceToNow(date);
     }
 }

@@ -3,39 +3,68 @@
     @position="right"
     @noBackdrop={{true}}
     @fullHeight={{true}}
-    @isResizeble={{or this.isResizable @isResizable}}
+    @isResizeable={{or this.isResizable @isResizable}}
     @width={{or this.width @width "600px"}}
 >
-    <Overlay::Header @hideLeftSection={{true}} @actionsWrapperClass="flex-1 flex-col py-3" class="h-auto-i min-h-[127px]">
-        <div class="flex flex-row items-center justify-between w-full mb-4">
-            <div class="flex flex-1 space-x-2">
-                {{#if this.salesOrder.id}}
-                    <Button @type="default" @icon="box" @helpText="View sales order details" @onClick={{this.onViewDetails}} />
-                {{/if}}
-            </div>
-            <div class="flex flex-1 justify-end">
-                <div class="mr-2">
-                    <Button @icon={{if this.salesOrder.id "save" "check"}} @type="primary" @text={{if this.salesOrder.id "Save Sales Order" "Create Sales Order"}} @onClick={{this.save}} />
-                </div>
-                <Button @type="default" @icon="times" @helpText={{if this.salesOrder.id "Cancel edit Sales Order" "Cancel new Sales Order"}} @onClick={{this.onPressCancel}} />
-            </div>
-        </div>
-        <div class="flex flex-row justify-between w-full">
-            <div class="flex justify-end w-1/4">
-                <Badge @status={{this.salesOrder.status}} @type="info" @hideStatusDot={{true}} />
-            </div>
+    <Overlay::Header
+        @title={{if this.salesOrder.public_id this.salesOrder.name "New Sales Order"}}
+        @status={{this.salesOrder.public_id}}
+        @hideStatusDot={{true}}
+        @createdAt={{this.salesOrder.createdAt}}
+        @titleWrapperClass="leading-5"
+    >
+        <div class="flex flex-1 justify-end">
+            <Button
+                @icon={{if this.salesOrder.id "save" "check"}}
+                @type="primary"
+                @text={{if this.salesOrder.id "Save Sales Order" "Create Sales Order"}}
+                @onClick={{this.save}}
+                @wrapperClass="mr-2"
+            />
+            {{#if this.salesOrder.id}}
+                <Button @type="default" @icon="file-invoice" @helpText="View sales order details" @onClick={{this.onViewDetails}} @wrapperClass="mr-2" />
+            {{/if}}
+            <Button @type="default" @icon="times" @helpText={{if this.salesOrder.id "Cancel edit sales order" "Cancel new sales order"}} @onClick={{this.onPressCancel}} />
         </div>
     </Overlay::Header>
 
-    <Overlay::Body @wrapperClass="new-service-rate-overlay-body px-4 pt-4" @increaseInnerBodyHeightBy={{700}}>
-        <div class="flex-1 space-y-4">
-            <ContentPanel @title="Details" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
-                <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-2">
-                    <InputGroup @name="Status" @helpText="Select the status of the fleet.">
-                        <Select @options={{this.statusOptions}} @value={{this.salesOrder.status}} @onSelect={{fn (mut this.salesOrder.status)}} @placeholder="Select status" class="w-full" />
-                    </InputGroup>
+    <Overlay::Body @wrapperClass="new-service-rate-overlay-body px-4 space-y-4 pt-4" @increaseInnerBodyHeightBy={{1000}}>
+        <div class="grid grid-cols-1 text-xs dark:text-gray-100">
+            <InputGroup @name="Customer Type">
+                <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                    <PowerSelect
+                        @options={{this.customerType}}
+                        @selected={{this.salesOrder.customerType}}
+                        @onChange={{fn (mut this.salesOrder.customerType)}}
+                        @placeholder="Select customer type"
+                        @triggerClass="form-select form-input"
+                        as |customerType|
+                    >
+                        {{smart-humanize customerType}}
+                    </PowerSelect>
                 </div>
-            </ContentPanel>
+            </InputGroup>
+            <InputGroup @name="Status">
+                <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                    <PowerSelect
+                        @options={{this.statusOptions}}
+                        @selected={{this.salesOrder.status}}
+                        @onChange={{fn (mut this.salesOrder.status)}}
+                        @placeholder="Select sales order status"
+                        @triggerClass="form-select form-input"
+                        as |status|
+                    >
+                        {{smart-humanize status}}
+                    </PowerSelect>
+                </div>
+            </InputGroup>
+            <InputGroup @name="Sales order description">
+                <Textarea @value={{this.salesOrder.description}} aria-label="Description" class="w-full form-input" placeholder="Description" rows={{5}} />
+            </InputGroup>
+            <InputGroup @name="Sales order comments">
+                <Textarea @value={{this.salesOrder.comments}} aria-label="Comments" class="w-full form-input" placeholder="Comments" rows={{5}} />
+            </InputGroup>
+            <InputGroup @name="Delivery date" @type="date" @value={{this.salesOrder.deliveredAt}} />
         </div>
     </Overlay::Body>
 </Overlay>

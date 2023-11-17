@@ -12,15 +12,15 @@
         <DropdownButton @icon="layer-group" @text="Bulk Action" @type="magic" @size="sm" @buttonWrapperClass="mr-2" @contentClass="dropdown-menu" as |dd|>
             <div class="next-dd-menu mt-2 mx-0">
                 <div class="px-1">
-                    <a href="#" class="text-red-500 next-dd-item" {{on "click" (dropdown-fn dd this.bulkDeletesalesOrders)}}>
-                        Delete salesOrders
+                    <a href="#" class="text-red-500 next-dd-item" {{on "click" (dropdown-fn dd this.bulkDeleteSalesOrders)}}>
+                        Delete Sales Orders
                     </a>
                 </div>
             </div>
         </DropdownButton>
     {{/if}}
-    <Button @icon="plus" @iconPrefix="fas" @type="primary" @text="New" class="mr-2" @onClick={{this.createsalesOrder}} />
-    <Button @icon="long-arrow-up" @iconClass="rotate-icon-45" @text="Export" @onClick={{this.exportsalesOrders}} />
+    <Button @icon="plus" @iconPrefix="fas" @type="primary" @text="New" class="mr-2" @onClick={{this.createSalesOrder}} />
+    <Button @icon="long-arrow-up" @iconClass="rotate-icon-45" @text="Export" @onClick={{this.exportSalesOrders}} />
 </Layout::Section::Header>
 
 <Layout::Section::Body>

@@ -54,18 +54,11 @@ export default class SalesOrderFormPanelComponent extends Component {
     @tracked isLoading = false;
 
     /**
-     * All possible salesOrder types.
-     *
-     * @var {String}
-     */
-    @tracked salesOrderTypeOptions = ['salesOrder', 'customer'];
-
-    /**
      * All possible salesOrder status options.
      *
      * @var {String}
      */
-    @tracked salesOrderStatusOptions = ['pending', 'active', 'do-not-sales-order', 'prospective', 'archived'];
+    @tracked statusOptions = ['pending', 'active', 'prospective', 'archived'];
 
     /**
      * Constructs the component and applies initial state.
@@ -96,7 +89,7 @@ export default class SalesOrderFormPanelComponent extends Component {
     @action save() {
         const { salesOrder } = this;
 
-        this.loader.showLoader('.next-content-overlay-panel-container', { loadingMessage: 'Saving salesOrder...', preserveTargetPosition: true });
+        this.loader.showLoader('.next-content-overlay-panel-container', { loadingMessage: 'Saving sales order...', preserveTargetPosition: true });
         this.isLoading = true;
 
         contextComponentCallback(this, 'onBeforeSave', salesOrder);
@@ -105,7 +98,7 @@ export default class SalesOrderFormPanelComponent extends Component {
             return salesOrder
                 .save()
                 .then((salesOrder) => {
-                    this.notifications.success(`salesOrder (${salesOrder.name}) saved successfully.`);
+                    this.notifications.success(`Sales order (${salesOrder.id}) saved successfully.`);
                     contextComponentCallback(this, 'onAfterSave', salesOrder);
                 })
                 .catch((error) => {
@@ -125,7 +118,7 @@ export default class SalesOrderFormPanelComponent extends Component {
      * Uploads a new photo for the driver.
      *
      * @param {File} file
-     * @memberof DriverFormPanelComponent
+     * @memberof SalesOrderFormPanelComponent
      */
 
     /**

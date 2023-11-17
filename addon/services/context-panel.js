@@ -57,6 +57,16 @@ export default class ContextPanelService extends Service {
                 componentArguments: [{ isResizable: true }, { width: '600px' }],
             },
         },
+        purchaseOrder: {
+            viewing: {
+                component: 'purchase-order-panel',
+                componentArguments: [{ isResizable: true }, { width: '600px' }],
+            },
+            editing: {
+                component: 'purchase-order-form-panel',
+                componentArguments: [{ isResizable: true }, { width: '600px' }],
+            },
+        }
     };
 
     /**

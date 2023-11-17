@@ -13,6 +13,6 @@ export default class PurchaseOrdersIndexRoute extends Route {
     };
 
     model(params) {
-        return this.store.query('pallet-product', params);
+        return this.store.query('purchase-order', params);
     }
 }
