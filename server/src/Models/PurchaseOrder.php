@@ -44,10 +44,7 @@ class PurchaseOrder extends Model
      * @var array
      */
     protected $searchableColumns = [
-        'uuid', 'public_id', 'company_uuid', 'created_by_uuid', 'supplier_uuid', 'transaction_uuid',
-        'assigned_to_uuid', 'point_of_contact_uuid', 'reference_code', 'reference_url', 'description',
-        'comments', 'currency', 'status', 'meta', 'order_created_at', 'expected_delivery_at', 'created_at',
-        'updated_at', 'deleted_at'
+        'customer_reference_code', 'reference_code'
     ];
 
     /**

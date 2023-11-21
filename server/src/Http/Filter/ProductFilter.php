@@ -1,10 +1,9 @@
 <?php
 
 namespace Fleetbase\Pallet\Http\Filter;
-namespace Fleetbase\FleetOps\Support;
 
+use Fleetbase\Pallet\Support\Utils;
 use Fleetbase\Http\Filter\Filter;
-
 class ProductFilter extends Filter
 {
     public function queryForInternal()

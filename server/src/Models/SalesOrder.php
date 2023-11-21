@@ -52,7 +52,7 @@ class SalesOrder extends Model
      *
      * @var array
      */
-    protected $searchableColumns = ['customer_reference_code', 'reference_code'];
+    protected $searchableColumns = ['customer_reference_code', 'reference_code', 'status'];
 
     /**
      * The attributes that are mass assignable.
@@ -60,27 +60,9 @@ class SalesOrder extends Model
      * @var array
      */
     protected $fillable = [
-        'uuid',
-        'public_id',
-        'company_uuid',
-        'created_by_uuid',
-        'transaction_uuid',
-        'assigned_to_uuid',
-        'point_of_contact_uuid',
-        'customer_uuid',
-        'customer_type',
-        'meta',
         'status',
         'customer_reference_code',
         'reference_code',
-        'reference_url',
-        'description',
-        'comments',
-        'order_date_at',
-        'expected_delivery_at',
-        'created_at',
-        'updated_at',
-        'deleted_at',
     ];
 
     /**

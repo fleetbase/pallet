@@ -28,8 +28,12 @@ Route::prefix(config('pallet.api.routing.prefix', 'pallet'))->namespace('Fleetba
                     ['prefix' => 'v1', 'middleware' => ['fleetbase.protected']],
                     function ($router) {
                         $router->fleetbaseRoutes('audits');
-                        $router->fleetbaseRoutes('batches');
-                        $router->fleetbaseRoutes('inventories');
+                        $router->fleetbaseRoutes('batches', function ($router, $controller){
+                            $router->delete('bulk-delete', $controller('bulkDelete'));
+                        });
+                        $router->fleetbaseRoutes('inventories', function ($router, $controller) {
+                            $router->delete('bulk-delete', $controller('bulkDelete'));
+                        });
                         $router->fleetbaseRoutes('products', function ($router, $controller) {
                             $router->delete('bulk-delete', $controller('bulkDelete'));
                         });

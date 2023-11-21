@@ -29,6 +29,7 @@ class CreateInventoryTable extends Migration
             $table->json('meta')->nullable();
             $table->timestamp('created_at')->nullable()->index();
             $table->timestamp('updated_at')->nullable();
+            $table->softDeletes();
         });
     }
 

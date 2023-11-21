@@ -7,7 +7,6 @@ import SalesOrderPanelDetailsComponent from './sales-order-panel/details';
 import contextComponentCallback from '../utils/context-component-callback';
 import applyContextComponentArguments from '../utils/apply-context-component-arguments';
 
-
 export default class SalesOrderPanelComponent extends Component {
     /**
      * Service for fetching data.

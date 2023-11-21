@@ -249,7 +249,7 @@ export default class SalesOrdersIndexController extends Controller {
      * @void
      */
     @action editSalesOrder(salesOrder) {
-        this.transitionToRoute('sales-orders.index.edit',salesOrder);
+        this.transitionToRoute('sales-orders.index.edit', salesOrder);
     }
 
     /**
@@ -279,9 +279,9 @@ export default class SalesOrdersIndexController extends Controller {
 
         this.crud.bulkDelete(selected, {
             modelNamePath: 'public_id',
-            acceptButtonText: 'Delete Sales Order\'s',
+            acceptButtonText: "Delete Sales Order's",
             fetchOptions: {
-                namespace: 'pallet/int/v1'
+                namespace: 'pallet/int/v1',
             },
             onSuccess: () => {
                 return this.hostRouter.refresh();

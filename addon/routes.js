@@ -9,7 +9,14 @@ export default buildRoutes(function () {
             this.route('edit', { path: '/edit/:public_id' });
         });
     });
-    this.route('inventory', function () {});
+    this.route('inventory', function () {
+        this.route('index', { path: '/' }, function () {
+            this.route('new');
+            this.route('stock-adjustment');
+            this.route('details', { path: '/:public_id' });
+            this.route('edit', { path: '/edit/:public_id' });
+        });
+    });
     this.route('warehouses', function () {
         this.route('index', { path: '/' }, function () {
             this.route('new');
@@ -38,7 +45,13 @@ export default buildRoutes(function () {
             this.route('edit', { path: '/edit/:public_id' });
         });
     });
-    this.route('batch', function () {});
+    this.route('batch', function () {
+        this.route('index', { path: '/' }, function () {
+            this.route('new');
+            this.route('details', { path: '/:public_id' });
+            this.route('edit', { path: '/edit/:public_id' });
+        });
+    });
     this.route('audits', function () {});
     this.route('reports', function () {});
 });

@@ -249,7 +249,7 @@ export default class PurchaseOrdersIndexController extends Controller {
      * @void
      */
     @action editPurchaseOrder(purchaseOrder) {
-        this.transitionToRoute('purchase-orders.index.edit',purchaseOrder);
+        this.transitionToRoute('purchase-orders.index.edit', purchaseOrder);
     }
 
     /**

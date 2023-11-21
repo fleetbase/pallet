@@ -1,0 +1,82 @@
+<Overlay
+    @onLoad={{this.setOverlayContext}}
+    @position="right"
+    @noBackdrop={{true}}
+    @fullHeight={{true}}
+    @isResizeble={{or this.isResizable @isResizable}}
+    @width={{or this.width @width "600px"}}
+>
+    <Overlay::Header
+        @title={{if this.inventory.public_id this.inventory.name "Add Inventory"}}
+        @status={{this.inventory.public_id}}
+        @hideStatusDot={{true}}
+        @createdAt={{this.inventory.createdAt}}
+        @titleWrapperClass="leading-5"
+    >
+        <div class="flex flex-1 justify-end">
+            <Button
+                @icon={{if this.inventory.id "save" "check"}}
+                @type="primary"
+                @text={{if this.inventory.id "Save Inventory" "Add Inventory"}}
+                @onClick={{this.save}}
+                @wrapperClass="mr-2"
+            />
+            {{#if this.inventory.id}}
+                <Button @type="default" @icon="inventory" @helpText="View inventory details" @onClick={{this.onViewDetails}} @wrapperClass="mr-2" />
+            {{/if}}
+            <Button @type="default" @icon="times" @helpText={{if this.inventory.id "Cancel edit inventory" "Cancel add inventory"}} @onClick={{this.onPressCancel}} />
+        </div>
+    </Overlay::Header>
+
+    <Overlay::Body @wrapperClass="new-service-rate-overlay-body px-4 space-y-4 pt-4" @increaseInnerBodyHeightBy={{1000}}>
+        <div class="grid grid-cols-1 text-xs dark:text-gray-100">
+            <InputGroup @name="Product">
+                <ModelSelect
+                    @modelName="pallet-product"
+                    @selectedModel={{this.inventory.product}}
+                    @placeholder="Select Product"
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{fn (mut this.inventory.product)}}
+                    @onChangeId={{fn (mut this.inventory.product_uuid)}}
+                    as |model|
+                >
+                    {{model.name}}
+                </ModelSelect>
+            </InputGroup>
+            <InputGroup @name="Warehouse">
+                <ModelSelect
+                    @modelName="warehouse"
+                    @selectedModel={{this.inventory.warehouse}}
+                    @placeholder="Select Warehouse"
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{fn (mut this.inventory.warehouse)}}
+                    @onChangeId={{fn (mut this.inventory.warehouse_uuid)}}
+                    as |model|
+                >
+                    {{n-a model.name model.address}}
+                </ModelSelect>
+            </InputGroup>
+            <InputGroup @name="Batch">
+                <ModelSelect
+                    @modelName="batch"
+                    @selectedModel={{this.inventory.batch}}
+                    @placeholder="Select Batch"
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{fn (mut this.inventory.batch)}}
+                    @onChangeId={{fn (mut this.inventory.batch_uuid)}}
+                    as |model|
+                >
+                    {{model.display_name}}
+                </ModelSelect>
+            </InputGroup>
+            <InputGroup @name="Quantity" @type="number" @value={{this.inventory.quantity}} />
+            <InputGroup @name="Minimum Quantity" @type="number" @value={{this.inventory.min_quantity}} />
+        </div>
+    </Overlay::Body>
+</Overlay>

@@ -66,7 +66,27 @@ export default class ContextPanelService extends Service {
                 component: 'purchase-order-form-panel',
                 componentArguments: [{ isResizable: true }, { width: '600px' }],
             },
-        }
+        },
+        inventory: {
+            viewing: {
+                component: 'inventory-panel',
+                componentArguments: [{ isResizable: true }, { width: '600px' }],
+            },
+            editing: {
+                component: 'inventory-form-panel',
+                componentArguments: [{ isResizable: true }, { width: '600px' }],
+            },
+        },
+        batch: {
+            viewing: {
+                component: 'batch-panel',
+                componentArguments: [{ isResizable: true }, { width: '600px' }],
+            },
+            editing: {
+                component: 'batch-form-panel',
+                componentArguments: [{ isResizable: true }, { width: '600px' }],
+            },
+        },
     };
 
     /**

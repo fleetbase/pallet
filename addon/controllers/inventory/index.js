@@ -60,7 +60,7 @@ export default class InventoryIndexController extends Controller {
      *
      * @var {Array}
      */
-    queryParams = ['page', 'limit', 'sort', 'query', 'status', 'sku', 'created_at', 'updated_at'];
+    queryParams = ['page', 'limit', 'sort', 'product', 'warehouse', 'batch'];
 
     /**
      * The current page of data being viewed
@@ -104,8 +104,8 @@ export default class InventoryIndexController extends Controller {
      */
     @tracked columns = [
         {
-            label: 'Name',
-            valuePath: 'name',
+            label: 'Product',
+            valuePath: 'product.name',
             width: '200px',
             cellComponent: 'table/cell/anchor',
             resizable: true,
@@ -114,8 +114,13 @@ export default class InventoryIndexController extends Controller {
             filterComponent: 'filter/string',
         },
         {
-            label: 'ID',
-            valuePath: 'public_id',
+            label: 'Quantity',
+            valuePath: 'quantity',
+            width: '200px',
+        },
+        {
+            label: 'Warehouse',
+            valuePath: 'warehouse.address',
             width: '120px',
             cellComponent: 'click-to-copy',
             resizable: true,
@@ -124,10 +129,10 @@ export default class InventoryIndexController extends Controller {
             filterComponent: 'filter/string',
         },
         {
-            label: 'SKU',
-            valuePath: 'sku',
-            cellComponent: 'click-to-copy',
+            label: 'Batch',
+            valuePath: 'batch.name',
             width: '120px',
+            cellComponent: 'click-to-copy',
             resizable: true,
             sortable: true,
             filterable: true,
@@ -221,9 +226,8 @@ export default class InventoryIndexController extends Controller {
      * @param {Object} options
      * @void
      */
-    @action viewInventory(inventory, options) {
-        // do code
-        console.log('viewInventory()', inventory, options);
+    @action viewInventory(inventory) {
+        return this.transitionToRoute('inventory.index.details', inventory);
     }
 
     /**
@@ -232,10 +236,12 @@ export default class InventoryIndexController extends Controller {
      * @param {Object} options
      * @void
      */
-    @action createInventory(options = {}) {
-        const inventory = this.store.createRecord('pallet-inventory');
+    @action createInventory() {
+        return this.transitionToRoute('inventory.index.new');
+    }
 
-        return this.editInventory(inventory, options);
+    @action makeStockAdjustment() {
+        return this.transitionToRoute('inventory.index.stock-adjustment');
     }
 
     /**
@@ -245,9 +251,8 @@ export default class InventoryIndexController extends Controller {
      * @param {Object} options
      * @void
      */
-    @action async editInventory(inventory, options = {}) {
-        // do code
-        console.log('editInventory()', inventory, options);
+    @action async editInventory(inventory) {
+        return this.transitionToRoute('inventory.index.edit', inventory);
     }
 
     /**
@@ -276,8 +281,11 @@ export default class InventoryIndexController extends Controller {
         const selected = this.table.selectedRows;
 
         this.crud.bulkDelete(selected, {
-            modelNamePath: `name`,
-            acceptButtonText: 'Delete Inventorys',
+            modelNamePath: `public_id`,
+            acceptButtonText: 'Delete Inventories',
+            fetchOptions: {
+                namespace: 'pallet/int/v1',
+            },
             onSuccess: () => {
                 return this.hostRouter.refresh();
             },

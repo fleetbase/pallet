@@ -18,11 +18,18 @@ class Batch extends Model
     protected $table = 'pallet_batches';
 
     /**
-     * The singularName overwrite.
+     * Overwrite both entity resource name with `payloadKey`
      *
      * @var string
      */
-    protected $singularName = 'batch';
+    protected $payloadKey = 'batch';
+
+    /**
+     * The type of `public_id` to generate
+     *
+     * @var string
+     */
+    protected $publicIdType = 'batch';
 
     /**
      * These attributes that can be queried
@@ -67,4 +74,34 @@ class Batch extends Model
      * @var array
      */
     protected $hidden = [];
+
+    /**
+     * Relationship with the company associated with the batch.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_uuid', 'uuid');
+    }
+
+    /**
+     * Relationship with the user who created the batch.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by_uuid', 'uuid');
+    }
+
+    /**
+     * Relationship with the product associated with the batch.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

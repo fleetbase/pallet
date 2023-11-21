@@ -60,7 +60,7 @@ export default class BatchIndexController extends Controller {
      *
      * @var {Array}
      */
-    queryParams = ['page', 'limit', 'sort', 'query', 'status', 'sku', 'created_at', 'updated_at'];
+    queryParams = ['page', 'limit', 'sort', 'product', 'warehouse', 'batch'];
 
     /**
      * The current page of data being viewed
@@ -104,8 +104,8 @@ export default class BatchIndexController extends Controller {
      */
     @tracked columns = [
         {
-            label: 'Name',
-            valuePath: 'name',
+            label: 'Product',
+            valuePath: 'product.name',
             width: '200px',
             cellComponent: 'table/cell/anchor',
             resizable: true,
@@ -114,24 +114,14 @@ export default class BatchIndexController extends Controller {
             filterComponent: 'filter/string',
         },
         {
-            label: 'ID',
-            valuePath: 'public_id',
-            width: '120px',
-            cellComponent: 'click-to-copy',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterComponent: 'filter/string',
+            label: 'Quantity',
+            valuePath: 'quantity',
+            width: '200px',
         },
         {
-            label: 'SKU',
-            valuePath: 'sku',
-            cellComponent: 'click-to-copy',
-            width: '120px',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterComponent: 'filter/string',
+            label: 'Batch Number',
+            valuePath: 'batch_number',
+            width: '200px',
         },
         {
             label: 'Created At',
@@ -221,9 +211,8 @@ export default class BatchIndexController extends Controller {
      * @param {Object} options
      * @void
      */
-    @action viewBatch(batch, options) {
-        // do code
-        console.log('viewBatch()', batch, options);
+    @action viewBatch(batch) {
+        return this.transitionToRoute('batch.index.details', batch);
     }
 
     /**
@@ -232,10 +221,8 @@ export default class BatchIndexController extends Controller {
      * @param {Object} options
      * @void
      */
-    @action createBatch(options = {}) {
-        const batch = this.store.createRecord('pallet-batch');
-
-        return this.editBatch(batch, options);
+    @action createBatch() {
+        return this.transitionToRoute('batch.index.new');
     }
 
     /**
@@ -245,9 +232,8 @@ export default class BatchIndexController extends Controller {
      * @param {Object} options
      * @void
      */
-    @action async editBatch(batch, options = {}) {
-        // do code
-        console.log('editBatch()', batch, options);
+    @action async editBatch(batch) {
+        return this.transitionToRoute('batch.index.edit', batch);
     }
 
     /**
@@ -276,8 +262,11 @@ export default class BatchIndexController extends Controller {
         const selected = this.table.selectedRows;
 
         this.crud.bulkDelete(selected, {
-            modelNamePath: `name`,
-            acceptButtonText: 'Delete Batchs',
+            modelNamePath: `public_id`,
+            acceptButtonText: 'Delete Batches',
+            fetchOptions: {
+                namespace: 'pallet/int/v1',
+            },
             onSuccess: () => {
                 return this.hostRouter.refresh();
             },

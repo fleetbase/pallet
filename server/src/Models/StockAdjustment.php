@@ -22,14 +22,14 @@ class StockAdjustment extends Model
      *
      * @var string
      */
-    protected $singularName = 'stock-adjustment';
+    protected $singularName = 'stock_adjustment';
 
     /**
      * These attributes that can be queried
      *
      * @var array
      */
-    protected $searchableColumns = ['uuid', 'product_uuid', 'quantity', 'reason', 'created_at'];
+    protected $searchableColumns = ['uuid', 'public_id', 'company_uuid', 'created_by_uuid', 'product_uuid', 'type', 'reason', 'approval_status', 'created_at'];
 
     /**
      * The attributes that are mass assignable.
@@ -38,9 +38,17 @@ class StockAdjustment extends Model
      */
     protected $fillable = [
         'uuid',
+        'public_id',
+        'company_uuid',
+        'created_by_uuid',
         'product_uuid',
-        'quantity',
+        'meta',
+        'type',
         'reason',
+        'approval_status',
+        'before_quantity',
+        'after_quantity',
+        'quantity',
         'created_at',
         'updated_at',
     ];
@@ -50,7 +58,9 @@ class StockAdjustment extends Model
      *
      * @var array
      */
-    protected $casts = [];
+    protected $casts = [
+        'meta' => 'json',
+    ];
 
     /**
      * Dynamic attributes that are appended to object
@@ -65,4 +75,34 @@ class StockAdjustment extends Model
      * @var array
      */
     protected $hidden = [];
+
+    /**
+     * Relationship with the company associated with the stock adjustment.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_uuid', 'uuid');
+    }
+
+    /**
+     * Relationship with the user who created the stock adjustment.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by_uuid', 'uuid');
+    }
+
+    /**
+     * Relationship with the product associated with the stock adjustment.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function product()
+    {
+        return $this->belongsTo(Entity::class, 'product_uuid', 'uuid');
+    }
 }

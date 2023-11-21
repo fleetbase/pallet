@@ -9,10 +9,10 @@ export default class BatchIndexRoute extends Route {
         limit: { refreshModel: true },
         sort: { refreshModel: true },
         query: { refreshModel: true },
-        status: { refreshModel: true },
+        product: { refreshModel: true },
     };
 
     model(params) {
-        return this.store.query('pallet-product', params);
+        return this.store.query('batch', { ...params, with: ['product'] });
     }
 }

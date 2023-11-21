@@ -8,6 +8,9 @@ export default class InventorySerializer extends ApplicationSerializer.extend(Em
      * @var {Object}
      */
     get attrs() {
-        return {};
+        return {
+            product: { embedded: 'always' },
+            warehouse: { embedded: 'always' },
+        };
     }
 }
