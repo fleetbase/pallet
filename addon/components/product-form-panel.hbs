@@ -6,73 +6,23 @@
     @isResizeble={{or this.isResizable @isResizable}}
     @width={{or this.width @width "600px"}}
 >
-    <Overlay::Header @hideLeftSection={{true}} @actionsWrapperClass="flex-1 flex-col py-3" class="h-auto-i min-h-[127px]">
-        <div class="flex flex-row items-center justify-between w-full mb-4">
-            <div class="flex flex-1 space-x-2">
-                {{#if this.product.id}}
-                    <Button @type="default" @icon="box" @helpText="View product details" @onClick={{this.onViewDetails}} />
-                {{/if}}
-            </div>
-            <div class="flex flex-1 justify-end">
-                <div class="mr-2">
-                    <Button @icon={{if this.product.id "save" "check"}} @type="primary" @text={{if this.product.id "Save Product" "Create Product"}} @onClick={{this.save}} />
-                </div>
-                <Button @type="default" @icon="times" @helpText={{if this.product.id "Cancel edit product" "Cancel new product"}} @onClick={{this.onPressCancel}} />
-            </div>
-        </div>
-        <div class="flex flex-row justify-between w-full">
-            <div class="flex flex-col flex-1 w-3/4">
-                <div class="flex flex-row">
-                    <div class="w-14">
-                        <div class="w-12 h-12 flex items-center justify-start relative hover:bg-gray-100 transition-all rounded-lg overflow-hidden">
-                            <img src={{this.product.photo_url}} alt={{this.product.name}} height="48" width="48" class="h-12 w-12 rounded-lg shadow-sm" />
-                            <Attach::Tooltip @class="clean" @animation="scale" @placement="top">
-                                <InputInfo @text={{this.product.public_id}} />
-                            </Attach::Tooltip>
-                            <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity bg-gray-600 bg-opacity-50 rounded-lg">
-                                <UploadButton
-                                    @name="photos"
-                                    @accept="image/*"
-                                    @onFileAdded={{this.onUploadNewPhoto}}
-                                    @icon="upload"
-                                    @hideButtonText={{true}}
-                                    @labelClass="upload-avatar-label-overlay"
-                                    class="w-12 btn-reset"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex flex-col">
-                        <h1 class="text-gray-900 dark:text-white text-2xl">
-                            {{#if this.product.id}}
-                                {{this.product.name}}
-                            {{else}}
-                                {{#if this.product.name}}
-                                    {{this.product.name}}
-                                {{else}}
-                                    <span>New Product</span>
-                                {{/if}}
-                            {{/if}}
-                        </h1>
-                        <div class="-mt-1">
-                            <div class="flex flex-row items-center">
-                                <span class="text-sm dark:text-blue-400 text-blue-600">{{n-a this.product.title (smart-humanize this.product.type)}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="flex justify-end w-1/4">
-                <Badge @status={{this.product.status}} @type="info" @hideStatusDot={{true}} />
-            </div>
+    <Overlay::Header
+        @title={{if this.product.public_id this.product.name "Add Inventory"}}
+        @status={{this.product.public_id}}
+        @hideStatusDot={{true}}
+        @createdAt={{this.product.createdAt}}
+        @titleWrapperClass="leading-5"
+    >
+        <div class="flex flex-1 justify-end">
+            <Button @icon={{if this.product.id "save" "check"}} @type="primary" @text={{if this.product.id "Save Inventory" "Add Inventory"}} @onClick={{this.save}} @wrapperClass="mr-2" />
+            {{#if this.product.id}}
+                <Button @type="default" @icon="product" @helpText="View product details" @onClick={{this.onViewDetails}} @wrapperClass="mr-2" />
+            {{/if}}
+            <Button @type="default" @icon="times" @helpText={{if this.product.id "Cancel edit product" "Cancel add product"}} @onClick={{this.onPressCancel}} />
         </div>
     </Overlay::Header>
 
     <Overlay::Body @wrapperClass="new-service-rate-overlay-body px-4 pt-4" @increaseInnerBodyHeightBy={{700}}>
-        <div class="w-32 mb-6 mr-6 flex flex-col items-center">
-            <Image src={{this.product.photo_url}} alt={{this.product.name}} height="128" width="128" class="h-32 w-32 rounded-md" />
-            <UploadButton @name="photos" @accept="image/*" @onFileAdded={{this.uploadNewPhoto}} class="w-32" />
-        </div>
         <div class="flex-1 space-y-4">
             <ContentPanel @title="Details" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
                 <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-2">
@@ -167,6 +117,87 @@
                             @onUnitChange={{fn (mut this.product.weight_unit)}}
                         />
                     </InputGroup>
+                </div>
+            </ContentPanel>
+            <ContentPanel @title="Images & Videos" @open={{this.product.files.length}} @pad={{false}} @panelBodyWrapperClass="px-0 py-4" @panelBodyClass="bg-white dark:bg-gray-800">
+                <div class="px-6 space-y-4">
+                    {{#if this.isUploading}}
+                        <div
+                            class="min-h-56 dropzone w-full rounded-lg px-4 py-8 min-h bg-gray-50 dark:bg-gray-900 bg-opacity-25 text-gray-900 dark:text-white text-center flex flex-col items-center justify-center border-2 border-dashed border-gray-200 dark:border-indigo-500"
+                        >
+                            <div class="flex items-center justify-center py-5">
+                                <Spinner class="text-sm dar:text-gray-100" @loadingMessage="Uploading..." />
+                            </div>
+                        </div>
+                    {{else}}
+                        {{#let (file-queue name="files" onFileAdded=this.queueFile accept=(join "," this.acceptedFileTypes)) as |queue|}}
+                            <FileDropzone @queue={{queue}} class="dropzone file-dropzone" as |dropzone|>
+                                {{#if dropzone.active}}
+                                    {{#if dropzone.valid}}
+                                        Drop to upload
+                                    {{else}}
+                                        Invalid
+                                    {{/if}}
+                                {{else if queue.files.length}}
+                                    <div class="my-2">
+                                        <FaIcon @icon="photo-video" class="text-indigo-500 mr-2" />
+                                        {{pluralize queue.files.length "file"}}
+                                        ready for upload.
+                                    </div>
+                                    <div class="my-2">({{queue.progress}}%)</div>
+                                {{else}}
+                                    <h4 class="font-semibold mb-8">
+                                        <FaIcon @icon="photo-video" @size="2x" class="text-indigo-500 mr-2" />
+                                        Upload Images & Videos
+                                    </h4>
+                                    <div>
+                                        {{#if dropzone.supported}}
+                                            <p class="text-base font-semibold my-5">Drag and drop image and video files onto this dropzone</p>
+                                        {{/if}}
+                                        <FileUpload @name="files" @for="files" @accept={{join "," this.acceptedFileTypes}} @multiple={{true}} @onFileAdded={{this.queueFile}}>
+                                            <a tabindex={{0}} class="btn btn-magic cursor-pointer ml-1">or select files to upload.</a>
+                                        </FileUpload>
+                                    </div>
+                                {{/if}}
+                            </FileDropzone>
+                        {{/let}}
+                        {{#if this.uploadQueue}}
+                            <div class="mx-4">
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="leading-6 dark:text-gray-100">Upload Queue</span>
+                                </div>
+                                <div class="space-y-2 mb-4">
+                                    {{#each this.uploadQueue as |file|}}
+                                        <div class="flex items-center justify-between bg-green-100 border border-green-800 dark:border-green-800 py-1.5 shadow-sm rounded-lg px-4">
+                                            <div class="text-sm text-green-900">{{file.name}}</div>
+                                            <div class="flex items-center text-sm">
+                                                <Spinner class="text-green-900 mr-2" />
+                                                <span class="font-bold text-green-900">{{round file.progress}}%</span>
+                                            </div>
+                                        </div>
+                                    {{/each}}
+                                </div>
+                            </div>
+                        {{/if}}
+                        <div>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
+                                {{#each this.product.files as |file|}}
+                                    <FileRecord @file={{file}} @fileIconClass={{if (eq this.product.primary_image_uuid file.id) "border-blue-400"}} @onDelete={{this.removeFile}}>
+                                        <div class="flex items-center justify-evenly">
+                                            <Button
+                                                @icon="magic"
+                                                @text="Make Primary"
+                                                @size="xs"
+                                                @textClass="text-xs truncate"
+                                                @onClick={{fn this.makePrimaryFile file}}
+                                                @disabled={{eq this.product.primary_image_uuid file.id}}
+                                            />
+                                        </div>
+                                    </FileRecord>
+                                {{/each}}
+                            </div>
+                        </div>
+                    {{/if}}
                 </div>
             </ContentPanel>
         </div>

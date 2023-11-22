@@ -106,6 +106,7 @@ export default class BatchIndexController extends Controller {
         {
             label: 'Product',
             valuePath: 'product.name',
+            action: this.viewBatch,
             width: '200px',
             cellComponent: 'table/cell/anchor',
             resizable: true,
