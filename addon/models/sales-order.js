@@ -1,65 +1,58 @@
-import Model, { attr } from '@ember-data/model';
+import Model, { attr, belongsTo } from '@ember-data/model';
 import { computed } from '@ember/object';
 import { format as formatDate, isValid as isValidDate, formatDistanceToNow } from 'date-fns';
 
 export default class SalesOrderModel extends Model {
     /** @ids */
     @attr('string') uuid;
+    @attr('string') public_id;
+    @attr('string') company_uuid;
+    @attr('string') created_by_uuid;
+    @attr('string') transaction_uuid;
+    @attr('string') assigned_to_uuid;
+    @attr('string') point_of_contact_uuid;
+    @attr('string') customer_uuid;
+
+    /** @relationships */
+    @belongsTo('company', { async: true }) company;
+    @belongsTo('user', { async: true }) createdBy;
+    @belongsTo('transaction', { async: true }) transaction;
+    @belongsTo('user', { async: true }) assignedTo;
+    @belongsTo('contact', { async: true }) pointOfContact;
+    @belongsTo('contact', { async: true }) customer;
 
     /** @attributes */
-    @attr('string') customerUuid;
+    @attr('string') customer_type;
     @attr('string') status;
+    @attr('string') customer_reference_code;
+    @attr('string') reference_code;
+    @attr('string') reference_url;
+    @attr('string') description;
+    @attr('string') comments;
+    @attr('date') order_date_at;
+    @attr('date') expected_delivery_at;
+    @attr('date') created_at;
+    @attr('date') updated_at;
 
-    /** @dates */
-    @attr('date') orderCreatedAt;
-    @attr('date') deliveredAt;
-    @attr('date') createdAt;
-    @attr('date') updatedAt;
-    @attr('date') deletedAt;
-
-    @computed('createdAt') get createdAgo() {
-        return this.formatDateDistanceToNow(this.createdAt);
-    }
-
-    @computed('createdAt') get createdAtFormatted() {
-        return this.formatDate(this.createdAt, 'PPP p');
-    }
-
-    @computed('createdAt') get createdAtShort() {
-        return this.formatDate(this.createdAt, 'PP');
-    }
-
-    @computed('orderCreatedAt') get orderCreatedAgo() {
-        return this.formatDateDistanceToNow(this.orderCreatedAt);
-    }
-
-    @computed('orderCreatedAt') get orderCreatedAtFormatted() {
-        return this.formatDate(this.orderCreatedAt, 'PPP p');
-    }
-
-    @computed('orderCreatedAt') get orderCreatedAtShort() {
-        return this.formatDate(this.orderCreatedAt, 'PP');
-    }
-
-    @computed('deliveredAt') get deliveredAtShort() {
-        return this.formatDateDistanceToNow(this.deliveredAt);
-    }
-
-    @computed('deliveredAt') get deliveredAtFormatted() {
-        return this.formatDate(this.deliveredAt, 'PPP p');
-    }
-
-    formatDate(date, formatString) {
-        if (!isValidDate(date)) {
+    /** @computed */
+    @computed('created_at') get createdAgo() {
+        if (!isValidDate(this.created_at)) {
             return null;
         }
-        return formatDate(date, formatString);
+        return formatDistanceToNow(this.created_at);
     }
 
-    formatDateDistanceToNow(date) {
-        if (!isValidDate(date)) {
+    @computed('updated_at') get updatedAgo() {
+        if (!isValidDate(this.updated_at)) {
             return null;
         }
-        return formatDistanceToNow(date);
+        return formatDistanceToNow(this.updated_at);
+    }
+
+    @computed('updated_at') get updatedAt() {
+        if (!isValidDate(this.updated_at)) {
+            return null;
+        }
+        return formatDate(this.updated_at, 'PPP p');
     }
 }

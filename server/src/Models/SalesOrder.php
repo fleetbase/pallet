@@ -3,21 +3,12 @@
 namespace Fleetbase\Pallet\Models;
 
 use Fleetbase\Traits\HasUuid;
-use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasApiModelBehavior;
-use Fleetbase\Traits\HasMetaAttributes;
-use Fleetbase\Traits\Searchable;
-use Fleetbase\Traits\SendsWebhooks;
 use Fleetbase\Models\Model;
 
 class SalesOrder extends Model
 {
-    use HasUuid;
-    use HasApiModelBehavior;
-    use HasPublicId;
-    use SendsWebhooks;
-    use HasMetaAttributes;
-    use Searchable;
+    use HasUuid, HasApiModelBehavior;
 
     /**
      * The database table used by the model.
@@ -27,13 +18,6 @@ class SalesOrder extends Model
     protected $table = 'pallet_sales_orders';
 
     /**
-     * The singularName overwrite.
-     *
-     * @var string
-     */
-    protected $singularName = 'sales-order';
-
-    /**
      * Overwrite both entity resource name with `payloadKey`
      *
      * @var string
@@ -41,18 +25,18 @@ class SalesOrder extends Model
     protected $payloadKey = 'sales_order';
 
     /**
-     * The type of public Id to generate
+     * The type of `public_id` to generate
      *
      * @var string
      */
-    public $publicIdType = 'sales_order';
+    protected $publicIdType = 'sales_order';
 
     /**
      * These attributes that can be queried
      *
      * @var array
      */
-    protected $searchableColumns = ['customer_reference_code', 'reference_code', 'status'];
+    protected $searchableColumns = ['uuid', 'public_id', 'company_uuid', 'created_by_uuid', 'transaction_uuid', 'assigned_to_uuid', 'point_of_contact_uuid', 'customer_uuid', 'customer_type', 'status', 'customer_reference_code', 'reference_code', 'reference_url', 'description', 'comments', 'order_date_at', 'expected_delivery_at', 'created_at'];
 
     /**
      * The attributes that are mass assignable.
@@ -60,9 +44,26 @@ class SalesOrder extends Model
      * @var array
      */
     protected $fillable = [
+        'uuid',
+        'public_id',
+        'company_uuid',
+        'created_by_uuid',
+        'transaction_uuid',
+        'assigned_to_uuid',
+        'point_of_contact_uuid',
+        'customer_uuid',
+        'customer_type',
+        'meta',
         'status',
         'customer_reference_code',
         'reference_code',
+        'reference_url',
+        'description',
+        'comments',
+        'order_date_at',
+        'expected_delivery_at',
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -71,9 +72,7 @@ class SalesOrder extends Model
      * @var array
      */
     protected $casts = [
-        'meta' => 'array',
-        'order_date_at' => 'datetime',
-        'expected_delivery_at' => 'datetime',
+        'meta' => 'json',
     ];
 
     /**
@@ -88,5 +87,65 @@ class SalesOrder extends Model
      *
      * @var array
      */
-    protected $hidden = ['deleted_at'];
+    protected $hidden = [];
+
+    /**
+     * Relationship with the company associated with the sales order.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_uuid', 'uuid');
+    }
+
+    /**
+     * Relationship with the user who created the sales order.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by_uuid', 'uuid');
+    }
+
+    /**
+     * Relationship with the transaction associated with the sales order.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function transaction()
+    {
+        return $this->belongsTo(Transaction::class, 'transaction_uuid', 'uuid');
+    }
+
+    /**
+     * Relationship with the user assigned to the sales order.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function assignedTo()
+    {
+        return $this->belongsTo(User::class, 'assigned_to_uuid', 'uuid');
+    }
+
+    /**
+     * Relationship with the point of contact associated with the sales order.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function pointOfContact()
+    {
+        return $this->belongsTo(Contact::class, 'point_of_contact_uuid', 'uuid');
+    }
+
+    /**
+     * Relationship with the customer associated with the sales order.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function customer()
+    {
+        return $this->belongsTo(Contact::class, 'customer_uuid', 'uuid');
+    }
 }

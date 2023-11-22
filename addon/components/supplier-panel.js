@@ -1,9 +1,9 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
 import { isArray } from '@ember/array';
-import SupplierPanelDetailComponent from './supplier-panel/details';
+import SupplierPanelDetailsComponent from './supplier-panel/details';
 import contextComponentCallback from '../utils/context-component-callback';
 import applyContextComponentArguments from '../utils/apply-context-component-arguments';
 
@@ -61,7 +61,7 @@ export default class SupplierPanelComponent extends Component {
     /**
      * The supplier being displayed or edited.
      *
-     * @type {SupplierModel}
+     * @type {supplier}
      * @tracked
      */
     @tracked supplier;
@@ -73,8 +73,7 @@ export default class SupplierPanelComponent extends Component {
      */
     get tabs() {
         const registeredTabs = this.universe.getMenuItemsFromRegistry('component:supplier-panel');
-        // this.universe._createMenuItem('Tracking', null, { icon: 'satellite-dish', component: SupplierPanelTrackingComponent }),
-        const defaultTabs = [this.universe._createMenuItem('Details', null, { icon: 'circle-info', component: SupplierPanelDetailComponent })];
+        const defaultTabs = [this.universe._createMenuItem('Details', null, { icon: 'circle-info', component: SupplierPanelDetailsComponent })];
 
         if (isArray(registeredTabs)) {
             return [...defaultTabs, ...registeredTabs];

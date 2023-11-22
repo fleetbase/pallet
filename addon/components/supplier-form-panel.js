@@ -4,24 +4,12 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import contextComponentCallback from '../utils/context-component-callback';
 import applyContextComponentArguments from '../utils/apply-context-component-arguments';
-import getSupplierTypeOptions from '../utils/get-supplier-type-options';
-import getSupplierStatusOptions from '../utils/get-supplier-status-options';
 
 export default class SupplierFormPanelComponent extends Component {
     /**
      * @service store
      */
     @service store;
-
-    /**
-     * @service fetch
-     */
-    @service fetch;
-
-    /**
-     * @service currentUser
-     */
-    @service currentUser;
 
     /**
      * @service notifications
@@ -56,24 +44,10 @@ export default class SupplierFormPanelComponent extends Component {
     @tracked isLoading = false;
 
     /**
-     * The users supplier instance.
-     * @type {SupplierModel|IntegratedSupplierModel}
+     * Fuel Report status
+     * @type {Array}
      */
-    @tracked supplier;
-
-    /**
-     * Specific types of suppliers which can be set as the type.
-     *
-     * @memberof SupplierFormPanelComponent
-     */
-    @tracked supplierTypeOptions = getSupplierTypeOptions();
-
-    /**
-     * Applicable status options for supplier.
-     *
-     * @memberof SupplierFormPanelComponent
-     */
-    @tracked supplierStatusOptions = getSupplierStatusOptions();
+    @tracked statusOptions = ['draft', 'pending-approval', 'approved', 'rejected', 'revised', 'submitted', 'in-review', 'confirmed', 'processed', 'archived', 'cancelled'];
 
     /**
      * Constructs the component and applies initial state.
@@ -81,7 +55,6 @@ export default class SupplierFormPanelComponent extends Component {
     constructor() {
         super(...arguments);
         this.supplier = this.args.supplier;
-        this.isEditing = typeof this.supplier.id === 'string';
         applyContextComponentArguments(this);
     }
 
@@ -97,7 +70,7 @@ export default class SupplierFormPanelComponent extends Component {
     }
 
     /**
-     * Saves the supplier changes.
+     * Saves the fuel report changes.
      *
      * @action
      * @returns {Promise<any>}
@@ -114,7 +87,7 @@ export default class SupplierFormPanelComponent extends Component {
             return supplier
                 .save()
                 .then((supplier) => {
-                    this.notifications.success(`Supplier (${supplier.displayName}) saved successfully.`);
+                    this.notifications.success(`Supplier saved successfully.`);
                     contextComponentCallback(this, 'onAfterSave', supplier);
                 })
                 .catch((error) => {
@@ -131,42 +104,7 @@ export default class SupplierFormPanelComponent extends Component {
     }
 
     /**
-     * Uploads a new logo for the supplier.
-     *
-     * @param {File} file
-     * @memberof DriverFormPanelComponent
-     */
-    @action onUploadNewPhoto(file) {
-        this.fetch.uploadFile.perform(
-            file,
-            {
-                path: `uploads/${this.currentUser.companyId}/suppliers/${this.supplier.id}`,
-                subject_uuid: this.supplier.id,
-                subject_type: 'supplier',
-                type: 'supplier_logo',
-            },
-            (uploadedFile) => {
-                this.supplier.setProperties({
-                    logo_uuid: uploadedFile.id,
-                    logo_url: uploadedFile.url,
-                    logo: uploadedFile,
-                });
-            }
-        );
-    }
-
-    /**
-     * Handle when supplier changed.
-     *
-     * @param {SupplierModel} supplier
-     * @memberof SupplierFormPanelComponent
-     */
-    @action onSupplierChanged(supplier) {
-        this.supplier = supplier;
-    }
-
-    /**
-     * View the details of the supplier.
+     * View the details of the fuel-report.
      *
      * @action
      */

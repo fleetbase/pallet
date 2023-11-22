@@ -241,7 +241,7 @@ export default class InventoryIndexController extends Controller {
     }
 
     @action makeStockAdjustment() {
-        return this.transitionToRoute('inventory.index.stock-adjustment');
+        return this.transitionToRoute('inventory.index.new-stock-adjustment');
     }
 
     /**
