@@ -60,7 +60,7 @@ export default class InventoryIndexController extends Controller {
      *
      * @var {Array}
      */
-    queryParams = ['page', 'limit', 'sort', 'product', 'warehouse', 'batch'];
+    queryParams = ['page', 'limit', 'sort', 'product', 'warehouse', 'batch', 'status'];
 
     /**
      * The current page of data being viewed
@@ -91,6 +91,34 @@ export default class InventoryIndexController extends Controller {
     @tracked sku;
 
     /**
+     * The filterable param `warehouse`
+     *
+     * @var {String}
+     */
+    @tracked warehouse;
+
+    /**
+     * The filterable param `batch`
+     *
+     * @var {String}
+     */
+    @tracked batch;
+    
+    /**
+     * The filterable param `status`
+     *
+     * @var {String|Array}
+     */
+    @tracked status;
+
+    /**
+     * The filterable param `pallet-product`
+     *
+     * @var {String}
+     */
+    @tracked product;
+
+    /**
      * The filterable param `status`
      *
      * @var {String}
@@ -106,8 +134,18 @@ export default class InventoryIndexController extends Controller {
         {
             label: 'Product',
             valuePath: 'product.name',
-            width: '200px',
-            cellComponent: 'table/cell/anchor',
+            width: '170px',
+            cellComponent: 'cell/product-info',
+            resizable: true,
+            sortable: true,
+            filterable: true,
+            filterComponent: 'filter/string',
+        },
+        {
+            label: 'Product SKU',
+            valuePath: 'product.sku',
+            cellComponent: 'click-to-copy',
+            width: '120px',
             resizable: true,
             sortable: true,
             filterable: true,
@@ -116,7 +154,7 @@ export default class InventoryIndexController extends Controller {
         {
             label: 'Quantity',
             valuePath: 'quantity',
-            width: '200px',
+            width: '120px',
         },
         {
             label: 'Warehouse',
@@ -139,9 +177,29 @@ export default class InventoryIndexController extends Controller {
             filterComponent: 'filter/string',
         },
         {
-            label: 'Created At',
+            label: 'Status',
+            valuePath: 'status',
+            cellComponent: 'table/cell/status',
+            width: '10%',
+            resizable: true,
+            sortable: true,
+            filterable: true,
+            filterComponent: 'filter/multi-option',
+        },
+        {
+            label: 'Last Stocked',
             valuePath: 'createdAt',
             sortParam: 'created_at',
+            width: '10%',
+            resizable: true,
+            sortable: true,
+            filterable: true,
+            filterComponent: 'filter/date',
+        },
+        {
+            label: 'Expiry Date',
+            valuePath: 'expiredAt',
+            sortParam: 'expiry_date_at',
             width: '10%',
             resizable: true,
             sortable: true,

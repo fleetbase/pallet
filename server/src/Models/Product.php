@@ -19,4 +19,11 @@ class Product extends Entity
      * @var string
      */
     public $publicIdType = 'product';
+
+    /**
+     * Filterable parameters.
+     *
+     * @var array
+     */
+    protected $filterParams = ['facilitator', 'facilitator_type'];
 }

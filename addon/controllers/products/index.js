@@ -74,6 +74,7 @@ export default class ProductsIndexController extends Controller {
         'query',
         'internal_id',
         'public_id',
+        'supplier',
         'sku',
         'created_at',
         'updated_at',
@@ -128,6 +129,13 @@ export default class ProductsIndexController extends Controller {
      * @var {String}
      */
     @tracked product_id;
+
+    /**
+     * The filterable param `supplier`
+     *
+     * @var {String}
+     */
+    @tracked supplier;
 
     /**
      * The filterable param `internal_id`
@@ -195,7 +203,7 @@ export default class ProductsIndexController extends Controller {
             label: 'Product',
             valuePath: 'name',
             width: '170px',
-            cellComponent: 'table/cell/media-name',
+            cellComponent: 'cell/product-info',
             action: this.viewProduct,
             resizable: true,
             sortable: true,

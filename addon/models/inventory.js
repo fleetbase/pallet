@@ -25,10 +25,12 @@ export default class InventoryModel extends Model {
     @attr('string') comments;
     @attr('number') quantity;
     @attr('number') min_quantity;
+    @attr('number') status;
 
     /** @date */
     @attr('date') created_at;
     @attr('date') updated_at;
+    @attr('date') expiry_date_at;
 
     /** @computed */
     @computed('created_at') get createdAgo() {
@@ -36,6 +38,13 @@ export default class InventoryModel extends Model {
             return null;
         }
         return formatDistanceToNow(this.created_at);
+    }
+
+    @computed('expiry_date_at') get expiredAt() {
+        if (!isValidDate(this.expiry_date_at)) {
+            return null;
+        }
+        return formatDate(this.expiry_date_at, 'PPP p');
     }
 
     @computed('updated_at') get updatedAgo() {

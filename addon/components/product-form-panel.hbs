@@ -7,16 +7,16 @@
     @width={{or this.width @width "600px"}}
 >
     <Overlay::Header
-        @title={{if this.product.public_id this.product.name "Add Inventory"}}
+        @title={{if this.product.public_id this.product.name "Add Product"}}
         @status={{this.product.public_id}}
         @hideStatusDot={{true}}
         @createdAt={{this.product.createdAt}}
         @titleWrapperClass="leading-5"
     >
         <div class="flex flex-1 justify-end">
-            <Button @icon={{if this.product.id "save" "check"}} @type="primary" @text={{if this.product.id "Save Inventory" "Add Inventory"}} @onClick={{this.save}} @wrapperClass="mr-2" />
+            <Button @icon={{if this.product.id "save" "check"}} @type="primary" @text={{if this.product.id "Save Product" "Add Product"}} @onClick={{this.save}} @wrapperClass="mr-2" />
             {{#if this.product.id}}
-                <Button @type="default" @icon="product" @helpText="View product details" @onClick={{this.onViewDetails}} @wrapperClass="mr-2" />
+                <Button @type="default" @icon="box-archive" @helpText="View product details" @onClick={{this.onViewDetails}} @wrapperClass="mr-2" />
             {{/if}}
             <Button @type="default" @icon="times" @helpText={{if this.product.id "Cancel edit product" "Cancel add product"}} @onClick={{this.onPressCancel}} />
         </div>
@@ -34,7 +34,36 @@
                         @wrapperClass="mb-2"
                     />
                     <InputGroup @name="SKU" @value={{this.product.sku}} @helpText="Stock keeping unit number if applicable." @wrapperClass="mb-2" />
-                    <div></div>
+                    <InputGroup @name="Product Category">
+                        <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                            <PowerSelect
+                                @options={{this.productCategories}}
+                                @selected={{this.product.category}}
+                                @onChange={{fn (mut this.product.category)}}
+                                @placeholder="Select product category"
+                                @triggerClass="form-select form-input"
+                                @disabled={{not this.productCategories}}
+                                as |category|
+                            >
+                                {{smart-humanize category}}
+                            </PowerSelect>
+                        </div>
+                    </InputGroup>
+                    <InputGroup @name="Supplier">
+                        <ModelSelect
+                            @modelName="vendor"
+                            @selectedModel={{this.product.supplier}}
+                            @placeholder="Select Supplier"
+                            @triggerClass="form-select form-input"
+                            @infiniteScroll={{false}}
+                            @renderInPlace={{true}}
+                            @onChange={{fn (mut this.product.supplier)}}
+                            @onChangeId={{fn (mut this.product.supplier_uuid)}}
+                            as |model|
+                        >
+                            {{model.name}}
+                        </ModelSelect>
+                    </InputGroup>
                     <InputGroup @name="Description" @helpText="Additional description text of entity." @wrapperClass="col-span-2 mb-2">
                         <Textarea @value={{this.product.description}} type="text" class="w-full form-input" placeholder="Description" />
                     </InputGroup>
@@ -119,7 +148,7 @@
                     </InputGroup>
                 </div>
             </ContentPanel>
-            <ContentPanel @title="Images & Videos" @open={{this.product.files.length}} @pad={{false}} @panelBodyWrapperClass="px-0 py-4" @panelBodyClass="bg-white dark:bg-gray-800">
+            <ContentPanel @title="Upload Images" @open={{this.product.files.length}} @pad={{false}} @panelBodyWrapperClass="px-0 py-4" @panelBodyClass="bg-white dark:bg-gray-800">
                 <div class="px-6 space-y-4">
                     {{#if this.isUploading}}
                         <div
@@ -147,12 +176,12 @@
                                     <div class="my-2">({{queue.progress}}%)</div>
                                 {{else}}
                                     <h4 class="font-semibold mb-8">
-                                        <FaIcon @icon="photo-video" @size="2x" class="text-indigo-500 mr-2" />
-                                        Upload Images & Videos
+                                        <FaIcon @icon="image" @size="2x" class="text-indigo-500 mr-2" />
+                                        Upload Images
                                     </h4>
                                     <div>
                                         {{#if dropzone.supported}}
-                                            <p class="text-base font-semibold my-5">Drag and drop image and video files onto this dropzone</p>
+                                            <p class="text-base font-semibold my-5">Drag and drop image files onto this dropzone</p>
                                         {{/if}}
                                         <FileUpload @name="files" @for="files" @accept={{join "," this.acceptedFileTypes}} @multiple={{true}} @onFileAdded={{this.queueFile}}>
                                             <a tabindex={{0}} class="btn btn-magic cursor-pointer ml-1">or select files to upload.</a>
@@ -189,8 +218,8 @@
                                                 @text="Make Primary"
                                                 @size="xs"
                                                 @textClass="text-xs truncate"
-                                                @onClick={{fn this.makePrimaryFile file}}
-                                                @disabled={{eq this.product.primary_image_uuid file.id}}
+                                                @onClick={{fn this.setProductPhoto file}}
+                                                @disabled={{eq this.product.photo_uuid file.id}}
                                             />
                                         </div>
                                     </FileRecord>

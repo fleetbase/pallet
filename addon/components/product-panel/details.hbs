@@ -1,4 +1,4 @@
-<div class="p-4">
+<div class="p-4 space-y-4">
     <ContentPanel @title="Details" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-900">
         <div class="grid grid-cols-1 gap-2 lg:grid-cols-2 lg:gap-4 text-xs dark:text-gray-100">
 
@@ -18,18 +18,18 @@
             </div>
 
             <div class="field-info-container">
-                <div class="field-name">Price</div>
-                <div class="field-value">{{format-currency @product.price @product.currency}}</div>
-            </div>
-            <div class="field-info-container">
-                <div class="field-name">Sale Price</div>
-                <div class="field-value">{{format-currency @product.sale_price @product.currency}}</div>
+                <div class="field-name">Product Supplier</div>
+                <div class="field-value">{{n-a @product.supplier.name}}</div>
             </div>
 
             <div class="field-info-container">
-                <div class="field-name">Declared Value</div>
-                <div class="field-value">{{format-currency @product.declared_value @product.currency}}</div>
+                <div class="field-name">Value</div>
+                <div class="field-value">{{format-currency @product.price @product.currency}}</div>
             </div>
+        </div>
+    </ContentPanel>
+    <ContentPanel @title="Dimensions" @open={{false}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-900">
+        <div class="grid grid-cols-1 gap-2 lg:grid-cols-2 lg:gap-4 text-xs dark:text-gray-100">
 
             <div class="field-info-container">
                 <div class="field-name">Length</div>
@@ -49,6 +49,23 @@
             <div class="field-info-container">
                 <div class="field-name">Weight</div>
                 <div class="field-value">{{n-a @product.weight}}</div>
+            </div>
+
+        </div>
+    </ContentPanel>
+    <ContentPanel @title="Uploaded images" @open={{false}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-900">
+        <div class="w-14 flex items-center justify-start">
+            <div class="grid grid-cols-1 gap-2 lg:grid-cols-2 lg:gap-4 text-xs dark:text-gray-100">
+                <div class="w-14 flex items-center justify-start">
+                    <Image
+                        src={{@product.photo_url}}
+                        @fallbackSrc={{config "defaultValues.productImage"}}
+                        alt={{this.product.name}}
+                        height="48"
+                        width="48"
+                        class="h-12 w-12 rounded-lg shadow-sm"
+                    />
+                </div>
             </div>
         </div>
     </ContentPanel>

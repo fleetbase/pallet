@@ -1,20 +1,9 @@
-<div class="relative flex items-center">
-    <img src={{this.mediaUrl}} alt={{this.altText}} class="w-16 h-16 rounded-full mb-2" />
-    <span class="relative block">
-        <a href="javascript:;" class="text-blue-500" {{on "click" this.onClick}}>
-            {{#if (has-block)}}
-                {{yield}}
-            {{else}}
-                <span class="font-bold text-lg">
-                    {{@product.name}}
-                </span>
-                <p class="text-gray-700 text-sm">
-                    {{@product.description}}
-                </p>
-            {{/if}}
+<div class="relative flex items-center" ...attributes>
+    <img src={{this.product.photo_url}} alt={{this.product.name}} {{fallback-img-src (config "defaultValues.productImage")}} class="w-10 h-10 mr-2 rounded-md" />
+    <div class="ml-2">
+        <a href="javascript:;" class="relative block" {{on "click" this.onClick}}>
+            <span>{{get-default-value this.product.name}}</span>
         </a>
-    </span>
-    {{#if @showOnlineIndicator}}
-        <FaIcon @icon="circle" class="absolute left-0 top-0 {{if @product.online "text-green-500" "text-yellow-200"}}" />
-    {{/if}}
+        <p class="text-sm text-gray-500">{{get @row 'description'}}</p>
+    </div>
 </div>

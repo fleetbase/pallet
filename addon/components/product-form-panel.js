@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import getWithDefault from '@fleetbase/ember-core/utils/get-with-default';
 import contextComponentCallback from '../utils/context-component-callback';
 import applyContextComponentArguments from '../utils/apply-context-component-arguments';
 
@@ -67,6 +68,11 @@ export default class ProductFormPanelComponent extends Component {
      */
     @tracked productStatusOptions = ['pending', 'active', 'do-not-product', 'prospective', 'archived'];
 
+    @tracked uploadQueue = [];
+
+    acceptedFileTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'video/mp4', 'video/quicktime', 'video/x-msvideo', 'video/x-flv', 'video/x-ms-wmv'];
+
+    @tracked productCategories = [];
     /**
      * Constructs the component and applies initial state.
      */
@@ -125,7 +131,7 @@ export default class ProductFormPanelComponent extends Component {
      * Uploads a new photo for the driver.
      *
      * @param {File} file
-     * @memberof DriverFormPanelComponent
+     * @memberof ProductFormPanelComponent
      */
     @action onUploadNewPhoto(file) {
         this.fetch.uploadFile.perform(
@@ -169,6 +175,44 @@ export default class ProductFormPanelComponent extends Component {
         return contextComponentCallback(this, 'onPressCancel', this.product);
     }
 
+    @action queueFile(file) {
+        this.uploadQueue.pushObject(file);
+        this.fetch.uploadFile.perform(
+            file,
+            {
+                path: `uploads/${this.currentUser.companyId}/pallet-products/${getWithDefault(this.product, 'id', '~')}`,
+                subject_uuid: this.product.id,
+                subject_type: `pallet:product`,
+                type: `pallet_product`,
+            },
+            (uploadedFile) => {
+                this.product.files.pushObject(uploadedFile);
+
+                // if no main photo set it
+                if (!this.product.photo_uuid) {
+                    this.product.photo_uuid = uploadedFile.id;
+                }
+
+                this.uploadQueue.removeObject(file);
+            },
+            (error) => {
+                console.log('some error occurred', error);
+                this.uploadQueue.removeObject(file);
+            }
+        );
+    }
+
+    @action setProductPhoto(file) {
+        if (file.isNotImage) {
+            return this.notifications.warning('You can only select an image file to be primary!');
+        }
+
+        this.notifications.success(`${file.original_filename} was made the product photo.`);
+        this.product.photo_uuid = file.id;
+        this.product.photo_url = file.url;
+        this.product.photo = file;
+    }
+
     /**
      * Uploads a file to the server for the product.
      *
@@ -178,10 +222,10 @@ export default class ProductFormPanelComponent extends Component {
         this.fetch.uploadFile.perform(
             file,
             {
-                path: `uploads/${this.product.company_uuid}/products/${this.product.slug}`,
+                path: `uploads/${this.product.company_uuid}/pallet-products/${this.product.slug}`,
                 subject_uuid: this.product.id,
-                subject_type: 'product',
-                type: 'product_photo',
+                subject_type: 'pallet:product',
+                type: 'pallet_product_photo',
             },
             (uploadedFile) => {
                 this.product.setProperties({

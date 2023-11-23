@@ -17,6 +17,7 @@ class CreateInventoryTable extends Migration
             $table->increments('id');
             $table->uuid('uuid')->nullable()->unique();
             $table->string('public_id')->nullable()->unique();
+            $table->string('status')->nullable();
             $table->foreignUuid('company_uuid')->nullable()->index()->references('uuid')->on('companies');
             $table->foreignUuid('created_by_uuid')->nullable()->index()->references('uuid')->on('users');
             $table->foreignUuid('product_uuid')->nullable()->index()->references('uuid')->on('entities');
@@ -27,6 +28,7 @@ class CreateInventoryTable extends Migration
             $table->integer('quantity')->nullable();
             $table->integer('min_quantity')->nullable();
             $table->json('meta')->nullable();
+            $table->timestamp('expiry_date_at')->nullable();
             $table->timestamp('created_at')->nullable()->index();
             $table->timestamp('updated_at')->nullable();
             $table->softDeletes();

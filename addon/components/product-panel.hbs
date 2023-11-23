@@ -18,31 +18,10 @@
         <div class="flex flex-row justify-between w-full">
             <div class="flex flex-col flex-1 w-3/4">
                 <div class="flex flex-row">
-                    <div class="w-14 flex items-center justify-start">
-                        <Image
-                            src={{this.product.photo_url}}
-                            @fallbackSrc={{config "defaultValues.productImage"}}
-                            alt={{this.product.name}}
-                            height="48"
-                            width="48"
-                            class="h-12 w-12 rounded-lg shadow-sm"
-                        />
-                        <Attach::Tooltip @class="clean" @animation="scale" @placement="top">
-                            <InputInfo @text={{this.product.public_id}} />
-                        </Attach::Tooltip>
-                    </div>
                     <div class="flex flex-col">
                         <h1 class="text-gray-900 dark:text-white text-2xl">{{this.product.name}}</h1>
-                        <div class="-mt-1">
-                            <div class="flex flex-row items-center">
-                                <span class="text-sm dark:text-blue-400 text-blue-600">{{smart-humanize this.product.type}}</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="flex justify-end w-1/4">
-                <Badge @status={{this.product.public_id}} @type="info" @hideStatusDot={{true}} />
             </div>
         </div>
     </Overlay::Header>

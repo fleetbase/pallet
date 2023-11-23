@@ -45,6 +45,21 @@
                     {{model.name}}
                 </ModelSelect>
             </InputGroup>
+            <InputGroup @name="Supplier">
+                <ModelSelect
+                    @modelName="vendor"
+                    @selectedModel={{this.inventory.supplier}}
+                    @placeholder="Select Supplier"
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{fn (mut this.inventory.supplier)}}
+                    @onChangeId={{fn (mut this.inventory.supplier_uuid)}}
+                    as |model|
+                >
+                    {{model.name}}
+                </ModelSelect>
+            </InputGroup>
             <InputGroup @name="Warehouse">
                 <ModelSelect
                     @modelName="warehouse"
