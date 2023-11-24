@@ -29,7 +29,7 @@ class StockAdjustment extends Model
      *
      * @var array
      */
-    protected $searchableColumns = ['uuid', 'public_id', 'company_uuid', 'created_by_uuid', 'product_uuid', 'type', 'reason', 'approval_status', 'created_at'];
+    protected $searchableColumns = ['uuid', 'public_id', 'company_uuid', 'created_by_uuid', 'product_uuid', 'created_at'];
 
     /**
      * The attributes that are mass assignable.
@@ -42,10 +42,11 @@ class StockAdjustment extends Model
         'company_uuid',
         'created_by_uuid',
         'product_uuid',
+        'assignee_uuid',
         'meta',
         'type',
         'reason',
-        'approval_status',
+        'approval_required',
         'before_quantity',
         'after_quantity',
         'quantity',
@@ -104,5 +105,9 @@ class StockAdjustment extends Model
     public function product()
     {
         return $this->belongsTo(Entity::class, 'product_uuid', 'uuid');
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class, 'assignee_uuid');
     }
 }

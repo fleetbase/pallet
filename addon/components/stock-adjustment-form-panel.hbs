@@ -44,15 +44,12 @@
                     </PowerSelect>
                 </div>
             </InputGroup>
-            <InputGroup @name="Stock Adjustment Reason">
-                <Textarea @value={{this.stockAdjustment.reason}} aria-label="Reason" class="w-full form-input" placeholder="Reason" rows={{5}} />
-            </InputGroup>
-            <InputGroup @name="Approval Status">
+            <InputGroup @name="Approval Required">
                 <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
                     <PowerSelect
                         @options={{this.statusOptions}}
-                        @selected={{this.stockAdjustment.approval_status}}
-                        @onChange={{fn (mut this.stockAdjustment.approval_status)}}
+                        @selected={{this.stockAdjustment.approval_required}}
+                        @onChange={{fn (mut this.stockAdjustment.approval_required)}}
                         @placeholder="Select approval status"
                         @triggerClass="form-select form-input"
                         as |status|
@@ -60,6 +57,9 @@
                         {{smart-humanize status}}
                     </PowerSelect>
                 </div>
+            </InputGroup>
+            <InputGroup @name="Stock Adjustment Reason">
+                <Textarea @value={{this.stockAdjustment.reason}} aria-label="Reason" class="w-full form-input" placeholder="Reason" rows={{5}} />
             </InputGroup>
             <InputGroup @name="Quantity" @type="number" @value={{this.stockAdjustment.quantity}} />
         </div>

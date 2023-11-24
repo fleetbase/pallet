@@ -89,6 +89,7 @@ export default class ProductPanelComponent extends Component {
     constructor() {
         super(...arguments);
         this.product = this.args.product;
+        console.log('[this.product]', this.product);
         this.tab = this.getTabUsingSlug(this.args.tab);
         applyContextComponentArguments(this);
     }

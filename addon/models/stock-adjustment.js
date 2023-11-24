@@ -9,6 +9,7 @@ export default class StockAdjustmentModel extends Model {
     @attr('string') company_uuid;
     @attr('string') created_by_uuid;
     @attr('string') product_uuid;
+    @attr('string') assignee_uuid;
 
     /** @relationships */
     @belongsTo('company', { async: true }) company;
@@ -18,7 +19,7 @@ export default class StockAdjustmentModel extends Model {
     /** @attributes */
     @attr('string') type;
     @attr('string') reason;
-    @attr('string') approval_status;
+    @attr('string') approval_required;
     @attr('number') before_quantity;
     @attr('number') after_quantity;
     @attr('number') quantity;

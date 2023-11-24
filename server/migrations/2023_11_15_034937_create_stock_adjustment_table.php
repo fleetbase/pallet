@@ -20,10 +20,11 @@ class CreateStockAdjustmentTable extends Migration
             $table->foreignUuid('company_uuid')->nullable()->index()->references('uuid')->on('companies');
             $table->foreignUuid('created_by_uuid')->nullable()->index()->references('uuid')->on('users');
             $table->foreignUuid('product_uuid')->nullable()->index()->references('uuid')->on('entities');
+            $table->foreignUuid('assignee_uuid')->nullable()->index()->references('uuid')->on('users');
             $table->json('meta')->nullable();
             $table->string('type')->nullable();
-            $table->string('reason')->nullabe();
-            $table->string('approval_status')->nullable(); 
+            $table->string('reason')->nullabe(); 
+            $table->string('approval_required')->nullable(); 
             $table->integer('before_quantity')->nullable();
             $table->integer('after_quantity')->nullable();
             $table->integer('quantity')->nullabe();

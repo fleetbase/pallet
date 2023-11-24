@@ -29,69 +29,92 @@
     </Overlay::Header>
 
     <Overlay::Body @wrapperClass="new-service-rate-overlay-body px-4 space-y-4 pt-4" @increaseInnerBodyHeightBy={{1000}}>
-        <div class="grid grid-cols-1 text-xs dark:text-gray-100">
-            <InputGroup @name="Product">
-                <ModelSelect
-                    @modelName="pallet-product"
-                    @selectedModel={{this.inventory.product}}
-                    @placeholder="Select Product"
-                    @triggerClass="form-select form-input"
-                    @infiniteScroll={{false}}
-                    @renderInPlace={{true}}
-                    @onChange={{fn (mut this.inventory.product)}}
-                    @onChangeId={{fn (mut this.inventory.product_uuid)}}
-                    as |model|
-                >
-                    {{model.name}}
-                </ModelSelect>
-            </InputGroup>
-            <InputGroup @name="Supplier">
-                <ModelSelect
-                    @modelName="vendor"
-                    @selectedModel={{this.inventory.supplier}}
-                    @placeholder="Select Supplier"
-                    @triggerClass="form-select form-input"
-                    @infiniteScroll={{false}}
-                    @renderInPlace={{true}}
-                    @onChange={{fn (mut this.inventory.supplier)}}
-                    @onChangeId={{fn (mut this.inventory.supplier_uuid)}}
-                    as |model|
-                >
-                    {{model.name}}
-                </ModelSelect>
-            </InputGroup>
-            <InputGroup @name="Warehouse">
-                <ModelSelect
-                    @modelName="warehouse"
-                    @selectedModel={{this.inventory.warehouse}}
-                    @placeholder="Select Warehouse"
-                    @triggerClass="form-select form-input"
-                    @infiniteScroll={{false}}
-                    @renderInPlace={{true}}
-                    @onChange={{fn (mut this.inventory.warehouse)}}
-                    @onChangeId={{fn (mut this.inventory.warehouse_uuid)}}
-                    as |model|
-                >
-                    {{n-a model.name model.address}}
-                </ModelSelect>
-            </InputGroup>
-            <InputGroup @name="Batch">
-                <ModelSelect
-                    @modelName="batch"
-                    @selectedModel={{this.inventory.batch}}
-                    @placeholder="Select Batch"
-                    @triggerClass="form-select form-input"
-                    @infiniteScroll={{false}}
-                    @renderInPlace={{true}}
-                    @onChange={{fn (mut this.inventory.batch)}}
-                    @onChangeId={{fn (mut this.inventory.batch_uuid)}}
-                    as |model|
-                >
-                    {{model.display_name}}
-                </ModelSelect>
-            </InputGroup>
-            <InputGroup @name="Quantity" @type="number" @value={{this.inventory.quantity}} />
-            <InputGroup @name="Minimum Quantity" @type="number" @value={{this.inventory.min_quantity}} />
+        <div class="flex-1 space-y-4">
+            <ContentPanel @title="Details" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
+                <InputGroup @name="Product">
+                    <ModelSelect
+                        @modelName="pallet-product"
+                        @selectedModel={{this.inventory.product}}
+                        @placeholder="Select Product"
+                        @triggerClass="form-select form-input"
+                        @infiniteScroll={{false}}
+                        @renderInPlace={{true}}
+                        @onChange={{fn (mut this.inventory.product)}}
+                        @onChangeId={{fn (mut this.inventory.product_uuid)}}
+                        as |model|
+                    >
+                        {{model.name}}
+                    </ModelSelect>
+                </InputGroup>
+                <InputGroup @name="Supplier">
+                    <ModelSelect
+                        @modelName="vendor"
+                        @selectedModel={{this.inventory.supplier}}
+                        @placeholder="Select Supplier"
+                        @triggerClass="form-select form-input"
+                        @infiniteScroll={{false}}
+                        @renderInPlace={{true}}
+                        @onChange={{fn (mut this.inventory.supplier)}}
+                        @onChangeId={{fn (mut this.inventory.supplier_uuid)}}
+                        as |model|
+                    >
+                        {{model.name}}
+                    </ModelSelect>
+                </InputGroup>
+                <InputGroup @name="Warehouse">
+                    <ModelSelect
+                        @modelName="warehouse"
+                        @selectedModel={{this.inventory.warehouse}}
+                        @placeholder="Select Warehouse"
+                        @triggerClass="form-select form-input"
+                        @infiniteScroll={{false}}
+                        @renderInPlace={{true}}
+                        @onChange={{fn (mut this.inventory.warehouse)}}
+                        @onChangeId={{fn (mut this.inventory.warehouse_uuid)}}
+                        as |model|
+                    >
+                        {{n-a model.name model.address}}
+                    </ModelSelect>
+                </InputGroup>
+                <InputGroup @name="Status">
+                    <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                        <PowerSelect
+                            @options={{this.statusOptions}}
+                            @selected={{this.inventory.status}}
+                            @onChange={{fn (mut this.inventory.status)}}
+                            @placeholder="Select inventory status"
+                            @triggerClass="form-select form-input"
+                            as |status|
+                        >
+                            {{smart-humanize status}}
+                        </PowerSelect>
+                    </div>
+                </InputGroup>
+                <InputGroup @name="Quantity" @type="number" @value={{this.inventory.quantity}} />
+                <InputGroup @name="Minimum Quantity" @type="number" @value={{this.inventory.min_quantity}} />
+            </ContentPanel>
+            <ContentPanel @title="Batch" @open={{false}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
+                <InputGroup @name="Batch">
+                    <ModelSelect
+                        @modelName="batch"
+                        @selectedModel={{this.inventory.batch}}
+                        @placeholder="Select Batch"
+                        @triggerClass="form-select form-input"
+                        @infiniteScroll={{false}}
+                        @renderInPlace={{true}}
+                        @onChange={{fn (mut this.inventory.batch)}}
+                        @onChangeId={{fn (mut this.inventory.batch_uuid)}}
+                        as |model|
+                    >
+                        {{model.display_name}}
+                    </ModelSelect>
+                </InputGroup>
+                <InputGroup @name="Batch Quantity" @type="number" @value={{this.inventory.batch.quantity}} />
+                <InputGroup @name="Batch Number" @type="number" @value={{this.inventory.batch.batch_number}} />
+                <InputGroup @name="Batch Reason">
+                    <Textarea @value={{this.batch.reason}} aria-label="Reason" class="w-full form-input" placeholder="Reason" rows={{5}} />
+                </InputGroup>
+            </ContentPanel>
         </div>
     </Overlay::Body>
 </Overlay>

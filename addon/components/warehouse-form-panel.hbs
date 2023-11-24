@@ -14,44 +14,81 @@
         @titleWrapperClass="leading-5"
     >
         <div class="flex flex-1 justify-end">
-            <Button @icon={{if this.warehouse.id "save" "check"}} @type="primary" @text={{if this.warehouse.id "Save Warehouse" "Create Warehouse"}} @onClick={{this.save}} @wrapperClass="mr-2" />
+            <Button
+                @icon={{if this.warehouse.id "save" "check"}}
+                @type="primary"
+                @text={{if this.warehouse.id "Save Warehouse" "Create Warehouse"}}
+                @onClick={{this.save}}
+                @wrapperClass="mr-2"
+            />
             <Button @type="default" @icon="times" @helpText={{if this.warehouse.id "Cancel edit warehouse" "Cancel new warehouse"}} @onClick={{this.onPressCancel}} />
         </div>
     </Overlay::Header>
 
     <Overlay::Body @wrapperClass="new-service-rate-overlay-body px-4 space-y-4 pt-4" @increaseInnerBodyHeightBy={{1000}}>
-        <div class="grid grid-cols-3 gap-1 text-xs dark:text-gray-100">
-            <InputGroup @name="Name" @wrapperClass="col-span-2">
-                <Input @value={{this.warehouse.name}} @type="text" class="w-full form-input" placeholder="Name" />
-            </InputGroup>
-            <InputGroup @name="Street 1" @value={{this.warehouse.street1}} @wrapperClass="col-span-3">
-                <AutocompleteInput @value={{this.warehouse.street1}} @fetchUrl="places/lookup" @onSelect={{this.onAutocomplete}} placeholder="Street 1" class="w-full" as |result|>
-                    {{result.address}}
-                </AutocompleteInput>
-            </InputGroup>
-            <InputGroup @name="Street 2" @autocomplete="nope" @value={{this.warehouse.street2}} @wrapperClass="col-span-3" />
-            <InputGroup @name="Neighborhood" @autocomplete="nope" @value={{this.warehouse.neighborhood}} />
-            <InputGroup @name="Building" @autocomplete="nope" @value={{this.warehouse.building}} />
-            <InputGroup @name="Security Access Code" @autocomplete="nope" @value={{this.warehouse.security_access_code}} />
-            <InputGroup @name="Postal Code" @autocomplete="nope" @value={{this.warehouse.postal_code}} />
-            <InputGroup @name="City" @autocomplete="nope" @value={{this.warehouse.city}} />
-            <InputGroup @name="State" @autocomplete="nope" @value={{this.warehouse.province}} />
-            <InputGroup @name="Country" @wrapperClass="col-span-2">
-                <CountrySelect class="w-full form-input form-select form-datalist" @value={{this.warehouse.country}} @onChange={{fn (mut this.warehouse.country)}} warehouseholder="Country" />
-            </InputGroup>
-            <InputGroup @name="Coordinates" @wrapperClass="col-span-2">
-                <CoordinatesInput
-                    @value={{this.warehouse.location}}
-                    @onChange={{this.updateWarehouseCoordinates}}
-                    @onGeocode={{this.onAutocomplete}}
-                    @onUpdatedFromMap={{this.onReverseGeocode}}
-                    @onInit={{this.setCoordinatesInput}}
-                />
-            </InputGroup>
-            <div class="col-span-1"></div>
-            <InputGroup @name="Phone">
-                <PhoneInput @value={{this.warehouse.phone}} @autocomplete="nope" @onInput={{this.phone}} class="form-input w-full" />
-            </InputGroup>
+        <div class="flex-1 space-y-4">
+            <ContentPanel @title="Details" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
+                <InputGroup @name="Name" @wrapperClass="col-span-2">
+                    <Input @value={{this.warehouse.name}} @type="text" class="w-full form-input" placeholder="Name" />
+                </InputGroup>
+                <InputGroup @name="Street 1" @value={{this.warehouse.street1}} @wrapperClass="col-span-3">
+                    <AutocompleteInput @value={{this.warehouse.street1}} @fetchUrl="places/lookup" @onSelect={{this.onAutocomplete}} placeholder="Street 1" class="w-full" as |result|>
+                        {{result.address}}
+                    </AutocompleteInput>
+                </InputGroup>
+                <InputGroup @name="Street 2" @autocomplete="nope" @value={{this.warehouse.street2}} @wrapperClass="col-span-3" />
+                <InputGroup @name="Neighborhood" @autocomplete="nope" @value={{this.warehouse.neighborhood}} />
+                <InputGroup @name="Building" @autocomplete="nope" @value={{this.warehouse.building}} />
+                <InputGroup @name="Security Access Code" @autocomplete="nope" @value={{this.warehouse.security_access_code}} />
+                <InputGroup @name="Postal Code" @autocomplete="nope" @value={{this.warehouse.postal_code}} />
+                <InputGroup @name="City" @autocomplete="nope" @value={{this.warehouse.city}} />
+                <InputGroup @name="State" @autocomplete="nope" @value={{this.warehouse.province}} />
+                <InputGroup @name="Country" @wrapperClass="col-span-2">
+                    <CountrySelect
+                        class="w-full form-input form-select form-datalist"
+                        @value={{this.warehouse.country}}
+                        @onChange={{fn (mut this.warehouse.country)}}
+                        warehouseholder="Country"
+                    />
+                </InputGroup>
+                <InputGroup @name="Coordinates" @wrapperClass="col-span-2">
+                    <CoordinatesInput
+                        @value={{this.warehouse.location}}
+                        @onChange={{this.updateWarehouseCoordinates}}
+                        @onGeocode={{this.onAutocomplete}}
+                        @onUpdatedFromMap={{this.onReverseGeocode}}
+                        @onInit={{this.setCoordinatesInput}}
+                    />
+                </InputGroup>
+                <div class="col-span-1"></div>
+                <InputGroup @name="Phone">
+                    <PhoneInput @value={{this.warehouse.phone}} @autocomplete="nope" @onInput={{this.phone}} class="form-input w-full" />
+                </InputGroup>
+                {{!-- <InputGroup @name="Structural" @wrapperClass="col-span-1">
+                    <Checkbox @checked={{this.warehouse.meta.structural}} @onChange={{this.toggleStructural}} />
+                </InputGroup>
+                <InputGroup @name="External" @wrapperClass="col-span-1">
+                    <Checkbox @checked={{this.warehouse.meta.external}} @onChange={{this.toggleExternal}} />
+                </InputGroup> --}}
+                <div><Layout::Section::Header @title="Create" />
+                    <Layout::Section::Body class="overflow-y-scroll h-full">
+                        <div class="container mx-auto h-screen" {{increase-height-by 800}}>
+                            <div class="mx-auto">
+                                <InputGroup @name="Add Sections" @autocomplete="nope" @value={{this.warehouse.warehouse_sections}} @placeholder="Amount of sections" />
+                                {{#if this.warehouse.warehouse_sections}}
+                                    <InputGroup @name="Add Aisles" @autocomplete="nope" @value={{this.warehouse.warehouse_aisles}} @placeholder="Amount of aisles" />
+                                    {{#if this.warehouse.warehouse_aisles}}
+                                        <InputGroup @name="Add Racks" @autocomplete="nope" @value={{this.warehouse.warehouse_racks}} @placeholder="Amount of racks" />
+                                        {{#if this.warehouse.warehouse_racks}}
+                                            <InputGroup @name="Add Bins" @autocomplete="nope" @value={{this.warehouse.warehouse_bins}} @placeholder="Amount of bins" />
+                                        {{/if}}
+                                    {{/if}}
+                                {{/if}}
+                            </div>
+                        </div>
+                    </Layout::Section::Body>
+                </div>
+            </ContentPanel>
         </div>
     </Overlay::Body>
 </Overlay>
