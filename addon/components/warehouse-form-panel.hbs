@@ -64,29 +64,27 @@
                 <InputGroup @name="Phone">
                     <PhoneInput @value={{this.warehouse.phone}} @autocomplete="nope" @onInput={{this.phone}} class="form-input w-full" />
                 </InputGroup>
-                {{!-- <InputGroup @name="Structural" @wrapperClass="col-span-1">
-                    <Checkbox @checked={{this.warehouse.meta.structural}} @onChange={{this.toggleStructural}} />
+                <InputGroup @name="Description" @helpText="Additional description text of entity." @wrapperClass="col-span-2 mb-2">
+                    <Textarea @value={{this.warehouse.meta.description}} type="text" class="w-full form-input" placeholder="Description" />
                 </InputGroup>
-                <InputGroup @name="External" @wrapperClass="col-span-1">
-                    <Checkbox @checked={{this.warehouse.meta.external}} @onChange={{this.toggleExternal}} />
-                </InputGroup> --}}
-                <div><Layout::Section::Header @title="Create" />
-                    <Layout::Section::Body class="overflow-y-scroll h-full">
-                        <div class="container mx-auto h-screen" {{increase-height-by 800}}>
-                            <div class="mx-auto">
-                                <InputGroup @name="Add Sections" @autocomplete="nope" @value={{this.warehouse.warehouse_sections}} @placeholder="Amount of sections" />
-                                {{#if this.warehouse.warehouse_sections}}
-                                    <InputGroup @name="Add Aisles" @autocomplete="nope" @value={{this.warehouse.warehouse_aisles}} @placeholder="Amount of aisles" />
-                                    {{#if this.warehouse.warehouse_aisles}}
-                                        <InputGroup @name="Add Racks" @autocomplete="nope" @value={{this.warehouse.warehouse_racks}} @placeholder="Amount of racks" />
-                                        {{#if this.warehouse.warehouse_racks}}
-                                            <InputGroup @name="Add Bins" @autocomplete="nope" @value={{this.warehouse.warehouse_bins}} @placeholder="Amount of bins" />
-                                        {{/if}}
-                                    {{/if}}
-                                {{/if}}
-                            </div>
-                        </div>
-                    </Layout::Section::Body>
+                <InputGroup @name="Structural" @value={{this.warehouse.meta.structural}} @wrapperClass="col-span-2">
+                    <Checkbox @value={{this.warehouse.meta.structural}} @onChange={{fn this.updateMetaProperty "structural"}} />
+                </InputGroup>
+                <InputGroup @name="External" @value={{this.warehouse.meta.external}} @wrapperClass="col-span-2">
+                    <Checkbox @value={{this.warehouse.meta.external}} @onChange={{fn this.updateMetaProperty "external"}} />
+                </InputGroup>
+                <div class="flex items-center justify-center">Create Batch</div>
+                <div>
+                    <InputGroup @name="Add Sections" @autocomplete="nope" @value={{this.warehouse.section}} @placeholder="Amount of sections" />
+                    {{#if this.warehouse.section}}
+                        <InputGroup @name="Add Aisles" @autocomplete="nope" @value={{this.warehouse.aisle}} @placeholder="Amount of aisles" />
+                        {{#if this.warehouse.aisle}}
+                            <InputGroup @name="Add Racks" @autocomplete="nope" @value={{this.warehouse.rack}} @placeholder="Amount of racks" />
+                            {{#if this.warehouse.rack}}
+                                <InputGroup @name="Add Bins" @autocomplete="nope" @value={{this.warehouse.bin}} @placeholder="Amount of bins" />
+                            {{/if}}
+                        {{/if}}
+                    {{/if}}
                 </div>
             </ContentPanel>
         </div>

@@ -195,4 +195,12 @@ export default class WarehouseFormPanelComponent extends Component {
 
         this.warehouse.setProperties({ location });
     }
+
+    @action updateMetaProperty(property, value) {
+        if (isBlank(this.warehouse.meta)) {
+            this.warehouse.meta = {};
+        }
+
+        this.warehouse.meta[property] = value;
+    }
 }

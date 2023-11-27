@@ -37,7 +37,7 @@ export default class WarehousesIndexNewController extends Controller {
      *
      * @var {EntityModel}
      */
-    @tracked warehouse = this.store.createRecord('warehouse', { type: 'pallet-warehouse' });
+    @tracked warehouse = this.store.createRecord('warehouse', { type: 'pallet-warehouse', status: 'active', meta: {} });
 
     /**
      * Set the overlay component context object.
@@ -83,6 +83,6 @@ export default class WarehousesIndexNewController extends Controller {
      * @memberof WarehousesIndexNewController
      */
     resetForm() {
-        this.warehouse = this.store.createRecord('warehouse', { type: 'pallet-warehouse', status: 'active' });
+        this.warehouse = this.store.createRecord('warehouse', { type: 'pallet-warehouse', status: 'active', meta: {} });
     }
 }

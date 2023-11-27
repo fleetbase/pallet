@@ -23,6 +23,7 @@ export default class WarehousesIndexRoute extends Route {
     };
 
     model(params) {
-        return this.store.query('warehouse', params);
+        // return this.store.query('warehouse', { ...params, with: ['warehouse-section', 'warehouse-rack', 'warehouse-bin', 'warehouse-dock', 'warehouse-aisle', 'batch']});
+        return this.store.query('warehouse', params)
     }
 }
