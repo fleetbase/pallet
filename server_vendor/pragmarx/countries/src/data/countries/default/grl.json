@@ -1,0 +1,1351 @@
+{
+    "abbrev": "Grlnd.",
+    "abbrev_len": "6",
+    "adm0_a3": "GRL",
+    "adm0_a3_ar": "GRL",
+    "adm0_a3_bd": "GRL",
+    "adm0_a3_br": "GRL",
+    "adm0_a3_cn": "GRL",
+    "adm0_a3_de": "GRL",
+    "adm0_a3_eg": "GRL",
+    "adm0_a3_es": "GRL",
+    "adm0_a3_fr": "GRL",
+    "adm0_a3_gb": "GRL",
+    "adm0_a3_gr": "GRL",
+    "adm0_a3_id": "GRL",
+    "adm0_a3_il": "GRL",
+    "adm0_a3_in": "GRL",
+    "adm0_a3_it": "GRL",
+    "adm0_a3_jp": "GRL",
+    "adm0_a3_ko": "GRL",
+    "adm0_a3_ma": "GRL",
+    "adm0_a3_nl": "GRL",
+    "adm0_a3_np": "GRL",
+    "adm0_a3_pk": "GRL",
+    "adm0_a3_pl": "GRL",
+    "adm0_a3_ps": "GRL",
+    "adm0_a3_pt": "GRL",
+    "adm0_a3_ru": "GRL",
+    "adm0_a3_sa": "GRL",
+    "adm0_a3_se": "GRL",
+    "adm0_a3_tr": "GRL",
+    "adm0_a3_tw": "GRL",
+    "adm0_a3_ua": "GRL",
+    "adm0_a3_un": "-99",
+    "adm0_a3_us": "GRL",
+    "adm0_a3_vn": "GRL",
+    "adm0_a3_wb": "-99",
+    "adm0_dif": "1",
+    "adm0_diff": "",
+    "adm0_iso": "GRL",
+    "adm0_tlc": "GRL",
+    "admin": "Greenland",
+    "alt_spellings": [
+        "GL",
+        "Gr\u00f8nland"
+    ],
+    "borders": [],
+    "brk_a3": "GRL",
+    "brk_diff": "0",
+    "brk_group": "",
+    "brk_name": "Greenland",
+    "calling_codes": [
+        "+299"
+    ],
+    "capital": [
+        "Nuuk"
+    ],
+    "capital_rinvex": "Nuuk",
+    "cca2": "GL",
+    "cca3": "GRL",
+    "ccn3": "304",
+    "cioc": {
+        "abbrev": "Grlnd.",
+        "abbrev_len": "6",
+        "adm0_a3": "GRL",
+        "adm0_a3_ar": "GRL",
+        "adm0_a3_bd": "GRL",
+        "adm0_a3_br": "GRL",
+        "adm0_a3_cn": "GRL",
+        "adm0_a3_de": "GRL",
+        "adm0_a3_eg": "GRL",
+        "adm0_a3_es": "GRL",
+        "adm0_a3_fr": "GRL",
+        "adm0_a3_gb": "GRL",
+        "adm0_a3_gr": "GRL",
+        "adm0_a3_id": "GRL",
+        "adm0_a3_il": "GRL",
+        "adm0_a3_in": "GRL",
+        "adm0_a3_it": "GRL",
+        "adm0_a3_jp": "GRL",
+        "adm0_a3_ko": "GRL",
+        "adm0_a3_ma": "GRL",
+        "adm0_a3_nl": "GRL",
+        "adm0_a3_np": "GRL",
+        "adm0_a3_pk": "GRL",
+        "adm0_a3_pl": "GRL",
+        "adm0_a3_ps": "GRL",
+        "adm0_a3_pt": "GRL",
+        "adm0_a3_ru": "GRL",
+        "adm0_a3_sa": "GRL",
+        "adm0_a3_se": "GRL",
+        "adm0_a3_tr": "GRL",
+        "adm0_a3_tw": "GRL",
+        "adm0_a3_ua": "GRL",
+        "adm0_a3_un": "-99",
+        "adm0_a3_us": "GRL",
+        "adm0_a3_vn": "GRL",
+        "adm0_a3_wb": "-99",
+        "adm0_dif": "1",
+        "adm0_diff": "",
+        "adm0_iso": "GRL",
+        "adm0_tlc": "GRL",
+        "admin": "Greenland",
+        "alt_spellings": [
+            "GL",
+            "Gr\u00f8nland"
+        ],
+        "borders": [],
+        "brk_a3": "GRL",
+        "brk_diff": "0",
+        "brk_group": "",
+        "brk_name": "Greenland",
+        "calling_codes": [
+            "+299"
+        ],
+        "capital": [
+            "Nuuk"
+        ],
+        "cca2": "GL",
+        "cca3": "GRL",
+        "ccn3": "304",
+        "cioc": null,
+        "currencies": {
+            "d_k_k": {
+                "name": "krone",
+                "symbol": "kr."
+            }
+        },
+        "data_sources": [
+            "mledoze"
+        ],
+        "demonyms": {
+            "eng": {
+                "f": "Greenlandic",
+                "m": "Greenlandic"
+            },
+            "fra": {
+                "f": "Groenlandaise",
+                "m": "Groenlandais"
+            }
+        },
+        "economy": "2. Developed region: nonG7",
+        "fclass_ar": "",
+        "fclass_bd": "",
+        "fclass_br": "",
+        "fclass_cn": "",
+        "fclass_de": "",
+        "fclass_eg": "",
+        "fclass_es": "",
+        "fclass_fr": "",
+        "fclass_gb": "",
+        "fclass_gr": "",
+        "fclass_id": "",
+        "fclass_il": "",
+        "fclass_in": "",
+        "fclass_iso": "Admin-0 dependency",
+        "fclass_it": "",
+        "fclass_jp": "",
+        "fclass_ko": "",
+        "fclass_ma": "",
+        "fclass_nl": "",
+        "fclass_np": "",
+        "fclass_pk": "",
+        "fclass_pl": "",
+        "fclass_ps": "",
+        "fclass_pt": "",
+        "fclass_ru": "",
+        "fclass_sa": "",
+        "fclass_se": "",
+        "fclass_tlc": "Admin-0 dependency",
+        "fclass_tr": "",
+        "fclass_tw": "",
+        "fclass_ua": "",
+        "fclass_us": "",
+        "fclass_vn": "",
+        "featurecla": "Admin-0 country",
+        "fips_10": "GL",
+        "flag": {
+            "emoji": "\ud83c\uddec\ud83c\uddf1"
+        },
+        "formal_en": "Greenland",
+        "formal_fr": "",
+        "gdp_md": "3051",
+        "gdp_year": "2018",
+        "geo": {
+            "area": 2166086,
+            "continent": "North America",
+            "landlocked": null,
+            "latlng": [
+                72,
+                -40
+            ],
+            "region": "Americas",
+            "region_un": "Americas",
+            "region_wb": "Europe & Central Asia",
+            "subregion": "North America"
+        },
+        "geou_dif": "0",
+        "geounit": "Greenland",
+        "gu_a3": "GRL",
+        "homepart": "-99",
+        "idd": {
+            "root": "+2",
+            "suffixes": [
+                "99"
+            ]
+        },
+        "income_grp": "2. High income: nonOECD",
+        "independent": null,
+        "iso_a2": "GL",
+        "iso_a2_eh": "GL",
+        "iso_a3": "GRL",
+        "iso_a3_eh": "GRL",
+        "iso_n3": "304",
+        "iso_n3_eh": "304",
+        "label_x": "-39.335251",
+        "label_y": "74.319387",
+        "labelrank": "3",
+        "languages": {
+            "kal": "Greenlandic"
+        },
+        "level": "2",
+        "long_len": "9",
+        "mapcolor7": "4",
+        "mapcolor8": "1",
+        "mapcolor9": "3",
+        "mapcolor13": "12",
+        "max_label": "6.7",
+        "min_label": "1.7",
+        "min_zoom": "0.0",
+        "name": {
+            "common": "Greenland",
+            "native": {
+                "kal": {
+                    "common": "Kalaallit Nunaat",
+                    "official": "Kalaallit Nunaat"
+                }
+            },
+            "official": "Greenland"
+        },
+        "name_alt": "",
+        "name_ar": "\u062c\u0631\u064a\u0646\u0644\u0627\u0646\u062f",
+        "name_bn": "\u0997\u09cd\u09b0\u09bf\u09a8\u09b2\u09cd\u09af\u09be\u09a8\u09cd\u09a1",
+        "name_ciawf": "Greenland",
+        "name_de": "Gr\u00f6nland",
+        "name_el": "\u0393\u03c1\u03bf\u03b9\u03bb\u03b1\u03bd\u03b4\u03af\u03b1",
+        "name_en": "Greenland",
+        "name_es": "Groenlandia",
+        "name_fa": "\u06af\u0631\u06cc\u0646\u0644\u0646\u062f",
+        "name_fr": "Groenland",
+        "name_he": "\u05d2\u05e8\u05d9\u05e0\u05dc\u05e0\u05d3",
+        "name_hi": "\u0917\u094d\u0930\u0940\u0928\u0932\u0948\u0923\u094d\u0921",
+        "name_hu": "Gr\u00f6nland",
+        "name_id": "Greenland",
+        "name_it": "Groenlandia",
+        "name_ja": "\u30b0\u30ea\u30fc\u30f3\u30e9\u30f3\u30c9",
+        "name_ko": "\uadf8\ub9b0\ub780\ub4dc",
+        "name_len": "9",
+        "name_long": "Greenland",
+        "name_nev": "Greenland",
+        "name_nl": "Groenland",
+        "name_pl": "Grenlandia",
+        "name_pt": "Groenl\u00e2ndia",
+        "name_ru": "\u0413\u0440\u0435\u043d\u043b\u0430\u043d\u0434\u0438\u044f",
+        "name_sort": "Greenland",
+        "name_sv": "Gr\u00f6nland",
+        "name_tr": "Gr\u00f6nland",
+        "name_uk": "\u0413\u0440\u0435\u043d\u043b\u0430\u043d\u0434\u0456\u044f",
+        "name_ur": "\u06af\u0631\u06cc\u0646 \u0644\u06cc\u0646\u0688",
+        "name_vi": "Greenland",
+        "name_zh": "\u683c\u9675\u5170",
+        "name_zht": "\u683c\u9675\u862d",
+        "ne_id": "1159320551",
+        "note_adm0": "Den.",
+        "note_brk": "",
+        "pop_est": "56225.0",
+        "pop_rank": "8",
+        "pop_year": "2019",
+        "postal": "GL",
+        "record_type": "country",
+        "scalerank": "0",
+        "sov_a3": "DN1",
+        "sovereignt": "Denmark",
+        "status": "officially-assigned",
+        "su_a3": "GRL",
+        "su_dif": "0",
+        "subregion_nev": "Northern America",
+        "subunit": "Greenland",
+        "tiny": "-99",
+        "tlc": "1",
+        "tlc_diff": "",
+        "tld": [
+            ".gl"
+        ],
+        "translations": {
+            "ces": {
+                "common": "Gr\u00f3nsko",
+                "official": "Gr\u00f3nsko"
+            },
+            "deu": {
+                "common": "Gr\u00f6nland",
+                "official": "Gr\u00f6nland"
+            },
+            "est": {
+                "common": "Gr\u00f6\u00f6nimaa",
+                "official": "Gr\u00f6\u00f6nimaa"
+            },
+            "fin": {
+                "common": "Gro\u00f6nlanti",
+                "official": "Gro\u00f6nlanti"
+            },
+            "fra": {
+                "common": "Groenland",
+                "official": "Groenland"
+            },
+            "hrv": {
+                "common": "Grenland",
+                "official": "Grenland"
+            },
+            "hun": {
+                "common": "Gr\u00f6nland",
+                "official": "Gr\u00f6nland"
+            },
+            "ita": {
+                "common": "Groenlandia",
+                "official": "Groenlandia"
+            },
+            "jpn": {
+                "common": "\u30b0\u30ea\u30fc\u30f3\u30e9\u30f3\u30c9",
+                "official": "\u30b0\u30ea\u30fc\u30f3\u30e9\u30f3\u30c9"
+            },
+            "kor": {
+                "common": "\uadf8\ub9b0\ub780\ub4dc",
+                "official": "\uadf8\ub9b0\ub780\ub4dc"
+            },
+            "nld": {
+                "common": "Groenland",
+                "official": "Groenland"
+            },
+            "per": {
+                "common": "\u06af\u0631\u06cc\u0646\u0644\u0646\u062f",
+                "official": "\u06af\u0631\u0648\u0626\u0646\u0644\u0646\u062f"
+            },
+            "pol": {
+                "common": "Grenlandia",
+                "official": "Grenlandia"
+            },
+            "por": {
+                "common": "Gronel\u00e2ndia",
+                "official": "Groenl\u00e2ndia"
+            },
+            "rus": {
+                "common": "\u0413\u0440\u0435\u043d\u043b\u0430\u043d\u0434\u0438\u044f",
+                "official": "\u0413\u0440\u0435\u043d\u043b\u0430\u043d\u0434\u0438\u044f"
+            },
+            "slk": {
+                "common": "Gr\u00f3nsko",
+                "official": "Gr\u00f3nsko"
+            },
+            "spa": {
+                "common": "Groenlandia",
+                "official": "Groenlandia"
+            },
+            "swe": {
+                "common": "Gr\u00f6nland",
+                "official": "Gr\u00f6nland"
+            },
+            "urd": {
+                "common": "\u06af\u0631\u06cc\u0646 \u0644\u06cc\u0646\u0688",
+                "official": "\u06af\u0631\u06cc\u0646 \u0644\u06cc\u0646\u0688"
+            },
+            "zho": {
+                "common": "\u683c\u9675\u5170",
+                "official": "\u683c\u9675\u5170"
+            }
+        },
+        "type": "Country",
+        "un_a3": "304",
+        "un_member": null,
+        "wb_a2": "GL",
+        "wb_a3": "GRL",
+        "wikidataid": "Q223",
+        "woe_id": "23424828",
+        "woe_id_eh": "23424828",
+        "woe_note": "Exact WOE match as country"
+    },
+    "currencies": [
+        "DKK"
+    ],
+    "data_sources": [
+        "mledoze",
+        "natural"
+    ],
+    "demonym": "Greenlandic",
+    "demonyms": {
+        "eng": {
+            "f": "Greenlandic",
+            "m": "Greenlandic"
+        },
+        "fra": {
+            "f": "Groenlandaise",
+            "m": "Groenlandais"
+        }
+    },
+    "dialling": {
+        "calling_code": [
+            "299"
+        ],
+        "international_prefix": 0,
+        "national_destination_code_lengths": [
+            2
+        ],
+        "national_number_lengths": [
+            6
+        ],
+        "national_prefix": null
+    },
+    "economy": "2. Developed region: nonG7",
+    "extra": {
+        "address_format": "{{recipient}}{{street}}{{postalcode}} {{city}}{{country}}",
+        "ar5": "OECD1990",
+        "cowc": null,
+        "cown": 0,
+        "data_protection": "GDPR",
+        "ds": "DK",
+        "edgar": "J4",
+        "emoji": "\ud83c\uddec\ud83c\uddf1",
+        "eu_member": null,
+        "fao": 0,
+        "fifa": "GRL",
+        "fips": "GL",
+        "gaul": 98,
+        "geonameid": 3425505,
+        "imf": 326,
+        "ioc": "GRL",
+        "itu": "GRL",
+        "marc": "gl",
+        "vat_rates": null,
+        "wmo": "GL"
+    },
+    "fclass_ar": "",
+    "fclass_bd": "",
+    "fclass_br": "",
+    "fclass_cn": "",
+    "fclass_de": "",
+    "fclass_eg": "",
+    "fclass_es": "",
+    "fclass_fr": "",
+    "fclass_gb": "",
+    "fclass_gr": "",
+    "fclass_id": "",
+    "fclass_il": "",
+    "fclass_in": "",
+    "fclass_iso": "Admin-0 dependency",
+    "fclass_it": "",
+    "fclass_jp": "",
+    "fclass_ko": "",
+    "fclass_ma": "",
+    "fclass_nl": "",
+    "fclass_np": "",
+    "fclass_pk": "",
+    "fclass_pl": "",
+    "fclass_ps": "",
+    "fclass_pt": "",
+    "fclass_ru": "",
+    "fclass_sa": "",
+    "fclass_se": "",
+    "fclass_tlc": "Admin-0 dependency",
+    "fclass_tr": "",
+    "fclass_tw": "",
+    "fclass_ua": "",
+    "fclass_us": "",
+    "fclass_vn": "",
+    "featurecla": "Admin-0 country",
+    "fips_10": "GL",
+    "flag": {
+        "emoji": "\ud83c\uddec\ud83c\uddf1"
+    },
+    "formal_en": "Greenland",
+    "formal_fr": "",
+    "gdp_md": "3051",
+    "gdp_year": "2018",
+    "geo": {
+        "area": 2166086,
+        "borders": [],
+        "continent": {
+            "NA": "North America"
+        },
+        "independent": "Part of DK",
+        "landlocked": false,
+        "latitude": "72 00 N",
+        "latitude_desc": "74.34954833984375",
+        "latlng": [
+            72,
+            -40
+        ],
+        "longitude": "40 00 W",
+        "longitude_desc": "-41.08988952636719",
+        "max_latitude": "83.666667",
+        "max_longitude": "-12.133333",
+        "min_latitude": "51.7",
+        "min_longitude": "-73.05",
+        "postal_code": true,
+        "region": "Americas",
+        "region_code": "019",
+        "region_un": "Americas",
+        "region_wb": "Europe & Central Asia",
+        "subregion": "Northern America",
+        "subregion_code": "021",
+        "world_region": "EMEA"
+    },
+    "geou_dif": "0",
+    "geounit": "Greenland",
+    "gu_a3": "GRL",
+    "homepart": "-99",
+    "idd": {
+        "root": "+2",
+        "suffixes": [
+            "99"
+        ]
+    },
+    "income_grp": "2. High income: nonOECD",
+    "independent": {
+        "abbrev": "Grlnd.",
+        "abbrev_len": "6",
+        "adm0_a3": "GRL",
+        "adm0_a3_ar": "GRL",
+        "adm0_a3_bd": "GRL",
+        "adm0_a3_br": "GRL",
+        "adm0_a3_cn": "GRL",
+        "adm0_a3_de": "GRL",
+        "adm0_a3_eg": "GRL",
+        "adm0_a3_es": "GRL",
+        "adm0_a3_fr": "GRL",
+        "adm0_a3_gb": "GRL",
+        "adm0_a3_gr": "GRL",
+        "adm0_a3_id": "GRL",
+        "adm0_a3_il": "GRL",
+        "adm0_a3_in": "GRL",
+        "adm0_a3_it": "GRL",
+        "adm0_a3_jp": "GRL",
+        "adm0_a3_ko": "GRL",
+        "adm0_a3_ma": "GRL",
+        "adm0_a3_nl": "GRL",
+        "adm0_a3_np": "GRL",
+        "adm0_a3_pk": "GRL",
+        "adm0_a3_pl": "GRL",
+        "adm0_a3_ps": "GRL",
+        "adm0_a3_pt": "GRL",
+        "adm0_a3_ru": "GRL",
+        "adm0_a3_sa": "GRL",
+        "adm0_a3_se": "GRL",
+        "adm0_a3_tr": "GRL",
+        "adm0_a3_tw": "GRL",
+        "adm0_a3_ua": "GRL",
+        "adm0_a3_un": "-99",
+        "adm0_a3_us": "GRL",
+        "adm0_a3_vn": "GRL",
+        "adm0_a3_wb": "-99",
+        "adm0_dif": "1",
+        "adm0_diff": "",
+        "adm0_iso": "GRL",
+        "adm0_tlc": "GRL",
+        "admin": "Greenland",
+        "alt_spellings": [
+            "GL",
+            "Gr\u00f8nland"
+        ],
+        "borders": [],
+        "brk_a3": "GRL",
+        "brk_diff": "0",
+        "brk_group": "",
+        "brk_name": "Greenland",
+        "calling_codes": [
+            "+299"
+        ],
+        "capital": [
+            "Nuuk"
+        ],
+        "cca2": "GL",
+        "cca3": "GRL",
+        "ccn3": "304",
+        "cioc": null,
+        "currencies": {
+            "d_k_k": {
+                "name": "krone",
+                "symbol": "kr."
+            }
+        },
+        "data_sources": [
+            "mledoze"
+        ],
+        "demonyms": {
+            "eng": {
+                "f": "Greenlandic",
+                "m": "Greenlandic"
+            },
+            "fra": {
+                "f": "Groenlandaise",
+                "m": "Groenlandais"
+            }
+        },
+        "economy": "2. Developed region: nonG7",
+        "fclass_ar": "",
+        "fclass_bd": "",
+        "fclass_br": "",
+        "fclass_cn": "",
+        "fclass_de": "",
+        "fclass_eg": "",
+        "fclass_es": "",
+        "fclass_fr": "",
+        "fclass_gb": "",
+        "fclass_gr": "",
+        "fclass_id": "",
+        "fclass_il": "",
+        "fclass_in": "",
+        "fclass_iso": "Admin-0 dependency",
+        "fclass_it": "",
+        "fclass_jp": "",
+        "fclass_ko": "",
+        "fclass_ma": "",
+        "fclass_nl": "",
+        "fclass_np": "",
+        "fclass_pk": "",
+        "fclass_pl": "",
+        "fclass_ps": "",
+        "fclass_pt": "",
+        "fclass_ru": "",
+        "fclass_sa": "",
+        "fclass_se": "",
+        "fclass_tlc": "Admin-0 dependency",
+        "fclass_tr": "",
+        "fclass_tw": "",
+        "fclass_ua": "",
+        "fclass_us": "",
+        "fclass_vn": "",
+        "featurecla": "Admin-0 country",
+        "fips_10": "GL",
+        "flag": {
+            "emoji": "\ud83c\uddec\ud83c\uddf1"
+        },
+        "formal_en": "Greenland",
+        "formal_fr": "",
+        "gdp_md": "3051",
+        "gdp_year": "2018",
+        "geo": {
+            "area": 2166086,
+            "continent": "North America",
+            "landlocked": null,
+            "latlng": [
+                72,
+                -40
+            ],
+            "region": "Americas",
+            "region_un": "Americas",
+            "region_wb": "Europe & Central Asia",
+            "subregion": "North America"
+        },
+        "geou_dif": "0",
+        "geounit": "Greenland",
+        "gu_a3": "GRL",
+        "homepart": "-99",
+        "idd": {
+            "root": "+2",
+            "suffixes": [
+                "99"
+            ]
+        },
+        "income_grp": "2. High income: nonOECD",
+        "independent": null,
+        "iso_a2": "GL",
+        "iso_a2_eh": "GL",
+        "iso_a3": "GRL",
+        "iso_a3_eh": "GRL",
+        "iso_n3": "304",
+        "iso_n3_eh": "304",
+        "label_x": "-39.335251",
+        "label_y": "74.319387",
+        "labelrank": "3",
+        "languages": {
+            "kal": "Greenlandic"
+        },
+        "level": "2",
+        "long_len": "9",
+        "mapcolor7": "4",
+        "mapcolor8": "1",
+        "mapcolor9": "3",
+        "mapcolor13": "12",
+        "max_label": "6.7",
+        "min_label": "1.7",
+        "min_zoom": "0.0",
+        "name": {
+            "common": "Greenland",
+            "native": {
+                "kal": {
+                    "common": "Kalaallit Nunaat",
+                    "official": "Kalaallit Nunaat"
+                }
+            },
+            "official": "Greenland"
+        },
+        "name_alt": "",
+        "name_ar": "\u062c\u0631\u064a\u0646\u0644\u0627\u0646\u062f",
+        "name_bn": "\u0997\u09cd\u09b0\u09bf\u09a8\u09b2\u09cd\u09af\u09be\u09a8\u09cd\u09a1",
+        "name_ciawf": "Greenland",
+        "name_de": "Gr\u00f6nland",
+        "name_el": "\u0393\u03c1\u03bf\u03b9\u03bb\u03b1\u03bd\u03b4\u03af\u03b1",
+        "name_en": "Greenland",
+        "name_es": "Groenlandia",
+        "name_fa": "\u06af\u0631\u06cc\u0646\u0644\u0646\u062f",
+        "name_fr": "Groenland",
+        "name_he": "\u05d2\u05e8\u05d9\u05e0\u05dc\u05e0\u05d3",
+        "name_hi": "\u0917\u094d\u0930\u0940\u0928\u0932\u0948\u0923\u094d\u0921",
+        "name_hu": "Gr\u00f6nland",
+        "name_id": "Greenland",
+        "name_it": "Groenlandia",
+        "name_ja": "\u30b0\u30ea\u30fc\u30f3\u30e9\u30f3\u30c9",
+        "name_ko": "\uadf8\ub9b0\ub780\ub4dc",
+        "name_len": "9",
+        "name_long": "Greenland",
+        "name_nev": "Greenland",
+        "name_nl": "Groenland",
+        "name_pl": "Grenlandia",
+        "name_pt": "Groenl\u00e2ndia",
+        "name_ru": "\u0413\u0440\u0435\u043d\u043b\u0430\u043d\u0434\u0438\u044f",
+        "name_sort": "Greenland",
+        "name_sv": "Gr\u00f6nland",
+        "name_tr": "Gr\u00f6nland",
+        "name_uk": "\u0413\u0440\u0435\u043d\u043b\u0430\u043d\u0434\u0456\u044f",
+        "name_ur": "\u06af\u0631\u06cc\u0646 \u0644\u06cc\u0646\u0688",
+        "name_vi": "Greenland",
+        "name_zh": "\u683c\u9675\u5170",
+        "name_zht": "\u683c\u9675\u862d",
+        "ne_id": "1159320551",
+        "note_adm0": "Den.",
+        "note_brk": "",
+        "pop_est": "56225.0",
+        "pop_rank": "8",
+        "pop_year": "2019",
+        "postal": "GL",
+        "record_type": "country",
+        "scalerank": "0",
+        "sov_a3": "DN1",
+        "sovereignt": "Denmark",
+        "status": "officially-assigned",
+        "su_a3": "GRL",
+        "su_dif": "0",
+        "subregion_nev": "Northern America",
+        "subunit": "Greenland",
+        "tiny": "-99",
+        "tlc": "1",
+        "tlc_diff": "",
+        "tld": [
+            ".gl"
+        ],
+        "translations": {
+            "ces": {
+                "common": "Gr\u00f3nsko",
+                "official": "Gr\u00f3nsko"
+            },
+            "deu": {
+                "common": "Gr\u00f6nland",
+                "official": "Gr\u00f6nland"
+            },
+            "est": {
+                "common": "Gr\u00f6\u00f6nimaa",
+                "official": "Gr\u00f6\u00f6nimaa"
+            },
+            "fin": {
+                "common": "Gro\u00f6nlanti",
+                "official": "Gro\u00f6nlanti"
+            },
+            "fra": {
+                "common": "Groenland",
+                "official": "Groenland"
+            },
+            "hrv": {
+                "common": "Grenland",
+                "official": "Grenland"
+            },
+            "hun": {
+                "common": "Gr\u00f6nland",
+                "official": "Gr\u00f6nland"
+            },
+            "ita": {
+                "common": "Groenlandia",
+                "official": "Groenlandia"
+            },
+            "jpn": {
+                "common": "\u30b0\u30ea\u30fc\u30f3\u30e9\u30f3\u30c9",
+                "official": "\u30b0\u30ea\u30fc\u30f3\u30e9\u30f3\u30c9"
+            },
+            "kor": {
+                "common": "\uadf8\ub9b0\ub780\ub4dc",
+                "official": "\uadf8\ub9b0\ub780\ub4dc"
+            },
+            "nld": {
+                "common": "Groenland",
+                "official": "Groenland"
+            },
+            "per": {
+                "common": "\u06af\u0631\u06cc\u0646\u0644\u0646\u062f",
+                "official": "\u06af\u0631\u0648\u0626\u0646\u0644\u0646\u062f"
+            },
+            "pol": {
+                "common": "Grenlandia",
+                "official": "Grenlandia"
+            },
+            "por": {
+                "common": "Gronel\u00e2ndia",
+                "official": "Groenl\u00e2ndia"
+            },
+            "rus": {
+                "common": "\u0413\u0440\u0435\u043d\u043b\u0430\u043d\u0434\u0438\u044f",
+                "official": "\u0413\u0440\u0435\u043d\u043b\u0430\u043d\u0434\u0438\u044f"
+            },
+            "slk": {
+                "common": "Gr\u00f3nsko",
+                "official": "Gr\u00f3nsko"
+            },
+            "spa": {
+                "common": "Groenlandia",
+                "official": "Groenlandia"
+            },
+            "swe": {
+                "common": "Gr\u00f6nland",
+                "official": "Gr\u00f6nland"
+            },
+            "urd": {
+                "common": "\u06af\u0631\u06cc\u0646 \u0644\u06cc\u0646\u0688",
+                "official": "\u06af\u0631\u06cc\u0646 \u0644\u06cc\u0646\u0688"
+            },
+            "zho": {
+                "common": "\u683c\u9675\u5170",
+                "official": "\u683c\u9675\u5170"
+            }
+        },
+        "type": "Country",
+        "un_a3": "304",
+        "un_member": null,
+        "wb_a2": "GL",
+        "wb_a3": "GRL",
+        "wikidataid": "Q223",
+        "woe_id": "23424828",
+        "woe_id_eh": "23424828",
+        "woe_note": "Exact WOE match as country"
+    },
+    "iso_3166_1_alpha2": "GL",
+    "iso_3166_1_alpha3": "GRL",
+    "iso_3166_1_numeric": "304",
+    "iso_a2": "GL",
+    "iso_a2_eh": "GL",
+    "iso_a3": "GRL",
+    "iso_a3_eh": "GRL",
+    "iso_n3": "304",
+    "iso_n3_eh": "304",
+    "label_x": "-39.335251",
+    "label_y": "74.319387",
+    "labelrank": "3",
+    "languages": {
+        "kal": "Greenlandic"
+    },
+    "level": "2",
+    "long_len": "9",
+    "mapcolor7": "4",
+    "mapcolor8": "1",
+    "mapcolor9": "3",
+    "mapcolor13": "12",
+    "max_label": "6.7",
+    "min_label": "1.7",
+    "min_zoom": "0.0",
+    "name": {
+        "common": "Greenland",
+        "native": {
+            "kal": {
+                "common": "Kalaallit Nunaat",
+                "official": "Kalaallit Nunaat"
+            }
+        },
+        "official": "Greenland"
+    },
+    "name_alt": "",
+    "name_ar": "\u062c\u0631\u064a\u0646\u0644\u0627\u0646\u062f",
+    "name_bn": "\u0997\u09cd\u09b0\u09bf\u09a8\u09b2\u09cd\u09af\u09be\u09a8\u09cd\u09a1",
+    "name_ciawf": "Greenland",
+    "name_de": "Gr\u00f6nland",
+    "name_el": "\u0393\u03c1\u03bf\u03b9\u03bb\u03b1\u03bd\u03b4\u03af\u03b1",
+    "name_en": "Greenland",
+    "name_es": "Groenlandia",
+    "name_fa": "\u06af\u0631\u06cc\u0646\u0644\u0646\u062f",
+    "name_fr": "Groenland",
+    "name_he": "\u05d2\u05e8\u05d9\u05e0\u05dc\u05e0\u05d3",
+    "name_hi": "\u0917\u094d\u0930\u0940\u0928\u0932\u0948\u0923\u094d\u0921",
+    "name_hu": "Gr\u00f6nland",
+    "name_id": "Greenland",
+    "name_it": "Groenlandia",
+    "name_ja": "\u30b0\u30ea\u30fc\u30f3\u30e9\u30f3\u30c9",
+    "name_ko": "\uadf8\ub9b0\ub780\ub4dc",
+    "name_len": "9",
+    "name_long": "Greenland",
+    "name_nev": "Greenland",
+    "name_nl": "Groenland",
+    "name_pl": "Grenlandia",
+    "name_pt": "Groenl\u00e2ndia",
+    "name_ru": "\u0413\u0440\u0435\u043d\u043b\u0430\u043d\u0434\u0438\u044f",
+    "name_sort": "Greenland",
+    "name_sv": "Gr\u00f6nland",
+    "name_tr": "Gr\u00f6nland",
+    "name_uk": "\u0413\u0440\u0435\u043d\u043b\u0430\u043d\u0434\u0456\u044f",
+    "name_ur": "\u06af\u0631\u06cc\u0646 \u0644\u06cc\u0646\u0688",
+    "name_vi": "Greenland",
+    "name_zh": "\u683c\u9675\u5170",
+    "name_zht": "\u683c\u9675\u862d",
+    "ne_id": "1159320551",
+    "note_adm0": "Den.",
+    "note_brk": "",
+    "pop_est": "56225.0",
+    "pop_rank": "8",
+    "pop_year": "2019",
+    "postal": "GL",
+    "record_type": "country",
+    "scalerank": "0",
+    "sov_a3": "DN1",
+    "sovereignt": "Denmark",
+    "status": "officially-assigned",
+    "su_a3": "GRL",
+    "su_dif": "0",
+    "subregion_nev": "Northern America",
+    "subunit": "Greenland",
+    "tiny": "-99",
+    "tlc": "1",
+    "tlc_diff": "",
+    "tld": [
+        ".gl"
+    ],
+    "translations": {
+        "ces": {
+            "common": "Gr\u00f3nsko",
+            "official": "Gr\u00f3nsko"
+        },
+        "deu": {
+            "common": "Gr\u00f6nland",
+            "official": "Gr\u00f6nland"
+        },
+        "est": {
+            "common": "Gr\u00f6\u00f6nimaa",
+            "official": "Gr\u00f6\u00f6nimaa"
+        },
+        "fin": {
+            "common": "Gro\u00f6nlanti",
+            "official": "Gro\u00f6nlanti"
+        },
+        "fra": {
+            "common": "Groenland",
+            "official": "Groenland"
+        },
+        "hrv": {
+            "common": "Grenland",
+            "official": "Grenland"
+        },
+        "hun": {
+            "common": "Gr\u00f6nland",
+            "official": "Gr\u00f6nland"
+        },
+        "ita": {
+            "common": "Groenlandia",
+            "official": "Groenlandia"
+        },
+        "jpn": {
+            "common": "\u30b0\u30ea\u30fc\u30f3\u30e9\u30f3\u30c9",
+            "official": "\u30b0\u30ea\u30fc\u30f3\u30e9\u30f3\u30c9"
+        },
+        "kor": {
+            "common": "\uadf8\ub9b0\ub780\ub4dc",
+            "official": "\uadf8\ub9b0\ub780\ub4dc"
+        },
+        "nld": {
+            "common": "Groenland",
+            "official": "Groenland"
+        },
+        "per": {
+            "common": "\u06af\u0631\u06cc\u0646\u0644\u0646\u062f",
+            "official": "\u06af\u0631\u0648\u0626\u0646\u0644\u0646\u062f"
+        },
+        "pol": {
+            "common": "Grenlandia",
+            "official": "Grenlandia"
+        },
+        "por": {
+            "common": "Gronel\u00e2ndia",
+            "official": "Groenl\u00e2ndia"
+        },
+        "rus": {
+            "common": "\u0413\u0440\u0435\u043d\u043b\u0430\u043d\u0434\u0438\u044f",
+            "official": "\u0413\u0440\u0435\u043d\u043b\u0430\u043d\u0434\u0438\u044f"
+        },
+        "slk": {
+            "common": "Gr\u00f3nsko",
+            "official": "Gr\u00f3nsko"
+        },
+        "spa": {
+            "common": "Groenlandia",
+            "official": "Groenlandia"
+        },
+        "swe": {
+            "common": "Gr\u00f6nland",
+            "official": "Gr\u00f6nland"
+        },
+        "urd": {
+            "common": "\u06af\u0631\u06cc\u0646 \u0644\u06cc\u0646\u0688",
+            "official": "\u06af\u0631\u06cc\u0646 \u0644\u06cc\u0646\u0688"
+        },
+        "zho": {
+            "common": "\u683c\u9675\u5170",
+            "official": "\u683c\u9675\u5170"
+        }
+    },
+    "type": "Country",
+    "un_a3": "304",
+    "un_member": {
+        "abbrev": "Grlnd.",
+        "abbrev_len": "6",
+        "adm0_a3": "GRL",
+        "adm0_a3_ar": "GRL",
+        "adm0_a3_bd": "GRL",
+        "adm0_a3_br": "GRL",
+        "adm0_a3_cn": "GRL",
+        "adm0_a3_de": "GRL",
+        "adm0_a3_eg": "GRL",
+        "adm0_a3_es": "GRL",
+        "adm0_a3_fr": "GRL",
+        "adm0_a3_gb": "GRL",
+        "adm0_a3_gr": "GRL",
+        "adm0_a3_id": "GRL",
+        "adm0_a3_il": "GRL",
+        "adm0_a3_in": "GRL",
+        "adm0_a3_it": "GRL",
+        "adm0_a3_jp": "GRL",
+        "adm0_a3_ko": "GRL",
+        "adm0_a3_ma": "GRL",
+        "adm0_a3_nl": "GRL",
+        "adm0_a3_np": "GRL",
+        "adm0_a3_pk": "GRL",
+        "adm0_a3_pl": "GRL",
+        "adm0_a3_ps": "GRL",
+        "adm0_a3_pt": "GRL",
+        "adm0_a3_ru": "GRL",
+        "adm0_a3_sa": "GRL",
+        "adm0_a3_se": "GRL",
+        "adm0_a3_tr": "GRL",
+        "adm0_a3_tw": "GRL",
+        "adm0_a3_ua": "GRL",
+        "adm0_a3_un": "-99",
+        "adm0_a3_us": "GRL",
+        "adm0_a3_vn": "GRL",
+        "adm0_a3_wb": "-99",
+        "adm0_dif": "1",
+        "adm0_diff": "",
+        "adm0_iso": "GRL",
+        "adm0_tlc": "GRL",
+        "admin": "Greenland",
+        "alt_spellings": [
+            "GL",
+            "Gr\u00f8nland"
+        ],
+        "borders": [],
+        "brk_a3": "GRL",
+        "brk_diff": "0",
+        "brk_group": "",
+        "brk_name": "Greenland",
+        "calling_codes": [
+            "+299"
+        ],
+        "capital": [
+            "Nuuk"
+        ],
+        "cca2": "GL",
+        "cca3": "GRL",
+        "ccn3": "304",
+        "cioc": null,
+        "currencies": {
+            "d_k_k": {
+                "name": "krone",
+                "symbol": "kr."
+            }
+        },
+        "data_sources": [
+            "mledoze"
+        ],
+        "demonyms": {
+            "eng": {
+                "f": "Greenlandic",
+                "m": "Greenlandic"
+            },
+            "fra": {
+                "f": "Groenlandaise",
+                "m": "Groenlandais"
+            }
+        },
+        "economy": "2. Developed region: nonG7",
+        "fclass_ar": "",
+        "fclass_bd": "",
+        "fclass_br": "",
+        "fclass_cn": "",
+        "fclass_de": "",
+        "fclass_eg": "",
+        "fclass_es": "",
+        "fclass_fr": "",
+        "fclass_gb": "",
+        "fclass_gr": "",
+        "fclass_id": "",
+        "fclass_il": "",
+        "fclass_in": "",
+        "fclass_iso": "Admin-0 dependency",
+        "fclass_it": "",
+        "fclass_jp": "",
+        "fclass_ko": "",
+        "fclass_ma": "",
+        "fclass_nl": "",
+        "fclass_np": "",
+        "fclass_pk": "",
+        "fclass_pl": "",
+        "fclass_ps": "",
+        "fclass_pt": "",
+        "fclass_ru": "",
+        "fclass_sa": "",
+        "fclass_se": "",
+        "fclass_tlc": "Admin-0 dependency",
+        "fclass_tr": "",
+        "fclass_tw": "",
+        "fclass_ua": "",
+        "fclass_us": "",
+        "fclass_vn": "",
+        "featurecla": "Admin-0 country",
+        "fips_10": "GL",
+        "flag": {
+            "emoji": "\ud83c\uddec\ud83c\uddf1"
+        },
+        "formal_en": "Greenland",
+        "formal_fr": "",
+        "gdp_md": "3051",
+        "gdp_year": "2018",
+        "geo": {
+            "area": 2166086,
+            "continent": "North America",
+            "landlocked": null,
+            "latlng": [
+                72,
+                -40
+            ],
+            "region": "Americas",
+            "region_un": "Americas",
+            "region_wb": "Europe & Central Asia",
+            "subregion": "North America"
+        },
+        "geou_dif": "0",
+        "geounit": "Greenland",
+        "gu_a3": "GRL",
+        "homepart": "-99",
+        "idd": {
+            "root": "+2",
+            "suffixes": [
+                "99"
+            ]
+        },
+        "income_grp": "2. High income: nonOECD",
+        "independent": null,
+        "iso_a2": "GL",
+        "iso_a2_eh": "GL",
+        "iso_a3": "GRL",
+        "iso_a3_eh": "GRL",
+        "iso_n3": "304",
+        "iso_n3_eh": "304",
+        "label_x": "-39.335251",
+        "label_y": "74.319387",
+        "labelrank": "3",
+        "languages": {
+            "kal": "Greenlandic"
+        },
+        "level": "2",
+        "long_len": "9",
+        "mapcolor7": "4",
+        "mapcolor8": "1",
+        "mapcolor9": "3",
+        "mapcolor13": "12",
+        "max_label": "6.7",
+        "min_label": "1.7",
+        "min_zoom": "0.0",
+        "name": {
+            "common": "Greenland",
+            "native": {
+                "kal": {
+                    "common": "Kalaallit Nunaat",
+                    "official": "Kalaallit Nunaat"
+                }
+            },
+            "official": "Greenland"
+        },
+        "name_alt": "",
+        "name_ar": "\u062c\u0631\u064a\u0646\u0644\u0627\u0646\u062f",
+        "name_bn": "\u0997\u09cd\u09b0\u09bf\u09a8\u09b2\u09cd\u09af\u09be\u09a8\u09cd\u09a1",
+        "name_ciawf": "Greenland",
+        "name_de": "Gr\u00f6nland",
+        "name_el": "\u0393\u03c1\u03bf\u03b9\u03bb\u03b1\u03bd\u03b4\u03af\u03b1",
+        "name_en": "Greenland",
+        "name_es": "Groenlandia",
+        "name_fa": "\u06af\u0631\u06cc\u0646\u0644\u0646\u062f",
+        "name_fr": "Groenland",
+        "name_he": "\u05d2\u05e8\u05d9\u05e0\u05dc\u05e0\u05d3",
+        "name_hi": "\u0917\u094d\u0930\u0940\u0928\u0932\u0948\u0923\u094d\u0921",
+        "name_hu": "Gr\u00f6nland",
+        "name_id": "Greenland",
+        "name_it": "Groenlandia",
+        "name_ja": "\u30b0\u30ea\u30fc\u30f3\u30e9\u30f3\u30c9",
+        "name_ko": "\uadf8\ub9b0\ub780\ub4dc",
+        "name_len": "9",
+        "name_long": "Greenland",
+        "name_nev": "Greenland",
+        "name_nl": "Groenland",
+        "name_pl": "Grenlandia",
+        "name_pt": "Groenl\u00e2ndia",
+        "name_ru": "\u0413\u0440\u0435\u043d\u043b\u0430\u043d\u0434\u0438\u044f",
+        "name_sort": "Greenland",
+        "name_sv": "Gr\u00f6nland",
+        "name_tr": "Gr\u00f6nland",
+        "name_uk": "\u0413\u0440\u0435\u043d\u043b\u0430\u043d\u0434\u0456\u044f",
+        "name_ur": "\u06af\u0631\u06cc\u0646 \u0644\u06cc\u0646\u0688",
+        "name_vi": "Greenland",
+        "name_zh": "\u683c\u9675\u5170",
+        "name_zht": "\u683c\u9675\u862d",
+        "ne_id": "1159320551",
+        "note_adm0": "Den.",
+        "note_brk": "",
+        "pop_est": "56225.0",
+        "pop_rank": "8",
+        "pop_year": "2019",
+        "postal": "GL",
+        "record_type": "country",
+        "scalerank": "0",
+        "sov_a3": "DN1",
+        "sovereignt": "Denmark",
+        "status": "officially-assigned",
+        "su_a3": "GRL",
+        "su_dif": "0",
+        "subregion_nev": "Northern America",
+        "subunit": "Greenland",
+        "tiny": "-99",
+        "tlc": "1",
+        "tlc_diff": "",
+        "tld": [
+            ".gl"
+        ],
+        "translations": {
+            "ces": {
+                "common": "Gr\u00f3nsko",
+                "official": "Gr\u00f3nsko"
+            },
+            "deu": {
+                "common": "Gr\u00f6nland",
+                "official": "Gr\u00f6nland"
+            },
+            "est": {
+                "common": "Gr\u00f6\u00f6nimaa",
+                "official": "Gr\u00f6\u00f6nimaa"
+            },
+            "fin": {
+                "common": "Gro\u00f6nlanti",
+                "official": "Gro\u00f6nlanti"
+            },
+            "fra": {
+                "common": "Groenland",
+                "official": "Groenland"
+            },
+            "hrv": {
+                "common": "Grenland",
+                "official": "Grenland"
+            },
+            "hun": {
+                "common": "Gr\u00f6nland",
+                "official": "Gr\u00f6nland"
+            },
+            "ita": {
+                "common": "Groenlandia",
+                "official": "Groenlandia"
+            },
+            "jpn": {
+                "common": "\u30b0\u30ea\u30fc\u30f3\u30e9\u30f3\u30c9",
+                "official": "\u30b0\u30ea\u30fc\u30f3\u30e9\u30f3\u30c9"
+            },
+            "kor": {
+                "common": "\uadf8\ub9b0\ub780\ub4dc",
+                "official": "\uadf8\ub9b0\ub780\ub4dc"
+            },
+            "nld": {
+                "common": "Groenland",
+                "official": "Groenland"
+            },
+            "per": {
+                "common": "\u06af\u0631\u06cc\u0646\u0644\u0646\u062f",
+                "official": "\u06af\u0631\u0648\u0626\u0646\u0644\u0646\u062f"
+            },
+            "pol": {
+                "common": "Grenlandia",
+                "official": "Grenlandia"
+            },
+            "por": {
+                "common": "Gronel\u00e2ndia",
+                "official": "Groenl\u00e2ndia"
+            },
+            "rus": {
+                "common": "\u0413\u0440\u0435\u043d\u043b\u0430\u043d\u0434\u0438\u044f",
+                "official": "\u0413\u0440\u0435\u043d\u043b\u0430\u043d\u0434\u0438\u044f"
+            },
+            "slk": {
+                "common": "Gr\u00f3nsko",
+                "official": "Gr\u00f3nsko"
+            },
+            "spa": {
+                "common": "Groenlandia",
+                "official": "Groenlandia"
+            },
+            "swe": {
+                "common": "Gr\u00f6nland",
+                "official": "Gr\u00f6nland"
+            },
+            "urd": {
+                "common": "\u06af\u0631\u06cc\u0646 \u0644\u06cc\u0646\u0688",
+                "official": "\u06af\u0631\u06cc\u0646 \u0644\u06cc\u0646\u0688"
+            },
+            "zho": {
+                "common": "\u683c\u9675\u5170",
+                "official": "\u683c\u9675\u5170"
+            }
+        },
+        "type": "Country",
+        "un_a3": "304",
+        "un_member": null,
+        "wb_a2": "GL",
+        "wb_a3": "GRL",
+        "wikidataid": "Q223",
+        "woe_id": "23424828",
+        "woe_id_eh": "23424828",
+        "woe_note": "Exact WOE match as country"
+    },
+    "wb_a2": "GL",
+    "wb_a3": "GRL",
+    "wikidataid": "Q223",
+    "woe_id": "23424828",
+    "woe_id_eh": "23424828",
+    "woe_note": "Exact WOE match as country"
+}

@@ -3,6 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { isBlank } from '@ember/utils';
+import { all } from 'rsvp';
 import Point from '@fleetbase/fleetops-data/utils/geojson/point';
 import contextComponentCallback from '../utils/context-component-callback';
 import applyContextComponentArguments from '../utils/apply-context-component-arguments';
@@ -84,6 +85,10 @@ export default class WarehouseFormPanelComponent extends Component {
      */
     @action save() {
         const { warehouse } = this;
+
+        // if (warehouse.sections) {
+        //     all(warehouse.sections.map((section) => section.save()));
+        // }
 
         this.loader.showLoader('.next-content-overlay-panel-container', { loadingMessage: 'Saving place...', preserveTargetPosition: true });
         this.isLoading = true;

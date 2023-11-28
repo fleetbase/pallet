@@ -1,0 +1,397 @@
+{
+    "abbrev": "Alb.",
+    "abbrev_len": "4",
+    "adm0_a3": "ALB",
+    "adm0_a3_ar": "ALB",
+    "adm0_a3_bd": "ALB",
+    "adm0_a3_br": "ALB",
+    "adm0_a3_cn": "ALB",
+    "adm0_a3_de": "ALB",
+    "adm0_a3_eg": "ALB",
+    "adm0_a3_es": "ALB",
+    "adm0_a3_fr": "ALB",
+    "adm0_a3_gb": "ALB",
+    "adm0_a3_gr": "ALB",
+    "adm0_a3_id": "ALB",
+    "adm0_a3_il": "ALB",
+    "adm0_a3_in": "ALB",
+    "adm0_a3_it": "ALB",
+    "adm0_a3_jp": "ALB",
+    "adm0_a3_ko": "ALB",
+    "adm0_a3_ma": "ALB",
+    "adm0_a3_nl": "ALB",
+    "adm0_a3_np": "ALB",
+    "adm0_a3_pk": "ALB",
+    "adm0_a3_pl": "ALB",
+    "adm0_a3_ps": "ALB",
+    "adm0_a3_pt": "ALB",
+    "adm0_a3_ru": "ALB",
+    "adm0_a3_sa": "ALB",
+    "adm0_a3_se": "ALB",
+    "adm0_a3_tr": "ALB",
+    "adm0_a3_tw": "ALB",
+    "adm0_a3_ua": "ALB",
+    "adm0_a3_un": "-99",
+    "adm0_a3_us": "ALB",
+    "adm0_a3_vn": "ALB",
+    "adm0_a3_wb": "-99",
+    "adm0_dif": "0",
+    "adm0_diff": "",
+    "adm0_iso": "ALB",
+    "adm0_tlc": "ALB",
+    "admin": "Albania",
+    "alt_spellings": [
+        "AL",
+        "Shqip\u00ebri",
+        "Shqip\u00ebria",
+        "Shqipnia"
+    ],
+    "borders": [
+        "MNE",
+        "GRC",
+        "MKD",
+        "UNK"
+    ],
+    "brk_a3": "ALB",
+    "brk_diff": "0",
+    "brk_group": "",
+    "brk_name": "Albania",
+    "calling_codes": [
+        "+355"
+    ],
+    "capital": [
+        "Tirana"
+    ],
+    "capital_rinvex": "Tirana",
+    "cca2": "AL",
+    "cca3": "ALB",
+    "ccn3": "008",
+    "cioc": "ALB",
+    "currencies": [
+        "ALL"
+    ],
+    "data_sources": [
+        "mledoze",
+        "natural"
+    ],
+    "demonym": "Albanian",
+    "demonyms": {
+        "eng": {
+            "f": "Albanian",
+            "m": "Albanian"
+        },
+        "fra": {
+            "f": "Albanaise",
+            "m": "Albanais"
+        }
+    },
+    "dialling": {
+        "calling_code": [
+            "355"
+        ],
+        "international_prefix": "00",
+        "national_destination_code_lengths": [
+            2
+        ],
+        "national_number_lengths": [
+            7,
+            8,
+            9
+        ],
+        "national_prefix": "0"
+    },
+    "economy": "6. Developing region",
+    "extra": {
+        "address_format": null,
+        "ar5": "EIT",
+        "cowc": "ALB",
+        "cown": 339,
+        "data_protection": "Other",
+        "ds": "AL",
+        "edgar": "B3",
+        "emoji": "\ud83c\udde6\ud83c\uddf1",
+        "eu_member": null,
+        "fao": 3,
+        "fifa": "ALB",
+        "fips": "AL",
+        "gaul": 3,
+        "geonameid": 783754,
+        "imf": 914,
+        "ioc": "ALB",
+        "itu": "ALB",
+        "marc": "aa",
+        "vat_rates": null,
+        "wmo": "AB"
+    },
+    "fclass_ar": "",
+    "fclass_bd": "",
+    "fclass_br": "",
+    "fclass_cn": "",
+    "fclass_de": "",
+    "fclass_eg": "",
+    "fclass_es": "",
+    "fclass_fr": "",
+    "fclass_gb": "",
+    "fclass_gr": "",
+    "fclass_id": "",
+    "fclass_il": "",
+    "fclass_in": "",
+    "fclass_iso": "Admin-0 country",
+    "fclass_it": "",
+    "fclass_jp": "",
+    "fclass_ko": "",
+    "fclass_ma": "",
+    "fclass_nl": "",
+    "fclass_np": "",
+    "fclass_pk": "",
+    "fclass_pl": "",
+    "fclass_ps": "",
+    "fclass_pt": "",
+    "fclass_ru": "",
+    "fclass_sa": "",
+    "fclass_se": "",
+    "fclass_tlc": "Admin-0 country",
+    "fclass_tr": "",
+    "fclass_tw": "",
+    "fclass_ua": "",
+    "fclass_us": "",
+    "fclass_vn": "",
+    "featurecla": "Admin-0 country",
+    "fips_10": "AL",
+    "flag": {
+        "emoji": "\ud83c\udde6\ud83c\uddf1"
+    },
+    "formal_en": "Republic of Albania",
+    "formal_fr": "",
+    "gdp_md": "15279",
+    "gdp_year": "2019",
+    "geo": {
+        "area": 28748,
+        "borders": [
+            "MNE",
+            "GRC",
+            "MKD",
+            "UNK"
+        ],
+        "continent": {
+            "EU": "Europe"
+        },
+        "independent": "Yes",
+        "landlocked": false,
+        "latitude": "41 00 N",
+        "latitude_desc": "41.11113357543945",
+        "latlng": [
+            41,
+            20
+        ],
+        "longitude": "20 00 E",
+        "longitude_desc": "20.02745246887207",
+        "max_latitude": "42.659167",
+        "max_longitude": "21.05",
+        "min_latitude": "39.65",
+        "min_longitude": "19.266667",
+        "postal_code": true,
+        "region": "Europe",
+        "region_code": "150",
+        "region_un": "Europe",
+        "region_wb": "Europe & Central Asia",
+        "subregion": "Southern Europe",
+        "subregion_code": "039",
+        "world_region": "EMEA"
+    },
+    "geou_dif": "0",
+    "geounit": "Albania",
+    "gu_a3": "ALB",
+    "homepart": "1",
+    "idd": {
+        "root": "+3",
+        "suffixes": [
+            "55"
+        ]
+    },
+    "income_grp": "4. Lower middle income",
+    "independent": true,
+    "iso_3166_1_alpha2": "AL",
+    "iso_3166_1_alpha3": "ALB",
+    "iso_3166_1_numeric": "008",
+    "iso_a2": "AL",
+    "iso_a2_eh": "AL",
+    "iso_a3": "ALB",
+    "iso_a3_eh": "ALB",
+    "iso_n3": "008",
+    "iso_n3_eh": "008",
+    "label_x": "20.113840",
+    "label_y": "40.654855",
+    "labelrank": "6",
+    "languages": {
+        "sqi": "Albanian"
+    },
+    "level": "2",
+    "long_len": "7",
+    "mapcolor7": "1",
+    "mapcolor8": "4",
+    "mapcolor9": "1",
+    "mapcolor13": "6",
+    "max_label": "10.0",
+    "min_label": "5.0",
+    "min_zoom": "0.0",
+    "name": {
+        "common": "Albania",
+        "native": {
+            "sqi": {
+                "common": "Shqip\u00ebria",
+                "official": "Republika e Shqip\u00ebris\u00eb"
+            }
+        },
+        "official": "Republic of Albania"
+    },
+    "name_alt": "",
+    "name_ar": "\u0623\u0644\u0628\u0627\u0646\u064a\u0627",
+    "name_bn": "\u0986\u09b2\u09ac\u09c7\u09a8\u09bf\u09af\u09bc\u09be",
+    "name_ciawf": "Albania",
+    "name_de": "Albanien",
+    "name_el": "\u0391\u03bb\u03b2\u03b1\u03bd\u03af\u03b1",
+    "name_en": "Albania",
+    "name_es": "Albania",
+    "name_fa": "\u0622\u0644\u0628\u0627\u0646\u06cc",
+    "name_fr": "Albanie",
+    "name_he": "\u05d0\u05dc\u05d1\u05e0\u05d9\u05d4",
+    "name_hi": "\u0905\u0932\u094d\u092c\u093e\u0928\u093f\u092f\u093e",
+    "name_hu": "Alb\u00e1nia",
+    "name_id": "Albania",
+    "name_it": "Albania",
+    "name_ja": "\u30a2\u30eb\u30d0\u30cb\u30a2",
+    "name_ko": "\uc54c\ubc14\ub2c8\uc544",
+    "name_len": "7",
+    "name_long": "Albania",
+    "name_nev": "Albania",
+    "name_nl": "Albani\u00eb",
+    "name_pl": "Albania",
+    "name_pt": "Alb\u00e2nia",
+    "name_ru": "\u0410\u043b\u0431\u0430\u043d\u0438\u044f",
+    "name_sort": "Albania",
+    "name_sv": "Albanien",
+    "name_tr": "Arnavutluk",
+    "name_uk": "\u0410\u043b\u0431\u0430\u043d\u0456\u044f",
+    "name_ur": "\u0627\u0644\u0628\u0627\u0646\u06cc\u0627",
+    "name_vi": "Albania",
+    "name_zh": "\u963f\u5c14\u5df4\u5c3c\u4e9a",
+    "name_zht": "\u963f\u723e\u5df4\u5c3c\u4e9e",
+    "ne_id": "1159320325",
+    "note_adm0": "",
+    "note_brk": "",
+    "pop_est": "2854191.0",
+    "pop_rank": "12",
+    "pop_year": "2019",
+    "postal": "AL",
+    "record_type": "country",
+    "scalerank": "0",
+    "sov_a3": "ALB",
+    "sovereignt": "Albania",
+    "status": "officially-assigned",
+    "su_a3": "ALB",
+    "su_dif": "0",
+    "subregion_nev": "Southern Europe",
+    "subunit": "Albania",
+    "tiny": "-99",
+    "tlc": "1",
+    "tlc_diff": "",
+    "tld": [
+        ".al"
+    ],
+    "translations": {
+        "ces": {
+            "common": "Alb\u00e1nie",
+            "official": "Alb\u00e1nsk\u00e1 republika"
+        },
+        "cym": {
+            "common": "Albania",
+            "official": "Republic of Albania"
+        },
+        "deu": {
+            "common": "Albanien",
+            "official": "Republik Albanien"
+        },
+        "est": {
+            "common": "Albaania",
+            "official": "Albaania Vabariik"
+        },
+        "fin": {
+            "common": "Albania",
+            "official": "Albanian tasavalta"
+        },
+        "fra": {
+            "common": "Albanie",
+            "official": "R\u00e9publique d'Albanie"
+        },
+        "hrv": {
+            "common": "Albanija",
+            "official": "Republika Albanija"
+        },
+        "hun": {
+            "common": "Alb\u00e1nia",
+            "official": "Alb\u00e1n K\u00f6zt\u00e1rsas\u00e1g"
+        },
+        "ita": {
+            "common": "Albania",
+            "official": "Repubblica d'Albania"
+        },
+        "jpn": {
+            "common": "\u30a2\u30eb\u30d0\u30cb\u30a2",
+            "official": "\u30a2\u30eb\u30d0\u30cb\u30a2\u5171\u548c\u56fd"
+        },
+        "kor": {
+            "common": "\uc54c\ubc14\ub2c8\uc544",
+            "official": "\uc54c\ubc14\ub2c8\uc544 \uacf5\ud654\uad6d"
+        },
+        "nld": {
+            "common": "Albani\u00eb",
+            "official": "Republiek Albani\u00eb"
+        },
+        "per": {
+            "common": "\u0622\u0644\u0628\u0627\u0646\u06cc",
+            "official": "\u062c\u0645\u0647\u0648\u0631\u06cc \u0622\u0644\u0628\u0627\u0646\u06cc"
+        },
+        "pol": {
+            "common": "Albania",
+            "official": "Republika Albanii"
+        },
+        "por": {
+            "common": "Alb\u00e2nia",
+            "official": "Rep\u00fablica da Alb\u00e2nia"
+        },
+        "rus": {
+            "common": "\u0410\u043b\u0431\u0430\u043d\u0438\u044f",
+            "official": "\u0420\u0435\u0441\u043f\u0443\u0431\u043b\u0438\u043a\u0430 \u0410\u043b\u0431\u0430\u043d\u0438\u044f"
+        },
+        "slk": {
+            "common": "Alb\u00e1nsko",
+            "official": "Alb\u00e1nska republika"
+        },
+        "spa": {
+            "common": "Albania",
+            "official": "Rep\u00fablica de Albania"
+        },
+        "swe": {
+            "common": "Albanien",
+            "official": "Republiken Albanien"
+        },
+        "urd": {
+            "common": "\u0627\u0644\u0628\u0627\u0646\u06cc\u0627",
+            "official": "\u062c\u0645\u06c1\u0648\u0631\u06cc\u06c1 \u0627\u0644\u0628\u0627\u0646\u06cc\u0627"
+        },
+        "zho": {
+            "common": "\u963f\u5c14\u5df4\u5c3c\u4e9a",
+            "official": "\u963f\u5c14\u5df4\u5c3c\u4e9a\u5171\u548c\u56fd"
+        }
+    },
+    "type": "Sovereign country",
+    "un_a3": "008",
+    "un_member": true,
+    "wb_a2": "AL",
+    "wb_a3": "ALB",
+    "wikidataid": "Q222",
+    "woe_id": "23424742",
+    "woe_id_eh": "23424742",
+    "woe_note": "Exact WOE match as country"
+}

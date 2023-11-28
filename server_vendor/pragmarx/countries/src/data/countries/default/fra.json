@@ -1,0 +1,406 @@
+{
+    "abbrev": "Fr.",
+    "abbrev_len": "3",
+    "adm0_a3": "FRA",
+    "adm0_a3_ar": "FRA",
+    "adm0_a3_bd": "FRA",
+    "adm0_a3_br": "FRA",
+    "adm0_a3_cn": "FRA",
+    "adm0_a3_de": "FRA",
+    "adm0_a3_eg": "FRA",
+    "adm0_a3_es": "FRA",
+    "adm0_a3_fr": "FRA",
+    "adm0_a3_gb": "FRA",
+    "adm0_a3_gr": "FRA",
+    "adm0_a3_id": "FRA",
+    "adm0_a3_il": "FRA",
+    "adm0_a3_in": "FRA",
+    "adm0_a3_it": "FRA",
+    "adm0_a3_jp": "FRA",
+    "adm0_a3_ko": "FRA",
+    "adm0_a3_ma": "FRA",
+    "adm0_a3_nl": "FRA",
+    "adm0_a3_np": "FRA",
+    "adm0_a3_pk": "FRA",
+    "adm0_a3_pl": "FRA",
+    "adm0_a3_ps": "FRA",
+    "adm0_a3_pt": "FRA",
+    "adm0_a3_ru": "FRA",
+    "adm0_a3_sa": "FRA",
+    "adm0_a3_se": "FRA",
+    "adm0_a3_tr": "FRA",
+    "adm0_a3_tw": "FRA",
+    "adm0_a3_ua": "FRA",
+    "adm0_a3_un": "-99",
+    "adm0_a3_us": "FRA",
+    "adm0_a3_vn": "FRA",
+    "adm0_a3_wb": "-99",
+    "adm0_dif": "1",
+    "adm0_diff": "",
+    "adm0_iso": "FRA",
+    "adm0_tlc": "FRA",
+    "admin": "France",
+    "alt_spellings": [
+        "FR",
+        "French Republic",
+        "R\u00e9publique fran\u00e7aise"
+    ],
+    "borders": [
+        "AND",
+        "BEL",
+        "DEU",
+        "ITA",
+        "LUX",
+        "MCO",
+        "ESP",
+        "CHE"
+    ],
+    "brk_a3": "FRA",
+    "brk_diff": "0",
+    "brk_group": "",
+    "brk_name": "France",
+    "calling_codes": [
+        "+33"
+    ],
+    "capital": [
+        "Paris"
+    ],
+    "capital_rinvex": "Paris",
+    "cca2": "FR",
+    "cca3": "FRA",
+    "ccn3": "250",
+    "cioc": "FRA",
+    "currencies": [
+        "EUR"
+    ],
+    "data_sources": [
+        "mledoze",
+        "natural"
+    ],
+    "demonym": "French",
+    "demonyms": {
+        "eng": {
+            "f": "French",
+            "m": "French"
+        },
+        "fra": {
+            "f": "Fran\u00e7aise",
+            "m": "Fran\u00e7ais"
+        }
+    },
+    "dialling": {
+        "calling_code": [
+            "33"
+        ],
+        "international_prefix": "00",
+        "national_destination_code_lengths": [
+            1
+        ],
+        "national_number_lengths": [
+            9,
+            10
+        ],
+        "national_prefix": "0"
+    },
+    "economy": "1. Developed region: G7",
+    "extra": {
+        "address_format": "{{recipient}}{{street}}{{postalcode}} {{city}}{{country}}",
+        "ar5": "OECD1990",
+        "cowc": "FRN",
+        "cown": 220,
+        "data_protection": "GDPR",
+        "ds": "F",
+        "edgar": "I0",
+        "emoji": "\ud83c\uddeb\ud83c\uddf7",
+        "eu_member": true,
+        "fao": 68,
+        "fifa": "FRA",
+        "fips": "FR",
+        "gaul": 85,
+        "geonameid": 3017382,
+        "imf": 132,
+        "ioc": "FRA",
+        "itu": "F",
+        "marc": "fr",
+        "vat_rates": {
+            "parking": null,
+            "reduced": [
+                5.5,
+                10
+            ],
+            "standard": 20,
+            "super_reduced": 2.1
+        },
+        "wmo": "FR"
+    },
+    "fclass_ar": "",
+    "fclass_bd": "",
+    "fclass_br": "",
+    "fclass_cn": "",
+    "fclass_de": "",
+    "fclass_eg": "",
+    "fclass_es": "",
+    "fclass_fr": "",
+    "fclass_gb": "",
+    "fclass_gr": "",
+    "fclass_id": "",
+    "fclass_il": "",
+    "fclass_in": "",
+    "fclass_iso": "Admin-0 country",
+    "fclass_it": "",
+    "fclass_jp": "",
+    "fclass_ko": "",
+    "fclass_ma": "",
+    "fclass_nl": "",
+    "fclass_np": "",
+    "fclass_pk": "",
+    "fclass_pl": "",
+    "fclass_ps": "",
+    "fclass_pt": "",
+    "fclass_ru": "",
+    "fclass_sa": "",
+    "fclass_se": "",
+    "fclass_tlc": "Admin-0 country",
+    "fclass_tr": "",
+    "fclass_tw": "",
+    "fclass_ua": "",
+    "fclass_us": "",
+    "fclass_vn": "",
+    "featurecla": "Admin-0 country",
+    "fips_10": "FR",
+    "flag": {
+        "emoji": "\ud83c\uddeb\ud83c\uddf7"
+    },
+    "formal_en": "French Republic",
+    "formal_fr": "",
+    "gdp_md": "2715518",
+    "gdp_year": "2019",
+    "geo": {
+        "area": 551695,
+        "borders": [
+            "AND",
+            "BEL",
+            "DEU",
+            "ITA",
+            "LUX",
+            "MCO",
+            "ESP",
+            "CHE"
+        ],
+        "continent": {
+            "EU": "Europe"
+        },
+        "independent": "Yes",
+        "landlocked": false,
+        "latitude": "46 00 N",
+        "latitude_desc": "46.63727951049805",
+        "latlng": [
+            46,
+            2
+        ],
+        "longitude": "2 00 E",
+        "longitude_desc": "2.3382623195648193",
+        "max_latitude": "51.09",
+        "max_longitude": "9.56",
+        "min_latitude": "41.34",
+        "min_longitude": "-5.14",
+        "postal_code": true,
+        "region": "Europe",
+        "region_code": "150",
+        "region_un": "Europe",
+        "region_wb": "Europe & Central Asia",
+        "subregion": "Western Europe",
+        "subregion_code": "155",
+        "world_region": "EMEA"
+    },
+    "geou_dif": "0",
+    "geounit": "France",
+    "gu_a3": "FRA",
+    "homepart": "1",
+    "idd": {
+        "root": "+3",
+        "suffixes": [
+            "3"
+        ]
+    },
+    "income_grp": "1. High income: OECD",
+    "independent": true,
+    "iso_3166_1_alpha2": "FR",
+    "iso_3166_1_alpha3": "FRA",
+    "iso_3166_1_numeric": "250",
+    "iso_a2": "FR",
+    "iso_a2_eh": "FR",
+    "iso_a3": "FRA",
+    "iso_a3_eh": "FRA",
+    "iso_n3": "-99",
+    "iso_n3_eh": "250",
+    "label_x": "2.552275",
+    "label_y": "46.696113",
+    "labelrank": "2",
+    "languages": {
+        "fra": "French"
+    },
+    "level": "2",
+    "long_len": "6",
+    "mapcolor7": "7",
+    "mapcolor8": "5",
+    "mapcolor9": "9",
+    "mapcolor13": "11",
+    "max_label": "6.7",
+    "min_label": "1.7",
+    "min_zoom": "0.0",
+    "name": {
+        "common": "France",
+        "native": {
+            "fra": {
+                "common": "France",
+                "official": "R\u00e9publique fran\u00e7aise"
+            }
+        },
+        "official": "French Republic"
+    },
+    "name_alt": "",
+    "name_ar": "\u0641\u0631\u0646\u0633\u0627",
+    "name_bn": "\u09ab\u09cd\u09b0\u09be\u09a8\u09cd\u09b8",
+    "name_ciawf": "France",
+    "name_de": "Frankreich",
+    "name_el": "\u0393\u03b1\u03bb\u03bb\u03af\u03b1",
+    "name_en": "France",
+    "name_es": "Francia",
+    "name_fa": "\u0641\u0631\u0627\u0646\u0633\u0647",
+    "name_fr": "France",
+    "name_he": "\u05e6\u05e8\u05e4\u05ea",
+    "name_hi": "\u092b\u093c\u094d\u0930\u093e\u0928\u094d\u0938",
+    "name_hu": "Franciaorsz\u00e1g",
+    "name_id": "Prancis",
+    "name_it": "Francia",
+    "name_ja": "\u30d5\u30e9\u30f3\u30b9",
+    "name_ko": "\ud504\ub791\uc2a4",
+    "name_len": "6",
+    "name_long": "France",
+    "name_nev": "France",
+    "name_nl": "Frankrijk",
+    "name_pl": "Francja",
+    "name_pt": "Fran\u00e7a",
+    "name_ru": "\u0424\u0440\u0430\u043d\u0446\u0438\u044f",
+    "name_sort": "France",
+    "name_sv": "Frankrike",
+    "name_tr": "Fransa",
+    "name_uk": "\u0424\u0440\u0430\u043d\u0446\u0456\u044f",
+    "name_ur": "\u0641\u0631\u0627\u0646\u0633",
+    "name_vi": "Ph\u00e1p",
+    "name_zh": "\u6cd5\u56fd",
+    "name_zht": "\u6cd5\u570b",
+    "ne_id": "1159320637",
+    "note_adm0": "",
+    "note_brk": "",
+    "pop_est": "67059887.0",
+    "pop_rank": "16",
+    "pop_year": "2019",
+    "postal": "F",
+    "record_type": "country",
+    "scalerank": "0",
+    "sov_a3": "FR1",
+    "sovereignt": "France",
+    "status": "officially-assigned",
+    "su_a3": "FRA",
+    "su_dif": "0",
+    "subunit": "France",
+    "tiny": "-99",
+    "tlc": "1",
+    "tlc_diff": "",
+    "tld": [
+        ".fr"
+    ],
+    "translations": {
+        "ces": {
+            "common": "Francie",
+            "official": "Francouzsk\u00e1 republika"
+        },
+        "deu": {
+            "common": "Frankreich",
+            "official": "Franz\u00f6sische Republik"
+        },
+        "est": {
+            "common": "Prantsusmaa",
+            "official": "Prantsuse Vabariik"
+        },
+        "fin": {
+            "common": "Ranska",
+            "official": "Ranskan tasavalta"
+        },
+        "fra": {
+            "common": "France",
+            "official": "R\u00e9publique fran\u00e7aise"
+        },
+        "hrv": {
+            "common": "Francuska",
+            "official": "Francuska Republika"
+        },
+        "hun": {
+            "common": "Franciaorsz\u00e1g",
+            "official": "Francia K\u00f6zt\u00e1rsas\u00e1g"
+        },
+        "ita": {
+            "common": "Francia",
+            "official": "Repubblica francese"
+        },
+        "jpn": {
+            "common": "\u30d5\u30e9\u30f3\u30b9",
+            "official": "\u30d5\u30e9\u30f3\u30b9\u5171\u548c\u56fd"
+        },
+        "kor": {
+            "common": "\ud504\ub791\uc2a4",
+            "official": "\ud504\ub791\uc2a4 \uacf5\ud654\uad6d"
+        },
+        "nld": {
+            "common": "Frankrijk",
+            "official": "Franse Republiek"
+        },
+        "per": {
+            "common": "\u0641\u0631\u0627\u0646\u0633\u0647",
+            "official": "\u062c\u0645\u0647\u0648\u0631\u06cc \u0641\u0631\u0627\u0646\u0633\u0647"
+        },
+        "pol": {
+            "common": "Francja",
+            "official": "Republika Francuska"
+        },
+        "por": {
+            "common": "Fran\u00e7a",
+            "official": "Rep\u00fablica Francesa"
+        },
+        "rus": {
+            "common": "\u0424\u0440\u0430\u043d\u0446\u0438\u044f",
+            "official": "\u0424\u0440\u0430\u043d\u0446\u0443\u0437\u0441\u043a\u0430\u044f \u0420\u0435\u0441\u043f\u0443\u0431\u043b\u0438\u043a\u0430"
+        },
+        "slk": {
+            "common": "Franc\u00fazsko",
+            "official": "Franc\u00fazska republika"
+        },
+        "spa": {
+            "common": "Francia",
+            "official": "Rep\u00fablica franc\u00e9s"
+        },
+        "swe": {
+            "common": "Frankrike",
+            "official": "Republiken Frankrike"
+        },
+        "urd": {
+            "common": "\u0641\u0631\u0627\u0646\u0633",
+            "official": "\u062c\u0645\u06c1\u0648\u0631\u06cc\u06c1 \u0641\u0631\u0627\u0646\u0633"
+        },
+        "zho": {
+            "common": "\u6cd5\u56fd",
+            "official": "\u6cd5\u5170\u897f\u5171\u548c\u56fd"
+        }
+    },
+    "type": "Country",
+    "un_a3": "250",
+    "un_member": true,
+    "wb_a2": "FR",
+    "wb_a3": "FRA",
+    "wikidataid": "Q142",
+    "woe_id": "-90",
+    "woe_id_eh": "23424819",
+    "woe_note": "Includes only Metropolitan France (including Corsica)"
+}

@@ -2,8 +2,9 @@
 
 namespace Fleetbase\Pallet\Http\Filter;
 
-use Fleetbase\Pallet\Support\Utils;
 use Fleetbase\Http\Filter\Filter;
+use Fleetbase\Pallet\Support\Utils;
+
 class ProductFilter extends Filter
 {
     public function queryForInternal()
@@ -22,22 +23,22 @@ class ProductFilter extends Filter
     {
         $this->builder->searchWhere('name', $name);
     }
-    
+
     public function internalId(?string $internalId)
     {
         $this->builder->searchWhere('internal_id', $internalId);
     }
-    
+
     public function publicId(?string $publicId)
     {
         $this->builder->searchWhere('public_id', $publicId);
     }
-    
+
     public function sku(?string $sku)
     {
         $this->builder->searchWhere('sku', $sku);
     }
-    
+
     public function price(?string $price)
     {
         $this->builder->searchWhere('price', $price);
@@ -47,27 +48,27 @@ class ProductFilter extends Filter
     {
         $this->builder->searchWhere('sale_price', $salePrice);
     }
-    
+
     public function declaredValue(?string $declaredValue)
     {
         $this->builder->searchWhere('declared_value', $declaredValue);
     }
-    
+
     public function length(?string $length)
     {
         $this->builder->searchWhere('length', $length);
     }
-    
+
     public function width(?string $width)
     {
         $this->builder->searchWhere('width', $width);
     }
-    
+
     public function height(?string $height)
     {
         $this->builder->searchWhere('height', $height);
     }
-    
+
     public function weight(?string $weight)
     {
         $this->builder->searchWhere('weight', $weight);

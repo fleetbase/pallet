@@ -1,0 +1,393 @@
+{
+    "abbrev": "Benin",
+    "abbrev_len": "5",
+    "adm0_a3": "BEN",
+    "adm0_a3_ar": "BEN",
+    "adm0_a3_bd": "BEN",
+    "adm0_a3_br": "BEN",
+    "adm0_a3_cn": "BEN",
+    "adm0_a3_de": "BEN",
+    "adm0_a3_eg": "BEN",
+    "adm0_a3_es": "BEN",
+    "adm0_a3_fr": "BEN",
+    "adm0_a3_gb": "BEN",
+    "adm0_a3_gr": "BEN",
+    "adm0_a3_id": "BEN",
+    "adm0_a3_il": "BEN",
+    "adm0_a3_in": "BEN",
+    "adm0_a3_it": "BEN",
+    "adm0_a3_jp": "BEN",
+    "adm0_a3_ko": "BEN",
+    "adm0_a3_ma": "BEN",
+    "adm0_a3_nl": "BEN",
+    "adm0_a3_np": "BEN",
+    "adm0_a3_pk": "BEN",
+    "adm0_a3_pl": "BEN",
+    "adm0_a3_ps": "BEN",
+    "adm0_a3_pt": "BEN",
+    "adm0_a3_ru": "BEN",
+    "adm0_a3_sa": "BEN",
+    "adm0_a3_se": "BEN",
+    "adm0_a3_tr": "BEN",
+    "adm0_a3_tw": "BEN",
+    "adm0_a3_ua": "BEN",
+    "adm0_a3_un": "-99",
+    "adm0_a3_us": "BEN",
+    "adm0_a3_vn": "BEN",
+    "adm0_a3_wb": "-99",
+    "adm0_dif": "0",
+    "adm0_diff": "",
+    "adm0_iso": "BEN",
+    "adm0_tlc": "BEN",
+    "admin": "Benin",
+    "alt_spellings": [
+        "BJ",
+        "Republic of Benin",
+        "R\u00e9publique du B\u00e9nin"
+    ],
+    "borders": [
+        "BFA",
+        "NER",
+        "NGA",
+        "TGO"
+    ],
+    "brk_a3": "BEN",
+    "brk_diff": "0",
+    "brk_group": "",
+    "brk_name": "Benin",
+    "calling_codes": [
+        "+229"
+    ],
+    "capital": [
+        "Porto-Novo"
+    ],
+    "capital_rinvex": "Porto-Novo",
+    "cca2": "BJ",
+    "cca3": "BEN",
+    "ccn3": "204",
+    "cioc": "BEN",
+    "currencies": [
+        "XOF"
+    ],
+    "data_sources": [
+        "mledoze",
+        "natural"
+    ],
+    "demonym": "Beninese",
+    "demonyms": {
+        "eng": {
+            "f": "Beninese",
+            "m": "Beninese"
+        },
+        "fra": {
+            "f": "B\u00e9ninoise",
+            "m": "B\u00e9ninois"
+        }
+    },
+    "dialling": {
+        "calling_code": [
+            "229"
+        ],
+        "international_prefix": "00",
+        "national_destination_code_lengths": [
+            2
+        ],
+        "national_number_lengths": [
+            8
+        ],
+        "national_prefix": null
+    },
+    "economy": "7. Least developed region",
+    "extra": {
+        "address_format": null,
+        "ar5": "MAF",
+        "cowc": "BEN",
+        "cown": 434,
+        "data_protection": "Other",
+        "ds": "DY",
+        "edgar": "G6",
+        "emoji": "\ud83c\udde7\ud83c\uddef",
+        "eu_member": null,
+        "fao": 53,
+        "fifa": "BEN",
+        "fips": "BN",
+        "gaul": 29,
+        "geonameid": 2395170,
+        "imf": 638,
+        "ioc": "BEN",
+        "itu": "BEN",
+        "marc": "dm",
+        "vat_rates": null,
+        "wmo": "BJ"
+    },
+    "fclass_ar": "",
+    "fclass_bd": "",
+    "fclass_br": "",
+    "fclass_cn": "",
+    "fclass_de": "",
+    "fclass_eg": "",
+    "fclass_es": "",
+    "fclass_fr": "",
+    "fclass_gb": "",
+    "fclass_gr": "",
+    "fclass_id": "",
+    "fclass_il": "",
+    "fclass_in": "",
+    "fclass_iso": "Admin-0 country",
+    "fclass_it": "",
+    "fclass_jp": "",
+    "fclass_ko": "",
+    "fclass_ma": "",
+    "fclass_nl": "",
+    "fclass_np": "",
+    "fclass_pk": "",
+    "fclass_pl": "",
+    "fclass_ps": "",
+    "fclass_pt": "",
+    "fclass_ru": "",
+    "fclass_sa": "",
+    "fclass_se": "",
+    "fclass_tlc": "Admin-0 country",
+    "fclass_tr": "",
+    "fclass_tw": "",
+    "fclass_ua": "",
+    "fclass_us": "",
+    "fclass_vn": "",
+    "featurecla": "Admin-0 country",
+    "fips_10": "BN",
+    "flag": {
+        "emoji": "\ud83c\udde7\ud83c\uddef"
+    },
+    "formal_en": "Republic of Benin",
+    "formal_fr": "",
+    "gdp_md": "14390",
+    "gdp_year": "2019",
+    "geo": {
+        "area": 112622,
+        "borders": [
+            "BFA",
+            "NER",
+            "NGA",
+            "TGO"
+        ],
+        "continent": {
+            "AF": "Africa"
+        },
+        "independent": "Yes",
+        "landlocked": false,
+        "latitude": "9 30 N",
+        "latitude_desc": "9.624112129211426",
+        "latlng": [
+            9.5,
+            2.25
+        ],
+        "longitude": "2 15 E",
+        "longitude_desc": "2.3377387523651123",
+        "max_latitude": "12.3614",
+        "max_longitude": "3.816667",
+        "min_latitude": "6.233333",
+        "min_longitude": "-4",
+        "postal_code": false,
+        "region": "Africa",
+        "region_code": "002",
+        "region_un": "Africa",
+        "region_wb": "Sub-Saharan Africa",
+        "subregion": "Western Africa",
+        "subregion_code": "011",
+        "world_region": "EMEA"
+    },
+    "geou_dif": "0",
+    "geounit": "Benin",
+    "gu_a3": "BEN",
+    "homepart": "1",
+    "idd": {
+        "root": "+2",
+        "suffixes": [
+            "29"
+        ]
+    },
+    "income_grp": "5. Low income",
+    "independent": true,
+    "iso_3166_1_alpha2": "BJ",
+    "iso_3166_1_alpha3": "BEN",
+    "iso_3166_1_numeric": "204",
+    "iso_a2": "BJ",
+    "iso_a2_eh": "BJ",
+    "iso_a3": "BEN",
+    "iso_a3_eh": "BEN",
+    "iso_n3": "204",
+    "iso_n3_eh": "204",
+    "label_x": "2.352018",
+    "label_y": "10.324775",
+    "labelrank": "5",
+    "languages": {
+        "fra": "French"
+    },
+    "level": "2",
+    "long_len": "5",
+    "mapcolor7": "1",
+    "mapcolor8": "2",
+    "mapcolor9": "2",
+    "mapcolor13": "12",
+    "max_label": "9.0",
+    "min_label": "4.0",
+    "min_zoom": "0.0",
+    "name": {
+        "common": "Benin",
+        "native": {
+            "fra": {
+                "common": "B\u00e9nin",
+                "official": "R\u00e9publique du B\u00e9nin"
+            }
+        },
+        "official": "Republic of Benin"
+    },
+    "name_alt": "",
+    "name_ar": "\u0628\u0646\u064a\u0646",
+    "name_bn": "\u09ac\u09c7\u09a8\u09bf\u09a8",
+    "name_ciawf": "Benin",
+    "name_de": "Benin",
+    "name_el": "\u039c\u03c0\u03b5\u03bd\u03af\u03bd",
+    "name_en": "Benin",
+    "name_es": "Ben\u00edn",
+    "name_fa": "\u0628\u0646\u06cc\u0646",
+    "name_fr": "B\u00e9nin",
+    "name_he": "\u05d1\u05e0\u05d9\u05df",
+    "name_hi": "\u092c\u0947\u0928\u093f\u0928",
+    "name_hu": "Benin",
+    "name_id": "Benin",
+    "name_it": "Benin",
+    "name_ja": "\u30d9\u30ca\u30f3",
+    "name_ko": "\ubca0\ub0c9",
+    "name_len": "5",
+    "name_long": "Benin",
+    "name_nev": "Benin",
+    "name_nl": "Benin",
+    "name_pl": "Benin",
+    "name_pt": "Benim",
+    "name_ru": "\u0411\u0435\u043d\u0438\u043d",
+    "name_sort": "Benin",
+    "name_sv": "Benin",
+    "name_tr": "Benin",
+    "name_uk": "\u0411\u0435\u043d\u0456\u043d",
+    "name_ur": "\u0628\u06cc\u0646\u0646",
+    "name_vi": "B\u00e9nin",
+    "name_zh": "\u8d1d\u5b81",
+    "name_zht": "\u8c9d\u5357",
+    "ne_id": "1159320399",
+    "note_adm0": "",
+    "note_brk": "",
+    "pop_est": "11801151.0",
+    "pop_rank": "14",
+    "pop_year": "2019",
+    "postal": "BJ",
+    "record_type": "country",
+    "scalerank": "0",
+    "sov_a3": "BEN",
+    "sovereignt": "Benin",
+    "status": "officially-assigned",
+    "su_a3": "BEN",
+    "su_dif": "0",
+    "subunit": "Benin",
+    "tiny": "-99",
+    "tlc": "1",
+    "tlc_diff": "",
+    "tld": [
+        ".bj"
+    ],
+    "translations": {
+        "ces": {
+            "common": "Benin",
+            "official": "Beninsk\u00e1 republika"
+        },
+        "cym": {
+            "common": "Benin",
+            "official": "Republic of Benin"
+        },
+        "deu": {
+            "common": "Benin",
+            "official": "Republik Benin"
+        },
+        "est": {
+            "common": "Benin",
+            "official": "Benini Vabariik"
+        },
+        "fin": {
+            "common": "Benin",
+            "official": "Beninin tasavalta"
+        },
+        "fra": {
+            "common": "B\u00e9nin",
+            "official": "R\u00e9publique du B\u00e9nin"
+        },
+        "hrv": {
+            "common": "Benin",
+            "official": "Republika Benin"
+        },
+        "hun": {
+            "common": "Benin",
+            "official": "Benini K\u00f6zt\u00e1rsas\u00e1g"
+        },
+        "ita": {
+            "common": "Benin",
+            "official": "Repubblica del Benin"
+        },
+        "jpn": {
+            "common": "\u30d9\u30ca\u30f3",
+            "official": "\u30d9\u30ca\u30f3\u5171\u548c\u56fd"
+        },
+        "kor": {
+            "common": "\ubca0\ub0c9",
+            "official": "\ubca0\ub0c9 \uacf5\ud654\uad6d"
+        },
+        "nld": {
+            "common": "Benin",
+            "official": "Republiek Benin"
+        },
+        "per": {
+            "common": "\u0628\u0646\u06cc\u0646",
+            "official": "\u062c\u0645\u0647\u0648\u0631\u06cc \u0628\u0646\u06cc\u0646"
+        },
+        "pol": {
+            "common": "Benin",
+            "official": "Benin"
+        },
+        "por": {
+            "common": "Benin",
+            "official": "Rep\u00fablica do Benin"
+        },
+        "rus": {
+            "common": "\u0411\u0435\u043d\u0438\u043d",
+            "official": "\u0420\u0435\u0441\u043f\u0443\u0431\u043b\u0438\u043a\u0430 \u0411\u0435\u043d\u0438\u043d"
+        },
+        "slk": {
+            "common": "Benin",
+            "official": "Beninsk\u00e1 republika"
+        },
+        "spa": {
+            "common": "Ben\u00edn",
+            "official": "Rep\u00fablica de Benin"
+        },
+        "swe": {
+            "common": "Benin",
+            "official": "Republiken Benin"
+        },
+        "urd": {
+            "common": "\u0628\u06cc\u0646\u0646",
+            "official": "\u062c\u0645\u06c1\u0648\u0631\u06cc\u06c1 \u0628\u06cc\u0646\u0646"
+        },
+        "zho": {
+            "common": "\u8d1d\u5b81",
+            "official": "\u8d1d\u5b81\u5171\u548c\u56fd"
+        }
+    },
+    "type": "Sovereign country",
+    "un_a3": "204",
+    "un_member": true,
+    "wb_a2": "BJ",
+    "wb_a3": "BEN",
+    "wikidataid": "Q962",
+    "woe_id": "23424764",
+    "woe_id_eh": "23424764",
+    "woe_note": "Exact WOE match as country"
+}

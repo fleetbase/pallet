@@ -1,0 +1,391 @@
+{
+    "abbrev": "Fiji",
+    "abbrev_len": "4",
+    "adm0_a3": "FJI",
+    "adm0_a3_ar": "FJI",
+    "adm0_a3_bd": "FJI",
+    "adm0_a3_br": "FJI",
+    "adm0_a3_cn": "FJI",
+    "adm0_a3_de": "FJI",
+    "adm0_a3_eg": "FJI",
+    "adm0_a3_es": "FJI",
+    "adm0_a3_fr": "FJI",
+    "adm0_a3_gb": "FJI",
+    "adm0_a3_gr": "FJI",
+    "adm0_a3_id": "FJI",
+    "adm0_a3_il": "FJI",
+    "adm0_a3_in": "FJI",
+    "adm0_a3_it": "FJI",
+    "adm0_a3_jp": "FJI",
+    "adm0_a3_ko": "FJI",
+    "adm0_a3_ma": "FJI",
+    "adm0_a3_nl": "FJI",
+    "adm0_a3_np": "FJI",
+    "adm0_a3_pk": "FJI",
+    "adm0_a3_pl": "FJI",
+    "adm0_a3_ps": "FJI",
+    "adm0_a3_pt": "FJI",
+    "adm0_a3_ru": "FJI",
+    "adm0_a3_sa": "FJI",
+    "adm0_a3_se": "FJI",
+    "adm0_a3_tr": "FJI",
+    "adm0_a3_tw": "FJI",
+    "adm0_a3_ua": "FJI",
+    "adm0_a3_un": "-99",
+    "adm0_a3_us": "FJI",
+    "adm0_a3_vn": "FJI",
+    "adm0_a3_wb": "-99",
+    "adm0_dif": "0",
+    "adm0_diff": "",
+    "adm0_iso": "FJI",
+    "adm0_tlc": "FJI",
+    "admin": "Fiji",
+    "alt_spellings": [
+        "FJ",
+        "Viti",
+        "Republic of Fiji",
+        "Matanitu ko Viti",
+        "Fij\u012b Ga\u1e47ar\u0101jya"
+    ],
+    "borders": [],
+    "brk_a3": "FJI",
+    "brk_diff": "0",
+    "brk_group": "",
+    "brk_name": "Fiji",
+    "calling_codes": [
+        "+679"
+    ],
+    "capital": [
+        "Suva"
+    ],
+    "capital_rinvex": "Suva",
+    "cca2": "FJ",
+    "cca3": "FJI",
+    "ccn3": "242",
+    "cioc": "FIJ",
+    "currencies": [
+        "FJD"
+    ],
+    "data_sources": [
+        "mledoze",
+        "natural"
+    ],
+    "demonym": "Fijian",
+    "demonyms": {
+        "eng": {
+            "f": "Fijian",
+            "m": "Fijian"
+        },
+        "fra": {
+            "f": "Fidjienne",
+            "m": "Fidjien"
+        }
+    },
+    "dialling": {
+        "calling_code": [
+            "679"
+        ],
+        "international_prefix": "00",
+        "national_destination_code_lengths": [
+            2
+        ],
+        "national_number_lengths": [
+            7
+        ],
+        "national_prefix": null
+    },
+    "economy": "6. Developing region",
+    "extra": {
+        "address_format": null,
+        "ar5": "ASIA",
+        "cowc": "FIJ",
+        "cown": 950,
+        "data_protection": "Other",
+        "ds": "FJI",
+        "edgar": "H8",
+        "emoji": "\ud83c\uddeb\ud83c\uddef",
+        "eu_member": null,
+        "fao": 66,
+        "fifa": "FIJ",
+        "fips": "FJ",
+        "gaul": 83,
+        "geonameid": 2205218,
+        "imf": 819,
+        "ioc": "FIJ",
+        "itu": "FJI",
+        "marc": "fj",
+        "vat_rates": null,
+        "wmo": "FJ"
+    },
+    "fclass_ar": "",
+    "fclass_bd": "",
+    "fclass_br": "",
+    "fclass_cn": "",
+    "fclass_de": "",
+    "fclass_eg": "",
+    "fclass_es": "",
+    "fclass_fr": "",
+    "fclass_gb": "",
+    "fclass_gr": "",
+    "fclass_id": "",
+    "fclass_il": "",
+    "fclass_in": "",
+    "fclass_iso": "Admin-0 country",
+    "fclass_it": "",
+    "fclass_jp": "",
+    "fclass_ko": "",
+    "fclass_ma": "",
+    "fclass_nl": "",
+    "fclass_np": "",
+    "fclass_pk": "",
+    "fclass_pl": "",
+    "fclass_ps": "",
+    "fclass_pt": "",
+    "fclass_ru": "",
+    "fclass_sa": "",
+    "fclass_se": "",
+    "fclass_tlc": "Admin-0 country",
+    "fclass_tr": "",
+    "fclass_tw": "",
+    "fclass_ua": "",
+    "fclass_us": "",
+    "fclass_vn": "",
+    "featurecla": "Admin-0 country",
+    "fips_10": "FJ",
+    "flag": {
+        "emoji": "\ud83c\uddeb\ud83c\uddef"
+    },
+    "formal_en": "Republic of Fiji",
+    "formal_fr": "",
+    "gdp_md": "5496",
+    "gdp_year": "2019",
+    "geo": {
+        "area": 18272,
+        "borders": [],
+        "continent": {
+            "OC": "Oceania"
+        },
+        "independent": "Yes",
+        "landlocked": false,
+        "latitude": "18 00 S",
+        "latitude_desc": "-17.658161163330078",
+        "latlng": [
+            -18,
+            175
+        ],
+        "longitude": "175 00 E",
+        "longitude_desc": "178.1472625732422",
+        "max_latitude": "-12.466667",
+        "max_longitude": "-179.983333",
+        "min_latitude": "-21.016667",
+        "min_longitude": "180",
+        "postal_code": false,
+        "region": "Oceania",
+        "region_code": "009",
+        "region_un": "Oceania",
+        "region_wb": "East Asia & Pacific",
+        "subregion": "Melanesia",
+        "subregion_code": "054",
+        "world_region": "APAC"
+    },
+    "geou_dif": "0",
+    "geounit": "Fiji",
+    "gu_a3": "FJI",
+    "homepart": "1",
+    "idd": {
+        "root": "+6",
+        "suffixes": [
+            "79"
+        ]
+    },
+    "income_grp": "4. Lower middle income",
+    "independent": true,
+    "iso_3166_1_alpha2": "FJ",
+    "iso_3166_1_alpha3": "FJI",
+    "iso_3166_1_numeric": "242",
+    "iso_a2": "FJ",
+    "iso_a2_eh": "FJ",
+    "iso_a3": "FJI",
+    "iso_a3_eh": "FJI",
+    "iso_n3": "242",
+    "iso_n3_eh": "242",
+    "label_x": "177.975427",
+    "label_y": "-17.826099",
+    "labelrank": "6",
+    "languages": {
+        "eng": "English",
+        "fij": "Fijian",
+        "hif": "Fiji Hindi"
+    },
+    "level": "2",
+    "long_len": "4",
+    "mapcolor7": "5",
+    "mapcolor8": "1",
+    "mapcolor9": "2",
+    "mapcolor13": "2",
+    "max_label": "8.0",
+    "min_label": "3.0",
+    "min_zoom": "0.0",
+    "name": {
+        "common": "Fiji",
+        "native": {
+            "eng": {
+                "common": "Fiji",
+                "official": "Republic of Fiji"
+            },
+            "fij": {
+                "common": "Viti",
+                "official": "Matanitu Tugalala o Viti"
+            },
+            "hif": {
+                "common": "\u092b\u093f\u091c\u0940",
+                "official": "\u0930\u093f\u092a\u092c\u094d\u0932\u093f\u0915 \u0911\u092b \u092b\u0940\u091c\u0940"
+            }
+        },
+        "official": "Republic of Fiji"
+    },
+    "name_alt": "",
+    "name_ar": "\u0641\u064a\u062c\u064a",
+    "name_bn": "\u09ab\u09bf\u099c\u09bf",
+    "name_ciawf": "Fiji",
+    "name_de": "Fidschi",
+    "name_el": "\u03a6\u03af\u03c4\u03b6\u03b9",
+    "name_en": "Fiji",
+    "name_es": "Fiyi",
+    "name_fa": "\u0641\u06cc\u062c\u06cc",
+    "name_fr": "Fidji",
+    "name_he": "\u05e4\u05d9\u05d2'\u05d9",
+    "name_hi": "\u092b\u093c\u093f\u091c\u0940",
+    "name_hu": "Fidzsi-szigetek",
+    "name_id": "Fiji",
+    "name_it": "Figi",
+    "name_ja": "\u30d5\u30a3\u30b8\u30fc",
+    "name_ko": "\ud53c\uc9c0",
+    "name_len": "4",
+    "name_long": "Fiji",
+    "name_nev": "Fiji",
+    "name_nl": "Fiji",
+    "name_pl": "Fid\u017ci",
+    "name_pt": "Fiji",
+    "name_ru": "\u0424\u0438\u0434\u0436\u0438",
+    "name_sort": "Fiji",
+    "name_sv": "Fiji",
+    "name_tr": "Fiji",
+    "name_uk": "\u0424\u0456\u0434\u0436\u0456",
+    "name_ur": "\u0641\u062c\u06cc",
+    "name_vi": "Fiji",
+    "name_zh": "\u6590\u6d4e",
+    "name_zht": "\u6590\u6fdf",
+    "ne_id": "1159320625",
+    "note_adm0": "",
+    "note_brk": "",
+    "pop_est": "889953.0",
+    "pop_rank": "11",
+    "pop_year": "2019",
+    "postal": "FJ",
+    "record_type": "country",
+    "scalerank": "1",
+    "sov_a3": "FJI",
+    "sovereignt": "Fiji",
+    "status": "officially-assigned",
+    "su_a3": "FJI",
+    "su_dif": "0",
+    "subunit": "Fiji",
+    "tiny": "-99",
+    "tlc": "1",
+    "tlc_diff": "",
+    "tld": [
+        ".fj"
+    ],
+    "translations": {
+        "ces": {
+            "common": "Fid\u017ei",
+            "official": "Republika Fid\u017eijsk\u00fdch ostrov\u016f"
+        },
+        "deu": {
+            "common": "Fidschi",
+            "official": "Republik Fidschi"
+        },
+        "est": {
+            "common": "Fid\u017ei",
+            "official": "Fid\u017ei Vabariik"
+        },
+        "fin": {
+            "common": "Fid\u017ei",
+            "official": "Fid\u017ein tasavalta"
+        },
+        "fra": {
+            "common": "Fidji",
+            "official": "R\u00e9publique des Fidji"
+        },
+        "hrv": {
+            "common": "Fi\u0111i",
+            "official": "Republika Fid\u017ei"
+        },
+        "hun": {
+            "common": "Fidzsi-szigetek",
+            "official": "Fidzsi-szigeteki K\u00f6zt\u00e1rsas\u00e1g"
+        },
+        "ita": {
+            "common": "Figi",
+            "official": "Repubblica di Figi"
+        },
+        "jpn": {
+            "common": "\u30d5\u30a3\u30b8\u30fc",
+            "official": "\u30d5\u30a3\u30b8\u30fc\u5171\u548c\u56fd"
+        },
+        "kor": {
+            "common": "\ud53c\uc9c0",
+            "official": "\ud53c\uc9c0 \uacf5\ud654\uad6d"
+        },
+        "nld": {
+            "common": "Fiji",
+            "official": "Republiek Fiji"
+        },
+        "per": {
+            "common": "\u0641\u06cc\u062c\u06cc",
+            "official": "\u062c\u0645\u0647\u0648\u0631\u06cc \u062c\u0632\u0627\u06cc\u0631 \u0641\u06cc\u062c\u06cc"
+        },
+        "pol": {
+            "common": "Fid\u017ci",
+            "official": "Republika Fid\u017ci"
+        },
+        "por": {
+            "common": "Fiji",
+            "official": "Rep\u00fablica de Fiji"
+        },
+        "rus": {
+            "common": "\u0424\u0438\u0434\u0436\u0438",
+            "official": "\u0420\u0435\u0441\u043f\u0443\u0431\u043b\u0438\u043a\u0430 \u0424\u0438\u0434\u0436\u0438"
+        },
+        "slk": {
+            "common": "Fi\u01c6i",
+            "official": "Fi\u01c6ijsk\u00e1 republika"
+        },
+        "spa": {
+            "common": "Fiyi",
+            "official": "Rep\u00fablica de Fiji"
+        },
+        "swe": {
+            "common": "Fiji",
+            "official": "Republiken Fiji"
+        },
+        "urd": {
+            "common": "\u0641\u062c\u06cc",
+            "official": "\u062c\u0645\u06c1\u0648\u0631\u06cc\u06c1 \u0641\u062c\u06cc"
+        },
+        "zho": {
+            "common": "\u6590\u6d4e",
+            "official": "\u6590\u6d4e\u5171\u548c\u56fd"
+        }
+    },
+    "type": "Sovereign country",
+    "un_a3": "242",
+    "un_member": true,
+    "wb_a2": "FJ",
+    "wb_a3": "FJI",
+    "wikidataid": "Q712",
+    "woe_id": "23424813",
+    "woe_id_eh": "23424813",
+    "woe_note": "Exact WOE match as country"
+}

@@ -1,0 +1,21 @@
+{
+    "1": {
+        "abbreviation": "IST",
+        "dst": "0",
+        "gmt_offset": "19800",
+        "time_start": "-706341516",
+        "zone_id": "79"
+    },
+    "2": {
+        "abbreviation": "BTT",
+        "dst": "0",
+        "gmt_offset": "21600",
+        "time_start": "560025000",
+        "zone_id": "79"
+    },
+    "abbreviation": "LMT",
+    "dst": "0",
+    "gmt_offset": "21516",
+    "time_start": "-706341517",
+    "zone_id": "79"
+}

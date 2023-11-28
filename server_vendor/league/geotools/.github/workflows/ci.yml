@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '7.3', '7.4', '8.0', '8.1']
+        strategy: [ 'highest' ]
+        sf_version: ['']
+        include:
+            - php: 7.3
+              sf_version: '4.*'
+            - php: 7.4
+              strategy: 'lowest'
+            - php: 8.0
+              sf_version: '6.*'
+            - php: 8.1
+              sf_version: '6.*'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+    
+      - name: Generate locales
+        run: sudo apt-get update && sudo apt-get install tzdata locales -y && sudo locale-gen sv_SE && sudo locale-gen sv_SE.UTF-8 && sudo locale-gen en_US && sudo locale-gen en_US.UTF-8
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+
+      - name: Download dependencies
+        uses: ramsey/composer-install@v2
+        env:
+            SYMFONY_REQUIRE: ${{ matrix.sf_version }}
+        with:
+          dependency-versions: ${{ matrix.strategy }}
+          composer-options: --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Run tests
+        run: ./vendor/bin/phpunit

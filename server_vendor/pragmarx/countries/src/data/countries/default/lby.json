@@ -1,0 +1,394 @@
+{
+    "abbrev": "Libya",
+    "abbrev_len": "5",
+    "adm0_a3": "LBY",
+    "adm0_a3_ar": "LBY",
+    "adm0_a3_bd": "LBY",
+    "adm0_a3_br": "LBY",
+    "adm0_a3_cn": "LBY",
+    "adm0_a3_de": "LBY",
+    "adm0_a3_eg": "LBY",
+    "adm0_a3_es": "LBY",
+    "adm0_a3_fr": "LBY",
+    "adm0_a3_gb": "LBY",
+    "adm0_a3_gr": "LBY",
+    "adm0_a3_id": "LBY",
+    "adm0_a3_il": "LBY",
+    "adm0_a3_in": "LBY",
+    "adm0_a3_it": "LBY",
+    "adm0_a3_jp": "LBY",
+    "adm0_a3_ko": "LBY",
+    "adm0_a3_ma": "LBY",
+    "adm0_a3_nl": "LBY",
+    "adm0_a3_np": "LBY",
+    "adm0_a3_pk": "LBY",
+    "adm0_a3_pl": "LBY",
+    "adm0_a3_ps": "LBY",
+    "adm0_a3_pt": "LBY",
+    "adm0_a3_ru": "LBY",
+    "adm0_a3_sa": "LBY",
+    "adm0_a3_se": "LBY",
+    "adm0_a3_tr": "LBY",
+    "adm0_a3_tw": "LBY",
+    "adm0_a3_ua": "LBY",
+    "adm0_a3_un": "-99",
+    "adm0_a3_us": "LBY",
+    "adm0_a3_vn": "LBY",
+    "adm0_a3_wb": "-99",
+    "adm0_dif": "0",
+    "adm0_diff": "",
+    "adm0_iso": "LBY",
+    "adm0_tlc": "LBY",
+    "admin": "Libya",
+    "alt_spellings": [
+        "LY",
+        "State of Libya",
+        "Dawlat Libya"
+    ],
+    "borders": [
+        "DZA",
+        "TCD",
+        "EGY",
+        "NER",
+        "SDN",
+        "TUN"
+    ],
+    "brk_a3": "LBY",
+    "brk_diff": "0",
+    "brk_group": "",
+    "brk_name": "Libya",
+    "calling_codes": [
+        "+218"
+    ],
+    "capital": [
+        "Tripoli"
+    ],
+    "capital_rinvex": "Tripoli",
+    "cca2": "LY",
+    "cca3": "LBY",
+    "ccn3": "434",
+    "cioc": "LBA",
+    "currencies": [
+        "LYD"
+    ],
+    "data_sources": [
+        "mledoze",
+        "natural"
+    ],
+    "demonym": "Libyan",
+    "demonyms": {
+        "eng": {
+            "f": "Libyan",
+            "m": "Libyan"
+        },
+        "fra": {
+            "f": "Libyenne",
+            "m": "Libyen"
+        }
+    },
+    "dialling": {
+        "calling_code": [
+            "218"
+        ],
+        "international_prefix": "00",
+        "national_destination_code_lengths": [
+            2
+        ],
+        "national_number_lengths": [
+            8,
+            9
+        ],
+        "national_prefix": "0"
+    },
+    "economy": "6. Developing region",
+    "extra": {
+        "address_format": null,
+        "ar5": "MAF",
+        "cowc": "LIB",
+        "cown": 620,
+        "data_protection": "Other",
+        "ds": "LAR",
+        "edgar": 0,
+        "emoji": "\ud83c\uddf1\ud83c\uddfe",
+        "eu_member": null,
+        "fao": 124,
+        "fifa": "LBY",
+        "fips": "LY",
+        "gaul": 145,
+        "geonameid": 2215636,
+        "imf": 672,
+        "ioc": "LBA",
+        "itu": "LBY",
+        "marc": "ly",
+        "vat_rates": null,
+        "wmo": "LY"
+    },
+    "fclass_ar": "",
+    "fclass_bd": "",
+    "fclass_br": "",
+    "fclass_cn": "",
+    "fclass_de": "",
+    "fclass_eg": "",
+    "fclass_es": "",
+    "fclass_fr": "",
+    "fclass_gb": "",
+    "fclass_gr": "",
+    "fclass_id": "",
+    "fclass_il": "",
+    "fclass_in": "",
+    "fclass_iso": "Admin-0 country",
+    "fclass_it": "",
+    "fclass_jp": "",
+    "fclass_ko": "",
+    "fclass_ma": "",
+    "fclass_nl": "",
+    "fclass_np": "",
+    "fclass_pk": "",
+    "fclass_pl": "",
+    "fclass_ps": "",
+    "fclass_pt": "",
+    "fclass_ru": "",
+    "fclass_sa": "",
+    "fclass_se": "",
+    "fclass_tlc": "Admin-0 country",
+    "fclass_tr": "",
+    "fclass_tw": "",
+    "fclass_ua": "",
+    "fclass_us": "",
+    "fclass_vn": "",
+    "featurecla": "Admin-0 country",
+    "fips_10": "LY",
+    "flag": {
+        "emoji": "\ud83c\uddf1\ud83c\uddfe"
+    },
+    "formal_en": "Libya",
+    "formal_fr": "",
+    "gdp_md": "52091",
+    "gdp_year": "2019",
+    "geo": {
+        "area": 1759540,
+        "borders": [
+            "DZA",
+            "TCD",
+            "EGY",
+            "NER",
+            "SDN",
+            "TUN"
+        ],
+        "continent": {
+            "AF": "Africa"
+        },
+        "independent": "Yes",
+        "landlocked": false,
+        "latitude": "25 00 N",
+        "latitude_desc": "27.23609733581543",
+        "latlng": [
+            25,
+            17
+        ],
+        "longitude": "17 00 E",
+        "longitude_desc": "18.043556213378906",
+        "max_latitude": "33.15",
+        "max_longitude": "25.5",
+        "min_latitude": "20.8",
+        "min_longitude": "5",
+        "postal_code": true,
+        "region": "Africa",
+        "region_code": "002",
+        "region_un": "Africa",
+        "region_wb": "Middle East & North Africa",
+        "subregion": "Northern Africa",
+        "subregion_code": "015",
+        "world_region": "EMEA"
+    },
+    "geou_dif": "0",
+    "geounit": "Libya",
+    "gu_a3": "LBY",
+    "homepart": "1",
+    "idd": {
+        "root": "+2",
+        "suffixes": [
+            "18"
+        ]
+    },
+    "income_grp": "3. Upper middle income",
+    "independent": true,
+    "iso_3166_1_alpha2": "LY",
+    "iso_3166_1_alpha3": "LBY",
+    "iso_3166_1_numeric": "434",
+    "iso_a2": "LY",
+    "iso_a2_eh": "LY",
+    "iso_a3": "LBY",
+    "iso_a3_eh": "LBY",
+    "iso_n3": "434",
+    "iso_n3_eh": "434",
+    "label_x": "18.011015",
+    "label_y": "26.638944",
+    "labelrank": "3",
+    "languages": {
+        "ara": "Arabic"
+    },
+    "level": "2",
+    "long_len": "5",
+    "mapcolor7": "1",
+    "mapcolor8": "2",
+    "mapcolor9": "2",
+    "mapcolor13": "11",
+    "max_label": "8.0",
+    "min_label": "3.0",
+    "min_zoom": "0.0",
+    "name": {
+        "common": "Libya",
+        "native": {
+            "ara": {
+                "common": "\u200f\u0644\u064a\u0628\u064a\u0627",
+                "official": "\u0627\u0644\u062f\u0648\u0644\u0629 \u0644\u064a\u0628\u064a\u0627"
+            }
+        },
+        "official": "State of Libya"
+    },
+    "name_alt": "",
+    "name_ar": "\u0644\u064a\u0628\u064a\u0627",
+    "name_bn": "\u09b2\u09bf\u09ac\u09bf\u09af\u09bc\u09be",
+    "name_ciawf": "Libya",
+    "name_de": "Libyen",
+    "name_el": "\u039b\u03b9\u03b2\u03cd\u03b7",
+    "name_en": "Libya",
+    "name_es": "Libia",
+    "name_fa": "\u0644\u06cc\u0628\u06cc",
+    "name_fr": "Libye",
+    "name_he": "\u05dc\u05d5\u05d1",
+    "name_hi": "\u0932\u0940\u092c\u093f\u092f\u093e",
+    "name_hu": "L\u00edbia",
+    "name_id": "Libya",
+    "name_it": "Libia",
+    "name_ja": "\u30ea\u30d3\u30a2",
+    "name_ko": "\ub9ac\ube44\uc544",
+    "name_len": "5",
+    "name_long": "Libya",
+    "name_nev": "Libya",
+    "name_nl": "Libi\u00eb",
+    "name_pl": "Libia",
+    "name_pt": "L\u00edbia",
+    "name_ru": "\u041b\u0438\u0432\u0438\u044f",
+    "name_sort": "Libya",
+    "name_sv": "Libyen",
+    "name_tr": "Libya",
+    "name_uk": "\u041b\u0456\u0432\u0456\u044f",
+    "name_ur": "\u0644\u06cc\u0628\u06cc\u0627",
+    "name_vi": "Libya",
+    "name_zh": "\u5229\u6bd4\u4e9a",
+    "name_zht": "\u5229\u6bd4\u4e9e",
+    "ne_id": "1159321017",
+    "note_adm0": "",
+    "note_brk": "",
+    "pop_est": "6777452.0",
+    "pop_rank": "13",
+    "pop_year": "2019",
+    "postal": "LY",
+    "record_type": "country",
+    "scalerank": "0",
+    "sov_a3": "LBY",
+    "sovereignt": "Libya",
+    "status": "officially-assigned",
+    "su_a3": "LBY",
+    "su_dif": "0",
+    "subunit": "Libya",
+    "tiny": "-99",
+    "tlc": "1",
+    "tlc_diff": "",
+    "tld": [
+        ".ly"
+    ],
+    "translations": {
+        "ces": {
+            "common": "Libye",
+            "official": "St\u00e1t Libye"
+        },
+        "deu": {
+            "common": "Libyen",
+            "official": "Staat Libyen"
+        },
+        "est": {
+            "common": "Liib\u00fca",
+            "official": "Liib\u00fca"
+        },
+        "fin": {
+            "common": "Libya",
+            "official": "Libyan valtio"
+        },
+        "fra": {
+            "common": "Libye",
+            "official": "Grande R\u00e9publique arabe libyenne populaire et socialiste"
+        },
+        "hrv": {
+            "common": "Libija",
+            "official": "Dr\u017eava Libiji"
+        },
+        "hun": {
+            "common": "L\u00edbia",
+            "official": "L\u00edbia \u00c1llam"
+        },
+        "ita": {
+            "common": "Libia",
+            "official": "Stato della Libia"
+        },
+        "jpn": {
+            "common": "\u30ea\u30d3\u30a2",
+            "official": "\u30ea\u30d3\u30a2\u306e\u56fd\u5bb6"
+        },
+        "kor": {
+            "common": "\ub9ac\ube44\uc544",
+            "official": "\ub9ac\ube44\uc544"
+        },
+        "nld": {
+            "common": "Libi\u00eb",
+            "official": "Staat van Libi\u00eb"
+        },
+        "per": {
+            "common": "\u0644\u06cc\u0628\u06cc",
+            "official": "\u062f\u0648\u0644\u062a \u0644\u06cc\u0628\u06cc"
+        },
+        "pol": {
+            "common": "Libia",
+            "official": "Pa\u0144stwo Libia"
+        },
+        "por": {
+            "common": "L\u00edbia",
+            "official": "Estado da L\u00edbia"
+        },
+        "rus": {
+            "common": "\u041b\u0438\u0432\u0438\u044f",
+            "official": "\u0413\u043e\u0441\u0443\u0434\u0430\u0440\u0441\u0442\u0432\u043e \u041b\u0438\u0432\u0438\u0438"
+        },
+        "slk": {
+            "common": "L\u00edbya",
+            "official": "L\u00edbya"
+        },
+        "spa": {
+            "common": "Libia",
+            "official": "Estado de Libia"
+        },
+        "swe": {
+            "common": "Libyen",
+            "official": "Staten Libyen"
+        },
+        "urd": {
+            "common": "\u0644\u06cc\u0628\u06cc\u0627",
+            "official": "\u0631\u06cc\u0627\u0633\u062a\u0650 \u0644\u06cc\u0628\u06cc\u0627"
+        },
+        "zho": {
+            "common": "\u5229\u6bd4\u4e9a",
+            "official": "\u5229\u6bd4\u4e9a\u56fd"
+        }
+    },
+    "type": "Sovereign country",
+    "un_a3": "434",
+    "un_member": true,
+    "wb_a2": "LY",
+    "wb_a3": "LBY",
+    "wikidataid": "Q1016",
+    "woe_id": "23424882",
+    "woe_id_eh": "23424882",
+    "woe_note": "Exact WOE match as country"
+}

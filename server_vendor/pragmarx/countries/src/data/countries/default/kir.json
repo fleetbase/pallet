@@ -1,0 +1,384 @@
+{
+    "abbrev": "Kir.",
+    "abbrev_len": "4",
+    "adm0_a3": "KIR",
+    "adm0_a3_ar": "KIR",
+    "adm0_a3_bd": "KIR",
+    "adm0_a3_br": "KIR",
+    "adm0_a3_cn": "KIR",
+    "adm0_a3_de": "KIR",
+    "adm0_a3_eg": "KIR",
+    "adm0_a3_es": "KIR",
+    "adm0_a3_fr": "KIR",
+    "adm0_a3_gb": "KIR",
+    "adm0_a3_gr": "KIR",
+    "adm0_a3_id": "KIR",
+    "adm0_a3_il": "KIR",
+    "adm0_a3_in": "KIR",
+    "adm0_a3_it": "KIR",
+    "adm0_a3_jp": "KIR",
+    "adm0_a3_ko": "KIR",
+    "adm0_a3_ma": "KIR",
+    "adm0_a3_nl": "KIR",
+    "adm0_a3_np": "KIR",
+    "adm0_a3_pk": "KIR",
+    "adm0_a3_pl": "KIR",
+    "adm0_a3_ps": "KIR",
+    "adm0_a3_pt": "KIR",
+    "adm0_a3_ru": "KIR",
+    "adm0_a3_sa": "KIR",
+    "adm0_a3_se": "KIR",
+    "adm0_a3_tr": "KIR",
+    "adm0_a3_tw": "KIR",
+    "adm0_a3_ua": "KIR",
+    "adm0_a3_un": "-99",
+    "adm0_a3_us": "KIR",
+    "adm0_a3_vn": "KIR",
+    "adm0_a3_wb": "-99",
+    "adm0_dif": "0",
+    "adm0_diff": "",
+    "adm0_iso": "KIR",
+    "adm0_tlc": "KIR",
+    "admin": "Kiribati",
+    "alt_spellings": [
+        "KI",
+        "Republic of Kiribati",
+        "Ribaberiki Kiribati"
+    ],
+    "borders": [],
+    "brk_a3": "KIR",
+    "brk_diff": "0",
+    "brk_group": "",
+    "brk_name": "Kiribati",
+    "calling_codes": [
+        "+686"
+    ],
+    "capital": [
+        "South Tarawa"
+    ],
+    "capital_rinvex": "South Tarawa",
+    "cca2": "KI",
+    "cca3": "KIR",
+    "ccn3": "296",
+    "cioc": "KIR",
+    "currencies": [
+        "AUD"
+    ],
+    "data_sources": [
+        "mledoze",
+        "natural"
+    ],
+    "demonym": "I-Kiribati",
+    "demonyms": {
+        "eng": {
+            "f": "I-Kiribati",
+            "m": "I-Kiribati"
+        },
+        "fra": {
+            "f": "Kiribatienne",
+            "m": "Kiribatien"
+        }
+    },
+    "dialling": {
+        "calling_code": [
+            "686"
+        ],
+        "international_prefix": "00",
+        "national_destination_code_lengths": [
+            2
+        ],
+        "national_number_lengths": [
+            5
+        ],
+        "national_prefix": null
+    },
+    "economy": "7. Least developed region",
+    "extra": {
+        "address_format": null,
+        "ar5": "ASIA",
+        "cowc": "KIR",
+        "cown": 946,
+        "data_protection": "Other",
+        "ds": null,
+        "edgar": "J2",
+        "emoji": "\ud83c\uddf0\ud83c\uddee",
+        "eu_member": null,
+        "fao": 83,
+        "fifa": "KIR",
+        "fips": "KR",
+        "gaul": 135,
+        "geonameid": 4030945,
+        "imf": 826,
+        "ioc": "KIR",
+        "itu": "KIR",
+        "marc": "gb",
+        "vat_rates": null,
+        "wmo": "KB"
+    },
+    "fclass_ar": "",
+    "fclass_bd": "",
+    "fclass_br": "",
+    "fclass_cn": "",
+    "fclass_de": "",
+    "fclass_eg": "",
+    "fclass_es": "",
+    "fclass_fr": "",
+    "fclass_gb": "",
+    "fclass_gr": "",
+    "fclass_id": "",
+    "fclass_il": "",
+    "fclass_in": "",
+    "fclass_iso": "Admin-0 country",
+    "fclass_it": "",
+    "fclass_jp": "",
+    "fclass_ko": "",
+    "fclass_ma": "",
+    "fclass_nl": "",
+    "fclass_np": "",
+    "fclass_pk": "",
+    "fclass_pl": "",
+    "fclass_ps": "",
+    "fclass_pt": "",
+    "fclass_ru": "",
+    "fclass_sa": "",
+    "fclass_se": "",
+    "fclass_tlc": "Admin-0 country",
+    "fclass_tr": "",
+    "fclass_tw": "",
+    "fclass_ua": "",
+    "fclass_us": "",
+    "fclass_vn": "",
+    "featurecla": "Admin-0 country",
+    "fips_10": "KR",
+    "flag": {
+        "emoji": "\ud83c\uddf0\ud83c\uddee"
+    },
+    "formal_en": "Republic of Kiribati",
+    "formal_fr": "",
+    "gdp_md": "194",
+    "gdp_year": "2019",
+    "geo": {
+        "area": 811,
+        "borders": [],
+        "continent": {
+            "OC": "Oceania"
+        },
+        "independent": "Yes",
+        "landlocked": false,
+        "latitude": "1 25 N",
+        "latitude_desc": "1.842833161354065",
+        "latlng": [
+            1.41666666,
+            173
+        ],
+        "longitude": "173 00 E",
+        "longitude_desc": "-157.6758270263672",
+        "max_latitude": "4.716667",
+        "max_longitude": "-174.533333",
+        "min_latitude": "-10.3",
+        "min_longitude": "179.716667",
+        "postal_code": false,
+        "region": "Oceania",
+        "region_code": "009",
+        "region_un": "Oceania",
+        "region_wb": "East Asia & Pacific",
+        "subregion": "Micronesia",
+        "subregion_code": "057",
+        "world_region": "APAC"
+    },
+    "geou_dif": "0",
+    "geounit": "Kiribati",
+    "gu_a3": "KIR",
+    "homepart": "1",
+    "idd": {
+        "root": "+6",
+        "suffixes": [
+            "86"
+        ]
+    },
+    "income_grp": "4. Lower middle income",
+    "independent": true,
+    "iso_3166_1_alpha2": "KI",
+    "iso_3166_1_alpha3": "KIR",
+    "iso_3166_1_numeric": "296",
+    "iso_a2": "KI",
+    "iso_a2_eh": "KI",
+    "iso_a3": "KIR",
+    "iso_a3_eh": "KIR",
+    "iso_n3": "296",
+    "iso_n3_eh": "296",
+    "label_x": "-157.384577",
+    "label_y": "1.820437",
+    "labelrank": "6",
+    "languages": {
+        "eng": "English",
+        "gil": "Gilbertese"
+    },
+    "level": "2",
+    "long_len": "8",
+    "mapcolor7": "5",
+    "mapcolor8": "7",
+    "mapcolor9": "6",
+    "mapcolor13": "12",
+    "max_label": "10.0",
+    "min_label": "5.0",
+    "min_zoom": "0.0",
+    "name": {
+        "common": "Kiribati",
+        "native": {
+            "eng": {
+                "common": "Kiribati",
+                "official": "Independent and Sovereign Republic of Kiribati"
+            },
+            "gil": {
+                "common": "Kiribati",
+                "official": "Ribaberiki Kiribati"
+            }
+        },
+        "official": "Independent and Sovereign Republic of Kiribati"
+    },
+    "name_alt": "",
+    "name_ar": "\u0643\u064a\u0631\u064a\u0628\u0627\u062a\u064a",
+    "name_bn": "\u0995\u09bf\u09b0\u09bf\u09ac\u09be\u09b8",
+    "name_ciawf": "Kiribati",
+    "name_de": "Kiribati",
+    "name_el": "\u039a\u03b9\u03c1\u03b9\u03bc\u03c0\u03ac\u03c4\u03b9",
+    "name_en": "Kiribati",
+    "name_es": "Kiribati",
+    "name_fa": "\u06a9\u06cc\u0631\u06cc\u0628\u0627\u062a\u06cc",
+    "name_fr": "Kiribati",
+    "name_he": "\u05e7\u05d9\u05e8\u05d9\u05d1\u05d8\u05d9",
+    "name_hi": "\u0915\u093f\u0930\u093f\u092c\u093e\u0924\u0940",
+    "name_hu": "Kiribati",
+    "name_id": "Kiribati",
+    "name_it": "Kiribati",
+    "name_ja": "\u30ad\u30ea\u30d0\u30b9",
+    "name_ko": "\ud0a4\ub9ac\ubc14\uc2dc",
+    "name_len": "8",
+    "name_long": "Kiribati",
+    "name_nev": "Kiribati",
+    "name_nl": "Kiribati",
+    "name_pl": "Kiribati",
+    "name_pt": "Kiribati",
+    "name_ru": "\u041a\u0438\u0440\u0438\u0431\u0430\u0442\u0438",
+    "name_sort": "Kiribati",
+    "name_sv": "Kiribati",
+    "name_tr": "Kiribati",
+    "name_uk": "\u041a\u0456\u0440\u0438\u0431\u0430\u0442\u0456",
+    "name_ur": "\u06a9\u06cc\u0631\u06cc\u0628\u0627\u062a\u06cc",
+    "name_vi": "Kiribati",
+    "name_zh": "\u57fa\u91cc\u5df4\u65af",
+    "name_zht": "\u5409\u91cc\u5df4\u65af",
+    "ne_id": "1159320981",
+    "note_adm0": "",
+    "note_brk": "",
+    "pop_est": "117606.0",
+    "pop_rank": "9",
+    "pop_year": "2019",
+    "postal": "KI",
+    "record_type": "country",
+    "scalerank": "3",
+    "sov_a3": "KIR",
+    "sovereignt": "Kiribati",
+    "status": "officially-assigned",
+    "su_a3": "KIR",
+    "su_dif": "0",
+    "subunit": "Kiribati",
+    "tiny": "2",
+    "tlc": "1",
+    "tlc_diff": "",
+    "tld": [
+        ".ki"
+    ],
+    "translations": {
+        "ces": {
+            "common": "Kiribati",
+            "official": "Republika Kiribati"
+        },
+        "deu": {
+            "common": "Kiribati",
+            "official": "Unabh\u00e4ngige und souver\u00e4ne Republik Kiribati"
+        },
+        "est": {
+            "common": "Kiribati",
+            "official": "Kiribati Vabariik"
+        },
+        "fin": {
+            "common": "Kiribati",
+            "official": "Kiribatin tasavalta"
+        },
+        "fra": {
+            "common": "Kiribati",
+            "official": "R\u00e9publique de Kiribati"
+        },
+        "hrv": {
+            "common": "Kiribati",
+            "official": "Samostalne i suverene Republike Kiribati"
+        },
+        "hun": {
+            "common": "Kiribati",
+            "official": "Kiribati K\u00f6zt\u00e1rsas\u00e1g"
+        },
+        "ita": {
+            "common": "Kiribati",
+            "official": "Repubblica indipendente e sovrano di Kiribati"
+        },
+        "jpn": {
+            "common": "\u30ad\u30ea\u30d0\u30b9",
+            "official": "\u30ad\u30ea\u30d0\u30b9\u306e\u72ec\u7acb\u3068\u4e3b\u6a29\u5171\u548c\u56fd"
+        },
+        "kor": {
+            "common": "\ud0a4\ub9ac\ubc14\uc2dc",
+            "official": "\ud0a4\ub9ac\ubc14\uc2dc \uacf5\ud654\uad6d"
+        },
+        "nld": {
+            "common": "Kiribati",
+            "official": "Onafhankelijke en soevereine republiek Kiribati"
+        },
+        "per": {
+            "common": "\u06a9\u06cc\u0631\u06cc\u0628\u0627\u062a\u06cc",
+            "official": "\u062c\u0645\u0647\u0648\u0631\u06cc \u06a9\u06cc\u0631\u06cc\u0628\u0627\u062a\u06cc"
+        },
+        "pol": {
+            "common": "Kiribati",
+            "official": "Republika Kiribati"
+        },
+        "por": {
+            "common": "Kiribati",
+            "official": "Independente e soberano Rep\u00fablica de Kiribati"
+        },
+        "rus": {
+            "common": "\u041a\u0438\u0440\u0438\u0431\u0430\u0442\u0438",
+            "official": "\u041d\u0435\u0437\u0430\u0432\u0438\u0441\u0438\u043c\u043e\u0439 \u0438 \u0441\u0443\u0432\u0435\u0440\u0435\u043d\u043d\u043e\u0439 \u0420\u0435\u0441\u043f\u0443\u0431\u043b\u0438\u043a\u0438 \u041a\u0438\u0440\u0438\u0431\u0430\u0442\u0438"
+        },
+        "slk": {
+            "common": "Kiribati",
+            "official": "Kiribatsk\u00e1 republika"
+        },
+        "spa": {
+            "common": "Kiribati",
+            "official": "Rep\u00fablica Independiente y Soberano de Kiribati"
+        },
+        "swe": {
+            "common": "Kiribati",
+            "official": "Republiken Kiribati"
+        },
+        "urd": {
+            "common": "\u06a9\u06cc\u0631\u06cc\u0628\u0627\u062a\u06cc",
+            "official": "\u0633\u0644\u0637\u0646\u062a \u0622\u0632\u0627\u062f \u062c\u0645\u06c1\u0648\u0631\u06cc\u06c1 \u06a9\u06cc\u0631\u06cc\u0628\u0627\u062a\u06cc"
+        },
+        "zho": {
+            "common": "\u57fa\u91cc\u5df4\u65af",
+            "official": "\u57fa\u91cc\u5df4\u65af\u5171\u548c\u56fd"
+        }
+    },
+    "type": "Sovereign country",
+    "un_a3": "296",
+    "un_member": true,
+    "wb_a2": "KI",
+    "wb_a3": "KIR",
+    "wikidataid": "Q710",
+    "woe_id": "23424867",
+    "woe_id_eh": "23424867",
+    "woe_note": "Exact WOE match as country"
+}

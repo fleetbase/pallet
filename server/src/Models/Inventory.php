@@ -2,14 +2,16 @@
 
 namespace Fleetbase\Pallet\Models;
 
-use Fleetbase\Traits\HasUuid;
-use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Models\Model;
+use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;
+use Fleetbase\Traits\HasUuid;
 
 class Inventory extends Model
 {
-    use HasUuid, HasPublicId, HasApiModelBehavior;
+    use HasUuid;
+    use HasPublicId;
+    use HasApiModelBehavior;
 
     /**
      * The database table used by the model.
@@ -19,21 +21,21 @@ class Inventory extends Model
     protected $table = 'pallet_inventories';
 
     /**
-     * Overwrite both entity resource name with `payloadKey`
+     * Overwrite both entity resource name with `payloadKey`.
      *
      * @var string
      */
     protected $payloadKey = 'inventory';
 
     /**
-     * The type of `public_id` to generate
+     * The type of `public_id` to generate.
      *
      * @var string
      */
     protected $publicIdType = 'inventory';
 
     /**
-     * These attributes that can be queried
+     * These attributes that can be queried.
      *
      * @var array
      */
@@ -50,7 +52,7 @@ class Inventory extends Model
         'warehouse_uuid',
         'batch_uuid',
         'quantity',
-        'min_quantity'
+        'min_quantity',
     ];
 
     /**
@@ -61,7 +63,7 @@ class Inventory extends Model
     protected $casts = [];
 
     /**
-     * Dynamic attributes that are appended to object
+     * Dynamic attributes that are appended to object.
      *
      * @var array
      */
@@ -99,9 +101,10 @@ class Inventory extends Model
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSummarizeByProduct($query)

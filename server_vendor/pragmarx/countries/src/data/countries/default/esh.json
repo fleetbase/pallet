@@ -1,0 +1,1435 @@
+{
+    "abbrev": "W. Sah.",
+    "abbrev_len": "7",
+    "adm0_a3": "SAH",
+    "adm0_a3_ar": "SAH",
+    "adm0_a3_bd": "SAH",
+    "adm0_a3_br": "SAH",
+    "adm0_a3_cn": "SAH",
+    "adm0_a3_de": "SAH",
+    "adm0_a3_eg": "SAH",
+    "adm0_a3_es": "SAH",
+    "adm0_a3_fr": "MAR",
+    "adm0_a3_gb": "SAH",
+    "adm0_a3_gr": "SAH",
+    "adm0_a3_id": "MAR",
+    "adm0_a3_il": "SAH",
+    "adm0_a3_in": "MAR",
+    "adm0_a3_it": "SAH",
+    "adm0_a3_jp": "SAH",
+    "adm0_a3_ko": "SAH",
+    "adm0_a3_ma": "MAR",
+    "adm0_a3_nl": "MAR",
+    "adm0_a3_np": "SAH",
+    "adm0_a3_pk": "SAH",
+    "adm0_a3_pl": "MAR",
+    "adm0_a3_ps": "MAR",
+    "adm0_a3_pt": "SAH",
+    "adm0_a3_ru": "SAH",
+    "adm0_a3_sa": "MAR",
+    "adm0_a3_se": "SAH",
+    "adm0_a3_tr": "MAR",
+    "adm0_a3_tw": "SAH",
+    "adm0_a3_ua": "SAH",
+    "adm0_a3_un": "-99",
+    "adm0_a3_us": "SAH",
+    "adm0_a3_vn": "SAH",
+    "adm0_a3_wb": "-99",
+    "adm0_dif": "0",
+    "adm0_diff": "",
+    "adm0_iso": "B28",
+    "adm0_tlc": "B28",
+    "admin": "Western Sahara",
+    "alt_spellings": [
+        "EH",
+        "Tane\u1e93roft Tutrimt"
+    ],
+    "borders": [
+        "DZA",
+        "MRT",
+        "MAR"
+    ],
+    "brk_a3": "B28",
+    "brk_diff": "1",
+    "brk_group": "",
+    "brk_name": "W. Sahara",
+    "calling_codes": [
+        "+2125288",
+        "+2125289"
+    ],
+    "capital": [
+        "El Aai\u00fan"
+    ],
+    "capital_rinvex": "El Aai\u00fan",
+    "cca2": "EH",
+    "cca3": "ESH",
+    "ccn3": "732",
+    "cioc": {
+        "abbrev": "W. Sah.",
+        "abbrev_len": "7",
+        "adm0_a3": "SAH",
+        "adm0_a3_ar": "SAH",
+        "adm0_a3_bd": "SAH",
+        "adm0_a3_br": "SAH",
+        "adm0_a3_cn": "SAH",
+        "adm0_a3_de": "SAH",
+        "adm0_a3_eg": "SAH",
+        "adm0_a3_es": "SAH",
+        "adm0_a3_fr": "MAR",
+        "adm0_a3_gb": "SAH",
+        "adm0_a3_gr": "SAH",
+        "adm0_a3_id": "MAR",
+        "adm0_a3_il": "SAH",
+        "adm0_a3_in": "MAR",
+        "adm0_a3_it": "SAH",
+        "adm0_a3_jp": "SAH",
+        "adm0_a3_ko": "SAH",
+        "adm0_a3_ma": "MAR",
+        "adm0_a3_nl": "MAR",
+        "adm0_a3_np": "SAH",
+        "adm0_a3_pk": "SAH",
+        "adm0_a3_pl": "MAR",
+        "adm0_a3_ps": "MAR",
+        "adm0_a3_pt": "SAH",
+        "adm0_a3_ru": "SAH",
+        "adm0_a3_sa": "MAR",
+        "adm0_a3_se": "SAH",
+        "adm0_a3_tr": "MAR",
+        "adm0_a3_tw": "SAH",
+        "adm0_a3_ua": "SAH",
+        "adm0_a3_un": "-99",
+        "adm0_a3_us": "SAH",
+        "adm0_a3_vn": "SAH",
+        "adm0_a3_wb": "-99",
+        "adm0_dif": "0",
+        "adm0_diff": "",
+        "adm0_iso": "B28",
+        "adm0_tlc": "B28",
+        "admin": "Western Sahara",
+        "alt_spellings": [
+            "EH",
+            "Tane\u1e93roft Tutrimt"
+        ],
+        "borders": [
+            "DZA",
+            "MRT",
+            "MAR"
+        ],
+        "brk_a3": "B28",
+        "brk_diff": "1",
+        "brk_group": "",
+        "brk_name": "W. Sahara",
+        "calling_codes": [
+            "+2125288",
+            "+2125289"
+        ],
+        "capital": [
+            "El Aai\u00fan"
+        ],
+        "cca2": "EH",
+        "cca3": "ESH",
+        "ccn3": "732",
+        "cioc": null,
+        "currencies": {
+            "d_z_d": {
+                "name": "Algerian dinar",
+                "symbol": "\u062f\u062c"
+            },
+            "m_a_d": {
+                "name": "Moroccan dirham",
+                "symbol": "DH"
+            },
+            "m_r_u": {
+                "name": "Mauritanian ouguiya",
+                "symbol": "UM"
+            }
+        },
+        "data_sources": [
+            "mledoze"
+        ],
+        "demonyms": {
+            "eng": {
+                "f": "Sahrawi",
+                "m": "Sahrawi"
+            },
+            "fra": {
+                "f": "",
+                "m": ""
+            }
+        },
+        "economy": "7. Least developed region",
+        "fclass_ar": "",
+        "fclass_bd": "",
+        "fclass_br": "",
+        "fclass_cn": "",
+        "fclass_de": "",
+        "fclass_eg": "",
+        "fclass_es": "",
+        "fclass_fr": "Unrecognized",
+        "fclass_gb": "",
+        "fclass_gr": "",
+        "fclass_id": "Unrecognized",
+        "fclass_il": "",
+        "fclass_in": "Unrecognized",
+        "fclass_iso": "Admin-0 dependency",
+        "fclass_it": "",
+        "fclass_jp": "",
+        "fclass_ko": "",
+        "fclass_ma": "Unrecognized",
+        "fclass_nl": "Unrecognized",
+        "fclass_np": "",
+        "fclass_pk": "",
+        "fclass_pl": "Unrecognized",
+        "fclass_ps": "Unrecognized",
+        "fclass_pt": "",
+        "fclass_ru": "",
+        "fclass_sa": "Unrecognized",
+        "fclass_se": "",
+        "fclass_tlc": "Admin-0 dependency",
+        "fclass_tr": "Unrecognized",
+        "fclass_tw": "",
+        "fclass_ua": "",
+        "fclass_us": "",
+        "fclass_vn": "",
+        "featurecla": "Admin-0 country",
+        "fips_10": "WI",
+        "flag": {
+            "emoji": "\ud83c\uddea\ud83c\udded"
+        },
+        "formal_en": "Sahrawi Arab Democratic Republic",
+        "formal_fr": "",
+        "gdp_md": "907",
+        "gdp_year": "2007",
+        "geo": {
+            "area": 266000,
+            "continent": "Africa",
+            "landlocked": null,
+            "latlng": [
+                24.5,
+                -13
+            ],
+            "region": "Africa",
+            "region_un": "Africa",
+            "region_wb": "Middle East & North Africa",
+            "subregion": "Northern Africa"
+        },
+        "geou_dif": "0",
+        "geounit": "Western Sahara",
+        "gu_a3": "SAH",
+        "homepart": "1",
+        "idd": {
+            "root": "+2",
+            "suffixes": [
+                "125288",
+                "125289"
+            ]
+        },
+        "income_grp": "5. Low income",
+        "independent": null,
+        "iso_a2": "EH",
+        "iso_a2_eh": "EH",
+        "iso_a3": "ESH",
+        "iso_a3_eh": "ESH",
+        "iso_n3": "732",
+        "iso_n3_eh": "732",
+        "label_x": "-12.630304",
+        "label_y": "23.967592",
+        "labelrank": "7",
+        "languages": {
+            "ber": "Berber",
+            "mey": "Hassaniya",
+            "spa": "Spanish"
+        },
+        "level": "2",
+        "long_len": "14",
+        "mapcolor7": "4",
+        "mapcolor8": "7",
+        "mapcolor9": "4",
+        "mapcolor13": "4",
+        "max_label": "11.0",
+        "min_label": "6.0",
+        "min_zoom": "4.7",
+        "name": {
+            "common": "Western Sahara",
+            "native": {
+                "ber": {
+                    "common": "Western Sahara",
+                    "official": "Sahrawi Arab Democratic Republic"
+                },
+                "mey": {
+                    "common": "\u0627\u0644\u0635\u062d\u0631\u0627\u0621 \u0627\u0644\u063a\u0631\u0628\u064a\u0629",
+                    "official": "\u0627\u0644\u062c\u0645\u0647\u0648\u0631\u064a\u0629 \u0627\u0644\u0639\u0631\u0628\u064a\u0629 \u0627\u0644\u0635\u062d\u0631\u0627\u0648\u064a\u0629 \u0627\u0644\u062f\u064a\u0645\u0642\u0631\u0627\u0637\u064a\u0629"
+                },
+                "spa": {
+                    "common": "Sahara Occidental",
+                    "official": "Rep\u00fablica \u00c1rabe Saharaui Democr\u00e1tica"
+                }
+            },
+            "official": "Sahrawi Arab Democratic Republic"
+        },
+        "name_alt": "",
+        "name_ar": "\u0627\u0644\u0635\u062d\u0631\u0627\u0621 \u0627\u0644\u063a\u0631\u0628\u064a\u0629",
+        "name_bn": "\u09aa\u09b6\u09cd\u099a\u09bf\u09ae \u09b8\u09be\u09b9\u09be\u09b0\u09be",
+        "name_ciawf": "Western Sahara",
+        "name_de": "Westsahara",
+        "name_el": "\u0394\u03c5\u03c4\u03b9\u03ba\u03ae \u03a3\u03b1\u03c7\u03ac\u03c1\u03b1",
+        "name_en": "Western Sahara",
+        "name_es": "Sahara Occidental",
+        "name_fa": "\u0635\u062d\u0631\u0627\u06cc \u063a\u0631\u0628\u06cc",
+        "name_fr": "Sahara occidental",
+        "name_he": "\u05e1\u05d4\u05e8\u05d4 \u05d4\u05de\u05e2\u05e8\u05d1\u05d9\u05ea",
+        "name_hi": "\u092a\u0936\u094d\u091a\u093f\u092e\u0940 \u0938\u0939\u093e\u0930\u093e",
+        "name_hu": "Nyugat-Szahara",
+        "name_id": "Sahara Barat",
+        "name_it": "Sahara Occidentale",
+        "name_ja": "\u897f\u30b5\u30cf\u30e9",
+        "name_ko": "\uc11c\uc0ac\ud558\ub77c",
+        "name_len": "9",
+        "name_long": "Western Sahara",
+        "name_nev": "W. Sahara",
+        "name_nl": "Westelijke Sahara",
+        "name_pl": "Sahara Zachodnia",
+        "name_pt": "Sara Ocidental",
+        "name_ru": "\u0417\u0430\u043f\u0430\u0434\u043d\u0430\u044f \u0421\u0430\u0445\u0430\u0440\u0430",
+        "name_sort": "Western Sahara",
+        "name_sv": "V\u00e4stsahara",
+        "name_tr": "Bat\u0131 Sahra",
+        "name_uk": "\u0417\u0430\u0445\u0456\u0434\u043d\u0430 \u0421\u0430\u0445\u0430\u0440\u0430",
+        "name_ur": "\u0645\u063a\u0631\u0628\u06cc \u0635\u062d\u0627\u0631\u0627",
+        "name_vi": "T\u00e2y Sahara",
+        "name_zh": "\u897f\u6492\u54c8\u62c9",
+        "name_zht": "\u897f\u6492\u54c8\u62c9",
+        "ne_id": "1159321223",
+        "note_adm0": "",
+        "note_brk": "Self admin.; Claimed by Morocco",
+        "pop_est": "603253.0",
+        "pop_rank": "11",
+        "pop_year": "2017",
+        "postal": "WS",
+        "record_type": "country",
+        "scalerank": "0",
+        "sov_a3": "SAH",
+        "sovereignt": "Western Sahara",
+        "status": "officially-assigned",
+        "su_a3": "SAH",
+        "su_dif": "0",
+        "subunit": "Western Sahara",
+        "tiny": "-99",
+        "tlc": "1",
+        "tlc_diff": "",
+        "tld": [
+            ".eh"
+        ],
+        "translations": {
+            "ces": {
+                "common": "Z\u00e1padn\u00ed Sahara",
+                "official": "Z\u00e1padn\u00ed Sahara"
+            },
+            "deu": {
+                "common": "Westsahara",
+                "official": "Demokratische Arabische Republik Sahara"
+            },
+            "est": {
+                "common": "L\u00e4\u00e4ne-Sahara",
+                "official": "L\u00e4\u00e4ne-Sahara"
+            },
+            "fin": {
+                "common": "L\u00e4nsi-Sahara",
+                "official": "L\u00e4nsi-Sahara"
+            },
+            "fra": {
+                "common": "Sahara Occidental",
+                "official": "R\u00e9publique arabe sahraouie d\u00e9mocratique"
+            },
+            "hrv": {
+                "common": "Zapadna Sahara",
+                "official": "Sahrawi Arab Demokratska Republika"
+            },
+            "hun": {
+                "common": "Nyugat-Szahara",
+                "official": "Nyugat-Szahara"
+            },
+            "ita": {
+                "common": "Sahara Occidentale",
+                "official": "Repubblica Araba Saharawi Democratica"
+            },
+            "jpn": {
+                "common": "\u897f\u30b5\u30cf\u30e9",
+                "official": "\u30b5\u30cf\u30e9\u30a2\u30e9\u30d6\u6c11\u4e3b\u5171\u548c\u56fd"
+            },
+            "kor": {
+                "common": "\uc11c\uc0ac\ud558\ub77c",
+                "official": "\uc0ac\ud558\ub77c \uc544\ub78d \ubbfc\uc8fc \uacf5\ud654\uad6d"
+            },
+            "nld": {
+                "common": "Westelijke Sahara",
+                "official": "Sahrawi Arabische Democratische Republiek"
+            },
+            "per": {
+                "common": "\u0635\u062d\u0631\u0627\u06cc \u063a\u0631\u0628\u06cc",
+                "official": "\u0635\u062d\u0631\u0627\u06cc \u063a\u0631\u0628\u06cc"
+            },
+            "pol": {
+                "common": "Sahara Zachodnia",
+                "official": "Saharyjska Arabska Republika Demokratyczna"
+            },
+            "por": {
+                "common": "Saara Ocidental",
+                "official": "Rep\u00fablica \u00c1rabe Saharaui Democr\u00e1tica"
+            },
+            "rus": {
+                "common": "\u0417\u0430\u043f\u0430\u0434\u043d\u0430\u044f \u0421\u0430\u0445\u0430\u0440\u0430",
+                "official": "Sahrawi \u0410\u0440\u0430\u0431\u0441\u043a\u0430\u044f \u0414\u0435\u043c\u043e\u043a\u0440\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u0420\u0435\u0441\u043f\u0443\u0431\u043b\u0438\u043a\u0430"
+            },
+            "slk": {
+                "common": "Z\u00e1padn\u00e1 Sahara",
+                "official": "Z\u00e1padn\u00e1 Sahara"
+            },
+            "spa": {
+                "common": "Sahara Occidental",
+                "official": "Rep\u00fablica \u00c1rabe Saharaui Democr\u00e1tica"
+            },
+            "swe": {
+                "common": "V\u00e4stsahara",
+                "official": "V\u00e4stsahara"
+            },
+            "urd": {
+                "common": "\u0645\u063a\u0631\u0628\u06cc \u0635\u062d\u0627\u0631\u0627",
+                "official": "\u0635\u062d\u0631\u0627\u0648\u06cc \u0639\u0631\u0628 \u0639\u0648\u0627\u0645\u06cc \u062c\u0645\u06c1\u0648\u0631\u06cc\u06c1"
+            },
+            "zho": {
+                "common": "\u897f\u6492\u54c8\u62c9",
+                "official": "\u963f\u62c9\u4f2f\u6492\u54c8\u62c9\u6c11\u4e3b\u5171\u548c\u56fd"
+            }
+        },
+        "type": "Indeterminate",
+        "un_a3": "732",
+        "un_member": null,
+        "wb_a2": "-99",
+        "wb_a3": "-99",
+        "wikidataid": "Q6250",
+        "woe_id": "23424990",
+        "woe_id_eh": "23424990",
+        "woe_note": "Exact WOE match as country"
+    },
+    "currencies": [
+        "MAD"
+    ],
+    "data_sources": [
+        "mledoze",
+        "natural"
+    ],
+    "demonym": "Sahrawi",
+    "demonyms": {
+        "eng": {
+            "f": "Sahrawi",
+            "m": "Sahrawi"
+        },
+        "fra": {
+            "f": "",
+            "m": ""
+        }
+    },
+    "dialling": {
+        "calling_code": [
+            "212"
+        ],
+        "international_prefix": "",
+        "national_destination_code_lengths": [],
+        "national_number_lengths": [],
+        "national_prefix": ""
+    },
+    "economy": "7. Least developed region",
+    "extra": {
+        "address_format": null,
+        "ar5": "MAF",
+        "cowc": null,
+        "cown": 0,
+        "data_protection": "Other",
+        "ds": null,
+        "edgar": "U5",
+        "emoji": "\ud83c\uddea\ud83c\udded",
+        "eu_member": null,
+        "fao": 0,
+        "fifa": "SAH",
+        "fips": "WI",
+        "gaul": 268,
+        "geonameid": 2461445,
+        "imf": 0,
+        "ioc": null,
+        "itu": "AOE",
+        "marc": "ss",
+        "vat_rates": null,
+        "wmo": null
+    },
+    "fclass_ar": "",
+    "fclass_bd": "",
+    "fclass_br": "",
+    "fclass_cn": "",
+    "fclass_de": "",
+    "fclass_eg": "",
+    "fclass_es": "",
+    "fclass_fr": "Unrecognized",
+    "fclass_gb": "",
+    "fclass_gr": "",
+    "fclass_id": "Unrecognized",
+    "fclass_il": "",
+    "fclass_in": "Unrecognized",
+    "fclass_iso": "Admin-0 dependency",
+    "fclass_it": "",
+    "fclass_jp": "",
+    "fclass_ko": "",
+    "fclass_ma": "Unrecognized",
+    "fclass_nl": "Unrecognized",
+    "fclass_np": "",
+    "fclass_pk": "",
+    "fclass_pl": "Unrecognized",
+    "fclass_ps": "Unrecognized",
+    "fclass_pt": "",
+    "fclass_ru": "",
+    "fclass_sa": "Unrecognized",
+    "fclass_se": "",
+    "fclass_tlc": "Admin-0 dependency",
+    "fclass_tr": "Unrecognized",
+    "fclass_tw": "",
+    "fclass_ua": "",
+    "fclass_us": "",
+    "fclass_vn": "",
+    "featurecla": "Admin-0 country",
+    "fips_10": "WI",
+    "flag": {
+        "emoji": "\ud83c\uddea\ud83c\udded"
+    },
+    "formal_en": "Sahrawi Arab Democratic Republic",
+    "formal_fr": "",
+    "gdp_md": "907",
+    "gdp_year": "2007",
+    "geo": {
+        "area": 266000,
+        "borders": [
+            "DZA",
+            "MRT",
+            "MAR"
+        ],
+        "continent": {
+            "AF": "Africa"
+        },
+        "independent": "In contention",
+        "landlocked": false,
+        "latitude": "24 30 N",
+        "latitude_desc": "25",
+        "latlng": [
+            24.5,
+            -13
+        ],
+        "longitude": "13 00 W",
+        "longitude_desc": "-13",
+        "max_latitude": "27.666667",
+        "max_longitude": "-8.666667",
+        "min_latitude": "20.8",
+        "min_longitude": "-17.110556",
+        "postal_code": true,
+        "region": "Africa",
+        "region_code": "002",
+        "region_un": "Africa",
+        "region_wb": "Middle East & North Africa",
+        "subregion": "Northern Africa",
+        "subregion_code": "015",
+        "world_region": "EMEA"
+    },
+    "geou_dif": "0",
+    "geounit": "Western Sahara",
+    "gu_a3": "SAH",
+    "homepart": "1",
+    "idd": {
+        "root": "+2",
+        "suffixes": [
+            "125288",
+            "125289"
+        ]
+    },
+    "income_grp": "5. Low income",
+    "independent": {
+        "abbrev": "W. Sah.",
+        "abbrev_len": "7",
+        "adm0_a3": "SAH",
+        "adm0_a3_ar": "SAH",
+        "adm0_a3_bd": "SAH",
+        "adm0_a3_br": "SAH",
+        "adm0_a3_cn": "SAH",
+        "adm0_a3_de": "SAH",
+        "adm0_a3_eg": "SAH",
+        "adm0_a3_es": "SAH",
+        "adm0_a3_fr": "MAR",
+        "adm0_a3_gb": "SAH",
+        "adm0_a3_gr": "SAH",
+        "adm0_a3_id": "MAR",
+        "adm0_a3_il": "SAH",
+        "adm0_a3_in": "MAR",
+        "adm0_a3_it": "SAH",
+        "adm0_a3_jp": "SAH",
+        "adm0_a3_ko": "SAH",
+        "adm0_a3_ma": "MAR",
+        "adm0_a3_nl": "MAR",
+        "adm0_a3_np": "SAH",
+        "adm0_a3_pk": "SAH",
+        "adm0_a3_pl": "MAR",
+        "adm0_a3_ps": "MAR",
+        "adm0_a3_pt": "SAH",
+        "adm0_a3_ru": "SAH",
+        "adm0_a3_sa": "MAR",
+        "adm0_a3_se": "SAH",
+        "adm0_a3_tr": "MAR",
+        "adm0_a3_tw": "SAH",
+        "adm0_a3_ua": "SAH",
+        "adm0_a3_un": "-99",
+        "adm0_a3_us": "SAH",
+        "adm0_a3_vn": "SAH",
+        "adm0_a3_wb": "-99",
+        "adm0_dif": "0",
+        "adm0_diff": "",
+        "adm0_iso": "B28",
+        "adm0_tlc": "B28",
+        "admin": "Western Sahara",
+        "alt_spellings": [
+            "EH",
+            "Tane\u1e93roft Tutrimt"
+        ],
+        "borders": [
+            "DZA",
+            "MRT",
+            "MAR"
+        ],
+        "brk_a3": "B28",
+        "brk_diff": "1",
+        "brk_group": "",
+        "brk_name": "W. Sahara",
+        "calling_codes": [
+            "+2125288",
+            "+2125289"
+        ],
+        "capital": [
+            "El Aai\u00fan"
+        ],
+        "cca2": "EH",
+        "cca3": "ESH",
+        "ccn3": "732",
+        "cioc": null,
+        "currencies": {
+            "d_z_d": {
+                "name": "Algerian dinar",
+                "symbol": "\u062f\u062c"
+            },
+            "m_a_d": {
+                "name": "Moroccan dirham",
+                "symbol": "DH"
+            },
+            "m_r_u": {
+                "name": "Mauritanian ouguiya",
+                "symbol": "UM"
+            }
+        },
+        "data_sources": [
+            "mledoze"
+        ],
+        "demonyms": {
+            "eng": {
+                "f": "Sahrawi",
+                "m": "Sahrawi"
+            },
+            "fra": {
+                "f": "",
+                "m": ""
+            }
+        },
+        "economy": "7. Least developed region",
+        "fclass_ar": "",
+        "fclass_bd": "",
+        "fclass_br": "",
+        "fclass_cn": "",
+        "fclass_de": "",
+        "fclass_eg": "",
+        "fclass_es": "",
+        "fclass_fr": "Unrecognized",
+        "fclass_gb": "",
+        "fclass_gr": "",
+        "fclass_id": "Unrecognized",
+        "fclass_il": "",
+        "fclass_in": "Unrecognized",
+        "fclass_iso": "Admin-0 dependency",
+        "fclass_it": "",
+        "fclass_jp": "",
+        "fclass_ko": "",
+        "fclass_ma": "Unrecognized",
+        "fclass_nl": "Unrecognized",
+        "fclass_np": "",
+        "fclass_pk": "",
+        "fclass_pl": "Unrecognized",
+        "fclass_ps": "Unrecognized",
+        "fclass_pt": "",
+        "fclass_ru": "",
+        "fclass_sa": "Unrecognized",
+        "fclass_se": "",
+        "fclass_tlc": "Admin-0 dependency",
+        "fclass_tr": "Unrecognized",
+        "fclass_tw": "",
+        "fclass_ua": "",
+        "fclass_us": "",
+        "fclass_vn": "",
+        "featurecla": "Admin-0 country",
+        "fips_10": "WI",
+        "flag": {
+            "emoji": "\ud83c\uddea\ud83c\udded"
+        },
+        "formal_en": "Sahrawi Arab Democratic Republic",
+        "formal_fr": "",
+        "gdp_md": "907",
+        "gdp_year": "2007",
+        "geo": {
+            "area": 266000,
+            "continent": "Africa",
+            "landlocked": null,
+            "latlng": [
+                24.5,
+                -13
+            ],
+            "region": "Africa",
+            "region_un": "Africa",
+            "region_wb": "Middle East & North Africa",
+            "subregion": "Northern Africa"
+        },
+        "geou_dif": "0",
+        "geounit": "Western Sahara",
+        "gu_a3": "SAH",
+        "homepart": "1",
+        "idd": {
+            "root": "+2",
+            "suffixes": [
+                "125288",
+                "125289"
+            ]
+        },
+        "income_grp": "5. Low income",
+        "independent": null,
+        "iso_a2": "EH",
+        "iso_a2_eh": "EH",
+        "iso_a3": "ESH",
+        "iso_a3_eh": "ESH",
+        "iso_n3": "732",
+        "iso_n3_eh": "732",
+        "label_x": "-12.630304",
+        "label_y": "23.967592",
+        "labelrank": "7",
+        "languages": {
+            "ber": "Berber",
+            "mey": "Hassaniya",
+            "spa": "Spanish"
+        },
+        "level": "2",
+        "long_len": "14",
+        "mapcolor7": "4",
+        "mapcolor8": "7",
+        "mapcolor9": "4",
+        "mapcolor13": "4",
+        "max_label": "11.0",
+        "min_label": "6.0",
+        "min_zoom": "4.7",
+        "name": {
+            "common": "Western Sahara",
+            "native": {
+                "ber": {
+                    "common": "Western Sahara",
+                    "official": "Sahrawi Arab Democratic Republic"
+                },
+                "mey": {
+                    "common": "\u0627\u0644\u0635\u062d\u0631\u0627\u0621 \u0627\u0644\u063a\u0631\u0628\u064a\u0629",
+                    "official": "\u0627\u0644\u062c\u0645\u0647\u0648\u0631\u064a\u0629 \u0627\u0644\u0639\u0631\u0628\u064a\u0629 \u0627\u0644\u0635\u062d\u0631\u0627\u0648\u064a\u0629 \u0627\u0644\u062f\u064a\u0645\u0642\u0631\u0627\u0637\u064a\u0629"
+                },
+                "spa": {
+                    "common": "Sahara Occidental",
+                    "official": "Rep\u00fablica \u00c1rabe Saharaui Democr\u00e1tica"
+                }
+            },
+            "official": "Sahrawi Arab Democratic Republic"
+        },
+        "name_alt": "",
+        "name_ar": "\u0627\u0644\u0635\u062d\u0631\u0627\u0621 \u0627\u0644\u063a\u0631\u0628\u064a\u0629",
+        "name_bn": "\u09aa\u09b6\u09cd\u099a\u09bf\u09ae \u09b8\u09be\u09b9\u09be\u09b0\u09be",
+        "name_ciawf": "Western Sahara",
+        "name_de": "Westsahara",
+        "name_el": "\u0394\u03c5\u03c4\u03b9\u03ba\u03ae \u03a3\u03b1\u03c7\u03ac\u03c1\u03b1",
+        "name_en": "Western Sahara",
+        "name_es": "Sahara Occidental",
+        "name_fa": "\u0635\u062d\u0631\u0627\u06cc \u063a\u0631\u0628\u06cc",
+        "name_fr": "Sahara occidental",
+        "name_he": "\u05e1\u05d4\u05e8\u05d4 \u05d4\u05de\u05e2\u05e8\u05d1\u05d9\u05ea",
+        "name_hi": "\u092a\u0936\u094d\u091a\u093f\u092e\u0940 \u0938\u0939\u093e\u0930\u093e",
+        "name_hu": "Nyugat-Szahara",
+        "name_id": "Sahara Barat",
+        "name_it": "Sahara Occidentale",
+        "name_ja": "\u897f\u30b5\u30cf\u30e9",
+        "name_ko": "\uc11c\uc0ac\ud558\ub77c",
+        "name_len": "9",
+        "name_long": "Western Sahara",
+        "name_nev": "W. Sahara",
+        "name_nl": "Westelijke Sahara",
+        "name_pl": "Sahara Zachodnia",
+        "name_pt": "Sara Ocidental",
+        "name_ru": "\u0417\u0430\u043f\u0430\u0434\u043d\u0430\u044f \u0421\u0430\u0445\u0430\u0440\u0430",
+        "name_sort": "Western Sahara",
+        "name_sv": "V\u00e4stsahara",
+        "name_tr": "Bat\u0131 Sahra",
+        "name_uk": "\u0417\u0430\u0445\u0456\u0434\u043d\u0430 \u0421\u0430\u0445\u0430\u0440\u0430",
+        "name_ur": "\u0645\u063a\u0631\u0628\u06cc \u0635\u062d\u0627\u0631\u0627",
+        "name_vi": "T\u00e2y Sahara",
+        "name_zh": "\u897f\u6492\u54c8\u62c9",
+        "name_zht": "\u897f\u6492\u54c8\u62c9",
+        "ne_id": "1159321223",
+        "note_adm0": "",
+        "note_brk": "Self admin.; Claimed by Morocco",
+        "pop_est": "603253.0",
+        "pop_rank": "11",
+        "pop_year": "2017",
+        "postal": "WS",
+        "record_type": "country",
+        "scalerank": "0",
+        "sov_a3": "SAH",
+        "sovereignt": "Western Sahara",
+        "status": "officially-assigned",
+        "su_a3": "SAH",
+        "su_dif": "0",
+        "subunit": "Western Sahara",
+        "tiny": "-99",
+        "tlc": "1",
+        "tlc_diff": "",
+        "tld": [
+            ".eh"
+        ],
+        "translations": {
+            "ces": {
+                "common": "Z\u00e1padn\u00ed Sahara",
+                "official": "Z\u00e1padn\u00ed Sahara"
+            },
+            "deu": {
+                "common": "Westsahara",
+                "official": "Demokratische Arabische Republik Sahara"
+            },
+            "est": {
+                "common": "L\u00e4\u00e4ne-Sahara",
+                "official": "L\u00e4\u00e4ne-Sahara"
+            },
+            "fin": {
+                "common": "L\u00e4nsi-Sahara",
+                "official": "L\u00e4nsi-Sahara"
+            },
+            "fra": {
+                "common": "Sahara Occidental",
+                "official": "R\u00e9publique arabe sahraouie d\u00e9mocratique"
+            },
+            "hrv": {
+                "common": "Zapadna Sahara",
+                "official": "Sahrawi Arab Demokratska Republika"
+            },
+            "hun": {
+                "common": "Nyugat-Szahara",
+                "official": "Nyugat-Szahara"
+            },
+            "ita": {
+                "common": "Sahara Occidentale",
+                "official": "Repubblica Araba Saharawi Democratica"
+            },
+            "jpn": {
+                "common": "\u897f\u30b5\u30cf\u30e9",
+                "official": "\u30b5\u30cf\u30e9\u30a2\u30e9\u30d6\u6c11\u4e3b\u5171\u548c\u56fd"
+            },
+            "kor": {
+                "common": "\uc11c\uc0ac\ud558\ub77c",
+                "official": "\uc0ac\ud558\ub77c \uc544\ub78d \ubbfc\uc8fc \uacf5\ud654\uad6d"
+            },
+            "nld": {
+                "common": "Westelijke Sahara",
+                "official": "Sahrawi Arabische Democratische Republiek"
+            },
+            "per": {
+                "common": "\u0635\u062d\u0631\u0627\u06cc \u063a\u0631\u0628\u06cc",
+                "official": "\u0635\u062d\u0631\u0627\u06cc \u063a\u0631\u0628\u06cc"
+            },
+            "pol": {
+                "common": "Sahara Zachodnia",
+                "official": "Saharyjska Arabska Republika Demokratyczna"
+            },
+            "por": {
+                "common": "Saara Ocidental",
+                "official": "Rep\u00fablica \u00c1rabe Saharaui Democr\u00e1tica"
+            },
+            "rus": {
+                "common": "\u0417\u0430\u043f\u0430\u0434\u043d\u0430\u044f \u0421\u0430\u0445\u0430\u0440\u0430",
+                "official": "Sahrawi \u0410\u0440\u0430\u0431\u0441\u043a\u0430\u044f \u0414\u0435\u043c\u043e\u043a\u0440\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u0420\u0435\u0441\u043f\u0443\u0431\u043b\u0438\u043a\u0430"
+            },
+            "slk": {
+                "common": "Z\u00e1padn\u00e1 Sahara",
+                "official": "Z\u00e1padn\u00e1 Sahara"
+            },
+            "spa": {
+                "common": "Sahara Occidental",
+                "official": "Rep\u00fablica \u00c1rabe Saharaui Democr\u00e1tica"
+            },
+            "swe": {
+                "common": "V\u00e4stsahara",
+                "official": "V\u00e4stsahara"
+            },
+            "urd": {
+                "common": "\u0645\u063a\u0631\u0628\u06cc \u0635\u062d\u0627\u0631\u0627",
+                "official": "\u0635\u062d\u0631\u0627\u0648\u06cc \u0639\u0631\u0628 \u0639\u0648\u0627\u0645\u06cc \u062c\u0645\u06c1\u0648\u0631\u06cc\u06c1"
+            },
+            "zho": {
+                "common": "\u897f\u6492\u54c8\u62c9",
+                "official": "\u963f\u62c9\u4f2f\u6492\u54c8\u62c9\u6c11\u4e3b\u5171\u548c\u56fd"
+            }
+        },
+        "type": "Indeterminate",
+        "un_a3": "732",
+        "un_member": null,
+        "wb_a2": "-99",
+        "wb_a3": "-99",
+        "wikidataid": "Q6250",
+        "woe_id": "23424990",
+        "woe_id_eh": "23424990",
+        "woe_note": "Exact WOE match as country"
+    },
+    "iso_3166_1_alpha2": "EH",
+    "iso_3166_1_alpha3": "ESH",
+    "iso_3166_1_numeric": "732",
+    "iso_a2": "EH",
+    "iso_a2_eh": "EH",
+    "iso_a3": "ESH",
+    "iso_a3_eh": "ESH",
+    "iso_n3": "732",
+    "iso_n3_eh": "732",
+    "label_x": "-12.630304",
+    "label_y": "23.967592",
+    "labelrank": "7",
+    "languages": {
+        "ber": "Berber",
+        "mey": "Hassaniya",
+        "spa": "Spanish"
+    },
+    "level": "2",
+    "long_len": "14",
+    "mapcolor7": "4",
+    "mapcolor8": "7",
+    "mapcolor9": "4",
+    "mapcolor13": "4",
+    "max_label": "11.0",
+    "min_label": "6.0",
+    "min_zoom": "4.7",
+    "name": {
+        "common": "Western Sahara",
+        "native": {
+            "ber": {
+                "common": "Western Sahara",
+                "official": "Sahrawi Arab Democratic Republic"
+            },
+            "mey": {
+                "common": "\u0627\u0644\u0635\u062d\u0631\u0627\u0621 \u0627\u0644\u063a\u0631\u0628\u064a\u0629",
+                "official": "\u0627\u0644\u062c\u0645\u0647\u0648\u0631\u064a\u0629 \u0627\u0644\u0639\u0631\u0628\u064a\u0629 \u0627\u0644\u0635\u062d\u0631\u0627\u0648\u064a\u0629 \u0627\u0644\u062f\u064a\u0645\u0642\u0631\u0627\u0637\u064a\u0629"
+            },
+            "spa": {
+                "common": "Sahara Occidental",
+                "official": "Rep\u00fablica \u00c1rabe Saharaui Democr\u00e1tica"
+            }
+        },
+        "official": "Sahrawi Arab Democratic Republic"
+    },
+    "name_alt": "",
+    "name_ar": "\u0627\u0644\u0635\u062d\u0631\u0627\u0621 \u0627\u0644\u063a\u0631\u0628\u064a\u0629",
+    "name_bn": "\u09aa\u09b6\u09cd\u099a\u09bf\u09ae \u09b8\u09be\u09b9\u09be\u09b0\u09be",
+    "name_ciawf": "Western Sahara",
+    "name_de": "Westsahara",
+    "name_el": "\u0394\u03c5\u03c4\u03b9\u03ba\u03ae \u03a3\u03b1\u03c7\u03ac\u03c1\u03b1",
+    "name_en": "Western Sahara",
+    "name_es": "Sahara Occidental",
+    "name_fa": "\u0635\u062d\u0631\u0627\u06cc \u063a\u0631\u0628\u06cc",
+    "name_fr": "Sahara occidental",
+    "name_he": "\u05e1\u05d4\u05e8\u05d4 \u05d4\u05de\u05e2\u05e8\u05d1\u05d9\u05ea",
+    "name_hi": "\u092a\u0936\u094d\u091a\u093f\u092e\u0940 \u0938\u0939\u093e\u0930\u093e",
+    "name_hu": "Nyugat-Szahara",
+    "name_id": "Sahara Barat",
+    "name_it": "Sahara Occidentale",
+    "name_ja": "\u897f\u30b5\u30cf\u30e9",
+    "name_ko": "\uc11c\uc0ac\ud558\ub77c",
+    "name_len": "9",
+    "name_long": "Western Sahara",
+    "name_nev": "W. Sahara",
+    "name_nl": "Westelijke Sahara",
+    "name_pl": "Sahara Zachodnia",
+    "name_pt": "Sara Ocidental",
+    "name_ru": "\u0417\u0430\u043f\u0430\u0434\u043d\u0430\u044f \u0421\u0430\u0445\u0430\u0440\u0430",
+    "name_sort": "Western Sahara",
+    "name_sv": "V\u00e4stsahara",
+    "name_tr": "Bat\u0131 Sahra",
+    "name_uk": "\u0417\u0430\u0445\u0456\u0434\u043d\u0430 \u0421\u0430\u0445\u0430\u0440\u0430",
+    "name_ur": "\u0645\u063a\u0631\u0628\u06cc \u0635\u062d\u0627\u0631\u0627",
+    "name_vi": "T\u00e2y Sahara",
+    "name_zh": "\u897f\u6492\u54c8\u62c9",
+    "name_zht": "\u897f\u6492\u54c8\u62c9",
+    "ne_id": "1159321223",
+    "note_adm0": "",
+    "note_brk": "Self admin.; Claimed by Morocco",
+    "pop_est": "603253.0",
+    "pop_rank": "11",
+    "pop_year": "2017",
+    "postal": "WS",
+    "record_type": "country",
+    "scalerank": "0",
+    "sov_a3": "SAH",
+    "sovereignt": "Western Sahara",
+    "status": "officially-assigned",
+    "su_a3": "SAH",
+    "su_dif": "0",
+    "subunit": "Western Sahara",
+    "tiny": "-99",
+    "tlc": "1",
+    "tlc_diff": "",
+    "tld": [
+        ".eh"
+    ],
+    "translations": {
+        "ces": {
+            "common": "Z\u00e1padn\u00ed Sahara",
+            "official": "Z\u00e1padn\u00ed Sahara"
+        },
+        "deu": {
+            "common": "Westsahara",
+            "official": "Demokratische Arabische Republik Sahara"
+        },
+        "est": {
+            "common": "L\u00e4\u00e4ne-Sahara",
+            "official": "L\u00e4\u00e4ne-Sahara"
+        },
+        "fin": {
+            "common": "L\u00e4nsi-Sahara",
+            "official": "L\u00e4nsi-Sahara"
+        },
+        "fra": {
+            "common": "Sahara Occidental",
+            "official": "R\u00e9publique arabe sahraouie d\u00e9mocratique"
+        },
+        "hrv": {
+            "common": "Zapadna Sahara",
+            "official": "Sahrawi Arab Demokratska Republika"
+        },
+        "hun": {
+            "common": "Nyugat-Szahara",
+            "official": "Nyugat-Szahara"
+        },
+        "ita": {
+            "common": "Sahara Occidentale",
+            "official": "Repubblica Araba Saharawi Democratica"
+        },
+        "jpn": {
+            "common": "\u897f\u30b5\u30cf\u30e9",
+            "official": "\u30b5\u30cf\u30e9\u30a2\u30e9\u30d6\u6c11\u4e3b\u5171\u548c\u56fd"
+        },
+        "kor": {
+            "common": "\uc11c\uc0ac\ud558\ub77c",
+            "official": "\uc0ac\ud558\ub77c \uc544\ub78d \ubbfc\uc8fc \uacf5\ud654\uad6d"
+        },
+        "nld": {
+            "common": "Westelijke Sahara",
+            "official": "Sahrawi Arabische Democratische Republiek"
+        },
+        "per": {
+            "common": "\u0635\u062d\u0631\u0627\u06cc \u063a\u0631\u0628\u06cc",
+            "official": "\u0635\u062d\u0631\u0627\u06cc \u063a\u0631\u0628\u06cc"
+        },
+        "pol": {
+            "common": "Sahara Zachodnia",
+            "official": "Saharyjska Arabska Republika Demokratyczna"
+        },
+        "por": {
+            "common": "Saara Ocidental",
+            "official": "Rep\u00fablica \u00c1rabe Saharaui Democr\u00e1tica"
+        },
+        "rus": {
+            "common": "\u0417\u0430\u043f\u0430\u0434\u043d\u0430\u044f \u0421\u0430\u0445\u0430\u0440\u0430",
+            "official": "Sahrawi \u0410\u0440\u0430\u0431\u0441\u043a\u0430\u044f \u0414\u0435\u043c\u043e\u043a\u0440\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u0420\u0435\u0441\u043f\u0443\u0431\u043b\u0438\u043a\u0430"
+        },
+        "slk": {
+            "common": "Z\u00e1padn\u00e1 Sahara",
+            "official": "Z\u00e1padn\u00e1 Sahara"
+        },
+        "spa": {
+            "common": "Sahara Occidental",
+            "official": "Rep\u00fablica \u00c1rabe Saharaui Democr\u00e1tica"
+        },
+        "swe": {
+            "common": "V\u00e4stsahara",
+            "official": "V\u00e4stsahara"
+        },
+        "urd": {
+            "common": "\u0645\u063a\u0631\u0628\u06cc \u0635\u062d\u0627\u0631\u0627",
+            "official": "\u0635\u062d\u0631\u0627\u0648\u06cc \u0639\u0631\u0628 \u0639\u0648\u0627\u0645\u06cc \u062c\u0645\u06c1\u0648\u0631\u06cc\u06c1"
+        },
+        "zho": {
+            "common": "\u897f\u6492\u54c8\u62c9",
+            "official": "\u963f\u62c9\u4f2f\u6492\u54c8\u62c9\u6c11\u4e3b\u5171\u548c\u56fd"
+        }
+    },
+    "type": "Indeterminate",
+    "un_a3": "732",
+    "un_member": {
+        "abbrev": "W. Sah.",
+        "abbrev_len": "7",
+        "adm0_a3": "SAH",
+        "adm0_a3_ar": "SAH",
+        "adm0_a3_bd": "SAH",
+        "adm0_a3_br": "SAH",
+        "adm0_a3_cn": "SAH",
+        "adm0_a3_de": "SAH",
+        "adm0_a3_eg": "SAH",
+        "adm0_a3_es": "SAH",
+        "adm0_a3_fr": "MAR",
+        "adm0_a3_gb": "SAH",
+        "adm0_a3_gr": "SAH",
+        "adm0_a3_id": "MAR",
+        "adm0_a3_il": "SAH",
+        "adm0_a3_in": "MAR",
+        "adm0_a3_it": "SAH",
+        "adm0_a3_jp": "SAH",
+        "adm0_a3_ko": "SAH",
+        "adm0_a3_ma": "MAR",
+        "adm0_a3_nl": "MAR",
+        "adm0_a3_np": "SAH",
+        "adm0_a3_pk": "SAH",
+        "adm0_a3_pl": "MAR",
+        "adm0_a3_ps": "MAR",
+        "adm0_a3_pt": "SAH",
+        "adm0_a3_ru": "SAH",
+        "adm0_a3_sa": "MAR",
+        "adm0_a3_se": "SAH",
+        "adm0_a3_tr": "MAR",
+        "adm0_a3_tw": "SAH",
+        "adm0_a3_ua": "SAH",
+        "adm0_a3_un": "-99",
+        "adm0_a3_us": "SAH",
+        "adm0_a3_vn": "SAH",
+        "adm0_a3_wb": "-99",
+        "adm0_dif": "0",
+        "adm0_diff": "",
+        "adm0_iso": "B28",
+        "adm0_tlc": "B28",
+        "admin": "Western Sahara",
+        "alt_spellings": [
+            "EH",
+            "Tane\u1e93roft Tutrimt"
+        ],
+        "borders": [
+            "DZA",
+            "MRT",
+            "MAR"
+        ],
+        "brk_a3": "B28",
+        "brk_diff": "1",
+        "brk_group": "",
+        "brk_name": "W. Sahara",
+        "calling_codes": [
+            "+2125288",
+            "+2125289"
+        ],
+        "capital": [
+            "El Aai\u00fan"
+        ],
+        "cca2": "EH",
+        "cca3": "ESH",
+        "ccn3": "732",
+        "cioc": null,
+        "currencies": {
+            "d_z_d": {
+                "name": "Algerian dinar",
+                "symbol": "\u062f\u062c"
+            },
+            "m_a_d": {
+                "name": "Moroccan dirham",
+                "symbol": "DH"
+            },
+            "m_r_u": {
+                "name": "Mauritanian ouguiya",
+                "symbol": "UM"
+            }
+        },
+        "data_sources": [
+            "mledoze"
+        ],
+        "demonyms": {
+            "eng": {
+                "f": "Sahrawi",
+                "m": "Sahrawi"
+            },
+            "fra": {
+                "f": "",
+                "m": ""
+            }
+        },
+        "economy": "7. Least developed region",
+        "fclass_ar": "",
+        "fclass_bd": "",
+        "fclass_br": "",
+        "fclass_cn": "",
+        "fclass_de": "",
+        "fclass_eg": "",
+        "fclass_es": "",
+        "fclass_fr": "Unrecognized",
+        "fclass_gb": "",
+        "fclass_gr": "",
+        "fclass_id": "Unrecognized",
+        "fclass_il": "",
+        "fclass_in": "Unrecognized",
+        "fclass_iso": "Admin-0 dependency",
+        "fclass_it": "",
+        "fclass_jp": "",
+        "fclass_ko": "",
+        "fclass_ma": "Unrecognized",
+        "fclass_nl": "Unrecognized",
+        "fclass_np": "",
+        "fclass_pk": "",
+        "fclass_pl": "Unrecognized",
+        "fclass_ps": "Unrecognized",
+        "fclass_pt": "",
+        "fclass_ru": "",
+        "fclass_sa": "Unrecognized",
+        "fclass_se": "",
+        "fclass_tlc": "Admin-0 dependency",
+        "fclass_tr": "Unrecognized",
+        "fclass_tw": "",
+        "fclass_ua": "",
+        "fclass_us": "",
+        "fclass_vn": "",
+        "featurecla": "Admin-0 country",
+        "fips_10": "WI",
+        "flag": {
+            "emoji": "\ud83c\uddea\ud83c\udded"
+        },
+        "formal_en": "Sahrawi Arab Democratic Republic",
+        "formal_fr": "",
+        "gdp_md": "907",
+        "gdp_year": "2007",
+        "geo": {
+            "area": 266000,
+            "continent": "Africa",
+            "landlocked": null,
+            "latlng": [
+                24.5,
+                -13
+            ],
+            "region": "Africa",
+            "region_un": "Africa",
+            "region_wb": "Middle East & North Africa",
+            "subregion": "Northern Africa"
+        },
+        "geou_dif": "0",
+        "geounit": "Western Sahara",
+        "gu_a3": "SAH",
+        "homepart": "1",
+        "idd": {
+            "root": "+2",
+            "suffixes": [
+                "125288",
+                "125289"
+            ]
+        },
+        "income_grp": "5. Low income",
+        "independent": null,
+        "iso_a2": "EH",
+        "iso_a2_eh": "EH",
+        "iso_a3": "ESH",
+        "iso_a3_eh": "ESH",
+        "iso_n3": "732",
+        "iso_n3_eh": "732",
+        "label_x": "-12.630304",
+        "label_y": "23.967592",
+        "labelrank": "7",
+        "languages": {
+            "ber": "Berber",
+            "mey": "Hassaniya",
+            "spa": "Spanish"
+        },
+        "level": "2",
+        "long_len": "14",
+        "mapcolor7": "4",
+        "mapcolor8": "7",
+        "mapcolor9": "4",
+        "mapcolor13": "4",
+        "max_label": "11.0",
+        "min_label": "6.0",
+        "min_zoom": "4.7",
+        "name": {
+            "common": "Western Sahara",
+            "native": {
+                "ber": {
+                    "common": "Western Sahara",
+                    "official": "Sahrawi Arab Democratic Republic"
+                },
+                "mey": {
+                    "common": "\u0627\u0644\u0635\u062d\u0631\u0627\u0621 \u0627\u0644\u063a\u0631\u0628\u064a\u0629",
+                    "official": "\u0627\u0644\u062c\u0645\u0647\u0648\u0631\u064a\u0629 \u0627\u0644\u0639\u0631\u0628\u064a\u0629 \u0627\u0644\u0635\u062d\u0631\u0627\u0648\u064a\u0629 \u0627\u0644\u062f\u064a\u0645\u0642\u0631\u0627\u0637\u064a\u0629"
+                },
+                "spa": {
+                    "common": "Sahara Occidental",
+                    "official": "Rep\u00fablica \u00c1rabe Saharaui Democr\u00e1tica"
+                }
+            },
+            "official": "Sahrawi Arab Democratic Republic"
+        },
+        "name_alt": "",
+        "name_ar": "\u0627\u0644\u0635\u062d\u0631\u0627\u0621 \u0627\u0644\u063a\u0631\u0628\u064a\u0629",
+        "name_bn": "\u09aa\u09b6\u09cd\u099a\u09bf\u09ae \u09b8\u09be\u09b9\u09be\u09b0\u09be",
+        "name_ciawf": "Western Sahara",
+        "name_de": "Westsahara",
+        "name_el": "\u0394\u03c5\u03c4\u03b9\u03ba\u03ae \u03a3\u03b1\u03c7\u03ac\u03c1\u03b1",
+        "name_en": "Western Sahara",
+        "name_es": "Sahara Occidental",
+        "name_fa": "\u0635\u062d\u0631\u0627\u06cc \u063a\u0631\u0628\u06cc",
+        "name_fr": "Sahara occidental",
+        "name_he": "\u05e1\u05d4\u05e8\u05d4 \u05d4\u05de\u05e2\u05e8\u05d1\u05d9\u05ea",
+        "name_hi": "\u092a\u0936\u094d\u091a\u093f\u092e\u0940 \u0938\u0939\u093e\u0930\u093e",
+        "name_hu": "Nyugat-Szahara",
+        "name_id": "Sahara Barat",
+        "name_it": "Sahara Occidentale",
+        "name_ja": "\u897f\u30b5\u30cf\u30e9",
+        "name_ko": "\uc11c\uc0ac\ud558\ub77c",
+        "name_len": "9",
+        "name_long": "Western Sahara",
+        "name_nev": "W. Sahara",
+        "name_nl": "Westelijke Sahara",
+        "name_pl": "Sahara Zachodnia",
+        "name_pt": "Sara Ocidental",
+        "name_ru": "\u0417\u0430\u043f\u0430\u0434\u043d\u0430\u044f \u0421\u0430\u0445\u0430\u0440\u0430",
+        "name_sort": "Western Sahara",
+        "name_sv": "V\u00e4stsahara",
+        "name_tr": "Bat\u0131 Sahra",
+        "name_uk": "\u0417\u0430\u0445\u0456\u0434\u043d\u0430 \u0421\u0430\u0445\u0430\u0440\u0430",
+        "name_ur": "\u0645\u063a\u0631\u0628\u06cc \u0635\u062d\u0627\u0631\u0627",
+        "name_vi": "T\u00e2y Sahara",
+        "name_zh": "\u897f\u6492\u54c8\u62c9",
+        "name_zht": "\u897f\u6492\u54c8\u62c9",
+        "ne_id": "1159321223",
+        "note_adm0": "",
+        "note_brk": "Self admin.; Claimed by Morocco",
+        "pop_est": "603253.0",
+        "pop_rank": "11",
+        "pop_year": "2017",
+        "postal": "WS",
+        "record_type": "country",
+        "scalerank": "0",
+        "sov_a3": "SAH",
+        "sovereignt": "Western Sahara",
+        "status": "officially-assigned",
+        "su_a3": "SAH",
+        "su_dif": "0",
+        "subunit": "Western Sahara",
+        "tiny": "-99",
+        "tlc": "1",
+        "tlc_diff": "",
+        "tld": [
+            ".eh"
+        ],
+        "translations": {
+            "ces": {
+                "common": "Z\u00e1padn\u00ed Sahara",
+                "official": "Z\u00e1padn\u00ed Sahara"
+            },
+            "deu": {
+                "common": "Westsahara",
+                "official": "Demokratische Arabische Republik Sahara"
+            },
+            "est": {
+                "common": "L\u00e4\u00e4ne-Sahara",
+                "official": "L\u00e4\u00e4ne-Sahara"
+            },
+            "fin": {
+                "common": "L\u00e4nsi-Sahara",
+                "official": "L\u00e4nsi-Sahara"
+            },
+            "fra": {
+                "common": "Sahara Occidental",
+                "official": "R\u00e9publique arabe sahraouie d\u00e9mocratique"
+            },
+            "hrv": {
+                "common": "Zapadna Sahara",
+                "official": "Sahrawi Arab Demokratska Republika"
+            },
+            "hun": {
+                "common": "Nyugat-Szahara",
+                "official": "Nyugat-Szahara"
+            },
+            "ita": {
+                "common": "Sahara Occidentale",
+                "official": "Repubblica Araba Saharawi Democratica"
+            },
+            "jpn": {
+                "common": "\u897f\u30b5\u30cf\u30e9",
+                "official": "\u30b5\u30cf\u30e9\u30a2\u30e9\u30d6\u6c11\u4e3b\u5171\u548c\u56fd"
+            },
+            "kor": {
+                "common": "\uc11c\uc0ac\ud558\ub77c",
+                "official": "\uc0ac\ud558\ub77c \uc544\ub78d \ubbfc\uc8fc \uacf5\ud654\uad6d"
+            },
+            "nld": {
+                "common": "Westelijke Sahara",
+                "official": "Sahrawi Arabische Democratische Republiek"
+            },
+            "per": {
+                "common": "\u0635\u062d\u0631\u0627\u06cc \u063a\u0631\u0628\u06cc",
+                "official": "\u0635\u062d\u0631\u0627\u06cc \u063a\u0631\u0628\u06cc"
+            },
+            "pol": {
+                "common": "Sahara Zachodnia",
+                "official": "Saharyjska Arabska Republika Demokratyczna"
+            },
+            "por": {
+                "common": "Saara Ocidental",
+                "official": "Rep\u00fablica \u00c1rabe Saharaui Democr\u00e1tica"
+            },
+            "rus": {
+                "common": "\u0417\u0430\u043f\u0430\u0434\u043d\u0430\u044f \u0421\u0430\u0445\u0430\u0440\u0430",
+                "official": "Sahrawi \u0410\u0440\u0430\u0431\u0441\u043a\u0430\u044f \u0414\u0435\u043c\u043e\u043a\u0440\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u0420\u0435\u0441\u043f\u0443\u0431\u043b\u0438\u043a\u0430"
+            },
+            "slk": {
+                "common": "Z\u00e1padn\u00e1 Sahara",
+                "official": "Z\u00e1padn\u00e1 Sahara"
+            },
+            "spa": {
+                "common": "Sahara Occidental",
+                "official": "Rep\u00fablica \u00c1rabe Saharaui Democr\u00e1tica"
+            },
+            "swe": {
+                "common": "V\u00e4stsahara",
+                "official": "V\u00e4stsahara"
+            },
+            "urd": {
+                "common": "\u0645\u063a\u0631\u0628\u06cc \u0635\u062d\u0627\u0631\u0627",
+                "official": "\u0635\u062d\u0631\u0627\u0648\u06cc \u0639\u0631\u0628 \u0639\u0648\u0627\u0645\u06cc \u062c\u0645\u06c1\u0648\u0631\u06cc\u06c1"
+            },
+            "zho": {
+                "common": "\u897f\u6492\u54c8\u62c9",
+                "official": "\u963f\u62c9\u4f2f\u6492\u54c8\u62c9\u6c11\u4e3b\u5171\u548c\u56fd"
+            }
+        },
+        "type": "Indeterminate",
+        "un_a3": "732",
+        "un_member": null,
+        "wb_a2": "-99",
+        "wb_a3": "-99",
+        "wikidataid": "Q6250",
+        "woe_id": "23424990",
+        "woe_id_eh": "23424990",
+        "woe_note": "Exact WOE match as country"
+    },
+    "wb_a2": "-99",
+    "wb_a3": "-99",
+    "wikidataid": "Q6250",
+    "woe_id": "23424990",
+    "woe_id_eh": "23424990",
+    "woe_note": "Exact WOE match as country"
+}

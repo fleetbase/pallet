@@ -1,0 +1,1059 @@
+{
+    "abbrev": "Cook Is.",
+    "abbrev_len": "8",
+    "adm0_a3": "COK",
+    "adm0_a3_ar": "COK",
+    "adm0_a3_bd": "COK",
+    "adm0_a3_br": "COK",
+    "adm0_a3_cn": "COK",
+    "adm0_a3_de": "COK",
+    "adm0_a3_eg": "COK",
+    "adm0_a3_es": "COK",
+    "adm0_a3_fr": "COK",
+    "adm0_a3_gb": "COK",
+    "adm0_a3_gr": "COK",
+    "adm0_a3_id": "COK",
+    "adm0_a3_il": "COK",
+    "adm0_a3_in": "COK",
+    "adm0_a3_it": "COK",
+    "adm0_a3_jp": "COK",
+    "adm0_a3_ko": "COK",
+    "adm0_a3_ma": "COK",
+    "adm0_a3_nl": "COK",
+    "adm0_a3_np": "COK",
+    "adm0_a3_pk": "COK",
+    "adm0_a3_pl": "COK",
+    "adm0_a3_ps": "COK",
+    "adm0_a3_pt": "COK",
+    "adm0_a3_ru": "COK",
+    "adm0_a3_sa": "COK",
+    "adm0_a3_se": "COK",
+    "adm0_a3_tr": "COK",
+    "adm0_a3_tw": "COK",
+    "adm0_a3_ua": "COK",
+    "adm0_a3_un": "-99",
+    "adm0_a3_us": "COK",
+    "adm0_a3_vn": "COK",
+    "adm0_a3_wb": "-99",
+    "adm0_dif": "1",
+    "adm0_diff": "",
+    "adm0_iso": "COK",
+    "adm0_tlc": "COK",
+    "admin": "Cook Islands",
+    "alt_spellings": [
+        "CK",
+        "K\u016bki '\u0100irani"
+    ],
+    "borders": [],
+    "brk_a3": "COK",
+    "brk_diff": "0",
+    "brk_group": "",
+    "brk_name": "Cook Is.",
+    "calling_codes": [
+        "+682"
+    ],
+    "capital": [
+        "Avarua"
+    ],
+    "capital_rinvex": "Avarua",
+    "cca2": "CK",
+    "cca3": "COK",
+    "ccn3": "184",
+    "cioc": "COK",
+    "currencies": [
+        "NZD"
+    ],
+    "data_sources": [
+        "mledoze",
+        "natural"
+    ],
+    "demonym": "Cook Islander",
+    "demonyms": {
+        "eng": {
+            "f": "Cook Islander",
+            "m": "Cook Islander"
+        },
+        "fra": {
+            "f": "Cookienne",
+            "m": "Cookien"
+        }
+    },
+    "dialling": {
+        "calling_code": [
+            "682"
+        ],
+        "international_prefix": "00",
+        "national_destination_code_lengths": [
+            2
+        ],
+        "national_number_lengths": [
+            5
+        ],
+        "national_prefix": "00"
+    },
+    "economy": "6. Developing region",
+    "extra": {
+        "address_format": null,
+        "ar5": "ASIA",
+        "cowc": null,
+        "cown": 0,
+        "data_protection": "Other",
+        "ds": "NZ",
+        "edgar": "G1",
+        "emoji": "\ud83c\udde8\ud83c\uddf0",
+        "eu_member": null,
+        "fao": 47,
+        "fifa": "COK",
+        "fips": "CW",
+        "gaul": 60,
+        "geonameid": 1899402,
+        "imf": 815,
+        "ioc": "COK",
+        "itu": "CKH",
+        "marc": "cw",
+        "vat_rates": null,
+        "wmo": "KU"
+    },
+    "fclass_ar": "",
+    "fclass_bd": "",
+    "fclass_br": "",
+    "fclass_cn": "",
+    "fclass_de": "",
+    "fclass_eg": "",
+    "fclass_es": "",
+    "fclass_fr": "",
+    "fclass_gb": "",
+    "fclass_gr": "",
+    "fclass_id": "",
+    "fclass_il": "",
+    "fclass_in": "",
+    "fclass_iso": "Admin-0 dependency",
+    "fclass_it": "",
+    "fclass_jp": "",
+    "fclass_ko": "",
+    "fclass_ma": "",
+    "fclass_nl": "",
+    "fclass_np": "",
+    "fclass_pk": "",
+    "fclass_pl": "",
+    "fclass_ps": "",
+    "fclass_pt": "",
+    "fclass_ru": "",
+    "fclass_sa": "",
+    "fclass_se": "",
+    "fclass_tlc": "Admin-0 dependency",
+    "fclass_tr": "",
+    "fclass_tw": "",
+    "fclass_ua": "",
+    "fclass_us": "",
+    "fclass_vn": "",
+    "featurecla": "Admin-0 country",
+    "fips_10": "CW",
+    "flag": {
+        "emoji": "\ud83c\udde8\ud83c\uddf0"
+    },
+    "formal_en": "",
+    "formal_fr": "",
+    "gdp_md": "244",
+    "gdp_year": "2010",
+    "geo": {
+        "area": 236,
+        "borders": [],
+        "continent": {
+            "OC": "Oceania"
+        },
+        "independent": "Associated with NZ",
+        "landlocked": false,
+        "latitude": "21 14 S",
+        "latitude_desc": "-21.22330665588379",
+        "latlng": [
+            -21.23333333,
+            -159.76666666
+        ],
+        "longitude": "159 46 W",
+        "longitude_desc": "-159.7405548095703",
+        "max_latitude": "-8.918611",
+        "max_longitude": "-157.3375",
+        "min_latitude": "-21.953056",
+        "min_longitude": "-171.783333",
+        "postal_code": false,
+        "region": "Oceania",
+        "region_code": "009",
+        "region_un": "Oceania",
+        "region_wb": "East Asia & Pacific",
+        "subregion": "Polynesia",
+        "subregion_code": "061",
+        "world_region": "APAC"
+    },
+    "geou_dif": "0",
+    "geounit": "Cook Islands",
+    "gu_a3": "COK",
+    "homepart": "-99",
+    "idd": {
+        "root": "+6",
+        "suffixes": [
+            "82"
+        ]
+    },
+    "income_grp": "3. Upper middle income",
+    "independent": {
+        "abbrev": "Cook Is.",
+        "abbrev_len": "8",
+        "adm0_a3": "COK",
+        "adm0_a3_ar": "COK",
+        "adm0_a3_bd": "COK",
+        "adm0_a3_br": "COK",
+        "adm0_a3_cn": "COK",
+        "adm0_a3_de": "COK",
+        "adm0_a3_eg": "COK",
+        "adm0_a3_es": "COK",
+        "adm0_a3_fr": "COK",
+        "adm0_a3_gb": "COK",
+        "adm0_a3_gr": "COK",
+        "adm0_a3_id": "COK",
+        "adm0_a3_il": "COK",
+        "adm0_a3_in": "COK",
+        "adm0_a3_it": "COK",
+        "adm0_a3_jp": "COK",
+        "adm0_a3_ko": "COK",
+        "adm0_a3_ma": "COK",
+        "adm0_a3_nl": "COK",
+        "adm0_a3_np": "COK",
+        "adm0_a3_pk": "COK",
+        "adm0_a3_pl": "COK",
+        "adm0_a3_ps": "COK",
+        "adm0_a3_pt": "COK",
+        "adm0_a3_ru": "COK",
+        "adm0_a3_sa": "COK",
+        "adm0_a3_se": "COK",
+        "adm0_a3_tr": "COK",
+        "adm0_a3_tw": "COK",
+        "adm0_a3_ua": "COK",
+        "adm0_a3_un": "-99",
+        "adm0_a3_us": "COK",
+        "adm0_a3_vn": "COK",
+        "adm0_a3_wb": "-99",
+        "adm0_dif": "1",
+        "adm0_diff": "",
+        "adm0_iso": "COK",
+        "adm0_tlc": "COK",
+        "admin": "Cook Islands",
+        "alt_spellings": [
+            "CK",
+            "K\u016bki '\u0100irani"
+        ],
+        "borders": [],
+        "brk_a3": "COK",
+        "brk_diff": "0",
+        "brk_group": "",
+        "brk_name": "Cook Is.",
+        "calling_codes": [
+            "+682"
+        ],
+        "capital": [
+            "Avarua"
+        ],
+        "cca2": "CK",
+        "cca3": "COK",
+        "ccn3": "184",
+        "cioc": "COK",
+        "currencies": {
+            "c_k_d": {
+                "name": "Cook Islands dollar",
+                "symbol": "$"
+            },
+            "n_z_d": {
+                "name": "New Zealand dollar",
+                "symbol": "$"
+            }
+        },
+        "data_sources": [
+            "mledoze"
+        ],
+        "demonyms": {
+            "eng": {
+                "f": "Cook Islander",
+                "m": "Cook Islander"
+            },
+            "fra": {
+                "f": "Cookienne",
+                "m": "Cookien"
+            }
+        },
+        "economy": "6. Developing region",
+        "fclass_ar": "",
+        "fclass_bd": "",
+        "fclass_br": "",
+        "fclass_cn": "",
+        "fclass_de": "",
+        "fclass_eg": "",
+        "fclass_es": "",
+        "fclass_fr": "",
+        "fclass_gb": "",
+        "fclass_gr": "",
+        "fclass_id": "",
+        "fclass_il": "",
+        "fclass_in": "",
+        "fclass_iso": "Admin-0 dependency",
+        "fclass_it": "",
+        "fclass_jp": "",
+        "fclass_ko": "",
+        "fclass_ma": "",
+        "fclass_nl": "",
+        "fclass_np": "",
+        "fclass_pk": "",
+        "fclass_pl": "",
+        "fclass_ps": "",
+        "fclass_pt": "",
+        "fclass_ru": "",
+        "fclass_sa": "",
+        "fclass_se": "",
+        "fclass_tlc": "Admin-0 dependency",
+        "fclass_tr": "",
+        "fclass_tw": "",
+        "fclass_ua": "",
+        "fclass_us": "",
+        "fclass_vn": "",
+        "featurecla": "Admin-0 country",
+        "fips_10": "CW",
+        "flag": {
+            "emoji": "\ud83c\udde8\ud83c\uddf0"
+        },
+        "formal_en": "",
+        "formal_fr": "",
+        "gdp_md": "244",
+        "gdp_year": "2010",
+        "geo": {
+            "area": 236,
+            "continent": "Oceania",
+            "landlocked": null,
+            "latlng": [
+                -21.23333333,
+                -159.76666666
+            ],
+            "region": "Oceania",
+            "region_un": "Oceania",
+            "region_wb": "East Asia & Pacific",
+            "subregion": "Polynesia"
+        },
+        "geou_dif": "0",
+        "geounit": "Cook Islands",
+        "gu_a3": "COK",
+        "homepart": "-99",
+        "idd": {
+            "root": "+6",
+            "suffixes": [
+                "82"
+            ]
+        },
+        "income_grp": "3. Upper middle income",
+        "independent": null,
+        "iso_a2": "CK",
+        "iso_a2_eh": "CK",
+        "iso_a3": "COK",
+        "iso_a3_eh": "COK",
+        "iso_n3": "184",
+        "iso_n3_eh": "184",
+        "label_x": "-159.785675",
+        "label_y": "-21.215993",
+        "labelrank": "4",
+        "languages": {
+            "eng": "English",
+            "rar": "Cook Islands M\u0101ori"
+        },
+        "level": "2",
+        "long_len": "12",
+        "mapcolor7": "3",
+        "mapcolor8": "3",
+        "mapcolor9": "4",
+        "mapcolor13": "4",
+        "max_label": "9.0",
+        "min_label": "4.0",
+        "min_zoom": "0.0",
+        "name": {
+            "common": "Cook Islands",
+            "native": {
+                "eng": {
+                    "common": "Cook Islands",
+                    "official": "Cook Islands"
+                },
+                "rar": {
+                    "common": "K\u016bki '\u0100irani",
+                    "official": "K\u016bki '\u0100irani"
+                }
+            },
+            "official": "Cook Islands"
+        },
+        "name_alt": "",
+        "name_ar": "\u062c\u0632\u0631 \u0643\u0648\u0643",
+        "name_bn": "\u0995\u09c1\u0995 \u09a6\u09cd\u09ac\u09c0\u09aa\u09aa\u09c1\u099e\u09cd\u099c",
+        "name_ciawf": "Cook Islands",
+        "name_de": "Cookinseln",
+        "name_el": "\u039d\u03ae\u03c3\u03bf\u03b9 \u039a\u03bf\u03c5\u03ba",
+        "name_en": "Cook Islands",
+        "name_es": "Islas Cook",
+        "name_fa": "\u062c\u0632\u0627\u06cc\u0631 \u06a9\u0648\u06a9",
+        "name_fr": "\u00celes Cook",
+        "name_he": "\u05d0\u05d9\u05d9 \u05e7\u05d5\u05e7",
+        "name_hi": "\u0915\u0941\u0915 \u0926\u094d\u0935\u0940\u092a\u0938\u092e\u0942\u0939",
+        "name_hu": "Cook-szigetek",
+        "name_id": "Kepulauan Cook",
+        "name_it": "Isole Cook",
+        "name_ja": "\u30af\u30c3\u30af\u8af8\u5cf6",
+        "name_ko": "\ucfe1 \uc81c\ub3c4",
+        "name_len": "8",
+        "name_long": "Cook Islands",
+        "name_nev": "Cook Is.",
+        "name_nl": "Cookeilanden",
+        "name_pl": "Wyspy Cooka",
+        "name_pt": "Ilhas Cook",
+        "name_ru": "\u041e\u0441\u0442\u0440\u043e\u0432\u0430 \u041a\u0443\u043a\u0430",
+        "name_sort": "Cook Islands",
+        "name_sv": "Cook\u00f6arna",
+        "name_tr": "Cook Adalar\u0131",
+        "name_uk": "\u041e\u0441\u0442\u0440\u043e\u0432\u0438 \u041a\u0443\u043a\u0430",
+        "name_ur": "\u062c\u0632\u0627\u0626\u0631 \u06a9\u06a9",
+        "name_vi": "Qu\u1ea7n \u0111\u1ea3o Cook",
+        "name_zh": "\u5e93\u514b\u7fa4\u5c9b",
+        "name_zht": "\u5eab\u514b\u7fa4\u5cf6",
+        "ne_id": "1159321129",
+        "note_adm0": "Assoc. with N.Z.",
+        "note_brk": "Assoc. with N.Z.",
+        "pop_est": "17459.0",
+        "pop_rank": "6",
+        "pop_year": "2016",
+        "postal": "CK",
+        "record_type": "country",
+        "scalerank": "5",
+        "sov_a3": "NZ1",
+        "sovereignt": "New Zealand",
+        "status": "officially-assigned",
+        "su_a3": "COK",
+        "su_dif": "0",
+        "subunit": "Cook Islands",
+        "tiny": "3",
+        "tlc": "1",
+        "tlc_diff": "",
+        "tld": [
+            ".ck"
+        ],
+        "translations": {
+            "ces": {
+                "common": "Cookovy ostrovy",
+                "official": "Cookovy ostrovy"
+            },
+            "cym": {
+                "common": "Ynysoedd Cook",
+                "official": "Ynysoedd Cook"
+            },
+            "deu": {
+                "common": "Cookinseln",
+                "official": "Cookinseln"
+            },
+            "est": {
+                "common": "Cooki saared",
+                "official": "Cooki saared"
+            },
+            "fin": {
+                "common": "Cookinsaaret",
+                "official": "Cookinsaaret"
+            },
+            "fra": {
+                "common": "\u00celes Cook",
+                "official": "\u00celes Cook"
+            },
+            "hrv": {
+                "common": "Cookovo Oto\u010dje",
+                "official": "Cook Islands"
+            },
+            "hun": {
+                "common": "Cook-szigetek",
+                "official": "Cook-szigetek"
+            },
+            "ita": {
+                "common": "Isole Cook",
+                "official": "Isole Cook"
+            },
+            "jpn": {
+                "common": "\u30af\u30c3\u30af\u8af8\u5cf6",
+                "official": "\u30af\u30c3\u30af\u8af8\u5cf6"
+            },
+            "kor": {
+                "common": "\ucfe1 \uc81c\ub3c4",
+                "official": "\ucfe1 \uc81c\ub3c4"
+            },
+            "nld": {
+                "common": "Cookeilanden",
+                "official": "Cook eilanden"
+            },
+            "per": {
+                "common": "\u062c\u0632\u0627\u06cc\u0631 \u06a9\u0648\u06a9",
+                "official": "\u062c\u0632\u0627\u06cc\u0631 \u06a9\u0648\u06a9"
+            },
+            "pol": {
+                "common": "Wyspy Cooka",
+                "official": "Wyspy Cooka"
+            },
+            "por": {
+                "common": "Ilhas Cook",
+                "official": "Ilhas Cook"
+            },
+            "rus": {
+                "common": "\u041e\u0441\u0442\u0440\u043e\u0432\u0430 \u041a\u0443\u043a\u0430",
+                "official": "\u043e\u0441\u0442\u0440\u043e\u0432\u0430 \u041a\u0443\u043a\u0430"
+            },
+            "slk": {
+                "common": "Cookove ostrovy",
+                "official": "Cookove ostrovy"
+            },
+            "spa": {
+                "common": "Islas Cook",
+                "official": "Islas Cook"
+            },
+            "swe": {
+                "common": "Cook\u00f6arna",
+                "official": "Cook\u00f6arna"
+            },
+            "urd": {
+                "common": "\u062c\u0632\u0627\u0626\u0631 \u06a9\u06a9",
+                "official": "\u062c\u0632\u0627\u0626\u0631 \u06a9\u06a9"
+            },
+            "zho": {
+                "common": "\u5e93\u514b\u7fa4\u5c9b",
+                "official": "\u5e93\u514b\u7fa4\u5c9b"
+            }
+        },
+        "type": "Dependency",
+        "un_a3": "184",
+        "un_member": null,
+        "wb_a2": "-99",
+        "wb_a3": "-99",
+        "wikidataid": "Q26988",
+        "woe_id": "23424795",
+        "woe_id_eh": "23424795",
+        "woe_note": "Exact WOE match as country"
+    },
+    "iso_3166_1_alpha2": "CK",
+    "iso_3166_1_alpha3": "COK",
+    "iso_3166_1_numeric": "184",
+    "iso_a2": "CK",
+    "iso_a2_eh": "CK",
+    "iso_a3": "COK",
+    "iso_a3_eh": "COK",
+    "iso_n3": "184",
+    "iso_n3_eh": "184",
+    "label_x": "-159.785675",
+    "label_y": "-21.215993",
+    "labelrank": "4",
+    "languages": {
+        "eng": "English",
+        "rar": "Cook Islands M\u0101ori"
+    },
+    "level": "2",
+    "long_len": "12",
+    "mapcolor7": "3",
+    "mapcolor8": "3",
+    "mapcolor9": "4",
+    "mapcolor13": "4",
+    "max_label": "9.0",
+    "min_label": "4.0",
+    "min_zoom": "0.0",
+    "name": {
+        "common": "Cook Islands",
+        "native": {
+            "eng": {
+                "common": "Cook Islands",
+                "official": "Cook Islands"
+            },
+            "rar": {
+                "common": "K\u016bki '\u0100irani",
+                "official": "K\u016bki '\u0100irani"
+            }
+        },
+        "official": "Cook Islands"
+    },
+    "name_alt": "",
+    "name_ar": "\u062c\u0632\u0631 \u0643\u0648\u0643",
+    "name_bn": "\u0995\u09c1\u0995 \u09a6\u09cd\u09ac\u09c0\u09aa\u09aa\u09c1\u099e\u09cd\u099c",
+    "name_ciawf": "Cook Islands",
+    "name_de": "Cookinseln",
+    "name_el": "\u039d\u03ae\u03c3\u03bf\u03b9 \u039a\u03bf\u03c5\u03ba",
+    "name_en": "Cook Islands",
+    "name_es": "Islas Cook",
+    "name_fa": "\u062c\u0632\u0627\u06cc\u0631 \u06a9\u0648\u06a9",
+    "name_fr": "\u00celes Cook",
+    "name_he": "\u05d0\u05d9\u05d9 \u05e7\u05d5\u05e7",
+    "name_hi": "\u0915\u0941\u0915 \u0926\u094d\u0935\u0940\u092a\u0938\u092e\u0942\u0939",
+    "name_hu": "Cook-szigetek",
+    "name_id": "Kepulauan Cook",
+    "name_it": "Isole Cook",
+    "name_ja": "\u30af\u30c3\u30af\u8af8\u5cf6",
+    "name_ko": "\ucfe1 \uc81c\ub3c4",
+    "name_len": "8",
+    "name_long": "Cook Islands",
+    "name_nev": "Cook Is.",
+    "name_nl": "Cookeilanden",
+    "name_pl": "Wyspy Cooka",
+    "name_pt": "Ilhas Cook",
+    "name_ru": "\u041e\u0441\u0442\u0440\u043e\u0432\u0430 \u041a\u0443\u043a\u0430",
+    "name_sort": "Cook Islands",
+    "name_sv": "Cook\u00f6arna",
+    "name_tr": "Cook Adalar\u0131",
+    "name_uk": "\u041e\u0441\u0442\u0440\u043e\u0432\u0438 \u041a\u0443\u043a\u0430",
+    "name_ur": "\u062c\u0632\u0627\u0626\u0631 \u06a9\u06a9",
+    "name_vi": "Qu\u1ea7n \u0111\u1ea3o Cook",
+    "name_zh": "\u5e93\u514b\u7fa4\u5c9b",
+    "name_zht": "\u5eab\u514b\u7fa4\u5cf6",
+    "ne_id": "1159321129",
+    "note_adm0": "Assoc. with N.Z.",
+    "note_brk": "Assoc. with N.Z.",
+    "pop_est": "17459.0",
+    "pop_rank": "6",
+    "pop_year": "2016",
+    "postal": "CK",
+    "record_type": "country",
+    "scalerank": "5",
+    "sov_a3": "NZ1",
+    "sovereignt": "New Zealand",
+    "status": "officially-assigned",
+    "su_a3": "COK",
+    "su_dif": "0",
+    "subunit": "Cook Islands",
+    "tiny": "3",
+    "tlc": "1",
+    "tlc_diff": "",
+    "tld": [
+        ".ck"
+    ],
+    "translations": {
+        "ces": {
+            "common": "Cookovy ostrovy",
+            "official": "Cookovy ostrovy"
+        },
+        "cym": {
+            "common": "Ynysoedd Cook",
+            "official": "Cook Islands"
+        },
+        "deu": {
+            "common": "Cookinseln",
+            "official": "Cook-Inseln"
+        },
+        "est": {
+            "common": "Cooki saared",
+            "official": "Cooki saared"
+        },
+        "fin": {
+            "common": "Cookinsaaret",
+            "official": "Cookinsaaret"
+        },
+        "fra": {
+            "common": "\u00celes Cook",
+            "official": "\u00celes Cook"
+        },
+        "hrv": {
+            "common": "Cookovo Oto\u010dje",
+            "official": "Cook Islands"
+        },
+        "hun": {
+            "common": "Cook-szigetek",
+            "official": "Cook-szigetek"
+        },
+        "ita": {
+            "common": "Isole Cook",
+            "official": "Isole Cook"
+        },
+        "jpn": {
+            "common": "\u30af\u30c3\u30af\u8af8\u5cf6",
+            "official": "\u30af\u30c3\u30af\u8af8\u5cf6"
+        },
+        "kor": {
+            "common": "\ucfe1 \uc81c\ub3c4",
+            "official": "\ucfe1 \uc81c\ub3c4"
+        },
+        "nld": {
+            "common": "Cookeilanden",
+            "official": "Cook eilanden"
+        },
+        "per": {
+            "common": "\u062c\u0632\u0627\u06cc\u0631 \u06a9\u0648\u06a9",
+            "official": "\u062c\u0632\u0627\u06cc\u0631 \u06a9\u0648\u06a9"
+        },
+        "pol": {
+            "common": "Wyspy Cooka",
+            "official": "Wyspy Cooka"
+        },
+        "por": {
+            "common": "Ilhas Cook",
+            "official": "Ilhas Cook"
+        },
+        "rus": {
+            "common": "\u041e\u0441\u0442\u0440\u043e\u0432\u0430 \u041a\u0443\u043a\u0430",
+            "official": "\u043e\u0441\u0442\u0440\u043e\u0432\u0430 \u041a\u0443\u043a\u0430"
+        },
+        "slk": {
+            "common": "Cookove ostrovy",
+            "official": "Cookove ostrovy"
+        },
+        "spa": {
+            "common": "Islas Cook",
+            "official": "Islas Cook"
+        },
+        "swe": {
+            "common": "Cook\u00f6arna",
+            "official": "Cook\u00f6arna"
+        },
+        "urd": {
+            "common": "\u062c\u0632\u0627\u0626\u0631 \u06a9\u06a9",
+            "official": "\u062c\u0632\u0627\u0626\u0631 \u06a9\u06a9"
+        },
+        "zho": {
+            "common": "\u5e93\u514b\u7fa4\u5c9b",
+            "official": "\u5e93\u514b\u7fa4\u5c9b"
+        }
+    },
+    "type": "Dependency",
+    "un_a3": "184",
+    "un_member": {
+        "abbrev": "Cook Is.",
+        "abbrev_len": "8",
+        "adm0_a3": "COK",
+        "adm0_a3_ar": "COK",
+        "adm0_a3_bd": "COK",
+        "adm0_a3_br": "COK",
+        "adm0_a3_cn": "COK",
+        "adm0_a3_de": "COK",
+        "adm0_a3_eg": "COK",
+        "adm0_a3_es": "COK",
+        "adm0_a3_fr": "COK",
+        "adm0_a3_gb": "COK",
+        "adm0_a3_gr": "COK",
+        "adm0_a3_id": "COK",
+        "adm0_a3_il": "COK",
+        "adm0_a3_in": "COK",
+        "adm0_a3_it": "COK",
+        "adm0_a3_jp": "COK",
+        "adm0_a3_ko": "COK",
+        "adm0_a3_ma": "COK",
+        "adm0_a3_nl": "COK",
+        "adm0_a3_np": "COK",
+        "adm0_a3_pk": "COK",
+        "adm0_a3_pl": "COK",
+        "adm0_a3_ps": "COK",
+        "adm0_a3_pt": "COK",
+        "adm0_a3_ru": "COK",
+        "adm0_a3_sa": "COK",
+        "adm0_a3_se": "COK",
+        "adm0_a3_tr": "COK",
+        "adm0_a3_tw": "COK",
+        "adm0_a3_ua": "COK",
+        "adm0_a3_un": "-99",
+        "adm0_a3_us": "COK",
+        "adm0_a3_vn": "COK",
+        "adm0_a3_wb": "-99",
+        "adm0_dif": "1",
+        "adm0_diff": "",
+        "adm0_iso": "COK",
+        "adm0_tlc": "COK",
+        "admin": "Cook Islands",
+        "alt_spellings": [
+            "CK",
+            "K\u016bki '\u0100irani"
+        ],
+        "borders": [],
+        "brk_a3": "COK",
+        "brk_diff": "0",
+        "brk_group": "",
+        "brk_name": "Cook Is.",
+        "calling_codes": [
+            "+682"
+        ],
+        "capital": [
+            "Avarua"
+        ],
+        "cca2": "CK",
+        "cca3": "COK",
+        "ccn3": "184",
+        "cioc": "COK",
+        "currencies": {
+            "c_k_d": {
+                "name": "Cook Islands dollar",
+                "symbol": "$"
+            },
+            "n_z_d": {
+                "name": "New Zealand dollar",
+                "symbol": "$"
+            }
+        },
+        "data_sources": [
+            "mledoze"
+        ],
+        "demonyms": {
+            "eng": {
+                "f": "Cook Islander",
+                "m": "Cook Islander"
+            },
+            "fra": {
+                "f": "Cookienne",
+                "m": "Cookien"
+            }
+        },
+        "economy": "6. Developing region",
+        "fclass_ar": "",
+        "fclass_bd": "",
+        "fclass_br": "",
+        "fclass_cn": "",
+        "fclass_de": "",
+        "fclass_eg": "",
+        "fclass_es": "",
+        "fclass_fr": "",
+        "fclass_gb": "",
+        "fclass_gr": "",
+        "fclass_id": "",
+        "fclass_il": "",
+        "fclass_in": "",
+        "fclass_iso": "Admin-0 dependency",
+        "fclass_it": "",
+        "fclass_jp": "",
+        "fclass_ko": "",
+        "fclass_ma": "",
+        "fclass_nl": "",
+        "fclass_np": "",
+        "fclass_pk": "",
+        "fclass_pl": "",
+        "fclass_ps": "",
+        "fclass_pt": "",
+        "fclass_ru": "",
+        "fclass_sa": "",
+        "fclass_se": "",
+        "fclass_tlc": "Admin-0 dependency",
+        "fclass_tr": "",
+        "fclass_tw": "",
+        "fclass_ua": "",
+        "fclass_us": "",
+        "fclass_vn": "",
+        "featurecla": "Admin-0 country",
+        "fips_10": "CW",
+        "flag": {
+            "emoji": "\ud83c\udde8\ud83c\uddf0"
+        },
+        "formal_en": "",
+        "formal_fr": "",
+        "gdp_md": "244",
+        "gdp_year": "2010",
+        "geo": {
+            "area": 236,
+            "continent": "Oceania",
+            "landlocked": null,
+            "latlng": [
+                -21.23333333,
+                -159.76666666
+            ],
+            "region": "Oceania",
+            "region_un": "Oceania",
+            "region_wb": "East Asia & Pacific",
+            "subregion": "Polynesia"
+        },
+        "geou_dif": "0",
+        "geounit": "Cook Islands",
+        "gu_a3": "COK",
+        "homepart": "-99",
+        "idd": {
+            "root": "+6",
+            "suffixes": [
+                "82"
+            ]
+        },
+        "income_grp": "3. Upper middle income",
+        "independent": null,
+        "iso_a2": "CK",
+        "iso_a2_eh": "CK",
+        "iso_a3": "COK",
+        "iso_a3_eh": "COK",
+        "iso_n3": "184",
+        "iso_n3_eh": "184",
+        "label_x": "-159.785675",
+        "label_y": "-21.215993",
+        "labelrank": "4",
+        "languages": {
+            "eng": "English",
+            "rar": "Cook Islands M\u0101ori"
+        },
+        "level": "2",
+        "long_len": "12",
+        "mapcolor7": "3",
+        "mapcolor8": "3",
+        "mapcolor9": "4",
+        "mapcolor13": "4",
+        "max_label": "9.0",
+        "min_label": "4.0",
+        "min_zoom": "0.0",
+        "name": {
+            "common": "Cook Islands",
+            "native": {
+                "eng": {
+                    "common": "Cook Islands",
+                    "official": "Cook Islands"
+                },
+                "rar": {
+                    "common": "K\u016bki '\u0100irani",
+                    "official": "K\u016bki '\u0100irani"
+                }
+            },
+            "official": "Cook Islands"
+        },
+        "name_alt": "",
+        "name_ar": "\u062c\u0632\u0631 \u0643\u0648\u0643",
+        "name_bn": "\u0995\u09c1\u0995 \u09a6\u09cd\u09ac\u09c0\u09aa\u09aa\u09c1\u099e\u09cd\u099c",
+        "name_ciawf": "Cook Islands",
+        "name_de": "Cookinseln",
+        "name_el": "\u039d\u03ae\u03c3\u03bf\u03b9 \u039a\u03bf\u03c5\u03ba",
+        "name_en": "Cook Islands",
+        "name_es": "Islas Cook",
+        "name_fa": "\u062c\u0632\u0627\u06cc\u0631 \u06a9\u0648\u06a9",
+        "name_fr": "\u00celes Cook",
+        "name_he": "\u05d0\u05d9\u05d9 \u05e7\u05d5\u05e7",
+        "name_hi": "\u0915\u0941\u0915 \u0926\u094d\u0935\u0940\u092a\u0938\u092e\u0942\u0939",
+        "name_hu": "Cook-szigetek",
+        "name_id": "Kepulauan Cook",
+        "name_it": "Isole Cook",
+        "name_ja": "\u30af\u30c3\u30af\u8af8\u5cf6",
+        "name_ko": "\ucfe1 \uc81c\ub3c4",
+        "name_len": "8",
+        "name_long": "Cook Islands",
+        "name_nev": "Cook Is.",
+        "name_nl": "Cookeilanden",
+        "name_pl": "Wyspy Cooka",
+        "name_pt": "Ilhas Cook",
+        "name_ru": "\u041e\u0441\u0442\u0440\u043e\u0432\u0430 \u041a\u0443\u043a\u0430",
+        "name_sort": "Cook Islands",
+        "name_sv": "Cook\u00f6arna",
+        "name_tr": "Cook Adalar\u0131",
+        "name_uk": "\u041e\u0441\u0442\u0440\u043e\u0432\u0438 \u041a\u0443\u043a\u0430",
+        "name_ur": "\u062c\u0632\u0627\u0626\u0631 \u06a9\u06a9",
+        "name_vi": "Qu\u1ea7n \u0111\u1ea3o Cook",
+        "name_zh": "\u5e93\u514b\u7fa4\u5c9b",
+        "name_zht": "\u5eab\u514b\u7fa4\u5cf6",
+        "ne_id": "1159321129",
+        "note_adm0": "Assoc. with N.Z.",
+        "note_brk": "Assoc. with N.Z.",
+        "pop_est": "17459.0",
+        "pop_rank": "6",
+        "pop_year": "2016",
+        "postal": "CK",
+        "record_type": "country",
+        "scalerank": "5",
+        "sov_a3": "NZ1",
+        "sovereignt": "New Zealand",
+        "status": "officially-assigned",
+        "su_a3": "COK",
+        "su_dif": "0",
+        "subunit": "Cook Islands",
+        "tiny": "3",
+        "tlc": "1",
+        "tlc_diff": "",
+        "tld": [
+            ".ck"
+        ],
+        "translations": {
+            "ces": {
+                "common": "Cookovy ostrovy",
+                "official": "Cookovy ostrovy"
+            },
+            "cym": {
+                "common": "Ynysoedd Cook",
+                "official": "Ynysoedd Cook"
+            },
+            "deu": {
+                "common": "Cookinseln",
+                "official": "Cookinseln"
+            },
+            "est": {
+                "common": "Cooki saared",
+                "official": "Cooki saared"
+            },
+            "fin": {
+                "common": "Cookinsaaret",
+                "official": "Cookinsaaret"
+            },
+            "fra": {
+                "common": "\u00celes Cook",
+                "official": "\u00celes Cook"
+            },
+            "hrv": {
+                "common": "Cookovo Oto\u010dje",
+                "official": "Cook Islands"
+            },
+            "hun": {
+                "common": "Cook-szigetek",
+                "official": "Cook-szigetek"
+            },
+            "ita": {
+                "common": "Isole Cook",
+                "official": "Isole Cook"
+            },
+            "jpn": {
+                "common": "\u30af\u30c3\u30af\u8af8\u5cf6",
+                "official": "\u30af\u30c3\u30af\u8af8\u5cf6"
+            },
+            "kor": {
+                "common": "\ucfe1 \uc81c\ub3c4",
+                "official": "\ucfe1 \uc81c\ub3c4"
+            },
+            "nld": {
+                "common": "Cookeilanden",
+                "official": "Cook eilanden"
+            },
+            "per": {
+                "common": "\u062c\u0632\u0627\u06cc\u0631 \u06a9\u0648\u06a9",
+                "official": "\u062c\u0632\u0627\u06cc\u0631 \u06a9\u0648\u06a9"
+            },
+            "pol": {
+                "common": "Wyspy Cooka",
+                "official": "Wyspy Cooka"
+            },
+            "por": {
+                "common": "Ilhas Cook",
+                "official": "Ilhas Cook"
+            },
+            "rus": {
+                "common": "\u041e\u0441\u0442\u0440\u043e\u0432\u0430 \u041a\u0443\u043a\u0430",
+                "official": "\u043e\u0441\u0442\u0440\u043e\u0432\u0430 \u041a\u0443\u043a\u0430"
+            },
+            "slk": {
+                "common": "Cookove ostrovy",
+                "official": "Cookove ostrovy"
+            },
+            "spa": {
+                "common": "Islas Cook",
+                "official": "Islas Cook"
+            },
+            "swe": {
+                "common": "Cook\u00f6arna",
+                "official": "Cook\u00f6arna"
+            },
+            "urd": {
+                "common": "\u062c\u0632\u0627\u0626\u0631 \u06a9\u06a9",
+                "official": "\u062c\u0632\u0627\u0626\u0631 \u06a9\u06a9"
+            },
+            "zho": {
+                "common": "\u5e93\u514b\u7fa4\u5c9b",
+                "official": "\u5e93\u514b\u7fa4\u5c9b"
+            }
+        },
+        "type": "Dependency",
+        "un_a3": "184",
+        "un_member": null,
+        "wb_a2": "-99",
+        "wb_a3": "-99",
+        "wikidataid": "Q26988",
+        "woe_id": "23424795",
+        "woe_id_eh": "23424795",
+        "woe_note": "Exact WOE match as country"
+    },
+    "wb_a2": "-99",
+    "wb_a3": "-99",
+    "wikidataid": "Q26988",
+    "woe_id": "23424795",
+    "woe_id_eh": "23424795",
+    "woe_note": "Exact WOE match as country"
+}

@@ -1,0 +1,29 @@
+<div class="content-panel mb-2">
+    <div class="content-panel-header items-center">
+        <h3 class="text-lg font-semibold dark:text-gray-100">
+            Create
+        </h3>
+        <Button @text="Add Section" @icon="plus" @iconPrefix="fas" @onClick={{this.addSection}} />
+    </div>
+    <div class="content-panel-body">
+        {{#each this.warehouse.sections as |section|}}
+            <div class="flex flex-row items-center px-4 py-2 border border-gray-700 rounded-md">
+                <div>{{section.name}}</div>
+                <div class="flex flex-row items-center justify-end">
+                    <Button @icon="trash" @type="danger" @onClick={{fn this.removeSection section}} />
+                    <Button @text="Add Aisle" @icon="plus" @onClick={{this.addAisle}} />
+                </div>
+            </div>
+            <div class="p-3">
+                <div class="grid grid-cols-3 gap-2">
+                    <InputGroup @name="Name" @wrapperClass="col-span-2">
+                        <Input @value={{section.name}} @type="text" class="w-full form-input" placeholder="Name"/>
+                    </InputGroup>
+                    <InputGroup @name="Description" @helpText="Additional description text of section." @wrapperClass="col-span-2 mb-2 onChange">
+                        <Textarea @value={{section.description}} type="text" class="w-full form-input" placeholder="Description" />
+                    </InputGroup>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</div>

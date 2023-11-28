@@ -1,0 +1,389 @@
+{
+    "abbrev": "Sur.",
+    "abbrev_len": "4",
+    "adm0_a3": "SUR",
+    "adm0_a3_ar": "SUR",
+    "adm0_a3_bd": "SUR",
+    "adm0_a3_br": "SUR",
+    "adm0_a3_cn": "SUR",
+    "adm0_a3_de": "SUR",
+    "adm0_a3_eg": "SUR",
+    "adm0_a3_es": "SUR",
+    "adm0_a3_fr": "SUR",
+    "adm0_a3_gb": "SUR",
+    "adm0_a3_gr": "SUR",
+    "adm0_a3_id": "SUR",
+    "adm0_a3_il": "SUR",
+    "adm0_a3_in": "SUR",
+    "adm0_a3_it": "SUR",
+    "adm0_a3_jp": "SUR",
+    "adm0_a3_ko": "SUR",
+    "adm0_a3_ma": "SUR",
+    "adm0_a3_nl": "SUR",
+    "adm0_a3_np": "SUR",
+    "adm0_a3_pk": "SUR",
+    "adm0_a3_pl": "SUR",
+    "adm0_a3_ps": "SUR",
+    "adm0_a3_pt": "SUR",
+    "adm0_a3_ru": "SUR",
+    "adm0_a3_sa": "SUR",
+    "adm0_a3_se": "SUR",
+    "adm0_a3_tr": "SUR",
+    "adm0_a3_tw": "SUR",
+    "adm0_a3_ua": "SUR",
+    "adm0_a3_un": "-99",
+    "adm0_a3_us": "SUR",
+    "adm0_a3_vn": "SUR",
+    "adm0_a3_wb": "-99",
+    "adm0_dif": "0",
+    "adm0_diff": "",
+    "adm0_iso": "SUR",
+    "adm0_tlc": "SUR",
+    "admin": "Suriname",
+    "alt_spellings": [
+        "SR",
+        "Sarnam",
+        "Sranangron",
+        "Republic of Suriname",
+        "Republiek Suriname"
+    ],
+    "borders": [
+        "BRA",
+        "GUF",
+        "GUY"
+    ],
+    "brk_a3": "SUR",
+    "brk_diff": "0",
+    "brk_group": "",
+    "brk_name": "Suriname",
+    "calling_codes": [
+        "+597"
+    ],
+    "capital": [
+        "Paramaribo"
+    ],
+    "capital_rinvex": "Paramaribo",
+    "cca2": "SR",
+    "cca3": "SUR",
+    "ccn3": "740",
+    "cioc": "SUR",
+    "currencies": [
+        "SRD"
+    ],
+    "data_sources": [
+        "mledoze",
+        "natural"
+    ],
+    "demonym": "Surinamer",
+    "demonyms": {
+        "eng": {
+            "f": "Surinamer",
+            "m": "Surinamer"
+        },
+        "fra": {
+            "f": "Surinamaise",
+            "m": "Surinamais"
+        }
+    },
+    "dialling": {
+        "calling_code": [
+            "597"
+        ],
+        "international_prefix": "00",
+        "national_destination_code_lengths": [
+            2
+        ],
+        "national_number_lengths": [
+            6
+        ],
+        "national_prefix": "0"
+    },
+    "economy": "6. Developing region",
+    "extra": {
+        "address_format": null,
+        "ar5": "LAM",
+        "cowc": "SUR",
+        "cown": 115,
+        "data_protection": "Other",
+        "ds": "SME",
+        "edgar": "V3",
+        "emoji": "\ud83c\uddf8\ud83c\uddf7",
+        "eu_member": null,
+        "fao": 207,
+        "fifa": "SUR",
+        "fips": "NS",
+        "gaul": 233,
+        "geonameid": 3382998,
+        "imf": 366,
+        "ioc": "SUR",
+        "itu": "SUR",
+        "marc": "sr",
+        "vat_rates": null,
+        "wmo": "SM"
+    },
+    "fclass_ar": "",
+    "fclass_bd": "",
+    "fclass_br": "",
+    "fclass_cn": "",
+    "fclass_de": "",
+    "fclass_eg": "",
+    "fclass_es": "",
+    "fclass_fr": "",
+    "fclass_gb": "",
+    "fclass_gr": "",
+    "fclass_id": "",
+    "fclass_il": "",
+    "fclass_in": "",
+    "fclass_iso": "Admin-0 country",
+    "fclass_it": "",
+    "fclass_jp": "",
+    "fclass_ko": "",
+    "fclass_ma": "",
+    "fclass_nl": "",
+    "fclass_np": "",
+    "fclass_pk": "",
+    "fclass_pl": "",
+    "fclass_ps": "",
+    "fclass_pt": "",
+    "fclass_ru": "",
+    "fclass_sa": "",
+    "fclass_se": "",
+    "fclass_tlc": "Admin-0 country",
+    "fclass_tr": "",
+    "fclass_tw": "",
+    "fclass_ua": "",
+    "fclass_us": "",
+    "fclass_vn": "",
+    "featurecla": "Admin-0 country",
+    "fips_10": "NS",
+    "flag": {
+        "emoji": "\ud83c\uddf8\ud83c\uddf7"
+    },
+    "formal_en": "Republic of Suriname",
+    "formal_fr": "",
+    "gdp_md": "3697",
+    "gdp_year": "2019",
+    "geo": {
+        "area": 163820,
+        "borders": [
+            "BRA",
+            "GUF",
+            "GUY"
+        ],
+        "continent": {
+            "SA": "South America"
+        },
+        "independent": "Yes",
+        "landlocked": false,
+        "latitude": "4 00 N",
+        "latitude_desc": "4.216928958892822",
+        "latlng": [
+            4,
+            -56
+        ],
+        "longitude": "56 00 W",
+        "longitude_desc": "-55.889217376708984",
+        "max_latitude": "6",
+        "max_longitude": "-53.983333",
+        "min_latitude": "2.1",
+        "min_longitude": "-60",
+        "postal_code": false,
+        "region": "Americas",
+        "region_code": "019",
+        "region_un": "Americas",
+        "region_wb": "Latin America & Caribbean",
+        "subregion": "South America",
+        "subregion_code": "005",
+        "world_region": "AMER"
+    },
+    "geou_dif": "0",
+    "geounit": "Suriname",
+    "gu_a3": "SUR",
+    "homepart": "1",
+    "idd": {
+        "root": "+5",
+        "suffixes": [
+            "97"
+        ]
+    },
+    "income_grp": "3. Upper middle income",
+    "independent": true,
+    "iso_3166_1_alpha2": "SR",
+    "iso_3166_1_alpha3": "SUR",
+    "iso_3166_1_numeric": "740",
+    "iso_a2": "SR",
+    "iso_a2_eh": "SR",
+    "iso_a3": "SUR",
+    "iso_a3_eh": "SUR",
+    "iso_n3": "740",
+    "iso_n3_eh": "740",
+    "label_x": "-55.910940",
+    "label_y": "4.143987",
+    "labelrank": "4",
+    "languages": {
+        "nld": "Dutch"
+    },
+    "level": "2",
+    "long_len": "8",
+    "mapcolor7": "1",
+    "mapcolor8": "4",
+    "mapcolor9": "7",
+    "mapcolor13": "6",
+    "max_label": "9.0",
+    "min_label": "4.0",
+    "min_zoom": "0.0",
+    "name": {
+        "common": "Suriname",
+        "native": {
+            "nld": {
+                "common": "Suriname",
+                "official": "Republiek Suriname"
+            }
+        },
+        "official": "Republic of Suriname"
+    },
+    "name_alt": "",
+    "name_ar": "\u0633\u0648\u0631\u064a\u0646\u0627\u0645",
+    "name_bn": "\u09b8\u09c1\u09b0\u09bf\u09a8\u09be\u09ae",
+    "name_ciawf": "Suriname",
+    "name_de": "Suriname",
+    "name_el": "\u03a3\u03bf\u03c5\u03c1\u03b9\u03bd\u03ac\u03bc",
+    "name_en": "Suriname",
+    "name_es": "Surinam",
+    "name_fa": "\u0633\u0648\u0631\u06cc\u0646\u0627\u0645",
+    "name_fr": "Suriname",
+    "name_he": "\u05e1\u05d5\u05e8\u05d9\u05e0\u05d0\u05dd",
+    "name_hi": "\u0938\u0942\u0930\u0940\u0928\u093e\u092e",
+    "name_hu": "Suriname",
+    "name_id": "Suriname",
+    "name_it": "Suriname",
+    "name_ja": "\u30b9\u30ea\u30ca\u30e0",
+    "name_ko": "\uc218\ub9ac\ub0a8",
+    "name_len": "8",
+    "name_long": "Suriname",
+    "name_nev": "Suriname",
+    "name_nl": "Suriname",
+    "name_pl": "Surinam",
+    "name_pt": "Suriname",
+    "name_ru": "\u0421\u0443\u0440\u0438\u043d\u0430\u043c",
+    "name_sort": "Suriname",
+    "name_sv": "Surinam",
+    "name_tr": "Surinam",
+    "name_uk": "\u0421\u0443\u0440\u0438\u043d\u0430\u043c",
+    "name_ur": "\u0633\u0631\u06cc\u0646\u0627\u0645",
+    "name_vi": "Suriname",
+    "name_zh": "\u82cf\u91cc\u5357",
+    "name_zht": "\u8607\u5229\u5357",
+    "ne_id": "1159321281",
+    "note_adm0": "",
+    "note_brk": "",
+    "pop_est": "581363.0",
+    "pop_rank": "11",
+    "pop_year": "2019",
+    "postal": "SR",
+    "record_type": "country",
+    "scalerank": "0",
+    "sov_a3": "SUR",
+    "sovereignt": "Suriname",
+    "status": "officially-assigned",
+    "su_a3": "SUR",
+    "su_dif": "0",
+    "subunit": "Suriname",
+    "tiny": "-99",
+    "tlc": "1",
+    "tlc_diff": "",
+    "tld": [
+        ".sr"
+    ],
+    "translations": {
+        "ces": {
+            "common": "Surinam",
+            "official": "Republika Surinam"
+        },
+        "deu": {
+            "common": "Suriname",
+            "official": "Republik Suriname"
+        },
+        "est": {
+            "common": "Suriname",
+            "official": "Suriname Vabariik"
+        },
+        "fin": {
+            "common": "Suriname",
+            "official": "Surinamen tasavalta"
+        },
+        "fra": {
+            "common": "Surinam",
+            "official": "R\u00e9publique du Suriname"
+        },
+        "hrv": {
+            "common": "Surinam",
+            "official": "Republika Surinam"
+        },
+        "hun": {
+            "common": "Suriname",
+            "official": "Suriname K\u00f6zt\u00e1rsas\u00e1g"
+        },
+        "ita": {
+            "common": "Suriname",
+            "official": "Repubblica del Suriname"
+        },
+        "jpn": {
+            "common": "\u30b9\u30ea\u30ca\u30e0",
+            "official": "\u30b9\u30ea\u30ca\u30e0\u5171\u548c\u56fd"
+        },
+        "kor": {
+            "common": "\uc218\ub9ac\ub0a8",
+            "official": "\uc218\ub9ac\ub0a8 \uacf5\ud654\uad6d"
+        },
+        "nld": {
+            "common": "Suriname",
+            "official": "Republiek Suriname"
+        },
+        "per": {
+            "common": "\u0633\u0648\u0631\u06cc\u0646\u0627\u0645",
+            "official": "\u062c\u0645\u0647\u0648\u0631\u06cc \u0633\u0648\u0631\u06cc\u0646\u0627\u0645"
+        },
+        "pol": {
+            "common": "Surinam",
+            "official": "Republika Surinamu"
+        },
+        "por": {
+            "common": "Suriname",
+            "official": "Rep\u00fablica do Suriname"
+        },
+        "rus": {
+            "common": "\u0421\u0443\u0440\u0438\u043d\u0430\u043c",
+            "official": "\u0420\u0435\u0441\u043f\u0443\u0431\u043b\u0438\u043a\u0430 \u0421\u0443\u0440\u0438\u043d\u0430\u043c"
+        },
+        "slk": {
+            "common": "Surinam",
+            "official": "Surinamsk\u00e1 republika"
+        },
+        "spa": {
+            "common": "Surinam",
+            "official": "Rep\u00fablica de Suriname"
+        },
+        "swe": {
+            "common": "Surinam",
+            "official": "Republiken Surinam"
+        },
+        "urd": {
+            "common": "\u0633\u0631\u06cc\u0646\u0627\u0645",
+            "official": "\u062c\u0645\u06c1\u0648\u0631\u06cc\u06c1 \u0633\u0631\u06cc\u0646\u0627\u0645"
+        },
+        "zho": {
+            "common": "\u82cf\u91cc\u5357",
+            "official": "\u82cf\u91cc\u5357\u5171\u548c\u56fd"
+        }
+    },
+    "type": "Sovereign country",
+    "un_a3": "740",
+    "un_member": true,
+    "wb_a2": "SR",
+    "wb_a3": "SUR",
+    "wikidataid": "Q730",
+    "woe_id": "23424913",
+    "woe_id_eh": "23424913",
+    "woe_note": "Exact WOE match as country"
+}

@@ -2,14 +2,14 @@
 
 namespace Fleetbase\Pallet\Models;
 
-use Fleetbase\Traits\HasUuid;
-use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Models\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Fleetbase\Traits\HasApiModelBehavior;
+use Fleetbase\Traits\HasUuid;
 
 class WarehouseAisle extends Model
 {
-    use HasUuid, HasApiModelBehavior, SoftDeletes;
+    use HasUuid;
+    use HasApiModelBehavior;
 
     /**
      * The database table used by the model.
@@ -85,6 +85,14 @@ class WarehouseAisle extends Model
      */
     public function section()
     {
-        return $this->belongsTo(PalletWarehouseSection::class, 'section_uuid', 'uuid');
+        return $this->belongsTo(WarehouseSection::class, 'section_uuid', 'uuid');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function racks()
+    {
+        return $this->hasMany(WarehouseRack::class, 'aisle_uuid');
     }
 }

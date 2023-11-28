@@ -14,12 +14,12 @@ export default class SalesOrderModel extends Model {
     @attr('string') customer_uuid;
 
     /** @relationships */
-    @belongsTo('company', { async: true }) company;
-    @belongsTo('user', { async: true }) createdBy;
-    @belongsTo('transaction', { async: true }) transaction;
-    @belongsTo('user', { async: true }) assignedTo;
-    @belongsTo('contact', { async: true }) pointOfContact;
-    @belongsTo('contact', { async: true }) customer;
+    @belongsTo('company') company;
+    @belongsTo('user') createdBy;
+    @belongsTo('transaction') transaction;
+    @belongsTo('user') assignedTo;
+    @belongsTo('contact') pointOfContact;
+    @belongsTo('contact') customer;
 
     /** @attributes */
     @attr('string') customer_type;

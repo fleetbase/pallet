@@ -2,8 +2,8 @@
 
 namespace Fleetbase\Pallet\Http\Filter;
 
-use Fleetbase\Pallet\Support\Utils;
 use Fleetbase\Http\Filter\Filter;
+use Fleetbase\Pallet\Support\Utils;
 
 class InventoryFilter extends Filter
 {

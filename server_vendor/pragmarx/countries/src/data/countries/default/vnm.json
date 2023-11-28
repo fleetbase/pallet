@@ -1,0 +1,391 @@
+{
+    "abbrev": "Viet.",
+    "abbrev_len": "5",
+    "adm0_a3": "VNM",
+    "adm0_a3_ar": "VNM",
+    "adm0_a3_bd": "VNM",
+    "adm0_a3_br": "VNM",
+    "adm0_a3_cn": "VNM",
+    "adm0_a3_de": "VNM",
+    "adm0_a3_eg": "VNM",
+    "adm0_a3_es": "VNM",
+    "adm0_a3_fr": "VNM",
+    "adm0_a3_gb": "VNM",
+    "adm0_a3_gr": "VNM",
+    "adm0_a3_id": "VNM",
+    "adm0_a3_il": "VNM",
+    "adm0_a3_in": "VNM",
+    "adm0_a3_it": "VNM",
+    "adm0_a3_jp": "VNM",
+    "adm0_a3_ko": "VNM",
+    "adm0_a3_ma": "VNM",
+    "adm0_a3_nl": "VNM",
+    "adm0_a3_np": "VNM",
+    "adm0_a3_pk": "VNM",
+    "adm0_a3_pl": "VNM",
+    "adm0_a3_ps": "VNM",
+    "adm0_a3_pt": "VNM",
+    "adm0_a3_ru": "VNM",
+    "adm0_a3_sa": "VNM",
+    "adm0_a3_se": "VNM",
+    "adm0_a3_tr": "VNM",
+    "adm0_a3_tw": "VNM",
+    "adm0_a3_ua": "VNM",
+    "adm0_a3_un": "-99",
+    "adm0_a3_us": "VNM",
+    "adm0_a3_vn": "VNM",
+    "adm0_a3_wb": "-99",
+    "adm0_dif": "0",
+    "adm0_diff": "",
+    "adm0_iso": "VNM",
+    "adm0_tlc": "VNM",
+    "admin": "Vietnam",
+    "alt_spellings": [
+        "VN",
+        "Socialist Republic of Vietnam",
+        "C\u1ed9ng h\u00f2a X\u00e3 h\u1ed9i ch\u1ee7 ngh\u0129a Vi\u1ec7t Nam",
+        "Viet Nam"
+    ],
+    "borders": [
+        "KHM",
+        "CHN",
+        "LAO"
+    ],
+    "brk_a3": "VNM",
+    "brk_diff": "0",
+    "brk_group": "",
+    "brk_name": "Vietnam",
+    "calling_codes": [
+        "+84"
+    ],
+    "capital": [
+        "Hanoi"
+    ],
+    "capital_rinvex": "Hanoi",
+    "cca2": "VN",
+    "cca3": "VNM",
+    "ccn3": "704",
+    "cioc": "VIE",
+    "currencies": [
+        "VND"
+    ],
+    "data_sources": [
+        "mledoze",
+        "natural"
+    ],
+    "demonym": "Vietnamese",
+    "demonyms": {
+        "eng": {
+            "f": "Vietnamese",
+            "m": "Vietnamese"
+        },
+        "fra": {
+            "f": "Vietnamienne",
+            "m": "Vietnamien"
+        }
+    },
+    "dialling": {
+        "calling_code": [
+            "84"
+        ],
+        "international_prefix": "00",
+        "national_destination_code_lengths": [
+            2
+        ],
+        "national_number_lengths": [
+            7,
+            8,
+            9,
+            10
+        ],
+        "national_prefix": "0"
+    },
+    "economy": "5. Emerging region: G20",
+    "extra": {
+        "address_format": null,
+        "ar5": "ASIA",
+        "cowc": "DRV",
+        "cown": 816,
+        "data_protection": "Other",
+        "ds": "VN",
+        "edgar": "Q1",
+        "emoji": "\ud83c\uddfb\ud83c\uddf3",
+        "eu_member": null,
+        "fao": 237,
+        "fifa": "VIE",
+        "fips": "VM",
+        "gaul": 264,
+        "geonameid": 1562822,
+        "imf": 582,
+        "ioc": "VIE",
+        "itu": "VTN",
+        "marc": "vm",
+        "vat_rates": null,
+        "wmo": "VS"
+    },
+    "fclass_ar": "",
+    "fclass_bd": "",
+    "fclass_br": "",
+    "fclass_cn": "",
+    "fclass_de": "",
+    "fclass_eg": "",
+    "fclass_es": "",
+    "fclass_fr": "",
+    "fclass_gb": "",
+    "fclass_gr": "",
+    "fclass_id": "",
+    "fclass_il": "",
+    "fclass_in": "",
+    "fclass_iso": "Admin-0 country",
+    "fclass_it": "",
+    "fclass_jp": "",
+    "fclass_ko": "",
+    "fclass_ma": "",
+    "fclass_nl": "",
+    "fclass_np": "",
+    "fclass_pk": "",
+    "fclass_pl": "",
+    "fclass_ps": "",
+    "fclass_pt": "",
+    "fclass_ru": "",
+    "fclass_sa": "",
+    "fclass_se": "",
+    "fclass_tlc": "Admin-0 country",
+    "fclass_tr": "",
+    "fclass_tw": "",
+    "fclass_ua": "",
+    "fclass_us": "",
+    "fclass_vn": "",
+    "featurecla": "Admin-0 country",
+    "fips_10": "VM",
+    "flag": {
+        "emoji": "\ud83c\uddfb\ud83c\uddf3"
+    },
+    "formal_en": "Socialist Republic of Vietnam",
+    "formal_fr": "",
+    "gdp_md": "261921",
+    "gdp_year": "2019",
+    "geo": {
+        "area": 331212,
+        "borders": [
+            "KHM",
+            "CHN",
+            "LAO"
+        ],
+        "continent": {
+            "AS": "Asia"
+        },
+        "independent": "Yes",
+        "landlocked": false,
+        "latitude": "16 10 N",
+        "latitude_desc": "16.9404296875",
+        "latlng": [
+            16.16666666,
+            107.83333333
+        ],
+        "longitude": "107 50 E",
+        "longitude_desc": "106.8164291381836",
+        "max_latitude": "23.666667",
+        "max_longitude": "109.466667",
+        "min_latitude": "8.383333",
+        "min_longitude": "102.216667",
+        "postal_code": true,
+        "region": "Asia",
+        "region_code": "142",
+        "region_un": "Asia",
+        "region_wb": "East Asia & Pacific",
+        "subregion": "South-Eastern Asia",
+        "subregion_code": "035",
+        "world_region": "APAC"
+    },
+    "geou_dif": "0",
+    "geounit": "Vietnam",
+    "gu_a3": "VNM",
+    "homepart": "1",
+    "idd": {
+        "root": "+8",
+        "suffixes": [
+            "4"
+        ]
+    },
+    "income_grp": "4. Lower middle income",
+    "independent": true,
+    "iso_3166_1_alpha2": "VN",
+    "iso_3166_1_alpha3": "VNM",
+    "iso_3166_1_numeric": "704",
+    "iso_a2": "VN",
+    "iso_a2_eh": "VN",
+    "iso_a3": "VNM",
+    "iso_a3_eh": "VNM",
+    "iso_n3": "704",
+    "iso_n3_eh": "704",
+    "label_x": "105.387292",
+    "label_y": "21.715416",
+    "labelrank": "2",
+    "languages": {
+        "vie": "Vietnamese"
+    },
+    "level": "2",
+    "long_len": "7",
+    "mapcolor7": "5",
+    "mapcolor8": "6",
+    "mapcolor9": "5",
+    "mapcolor13": "4",
+    "max_label": "7.0",
+    "min_label": "2.0",
+    "min_zoom": "0.0",
+    "name": {
+        "common": "Vietnam",
+        "native": {
+            "vie": {
+                "common": "Vi\u1ec7t Nam",
+                "official": "C\u1ed9ng h\u00f2a x\u00e3 h\u1ed9i ch\u1ee7 ngh\u0129a Vi\u1ec7t Nam"
+            }
+        },
+        "official": "Socialist Republic of Vietnam"
+    },
+    "name_alt": "",
+    "name_ar": "\u0641\u064a\u062a\u0646\u0627\u0645",
+    "name_bn": "\u09ad\u09bf\u09af\u09bc\u09c7\u09a4\u09a8\u09be\u09ae",
+    "name_ciawf": "Vietnam",
+    "name_de": "Vietnam",
+    "name_el": "\u0392\u03b9\u03b5\u03c4\u03bd\u03ac\u03bc",
+    "name_en": "Vietnam",
+    "name_es": "Vietnam",
+    "name_fa": "\u0648\u06cc\u062a\u0646\u0627\u0645",
+    "name_fr": "Vi\u00eat Nam",
+    "name_he": "\u05d5\u05d9\u05d9\u05d8\u05e0\u05d0\u05dd",
+    "name_hi": "\u0935\u093f\u092f\u0924\u0928\u093e\u092e",
+    "name_hu": "Vietn\u00e1m",
+    "name_id": "Vietnam",
+    "name_it": "Vietnam",
+    "name_ja": "\u30d9\u30c8\u30ca\u30e0",
+    "name_ko": "\ubca0\ud2b8\ub0a8",
+    "name_len": "7",
+    "name_long": "Vietnam",
+    "name_nev": "Vietnam",
+    "name_nl": "Vietnam",
+    "name_pl": "Wietnam",
+    "name_pt": "Vietname",
+    "name_ru": "\u0412\u044c\u0435\u0442\u043d\u0430\u043c",
+    "name_sort": "Vietnam",
+    "name_sv": "Vietnam",
+    "name_tr": "Vietnam",
+    "name_uk": "\u0412'\u0454\u0442\u043d\u0430\u043c",
+    "name_ur": "\u0648\u06cc\u062a\u0646\u0627\u0645",
+    "name_vi": "Vi\u1ec7t Nam",
+    "name_zh": "\u8d8a\u5357",
+    "name_zht": "\u8d8a\u5357",
+    "ne_id": "1159321417",
+    "note_adm0": "",
+    "note_brk": "",
+    "pop_est": "96462106.0",
+    "pop_rank": "16",
+    "pop_year": "2019",
+    "postal": "VN",
+    "record_type": "country",
+    "scalerank": "0",
+    "sov_a3": "VNM",
+    "sovereignt": "Vietnam",
+    "status": "officially-assigned",
+    "su_a3": "VNM",
+    "su_dif": "0",
+    "subunit": "Vietnam",
+    "tiny": "2",
+    "tlc": "1",
+    "tlc_diff": "",
+    "tld": [
+        ".vn"
+    ],
+    "translations": {
+        "ces": {
+            "common": "Vietnam",
+            "official": "Vietnamsk\u00e1 socialistick\u00e1 republika"
+        },
+        "deu": {
+            "common": "Vietnam",
+            "official": "Sozialistische Republik Vietnam"
+        },
+        "est": {
+            "common": "Vietnam",
+            "official": "Vietnami Sotsialistlik Vabariik"
+        },
+        "fin": {
+            "common": "Vietnam",
+            "official": "Vietnamin sosialistinen tasavalta"
+        },
+        "fra": {
+            "common": "Vi\u00eat Nam",
+            "official": "R\u00e9publique socialiste du Vi\u00eat Nam"
+        },
+        "hrv": {
+            "common": "Vijetnam",
+            "official": "Socijalisti\u010dka Republika Vijetnam"
+        },
+        "hun": {
+            "common": "Vietn\u00e1m",
+            "official": "Vietn\u00e1mi Szocialista K\u00f6zt\u00e1rsas\u00e1g"
+        },
+        "ita": {
+            "common": "Vietnam",
+            "official": "Repubblica socialista del Vietnam"
+        },
+        "jpn": {
+            "common": "\u30d9\u30c8\u30ca\u30e0",
+            "official": "\u30d9\u30c8\u30ca\u30e0\u793e\u4f1a\u4e3b\u7fa9\u5171\u548c\u56fd"
+        },
+        "kor": {
+            "common": "\ubca0\ud2b8\ub0a8",
+            "official": "\ubca0\ud2b8\ub0a8 \uc0ac\ud68c\uc8fc\uc758 \uacf5\ud654\uad6d"
+        },
+        "nld": {
+            "common": "Vietnam",
+            "official": "Socialistische Republiek Vietnam"
+        },
+        "per": {
+            "common": "\u0648\u06cc\u062a\u0646\u0627\u0645",
+            "official": "\u062c\u0645\u0647\u0648\u0631\u06cc \u0633\u0648\u0633\u06cc\u0627\u0644\u06cc\u0633\u062a\u06cc \u0648\u06cc\u062a\u0646\u0627\u0645"
+        },
+        "pol": {
+            "common": "Wietnam",
+            "official": "Socjalistyczna Republika Wietnamu"
+        },
+        "por": {
+            "common": "Vietname",
+            "official": "Rep\u00fablica Socialista do Vietname"
+        },
+        "rus": {
+            "common": "\u0412\u044c\u0435\u0442\u043d\u0430\u043c",
+            "official": "\u0421\u043e\u0446\u0438\u0430\u043b\u0438\u0441\u0442\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u0420\u0435\u0441\u043f\u0443\u0431\u043b\u0438\u043a\u0430 \u0412\u044c\u0435\u0442\u043d\u0430\u043c"
+        },
+        "slk": {
+            "common": "Vietnam",
+            "official": "Vietnamsk\u00e1 socialistick\u00e1 republika"
+        },
+        "spa": {
+            "common": "Vietnam",
+            "official": "Rep\u00fablica Socialista de Vietnam"
+        },
+        "swe": {
+            "common": "Vietnam",
+            "official": "Socialistiska republiken Vietnam"
+        },
+        "urd": {
+            "common": "\u0648\u06cc\u062a\u0646\u0627\u0645",
+            "official": "\u0627\u0634\u062a\u0631\u0627\u06a9\u06cc \u062c\u0645\u06c1\u0648\u0631\u06cc\u06c1 \u0648\u06cc\u062a\u0646\u0627\u0645"
+        },
+        "zho": {
+            "common": "\u8d8a\u5357",
+            "official": "\u8d8a\u5357\u793e\u4f1a\u4e3b\u4e49\u5171\u548c\u56fd"
+        }
+    },
+    "type": "Sovereign country",
+    "un_a3": "704",
+    "un_member": true,
+    "wb_a2": "VN",
+    "wb_a3": "VNM",
+    "wikidataid": "Q881",
+    "woe_id": "23424984",
+    "woe_id_eh": "23424984",
+    "woe_note": "Exact WOE match as country"
+}

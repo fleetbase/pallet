@@ -2,13 +2,14 @@
 
 namespace Fleetbase\Pallet\Models;
 
-use Fleetbase\Traits\HasUuid;
-use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Models\Model;
+use Fleetbase\Traits\HasApiModelBehavior;
+use Fleetbase\Traits\HasUuid;
 
 class StockAdjustment extends Model
 {
-    use HasUuid, HasApiModelBehavior;
+    use HasUuid;
+    use HasApiModelBehavior;
 
     /**
      * The database table used by the model.
@@ -25,7 +26,7 @@ class StockAdjustment extends Model
     protected $singularName = 'stock_adjustment';
 
     /**
-     * These attributes that can be queried
+     * These attributes that can be queried.
      *
      * @var array
      */
@@ -64,7 +65,7 @@ class StockAdjustment extends Model
     ];
 
     /**
-     * Dynamic attributes that are appended to object
+     * Dynamic attributes that are appended to object.
      *
      * @var array
      */
@@ -107,7 +108,8 @@ class StockAdjustment extends Model
         return $this->belongsTo(Entity::class, 'product_uuid', 'uuid');
     }
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class, 'assignee_uuid');
     }
 }

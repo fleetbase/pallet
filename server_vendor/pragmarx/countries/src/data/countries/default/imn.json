@@ -1,0 +1,1383 @@
+{
+    "abbrev": "IoMan",
+    "abbrev_len": "5",
+    "adm0_a3": "IMN",
+    "adm0_a3_ar": "IMN",
+    "adm0_a3_bd": "IMN",
+    "adm0_a3_br": "IMN",
+    "adm0_a3_cn": "IMN",
+    "adm0_a3_de": "IMN",
+    "adm0_a3_eg": "IMN",
+    "adm0_a3_es": "IMN",
+    "adm0_a3_fr": "IMN",
+    "adm0_a3_gb": "IMN",
+    "adm0_a3_gr": "IMN",
+    "adm0_a3_id": "IMN",
+    "adm0_a3_il": "IMN",
+    "adm0_a3_in": "IMN",
+    "adm0_a3_it": "IMN",
+    "adm0_a3_jp": "IMN",
+    "adm0_a3_ko": "IMN",
+    "adm0_a3_ma": "IMN",
+    "adm0_a3_nl": "IMN",
+    "adm0_a3_np": "IMN",
+    "adm0_a3_pk": "IMN",
+    "adm0_a3_pl": "IMN",
+    "adm0_a3_ps": "IMN",
+    "adm0_a3_pt": "IMN",
+    "adm0_a3_ru": "IMN",
+    "adm0_a3_sa": "IMN",
+    "adm0_a3_se": "IMN",
+    "adm0_a3_tr": "IMN",
+    "adm0_a3_tw": "IMN",
+    "adm0_a3_ua": "IMN",
+    "adm0_a3_un": "-99",
+    "adm0_a3_us": "IMN",
+    "adm0_a3_vn": "IMN",
+    "adm0_a3_wb": "-99",
+    "adm0_dif": "1",
+    "adm0_diff": "",
+    "adm0_iso": "IMN",
+    "adm0_tlc": "IMN",
+    "admin": "Isle of Man",
+    "alt_spellings": [
+        "IM",
+        "Ellan Vannin",
+        "Mann",
+        "Mannin"
+    ],
+    "borders": [],
+    "brk_a3": "IMN",
+    "brk_diff": "0",
+    "brk_group": "",
+    "brk_name": "Isle of Man",
+    "calling_codes": [
+        "+44"
+    ],
+    "capital": [
+        "Douglas"
+    ],
+    "capital_rinvex": "Douglas",
+    "cca2": "IM",
+    "cca3": "IMN",
+    "ccn3": "833",
+    "cioc": {
+        "abbrev": "IoMan",
+        "abbrev_len": "5",
+        "adm0_a3": "IMN",
+        "adm0_a3_ar": "IMN",
+        "adm0_a3_bd": "IMN",
+        "adm0_a3_br": "IMN",
+        "adm0_a3_cn": "IMN",
+        "adm0_a3_de": "IMN",
+        "adm0_a3_eg": "IMN",
+        "adm0_a3_es": "IMN",
+        "adm0_a3_fr": "IMN",
+        "adm0_a3_gb": "IMN",
+        "adm0_a3_gr": "IMN",
+        "adm0_a3_id": "IMN",
+        "adm0_a3_il": "IMN",
+        "adm0_a3_in": "IMN",
+        "adm0_a3_it": "IMN",
+        "adm0_a3_jp": "IMN",
+        "adm0_a3_ko": "IMN",
+        "adm0_a3_ma": "IMN",
+        "adm0_a3_nl": "IMN",
+        "adm0_a3_np": "IMN",
+        "adm0_a3_pk": "IMN",
+        "adm0_a3_pl": "IMN",
+        "adm0_a3_ps": "IMN",
+        "adm0_a3_pt": "IMN",
+        "adm0_a3_ru": "IMN",
+        "adm0_a3_sa": "IMN",
+        "adm0_a3_se": "IMN",
+        "adm0_a3_tr": "IMN",
+        "adm0_a3_tw": "IMN",
+        "adm0_a3_ua": "IMN",
+        "adm0_a3_un": "-99",
+        "adm0_a3_us": "IMN",
+        "adm0_a3_vn": "IMN",
+        "adm0_a3_wb": "-99",
+        "adm0_dif": "1",
+        "adm0_diff": "",
+        "adm0_iso": "IMN",
+        "adm0_tlc": "IMN",
+        "admin": "Isle of Man",
+        "alt_spellings": [
+            "IM",
+            "Ellan Vannin",
+            "Mann",
+            "Mannin"
+        ],
+        "borders": [],
+        "brk_a3": "IMN",
+        "brk_diff": "0",
+        "brk_group": "",
+        "brk_name": "Isle of Man",
+        "calling_codes": [
+            "+44"
+        ],
+        "capital": [
+            "Douglas"
+        ],
+        "cca2": "IM",
+        "cca3": "IMN",
+        "ccn3": "833",
+        "cioc": null,
+        "currencies": {
+            "g_b_p": {
+                "name": "British pound",
+                "symbol": "\u00a3"
+            },
+            "i_m_p": {
+                "name": "Manx pound",
+                "symbol": "\u00a3"
+            }
+        },
+        "data_sources": [
+            "mledoze"
+        ],
+        "demonyms": {
+            "eng": {
+                "f": "Manx",
+                "m": "Manx"
+            },
+            "fra": {
+                "f": "",
+                "m": ""
+            }
+        },
+        "economy": "2. Developed region: nonG7",
+        "fclass_ar": "",
+        "fclass_bd": "",
+        "fclass_br": "",
+        "fclass_cn": "",
+        "fclass_de": "",
+        "fclass_eg": "",
+        "fclass_es": "",
+        "fclass_fr": "",
+        "fclass_gb": "",
+        "fclass_gr": "",
+        "fclass_id": "",
+        "fclass_il": "",
+        "fclass_in": "",
+        "fclass_iso": "Admin-0 country",
+        "fclass_it": "",
+        "fclass_jp": "",
+        "fclass_ko": "",
+        "fclass_ma": "",
+        "fclass_nl": "",
+        "fclass_np": "",
+        "fclass_pk": "",
+        "fclass_pl": "",
+        "fclass_ps": "",
+        "fclass_pt": "",
+        "fclass_ru": "",
+        "fclass_sa": "",
+        "fclass_se": "",
+        "fclass_tlc": "Admin-0 country",
+        "fclass_tr": "",
+        "fclass_tw": "",
+        "fclass_ua": "",
+        "fclass_us": "",
+        "fclass_vn": "",
+        "featurecla": "Admin-0 country",
+        "fips_10": "IM",
+        "flag": {
+            "emoji": "\ud83c\uddee\ud83c\uddf2"
+        },
+        "formal_en": "",
+        "formal_fr": "",
+        "gdp_md": "7491",
+        "gdp_year": "2018",
+        "geo": {
+            "area": 572,
+            "continent": "Europe",
+            "landlocked": null,
+            "latlng": [
+                54.25,
+                -4.5
+            ],
+            "region": "Europe",
+            "region_un": "Europe",
+            "region_wb": "Europe & Central Asia",
+            "subregion": "Northern Europe"
+        },
+        "geou_dif": "0",
+        "geounit": "Isle of Man",
+        "gu_a3": "IMN",
+        "homepart": "-99",
+        "idd": {
+            "root": "+4",
+            "suffixes": [
+                "4"
+            ]
+        },
+        "income_grp": "2. High income: nonOECD",
+        "independent": null,
+        "iso_a2": "IM",
+        "iso_a2_eh": "IM",
+        "iso_a3": "IMN",
+        "iso_a3_eh": "IMN",
+        "iso_n3": "833",
+        "iso_n3_eh": "833",
+        "label_x": "-4.530069",
+        "label_y": "54.220833",
+        "labelrank": "6",
+        "languages": {
+            "eng": "English",
+            "glv": "Manx"
+        },
+        "level": "2",
+        "long_len": "11",
+        "mapcolor7": "6",
+        "mapcolor8": "6",
+        "mapcolor9": "6",
+        "mapcolor13": "3",
+        "max_label": "10.0",
+        "min_label": "5.0",
+        "min_zoom": "0.0",
+        "name": {
+            "common": "Isle of Man",
+            "native": {
+                "eng": {
+                    "common": "Isle of Man",
+                    "official": "Isle of Man"
+                },
+                "glv": {
+                    "common": "Mannin",
+                    "official": "Ellan Vannin or Mannin"
+                }
+            },
+            "official": "Isle of Man"
+        },
+        "name_alt": "",
+        "name_ar": "\u062c\u0632\u064a\u0631\u0629 \u0645\u0627\u0646",
+        "name_bn": "\u0986\u0987\u09b2 \u0985\u09ac \u09ae\u09cd\u09af\u09be\u09a8",
+        "name_ciawf": "Isle of Man",
+        "name_de": "Isle of Man",
+        "name_el": "\u039d\u03ae\u03c3\u03bf\u03c2 \u03c4\u03bf\u03c5 \u039c\u03b1\u03bd",
+        "name_en": "Isle of Man",
+        "name_es": "Isla de Man",
+        "name_fa": "\u062c\u0632\u06cc\u0631\u0647 \u0645\u0646",
+        "name_fr": "\u00eele de Man",
+        "name_he": "\u05d4\u05d0\u05d9 \u05de\u05d0\u05df",
+        "name_hi": "\u0906\u0907\u0932 \u0911\u092b\u093c \u092e\u0948\u0928",
+        "name_hu": "Man",
+        "name_id": "Pulau Man",
+        "name_it": "Isola di Man",
+        "name_ja": "\u30de\u30f3\u5cf6",
+        "name_ko": "\ub9e8\uc12c",
+        "name_len": "11",
+        "name_long": "Isle of Man",
+        "name_nev": "Isle of Man",
+        "name_nl": "Man",
+        "name_pl": "Wyspa Man",
+        "name_pt": "Ilha de Man",
+        "name_ru": "\u043e\u0441\u0442\u0440\u043e\u0432 \u041c\u044d\u043d",
+        "name_sort": "Isle of Man",
+        "name_sv": "Isle of Man",
+        "name_tr": "Man Adas\u0131",
+        "name_uk": "\u041e\u0441\u0442\u0440\u0456\u0432 \u041c\u0435\u043d",
+        "name_ur": "\u0622\u0626\u0644 \u0622\u0641 \u0645\u06cc\u0646",
+        "name_vi": "\u0110\u1ea3o Man",
+        "name_zh": "\u9a6c\u6069\u5c9b",
+        "name_zht": "\u66fc\u5cf6",
+        "ne_id": "1159320721",
+        "note_adm0": "U.K.",
+        "note_brk": "U.K. crown dependency",
+        "pop_est": "84584.0",
+        "pop_rank": "8",
+        "pop_year": "2019",
+        "postal": "IM",
+        "record_type": "country",
+        "scalerank": "6",
+        "sov_a3": "GB1",
+        "sovereignt": "United Kingdom",
+        "status": "officially-assigned",
+        "su_a3": "IMN",
+        "su_dif": "0",
+        "subunit": "Isle of Man",
+        "tiny": "-99",
+        "tlc": "1",
+        "tlc_diff": "",
+        "tld": [
+            ".im"
+        ],
+        "translations": {
+            "ces": {
+                "common": "Ostrov Man",
+                "official": "Ostrov Man"
+            },
+            "deu": {
+                "common": "Insel Man",
+                "official": "Isle of Man"
+            },
+            "est": {
+                "common": "Mani saar",
+                "official": "Mani saar"
+            },
+            "fin": {
+                "common": "Mansaari",
+                "official": "Mansaari"
+            },
+            "fra": {
+                "common": "\u00cele de Man",
+                "official": "Isle of Man"
+            },
+            "hrv": {
+                "common": "Otok Man",
+                "official": "Mana ostrvo"
+            },
+            "hun": {
+                "common": "Man",
+                "official": "Man"
+            },
+            "ita": {
+                "common": "Isola di Man",
+                "official": "Isola di Man"
+            },
+            "jpn": {
+                "common": "\u30de\u30f3\u5cf6",
+                "official": "\u30de\u30f3\u5cf6"
+            },
+            "kor": {
+                "common": "\ub9e8\uc12c",
+                "official": "\ub9e8\uc12c"
+            },
+            "nld": {
+                "common": "Isle of Man",
+                "official": "Isle of Man"
+            },
+            "per": {
+                "common": "\u062c\u0632\u06cc\u0631\u0647\u0654 \u0645\u064e\u0646",
+                "official": "\u062c\u0632\u06cc\u0631\u0647\u0654 \u0645\u064e\u0646"
+            },
+            "pol": {
+                "common": "Wyspa Man",
+                "official": "Wyspa Man"
+            },
+            "por": {
+                "common": "Ilha de Man",
+                "official": "Isle of Man"
+            },
+            "rus": {
+                "common": "\u041e\u0441\u0442\u0440\u043e\u0432 \u041c\u044d\u043d",
+                "official": "\u041e\u0441\u0442\u0440\u043e\u0432 \u041c\u044d\u043d"
+            },
+            "slk": {
+                "common": "Man",
+                "official": "Ostrov Man"
+            },
+            "spa": {
+                "common": "Isla de Man",
+                "official": "Isla de Man"
+            },
+            "swe": {
+                "common": "Isle of Man",
+                "official": "Isle of Man"
+            },
+            "urd": {
+                "common": "\u0622\u0626\u0644 \u0622\u0641 \u0645\u06cc\u0646",
+                "official": "\u0622\u0626\u0644 \u0622\u0641 \u0645\u06cc\u0646"
+            },
+            "zho": {
+                "common": "\u9a6c\u6069\u5c9b",
+                "official": "\u9a6c\u6069\u5c9b"
+            }
+        },
+        "type": "Country",
+        "un_a3": "833",
+        "un_member": null,
+        "wb_a2": "IM",
+        "wb_a3": "IMY",
+        "wikidataid": "Q9676",
+        "woe_id": "23424847",
+        "woe_id_eh": "23424847",
+        "woe_note": "Exact WOE match as country"
+    },
+    "currencies": [
+        "GBP"
+    ],
+    "data_sources": [
+        "mledoze",
+        "natural"
+    ],
+    "demonym": "Manx",
+    "demonyms": {
+        "eng": {
+            "f": "Manx",
+            "m": "Manx"
+        },
+        "fra": {
+            "f": "",
+            "m": ""
+        }
+    },
+    "dialling": {
+        "calling_code": [
+            "44"
+        ],
+        "international_prefix": "",
+        "national_destination_code_lengths": [],
+        "national_number_lengths": [],
+        "national_prefix": ""
+    },
+    "economy": "2. Developed region: nonG7",
+    "extra": {
+        "address_format": null,
+        "ar5": "OECD1990",
+        "cowc": null,
+        "cown": 0,
+        "data_protection": "GDPR",
+        "ds": "GBM",
+        "edgar": "Y8",
+        "emoji": "\ud83c\uddee\ud83c\uddf2",
+        "eu_member": null,
+        "fao": 0,
+        "fifa": "GBM",
+        "fips": "IM",
+        "gaul": 120,
+        "geonameid": 3042225,
+        "imf": 0,
+        "ioc": null,
+        "itu": 0,
+        "marc": "uik",
+        "vat_rates": null,
+        "wmo": null
+    },
+    "fclass_ar": "",
+    "fclass_bd": "",
+    "fclass_br": "",
+    "fclass_cn": "",
+    "fclass_de": "",
+    "fclass_eg": "",
+    "fclass_es": "",
+    "fclass_fr": "",
+    "fclass_gb": "",
+    "fclass_gr": "",
+    "fclass_id": "",
+    "fclass_il": "",
+    "fclass_in": "",
+    "fclass_iso": "Admin-0 country",
+    "fclass_it": "",
+    "fclass_jp": "",
+    "fclass_ko": "",
+    "fclass_ma": "",
+    "fclass_nl": "",
+    "fclass_np": "",
+    "fclass_pk": "",
+    "fclass_pl": "",
+    "fclass_ps": "",
+    "fclass_pt": "",
+    "fclass_ru": "",
+    "fclass_sa": "",
+    "fclass_se": "",
+    "fclass_tlc": "Admin-0 country",
+    "fclass_tr": "",
+    "fclass_tw": "",
+    "fclass_ua": "",
+    "fclass_us": "",
+    "fclass_vn": "",
+    "featurecla": "Admin-0 country",
+    "fips_10": "IM",
+    "flag": {
+        "emoji": "\ud83c\uddee\ud83c\uddf2"
+    },
+    "formal_en": "",
+    "formal_fr": "",
+    "gdp_md": "7491",
+    "gdp_year": "2018",
+    "geo": {
+        "area": 572,
+        "borders": [],
+        "continent": {
+            "EU": "Europe"
+        },
+        "independent": "Crown dependency of GB",
+        "landlocked": false,
+        "latitude": "54 15 N",
+        "latitude_desc": "54.22451400756836",
+        "latlng": [
+            54.25,
+            -4.5
+        ],
+        "longitude": "4 30 W",
+        "longitude_desc": "-4.562133312225342",
+        "max_latitude": "54.4",
+        "max_longitude": "-4.316667",
+        "min_latitude": "54.033333",
+        "min_longitude": "-4.833333",
+        "postal_code": true,
+        "region": "Europe",
+        "region_code": "150",
+        "region_un": "Europe",
+        "region_wb": "Europe & Central Asia",
+        "subregion": "Northern Europe",
+        "subregion_code": "154",
+        "world_region": "EMEA"
+    },
+    "geou_dif": "0",
+    "geounit": "Isle of Man",
+    "gu_a3": "IMN",
+    "homepart": "-99",
+    "idd": {
+        "root": "+4",
+        "suffixes": [
+            "4"
+        ]
+    },
+    "income_grp": "2. High income: nonOECD",
+    "independent": {
+        "abbrev": "IoMan",
+        "abbrev_len": "5",
+        "adm0_a3": "IMN",
+        "adm0_a3_ar": "IMN",
+        "adm0_a3_bd": "IMN",
+        "adm0_a3_br": "IMN",
+        "adm0_a3_cn": "IMN",
+        "adm0_a3_de": "IMN",
+        "adm0_a3_eg": "IMN",
+        "adm0_a3_es": "IMN",
+        "adm0_a3_fr": "IMN",
+        "adm0_a3_gb": "IMN",
+        "adm0_a3_gr": "IMN",
+        "adm0_a3_id": "IMN",
+        "adm0_a3_il": "IMN",
+        "adm0_a3_in": "IMN",
+        "adm0_a3_it": "IMN",
+        "adm0_a3_jp": "IMN",
+        "adm0_a3_ko": "IMN",
+        "adm0_a3_ma": "IMN",
+        "adm0_a3_nl": "IMN",
+        "adm0_a3_np": "IMN",
+        "adm0_a3_pk": "IMN",
+        "adm0_a3_pl": "IMN",
+        "adm0_a3_ps": "IMN",
+        "adm0_a3_pt": "IMN",
+        "adm0_a3_ru": "IMN",
+        "adm0_a3_sa": "IMN",
+        "adm0_a3_se": "IMN",
+        "adm0_a3_tr": "IMN",
+        "adm0_a3_tw": "IMN",
+        "adm0_a3_ua": "IMN",
+        "adm0_a3_un": "-99",
+        "adm0_a3_us": "IMN",
+        "adm0_a3_vn": "IMN",
+        "adm0_a3_wb": "-99",
+        "adm0_dif": "1",
+        "adm0_diff": "",
+        "adm0_iso": "IMN",
+        "adm0_tlc": "IMN",
+        "admin": "Isle of Man",
+        "alt_spellings": [
+            "IM",
+            "Ellan Vannin",
+            "Mann",
+            "Mannin"
+        ],
+        "borders": [],
+        "brk_a3": "IMN",
+        "brk_diff": "0",
+        "brk_group": "",
+        "brk_name": "Isle of Man",
+        "calling_codes": [
+            "+44"
+        ],
+        "capital": [
+            "Douglas"
+        ],
+        "cca2": "IM",
+        "cca3": "IMN",
+        "ccn3": "833",
+        "cioc": null,
+        "currencies": {
+            "g_b_p": {
+                "name": "British pound",
+                "symbol": "\u00a3"
+            },
+            "i_m_p": {
+                "name": "Manx pound",
+                "symbol": "\u00a3"
+            }
+        },
+        "data_sources": [
+            "mledoze"
+        ],
+        "demonyms": {
+            "eng": {
+                "f": "Manx",
+                "m": "Manx"
+            },
+            "fra": {
+                "f": "",
+                "m": ""
+            }
+        },
+        "economy": "2. Developed region: nonG7",
+        "fclass_ar": "",
+        "fclass_bd": "",
+        "fclass_br": "",
+        "fclass_cn": "",
+        "fclass_de": "",
+        "fclass_eg": "",
+        "fclass_es": "",
+        "fclass_fr": "",
+        "fclass_gb": "",
+        "fclass_gr": "",
+        "fclass_id": "",
+        "fclass_il": "",
+        "fclass_in": "",
+        "fclass_iso": "Admin-0 country",
+        "fclass_it": "",
+        "fclass_jp": "",
+        "fclass_ko": "",
+        "fclass_ma": "",
+        "fclass_nl": "",
+        "fclass_np": "",
+        "fclass_pk": "",
+        "fclass_pl": "",
+        "fclass_ps": "",
+        "fclass_pt": "",
+        "fclass_ru": "",
+        "fclass_sa": "",
+        "fclass_se": "",
+        "fclass_tlc": "Admin-0 country",
+        "fclass_tr": "",
+        "fclass_tw": "",
+        "fclass_ua": "",
+        "fclass_us": "",
+        "fclass_vn": "",
+        "featurecla": "Admin-0 country",
+        "fips_10": "IM",
+        "flag": {
+            "emoji": "\ud83c\uddee\ud83c\uddf2"
+        },
+        "formal_en": "",
+        "formal_fr": "",
+        "gdp_md": "7491",
+        "gdp_year": "2018",
+        "geo": {
+            "area": 572,
+            "continent": "Europe",
+            "landlocked": null,
+            "latlng": [
+                54.25,
+                -4.5
+            ],
+            "region": "Europe",
+            "region_un": "Europe",
+            "region_wb": "Europe & Central Asia",
+            "subregion": "Northern Europe"
+        },
+        "geou_dif": "0",
+        "geounit": "Isle of Man",
+        "gu_a3": "IMN",
+        "homepart": "-99",
+        "idd": {
+            "root": "+4",
+            "suffixes": [
+                "4"
+            ]
+        },
+        "income_grp": "2. High income: nonOECD",
+        "independent": null,
+        "iso_a2": "IM",
+        "iso_a2_eh": "IM",
+        "iso_a3": "IMN",
+        "iso_a3_eh": "IMN",
+        "iso_n3": "833",
+        "iso_n3_eh": "833",
+        "label_x": "-4.530069",
+        "label_y": "54.220833",
+        "labelrank": "6",
+        "languages": {
+            "eng": "English",
+            "glv": "Manx"
+        },
+        "level": "2",
+        "long_len": "11",
+        "mapcolor7": "6",
+        "mapcolor8": "6",
+        "mapcolor9": "6",
+        "mapcolor13": "3",
+        "max_label": "10.0",
+        "min_label": "5.0",
+        "min_zoom": "0.0",
+        "name": {
+            "common": "Isle of Man",
+            "native": {
+                "eng": {
+                    "common": "Isle of Man",
+                    "official": "Isle of Man"
+                },
+                "glv": {
+                    "common": "Mannin",
+                    "official": "Ellan Vannin or Mannin"
+                }
+            },
+            "official": "Isle of Man"
+        },
+        "name_alt": "",
+        "name_ar": "\u062c\u0632\u064a\u0631\u0629 \u0645\u0627\u0646",
+        "name_bn": "\u0986\u0987\u09b2 \u0985\u09ac \u09ae\u09cd\u09af\u09be\u09a8",
+        "name_ciawf": "Isle of Man",
+        "name_de": "Isle of Man",
+        "name_el": "\u039d\u03ae\u03c3\u03bf\u03c2 \u03c4\u03bf\u03c5 \u039c\u03b1\u03bd",
+        "name_en": "Isle of Man",
+        "name_es": "Isla de Man",
+        "name_fa": "\u062c\u0632\u06cc\u0631\u0647 \u0645\u0646",
+        "name_fr": "\u00eele de Man",
+        "name_he": "\u05d4\u05d0\u05d9 \u05de\u05d0\u05df",
+        "name_hi": "\u0906\u0907\u0932 \u0911\u092b\u093c \u092e\u0948\u0928",
+        "name_hu": "Man",
+        "name_id": "Pulau Man",
+        "name_it": "Isola di Man",
+        "name_ja": "\u30de\u30f3\u5cf6",
+        "name_ko": "\ub9e8\uc12c",
+        "name_len": "11",
+        "name_long": "Isle of Man",
+        "name_nev": "Isle of Man",
+        "name_nl": "Man",
+        "name_pl": "Wyspa Man",
+        "name_pt": "Ilha de Man",
+        "name_ru": "\u043e\u0441\u0442\u0440\u043e\u0432 \u041c\u044d\u043d",
+        "name_sort": "Isle of Man",
+        "name_sv": "Isle of Man",
+        "name_tr": "Man Adas\u0131",
+        "name_uk": "\u041e\u0441\u0442\u0440\u0456\u0432 \u041c\u0435\u043d",
+        "name_ur": "\u0622\u0626\u0644 \u0622\u0641 \u0645\u06cc\u0646",
+        "name_vi": "\u0110\u1ea3o Man",
+        "name_zh": "\u9a6c\u6069\u5c9b",
+        "name_zht": "\u66fc\u5cf6",
+        "ne_id": "1159320721",
+        "note_adm0": "U.K.",
+        "note_brk": "U.K. crown dependency",
+        "pop_est": "84584.0",
+        "pop_rank": "8",
+        "pop_year": "2019",
+        "postal": "IM",
+        "record_type": "country",
+        "scalerank": "6",
+        "sov_a3": "GB1",
+        "sovereignt": "United Kingdom",
+        "status": "officially-assigned",
+        "su_a3": "IMN",
+        "su_dif": "0",
+        "subunit": "Isle of Man",
+        "tiny": "-99",
+        "tlc": "1",
+        "tlc_diff": "",
+        "tld": [
+            ".im"
+        ],
+        "translations": {
+            "ces": {
+                "common": "Ostrov Man",
+                "official": "Ostrov Man"
+            },
+            "deu": {
+                "common": "Insel Man",
+                "official": "Isle of Man"
+            },
+            "est": {
+                "common": "Mani saar",
+                "official": "Mani saar"
+            },
+            "fin": {
+                "common": "Mansaari",
+                "official": "Mansaari"
+            },
+            "fra": {
+                "common": "\u00cele de Man",
+                "official": "Isle of Man"
+            },
+            "hrv": {
+                "common": "Otok Man",
+                "official": "Mana ostrvo"
+            },
+            "hun": {
+                "common": "Man",
+                "official": "Man"
+            },
+            "ita": {
+                "common": "Isola di Man",
+                "official": "Isola di Man"
+            },
+            "jpn": {
+                "common": "\u30de\u30f3\u5cf6",
+                "official": "\u30de\u30f3\u5cf6"
+            },
+            "kor": {
+                "common": "\ub9e8\uc12c",
+                "official": "\ub9e8\uc12c"
+            },
+            "nld": {
+                "common": "Isle of Man",
+                "official": "Isle of Man"
+            },
+            "per": {
+                "common": "\u062c\u0632\u06cc\u0631\u0647\u0654 \u0645\u064e\u0646",
+                "official": "\u062c\u0632\u06cc\u0631\u0647\u0654 \u0645\u064e\u0646"
+            },
+            "pol": {
+                "common": "Wyspa Man",
+                "official": "Wyspa Man"
+            },
+            "por": {
+                "common": "Ilha de Man",
+                "official": "Isle of Man"
+            },
+            "rus": {
+                "common": "\u041e\u0441\u0442\u0440\u043e\u0432 \u041c\u044d\u043d",
+                "official": "\u041e\u0441\u0442\u0440\u043e\u0432 \u041c\u044d\u043d"
+            },
+            "slk": {
+                "common": "Man",
+                "official": "Ostrov Man"
+            },
+            "spa": {
+                "common": "Isla de Man",
+                "official": "Isla de Man"
+            },
+            "swe": {
+                "common": "Isle of Man",
+                "official": "Isle of Man"
+            },
+            "urd": {
+                "common": "\u0622\u0626\u0644 \u0622\u0641 \u0645\u06cc\u0646",
+                "official": "\u0622\u0626\u0644 \u0622\u0641 \u0645\u06cc\u0646"
+            },
+            "zho": {
+                "common": "\u9a6c\u6069\u5c9b",
+                "official": "\u9a6c\u6069\u5c9b"
+            }
+        },
+        "type": "Country",
+        "un_a3": "833",
+        "un_member": null,
+        "wb_a2": "IM",
+        "wb_a3": "IMY",
+        "wikidataid": "Q9676",
+        "woe_id": "23424847",
+        "woe_id_eh": "23424847",
+        "woe_note": "Exact WOE match as country"
+    },
+    "iso_3166_1_alpha2": "IM",
+    "iso_3166_1_alpha3": "IMN",
+    "iso_3166_1_numeric": "833",
+    "iso_a2": "IM",
+    "iso_a2_eh": "IM",
+    "iso_a3": "IMN",
+    "iso_a3_eh": "IMN",
+    "iso_n3": "833",
+    "iso_n3_eh": "833",
+    "label_x": "-4.530069",
+    "label_y": "54.220833",
+    "labelrank": "6",
+    "languages": {
+        "eng": "English",
+        "glv": "Manx"
+    },
+    "level": "2",
+    "long_len": "11",
+    "mapcolor7": "6",
+    "mapcolor8": "6",
+    "mapcolor9": "6",
+    "mapcolor13": "3",
+    "max_label": "10.0",
+    "min_label": "5.0",
+    "min_zoom": "0.0",
+    "name": {
+        "common": "Isle of Man",
+        "native": {
+            "eng": {
+                "common": "Isle of Man",
+                "official": "Isle of Man"
+            },
+            "glv": {
+                "common": "Mannin",
+                "official": "Ellan Vannin or Mannin"
+            }
+        },
+        "official": "Isle of Man"
+    },
+    "name_alt": "",
+    "name_ar": "\u062c\u0632\u064a\u0631\u0629 \u0645\u0627\u0646",
+    "name_bn": "\u0986\u0987\u09b2 \u0985\u09ac \u09ae\u09cd\u09af\u09be\u09a8",
+    "name_ciawf": "Isle of Man",
+    "name_de": "Isle of Man",
+    "name_el": "\u039d\u03ae\u03c3\u03bf\u03c2 \u03c4\u03bf\u03c5 \u039c\u03b1\u03bd",
+    "name_en": "Isle of Man",
+    "name_es": "Isla de Man",
+    "name_fa": "\u062c\u0632\u06cc\u0631\u0647 \u0645\u0646",
+    "name_fr": "\u00eele de Man",
+    "name_he": "\u05d4\u05d0\u05d9 \u05de\u05d0\u05df",
+    "name_hi": "\u0906\u0907\u0932 \u0911\u092b\u093c \u092e\u0948\u0928",
+    "name_hu": "Man",
+    "name_id": "Pulau Man",
+    "name_it": "Isola di Man",
+    "name_ja": "\u30de\u30f3\u5cf6",
+    "name_ko": "\ub9e8\uc12c",
+    "name_len": "11",
+    "name_long": "Isle of Man",
+    "name_nev": "Isle of Man",
+    "name_nl": "Man",
+    "name_pl": "Wyspa Man",
+    "name_pt": "Ilha de Man",
+    "name_ru": "\u043e\u0441\u0442\u0440\u043e\u0432 \u041c\u044d\u043d",
+    "name_sort": "Isle of Man",
+    "name_sv": "Isle of Man",
+    "name_tr": "Man Adas\u0131",
+    "name_uk": "\u041e\u0441\u0442\u0440\u0456\u0432 \u041c\u0435\u043d",
+    "name_ur": "\u0622\u0626\u0644 \u0622\u0641 \u0645\u06cc\u0646",
+    "name_vi": "\u0110\u1ea3o Man",
+    "name_zh": "\u9a6c\u6069\u5c9b",
+    "name_zht": "\u66fc\u5cf6",
+    "ne_id": "1159320721",
+    "note_adm0": "U.K.",
+    "note_brk": "U.K. crown dependency",
+    "pop_est": "84584.0",
+    "pop_rank": "8",
+    "pop_year": "2019",
+    "postal": "IM",
+    "record_type": "country",
+    "scalerank": "6",
+    "sov_a3": "GB1",
+    "sovereignt": "United Kingdom",
+    "status": "officially-assigned",
+    "su_a3": "IMN",
+    "su_dif": "0",
+    "subunit": "Isle of Man",
+    "tiny": "-99",
+    "tlc": "1",
+    "tlc_diff": "",
+    "tld": [
+        ".im"
+    ],
+    "translations": {
+        "ces": {
+            "common": "Ostrov Man",
+            "official": "Ostrov Man"
+        },
+        "deu": {
+            "common": "Insel Man",
+            "official": "Isle of Man"
+        },
+        "est": {
+            "common": "Mani saar",
+            "official": "Mani saar"
+        },
+        "fin": {
+            "common": "Mansaari",
+            "official": "Mansaari"
+        },
+        "fra": {
+            "common": "\u00cele de Man",
+            "official": "Isle of Man"
+        },
+        "hrv": {
+            "common": "Otok Man",
+            "official": "Mana ostrvo"
+        },
+        "hun": {
+            "common": "Man",
+            "official": "Man"
+        },
+        "ita": {
+            "common": "Isola di Man",
+            "official": "Isola di Man"
+        },
+        "jpn": {
+            "common": "\u30de\u30f3\u5cf6",
+            "official": "\u30de\u30f3\u5cf6"
+        },
+        "kor": {
+            "common": "\ub9e8\uc12c",
+            "official": "\ub9e8\uc12c"
+        },
+        "nld": {
+            "common": "Isle of Man",
+            "official": "Isle of Man"
+        },
+        "per": {
+            "common": "\u062c\u0632\u06cc\u0631\u0647\u0654 \u0645\u064e\u0646",
+            "official": "\u062c\u0632\u06cc\u0631\u0647\u0654 \u0645\u064e\u0646"
+        },
+        "pol": {
+            "common": "Wyspa Man",
+            "official": "Wyspa Man"
+        },
+        "por": {
+            "common": "Ilha de Man",
+            "official": "Isle of Man"
+        },
+        "rus": {
+            "common": "\u041e\u0441\u0442\u0440\u043e\u0432 \u041c\u044d\u043d",
+            "official": "\u041e\u0441\u0442\u0440\u043e\u0432 \u041c\u044d\u043d"
+        },
+        "slk": {
+            "common": "Man",
+            "official": "Ostrov Man"
+        },
+        "spa": {
+            "common": "Isla de Man",
+            "official": "Isla de Man"
+        },
+        "swe": {
+            "common": "Isle of Man",
+            "official": "Isle of Man"
+        },
+        "urd": {
+            "common": "\u0622\u0626\u0644 \u0622\u0641 \u0645\u06cc\u0646",
+            "official": "\u0622\u0626\u0644 \u0622\u0641 \u0645\u06cc\u0646"
+        },
+        "zho": {
+            "common": "\u9a6c\u6069\u5c9b",
+            "official": "\u9a6c\u6069\u5c9b"
+        }
+    },
+    "type": "Country",
+    "un_a3": "833",
+    "un_member": {
+        "abbrev": "IoMan",
+        "abbrev_len": "5",
+        "adm0_a3": "IMN",
+        "adm0_a3_ar": "IMN",
+        "adm0_a3_bd": "IMN",
+        "adm0_a3_br": "IMN",
+        "adm0_a3_cn": "IMN",
+        "adm0_a3_de": "IMN",
+        "adm0_a3_eg": "IMN",
+        "adm0_a3_es": "IMN",
+        "adm0_a3_fr": "IMN",
+        "adm0_a3_gb": "IMN",
+        "adm0_a3_gr": "IMN",
+        "adm0_a3_id": "IMN",
+        "adm0_a3_il": "IMN",
+        "adm0_a3_in": "IMN",
+        "adm0_a3_it": "IMN",
+        "adm0_a3_jp": "IMN",
+        "adm0_a3_ko": "IMN",
+        "adm0_a3_ma": "IMN",
+        "adm0_a3_nl": "IMN",
+        "adm0_a3_np": "IMN",
+        "adm0_a3_pk": "IMN",
+        "adm0_a3_pl": "IMN",
+        "adm0_a3_ps": "IMN",
+        "adm0_a3_pt": "IMN",
+        "adm0_a3_ru": "IMN",
+        "adm0_a3_sa": "IMN",
+        "adm0_a3_se": "IMN",
+        "adm0_a3_tr": "IMN",
+        "adm0_a3_tw": "IMN",
+        "adm0_a3_ua": "IMN",
+        "adm0_a3_un": "-99",
+        "adm0_a3_us": "IMN",
+        "adm0_a3_vn": "IMN",
+        "adm0_a3_wb": "-99",
+        "adm0_dif": "1",
+        "adm0_diff": "",
+        "adm0_iso": "IMN",
+        "adm0_tlc": "IMN",
+        "admin": "Isle of Man",
+        "alt_spellings": [
+            "IM",
+            "Ellan Vannin",
+            "Mann",
+            "Mannin"
+        ],
+        "borders": [],
+        "brk_a3": "IMN",
+        "brk_diff": "0",
+        "brk_group": "",
+        "brk_name": "Isle of Man",
+        "calling_codes": [
+            "+44"
+        ],
+        "capital": [
+            "Douglas"
+        ],
+        "cca2": "IM",
+        "cca3": "IMN",
+        "ccn3": "833",
+        "cioc": null,
+        "currencies": {
+            "g_b_p": {
+                "name": "British pound",
+                "symbol": "\u00a3"
+            },
+            "i_m_p": {
+                "name": "Manx pound",
+                "symbol": "\u00a3"
+            }
+        },
+        "data_sources": [
+            "mledoze"
+        ],
+        "demonyms": {
+            "eng": {
+                "f": "Manx",
+                "m": "Manx"
+            },
+            "fra": {
+                "f": "",
+                "m": ""
+            }
+        },
+        "economy": "2. Developed region: nonG7",
+        "fclass_ar": "",
+        "fclass_bd": "",
+        "fclass_br": "",
+        "fclass_cn": "",
+        "fclass_de": "",
+        "fclass_eg": "",
+        "fclass_es": "",
+        "fclass_fr": "",
+        "fclass_gb": "",
+        "fclass_gr": "",
+        "fclass_id": "",
+        "fclass_il": "",
+        "fclass_in": "",
+        "fclass_iso": "Admin-0 country",
+        "fclass_it": "",
+        "fclass_jp": "",
+        "fclass_ko": "",
+        "fclass_ma": "",
+        "fclass_nl": "",
+        "fclass_np": "",
+        "fclass_pk": "",
+        "fclass_pl": "",
+        "fclass_ps": "",
+        "fclass_pt": "",
+        "fclass_ru": "",
+        "fclass_sa": "",
+        "fclass_se": "",
+        "fclass_tlc": "Admin-0 country",
+        "fclass_tr": "",
+        "fclass_tw": "",
+        "fclass_ua": "",
+        "fclass_us": "",
+        "fclass_vn": "",
+        "featurecla": "Admin-0 country",
+        "fips_10": "IM",
+        "flag": {
+            "emoji": "\ud83c\uddee\ud83c\uddf2"
+        },
+        "formal_en": "",
+        "formal_fr": "",
+        "gdp_md": "7491",
+        "gdp_year": "2018",
+        "geo": {
+            "area": 572,
+            "continent": "Europe",
+            "landlocked": null,
+            "latlng": [
+                54.25,
+                -4.5
+            ],
+            "region": "Europe",
+            "region_un": "Europe",
+            "region_wb": "Europe & Central Asia",
+            "subregion": "Northern Europe"
+        },
+        "geou_dif": "0",
+        "geounit": "Isle of Man",
+        "gu_a3": "IMN",
+        "homepart": "-99",
+        "idd": {
+            "root": "+4",
+            "suffixes": [
+                "4"
+            ]
+        },
+        "income_grp": "2. High income: nonOECD",
+        "independent": null,
+        "iso_a2": "IM",
+        "iso_a2_eh": "IM",
+        "iso_a3": "IMN",
+        "iso_a3_eh": "IMN",
+        "iso_n3": "833",
+        "iso_n3_eh": "833",
+        "label_x": "-4.530069",
+        "label_y": "54.220833",
+        "labelrank": "6",
+        "languages": {
+            "eng": "English",
+            "glv": "Manx"
+        },
+        "level": "2",
+        "long_len": "11",
+        "mapcolor7": "6",
+        "mapcolor8": "6",
+        "mapcolor9": "6",
+        "mapcolor13": "3",
+        "max_label": "10.0",
+        "min_label": "5.0",
+        "min_zoom": "0.0",
+        "name": {
+            "common": "Isle of Man",
+            "native": {
+                "eng": {
+                    "common": "Isle of Man",
+                    "official": "Isle of Man"
+                },
+                "glv": {
+                    "common": "Mannin",
+                    "official": "Ellan Vannin or Mannin"
+                }
+            },
+            "official": "Isle of Man"
+        },
+        "name_alt": "",
+        "name_ar": "\u062c\u0632\u064a\u0631\u0629 \u0645\u0627\u0646",
+        "name_bn": "\u0986\u0987\u09b2 \u0985\u09ac \u09ae\u09cd\u09af\u09be\u09a8",
+        "name_ciawf": "Isle of Man",
+        "name_de": "Isle of Man",
+        "name_el": "\u039d\u03ae\u03c3\u03bf\u03c2 \u03c4\u03bf\u03c5 \u039c\u03b1\u03bd",
+        "name_en": "Isle of Man",
+        "name_es": "Isla de Man",
+        "name_fa": "\u062c\u0632\u06cc\u0631\u0647 \u0645\u0646",
+        "name_fr": "\u00eele de Man",
+        "name_he": "\u05d4\u05d0\u05d9 \u05de\u05d0\u05df",
+        "name_hi": "\u0906\u0907\u0932 \u0911\u092b\u093c \u092e\u0948\u0928",
+        "name_hu": "Man",
+        "name_id": "Pulau Man",
+        "name_it": "Isola di Man",
+        "name_ja": "\u30de\u30f3\u5cf6",
+        "name_ko": "\ub9e8\uc12c",
+        "name_len": "11",
+        "name_long": "Isle of Man",
+        "name_nev": "Isle of Man",
+        "name_nl": "Man",
+        "name_pl": "Wyspa Man",
+        "name_pt": "Ilha de Man",
+        "name_ru": "\u043e\u0441\u0442\u0440\u043e\u0432 \u041c\u044d\u043d",
+        "name_sort": "Isle of Man",
+        "name_sv": "Isle of Man",
+        "name_tr": "Man Adas\u0131",
+        "name_uk": "\u041e\u0441\u0442\u0440\u0456\u0432 \u041c\u0435\u043d",
+        "name_ur": "\u0622\u0626\u0644 \u0622\u0641 \u0645\u06cc\u0646",
+        "name_vi": "\u0110\u1ea3o Man",
+        "name_zh": "\u9a6c\u6069\u5c9b",
+        "name_zht": "\u66fc\u5cf6",
+        "ne_id": "1159320721",
+        "note_adm0": "U.K.",
+        "note_brk": "U.K. crown dependency",
+        "pop_est": "84584.0",
+        "pop_rank": "8",
+        "pop_year": "2019",
+        "postal": "IM",
+        "record_type": "country",
+        "scalerank": "6",
+        "sov_a3": "GB1",
+        "sovereignt": "United Kingdom",
+        "status": "officially-assigned",
+        "su_a3": "IMN",
+        "su_dif": "0",
+        "subunit": "Isle of Man",
+        "tiny": "-99",
+        "tlc": "1",
+        "tlc_diff": "",
+        "tld": [
+            ".im"
+        ],
+        "translations": {
+            "ces": {
+                "common": "Ostrov Man",
+                "official": "Ostrov Man"
+            },
+            "deu": {
+                "common": "Insel Man",
+                "official": "Isle of Man"
+            },
+            "est": {
+                "common": "Mani saar",
+                "official": "Mani saar"
+            },
+            "fin": {
+                "common": "Mansaari",
+                "official": "Mansaari"
+            },
+            "fra": {
+                "common": "\u00cele de Man",
+                "official": "Isle of Man"
+            },
+            "hrv": {
+                "common": "Otok Man",
+                "official": "Mana ostrvo"
+            },
+            "hun": {
+                "common": "Man",
+                "official": "Man"
+            },
+            "ita": {
+                "common": "Isola di Man",
+                "official": "Isola di Man"
+            },
+            "jpn": {
+                "common": "\u30de\u30f3\u5cf6",
+                "official": "\u30de\u30f3\u5cf6"
+            },
+            "kor": {
+                "common": "\ub9e8\uc12c",
+                "official": "\ub9e8\uc12c"
+            },
+            "nld": {
+                "common": "Isle of Man",
+                "official": "Isle of Man"
+            },
+            "per": {
+                "common": "\u062c\u0632\u06cc\u0631\u0647\u0654 \u0645\u064e\u0646",
+                "official": "\u062c\u0632\u06cc\u0631\u0647\u0654 \u0645\u064e\u0646"
+            },
+            "pol": {
+                "common": "Wyspa Man",
+                "official": "Wyspa Man"
+            },
+            "por": {
+                "common": "Ilha de Man",
+                "official": "Isle of Man"
+            },
+            "rus": {
+                "common": "\u041e\u0441\u0442\u0440\u043e\u0432 \u041c\u044d\u043d",
+                "official": "\u041e\u0441\u0442\u0440\u043e\u0432 \u041c\u044d\u043d"
+            },
+            "slk": {
+                "common": "Man",
+                "official": "Ostrov Man"
+            },
+            "spa": {
+                "common": "Isla de Man",
+                "official": "Isla de Man"
+            },
+            "swe": {
+                "common": "Isle of Man",
+                "official": "Isle of Man"
+            },
+            "urd": {
+                "common": "\u0622\u0626\u0644 \u0622\u0641 \u0645\u06cc\u0646",
+                "official": "\u0622\u0626\u0644 \u0622\u0641 \u0645\u06cc\u0646"
+            },
+            "zho": {
+                "common": "\u9a6c\u6069\u5c9b",
+                "official": "\u9a6c\u6069\u5c9b"
+            }
+        },
+        "type": "Country",
+        "un_a3": "833",
+        "un_member": null,
+        "wb_a2": "IM",
+        "wb_a3": "IMY",
+        "wikidataid": "Q9676",
+        "woe_id": "23424847",
+        "woe_id_eh": "23424847",
+        "woe_note": "Exact WOE match as country"
+    },
+    "wb_a2": "IM",
+    "wb_a3": "IMY",
+    "wikidataid": "Q9676",
+    "woe_id": "23424847",
+    "woe_id_eh": "23424847",
+    "woe_note": "Exact WOE match as country"
+}

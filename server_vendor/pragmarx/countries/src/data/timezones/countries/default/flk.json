@@ -1,0 +1,19 @@
+{
+    "atlantic_stanley": {
+        "abbreviations": [
+            "FKST",
+            "FKT",
+            "LMT",
+            "SMT"
+        ],
+        "cca2": "FK",
+        "cca3": "FLK",
+        "country_code": "FK",
+        "data_sources": [
+            "timezonedb"
+        ],
+        "record_type": "timezone",
+        "zone_id": "153",
+        "zone_name": "Atlantic\/Stanley"
+    }
+}

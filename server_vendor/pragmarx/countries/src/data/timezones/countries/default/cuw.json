@@ -1,0 +1,19 @@
+{
+    "america_curacao": {
+        "abbreviations": [
+            "APT",
+            "AST",
+            "AWT",
+            "LMT"
+        ],
+        "cca2": "CW",
+        "cca3": "CUW",
+        "country_code": "CW",
+        "data_sources": [
+            "timezonedb"
+        ],
+        "record_type": "timezone",
+        "zone_id": "129",
+        "zone_name": "America\/Curacao"
+    }
+}

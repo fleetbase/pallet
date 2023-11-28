@@ -1,0 +1,391 @@
+{
+    "abbrev": "Dom. Rep.",
+    "abbrev_len": "9",
+    "adm0_a3": "DOM",
+    "adm0_a3_ar": "DOM",
+    "adm0_a3_bd": "DOM",
+    "adm0_a3_br": "DOM",
+    "adm0_a3_cn": "DOM",
+    "adm0_a3_de": "DOM",
+    "adm0_a3_eg": "DOM",
+    "adm0_a3_es": "DOM",
+    "adm0_a3_fr": "DOM",
+    "adm0_a3_gb": "DOM",
+    "adm0_a3_gr": "DOM",
+    "adm0_a3_id": "DOM",
+    "adm0_a3_il": "DOM",
+    "adm0_a3_in": "DOM",
+    "adm0_a3_it": "DOM",
+    "adm0_a3_jp": "DOM",
+    "adm0_a3_ko": "DOM",
+    "adm0_a3_ma": "DOM",
+    "adm0_a3_nl": "DOM",
+    "adm0_a3_np": "DOM",
+    "adm0_a3_pk": "DOM",
+    "adm0_a3_pl": "DOM",
+    "adm0_a3_ps": "DOM",
+    "adm0_a3_pt": "DOM",
+    "adm0_a3_ru": "DOM",
+    "adm0_a3_sa": "DOM",
+    "adm0_a3_se": "DOM",
+    "adm0_a3_tr": "DOM",
+    "adm0_a3_tw": "DOM",
+    "adm0_a3_ua": "DOM",
+    "adm0_a3_un": "-99",
+    "adm0_a3_us": "DOM",
+    "adm0_a3_vn": "DOM",
+    "adm0_a3_wb": "-99",
+    "adm0_dif": "0",
+    "adm0_diff": "",
+    "adm0_iso": "DOM",
+    "adm0_tlc": "DOM",
+    "admin": "Dominican Republic",
+    "alt_spellings": [
+        "DO"
+    ],
+    "borders": [
+        "HTI"
+    ],
+    "brk_a3": "DOM",
+    "brk_diff": "0",
+    "brk_group": "",
+    "brk_name": "Dominican Rep.",
+    "calling_codes": [
+        "+1809",
+        "+1829",
+        "+1849"
+    ],
+    "capital": [
+        "Santo Domingo"
+    ],
+    "capital_rinvex": "Santo Domingo",
+    "cca2": "DO",
+    "cca3": "DOM",
+    "ccn3": "214",
+    "cioc": "DOM",
+    "currencies": [
+        "DOP"
+    ],
+    "data_sources": [
+        "mledoze",
+        "natural"
+    ],
+    "demonym": "Dominican",
+    "demonyms": {
+        "eng": {
+            "f": "Dominican",
+            "m": "Dominican"
+        },
+        "fra": {
+            "f": "Dominicaine",
+            "m": "Dominicain"
+        }
+    },
+    "dialling": {
+        "calling_code": [
+            "1809",
+            "1829",
+            "1849"
+        ],
+        "international_prefix": "011",
+        "national_destination_code_lengths": [
+            3
+        ],
+        "national_number_lengths": [
+            10
+        ],
+        "national_prefix": "1"
+    },
+    "economy": "6. Developing region",
+    "extra": {
+        "address_format": null,
+        "ar5": "LAM",
+        "cowc": "DOM",
+        "cown": 42,
+        "data_protection": "Other",
+        "ds": "DOM",
+        "edgar": "G8",
+        "emoji": "\ud83c\udde9\ud83c\uddf4",
+        "eu_member": null,
+        "fao": 56,
+        "fifa": "DOM",
+        "fips": "DR",
+        "gaul": 72,
+        "geonameid": 3508796,
+        "imf": 243,
+        "ioc": "DOM",
+        "itu": "DOM",
+        "marc": "dr",
+        "vat_rates": null,
+        "wmo": "DR"
+    },
+    "fclass_ar": "",
+    "fclass_bd": "",
+    "fclass_br": "",
+    "fclass_cn": "",
+    "fclass_de": "",
+    "fclass_eg": "",
+    "fclass_es": "",
+    "fclass_fr": "",
+    "fclass_gb": "",
+    "fclass_gr": "",
+    "fclass_id": "",
+    "fclass_il": "",
+    "fclass_in": "",
+    "fclass_iso": "Admin-0 country",
+    "fclass_it": "",
+    "fclass_jp": "",
+    "fclass_ko": "",
+    "fclass_ma": "",
+    "fclass_nl": "",
+    "fclass_np": "",
+    "fclass_pk": "",
+    "fclass_pl": "",
+    "fclass_ps": "",
+    "fclass_pt": "",
+    "fclass_ru": "",
+    "fclass_sa": "",
+    "fclass_se": "",
+    "fclass_tlc": "Admin-0 country",
+    "fclass_tr": "",
+    "fclass_tw": "",
+    "fclass_ua": "",
+    "fclass_us": "",
+    "fclass_vn": "",
+    "featurecla": "Admin-0 country",
+    "fips_10": "DR",
+    "flag": {
+        "emoji": "\ud83c\udde9\ud83c\uddf4"
+    },
+    "formal_en": "Dominican Republic",
+    "formal_fr": "",
+    "gdp_md": "88941",
+    "gdp_year": "2019",
+    "geo": {
+        "area": 48671,
+        "borders": [
+            "HTI"
+        ],
+        "continent": {
+            "NA": "North America"
+        },
+        "independent": "Yes",
+        "landlocked": false,
+        "latitude": "19 00 N",
+        "latitude_desc": "19.019824981689453",
+        "latlng": [
+            19,
+            -70.66666666
+        ],
+        "longitude": "70 40 W",
+        "longitude_desc": "-70.79285430908203",
+        "max_latitude": "19.933333",
+        "max_longitude": "-68.316667",
+        "min_latitude": "17.473056",
+        "min_longitude": "-71.966667",
+        "postal_code": true,
+        "region": "Americas",
+        "region_code": "019",
+        "region_un": "Americas",
+        "region_wb": "Latin America & Caribbean",
+        "subregion": "Caribbean",
+        "subregion_code": "029",
+        "world_region": "AMER"
+    },
+    "geou_dif": "0",
+    "geounit": "Dominican Republic",
+    "gu_a3": "DOM",
+    "homepart": "1",
+    "idd": {
+        "root": "+1",
+        "suffixes": [
+            "809",
+            "829",
+            "849"
+        ]
+    },
+    "income_grp": "3. Upper middle income",
+    "independent": true,
+    "iso_3166_1_alpha2": "DO",
+    "iso_3166_1_alpha3": "DOM",
+    "iso_3166_1_numeric": "214",
+    "iso_a2": "DO",
+    "iso_a2_eh": "DO",
+    "iso_a3": "DOM",
+    "iso_a3_eh": "DOM",
+    "iso_n3": "214",
+    "iso_n3_eh": "214",
+    "label_x": "-70.653998",
+    "label_y": "19.104137",
+    "labelrank": "5",
+    "languages": {
+        "spa": "Spanish"
+    },
+    "level": "2",
+    "long_len": "18",
+    "mapcolor7": "5",
+    "mapcolor8": "2",
+    "mapcolor9": "5",
+    "mapcolor13": "7",
+    "max_label": "9.5",
+    "min_label": "4.5",
+    "min_zoom": "0.0",
+    "name": {
+        "common": "Dominican Republic",
+        "native": {
+            "spa": {
+                "common": "Rep\u00fablica Dominicana",
+                "official": "Rep\u00fablica Dominicana"
+            }
+        },
+        "official": "Dominican Republic"
+    },
+    "name_alt": "",
+    "name_ar": "\u062c\u0645\u0647\u0648\u0631\u064a\u0629 \u0627\u0644\u062f\u0648\u0645\u064a\u0646\u064a\u0643\u0627\u0646",
+    "name_bn": "\u09a1\u09cb\u09ae\u09bf\u09a8\u09bf\u0995\u09be\u09a8 \u09aa\u09cd\u09b0\u099c\u09be\u09a4\u09a8\u09cd\u09a4\u09cd\u09b0",
+    "name_ciawf": "Dominican Republic",
+    "name_de": "Dominikanische Republik",
+    "name_el": "\u0394\u03bf\u03bc\u03b9\u03bd\u03b9\u03ba\u03b1\u03bd\u03ae \u0394\u03b7\u03bc\u03bf\u03ba\u03c1\u03b1\u03c4\u03af\u03b1",
+    "name_en": "Dominican Republic",
+    "name_es": "Rep\u00fablica Dominicana",
+    "name_fa": "\u062c\u0645\u0647\u0648\u0631\u06cc \u062f\u0648\u0645\u06cc\u0646\u06cc\u06a9\u0646",
+    "name_fr": "R\u00e9publique dominicaine",
+    "name_he": "\u05d4\u05e8\u05e4\u05d5\u05d1\u05dc\u05d9\u05e7\u05d4 \u05d4\u05d3\u05d5\u05de\u05d9\u05e0\u05d9\u05e7\u05e0\u05d9\u05ea",
+    "name_hi": "\u0921\u094b\u092e\u093f\u0928\u093f\u0915\u0928 \u0917\u0923\u0930\u093e\u091c\u094d\u092f",
+    "name_hu": "Dominikai K\u00f6zt\u00e1rsas\u00e1g",
+    "name_id": "Republik Dominika",
+    "name_it": "Repubblica Dominicana",
+    "name_ja": "\u30c9\u30df\u30cb\u30ab\u5171\u548c\u56fd",
+    "name_ko": "\ub3c4\ubbf8\ub2c8\uce74 \uacf5\ud654\uad6d",
+    "name_len": "14",
+    "name_long": "Dominican Republic",
+    "name_nev": "Dominican Rep.",
+    "name_nl": "Dominicaanse Republiek",
+    "name_pl": "Dominikana",
+    "name_pt": "Rep\u00fablica Dominicana",
+    "name_ru": "\u0414\u043e\u043c\u0438\u043d\u0438\u043a\u0430\u043d\u0441\u043a\u0430\u044f \u0420\u0435\u0441\u043f\u0443\u0431\u043b\u0438\u043a\u0430",
+    "name_sort": "Dominican Republic",
+    "name_sv": "Dominikanska republiken",
+    "name_tr": "Dominik Cumhuriyeti",
+    "name_uk": "\u0414\u043e\u043c\u0456\u043d\u0456\u043a\u0430\u043d\u0441\u044c\u043a\u0430 \u0420\u0435\u0441\u043f\u0443\u0431\u043b\u0456\u043a\u0430",
+    "name_ur": "\u062c\u0645\u06c1\u0648\u0631\u06cc\u06c1 \u0688\u0648\u0645\u06cc\u0646\u06cc\u06a9\u0646",
+    "name_vi": "C\u1ed9ng h\u00f2a Dominica",
+    "name_zh": "\u591a\u7c73\u5c3c\u52a0",
+    "name_zht": "\u591a\u660e\u5c3c\u52a0",
+    "ne_id": "1159320563",
+    "note_adm0": "",
+    "note_brk": "",
+    "pop_est": "10738958.0",
+    "pop_rank": "14",
+    "pop_year": "2019",
+    "postal": "DO",
+    "record_type": "country",
+    "scalerank": "0",
+    "sov_a3": "DOM",
+    "sovereignt": "Dominican Republic",
+    "status": "officially-assigned",
+    "su_a3": "DOM",
+    "su_dif": "0",
+    "subunit": "Dominican Republic",
+    "tiny": "-99",
+    "tlc": "1",
+    "tlc_diff": "",
+    "tld": [
+        ".do"
+    ],
+    "translations": {
+        "ces": {
+            "common": "Dominik\u00e1nsk\u00e1 republika",
+            "official": "Dominik\u00e1nsk\u00e1 republika"
+        },
+        "cym": {
+            "common": "Gweriniaeth_Dominica",
+            "official": "Dominican Republic"
+        },
+        "deu": {
+            "common": "Dominikanische Republik",
+            "official": "Dominikanische Republik"
+        },
+        "est": {
+            "common": "Dominikaani Vabariik",
+            "official": "Dominikaani Vabariik"
+        },
+        "fin": {
+            "common": "Dominikaaninen tasavalta",
+            "official": "Dominikaaninen tasavalta"
+        },
+        "fra": {
+            "common": "R\u00e9publique dominicaine",
+            "official": "R\u00e9publique Dominicaine"
+        },
+        "hrv": {
+            "common": "Dominikanska Republika",
+            "official": "Dominikanska Republika"
+        },
+        "hun": {
+            "common": "Dominikai K\u00f6zt\u00e1rsas\u00e1g",
+            "official": "Dominikai K\u00f6zt\u00e1rsas\u00e1g"
+        },
+        "ita": {
+            "common": "Repubblica Dominicana",
+            "official": "Repubblica Dominicana"
+        },
+        "jpn": {
+            "common": "\u30c9\u30df\u30cb\u30ab\u5171\u548c\u56fd",
+            "official": "\u30c9\u30df\u30cb\u30ab\u5171\u548c\u56fd"
+        },
+        "kor": {
+            "common": "\ub3c4\ubbf8\ub2c8\uce74 \uacf5\ud654\uad6d",
+            "official": "\ub3c4\ubbf8\ub2c8\uce74 \uacf5\ud654\uad6d"
+        },
+        "nld": {
+            "common": "Dominicaanse Republiek",
+            "official": "Dominicaanse Republiek"
+        },
+        "per": {
+            "common": "\u062c\u0645\u0647\u0648\u0631\u06cc \u062f\u0648\u0645\u06cc\u0646\u06cc\u06a9\u0646",
+            "official": "\u062c\u0645\u0647\u0648\u0631\u06cc \u062f\u0648\u0645\u06cc\u0646\u06cc\u06a9\u0646"
+        },
+        "pol": {
+            "common": "Dominikana",
+            "official": "Republika Dominika\u0144ska"
+        },
+        "por": {
+            "common": "Rep\u00fablica Dominicana",
+            "official": "Rep\u00fablica Dominicana"
+        },
+        "rus": {
+            "common": "\u0414\u043e\u043c\u0438\u043d\u0438\u043a\u0430\u043d\u0441\u043a\u0430\u044f \u0420\u0435\u0441\u043f\u0443\u0431\u043b\u0438\u043a\u0430",
+            "official": "\u0414\u043e\u043c\u0438\u043d\u0438\u043a\u0430\u043d\u0441\u043a\u0430\u044f \u0420\u0435\u0441\u043f\u0443\u0431\u043b\u0438\u043a\u0430"
+        },
+        "slk": {
+            "common": "Dominik\u00e1nska republika",
+            "official": "Dominik\u00e1nska republika"
+        },
+        "spa": {
+            "common": "Rep\u00fablica Dominicana",
+            "official": "Rep\u00fablica Dominicana"
+        },
+        "swe": {
+            "common": "Dominikanska republiken",
+            "official": "Dominikanska republiken"
+        },
+        "urd": {
+            "common": "\u0688\u0648\u0645\u06cc\u0646\u06cc\u06a9\u0646",
+            "official": "\u062c\u0645\u06c1\u0648\u0631\u06cc\u06c1 \u0688\u0648\u0645\u06cc\u0646\u06cc\u06a9\u0646"
+        },
+        "zho": {
+            "common": "\u591a\u660e\u5c3c\u52a0",
+            "official": "\u591a\u660e\u5c3c\u52a0\u5171\u548c\u56fd"
+        }
+    },
+    "type": "Sovereign country",
+    "un_a3": "214",
+    "un_member": true,
+    "wb_a2": "DO",
+    "wb_a3": "DOM",
+    "wikidataid": "Q786",
+    "woe_id": "23424800",
+    "woe_id_eh": "23424800",
+    "woe_note": "Exact WOE match as country"
+}

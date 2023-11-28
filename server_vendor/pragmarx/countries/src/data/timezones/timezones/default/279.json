@@ -1,0 +1,35 @@
+{
+    "1": {
+        "abbreviation": "NRT",
+        "dst": "0",
+        "gmt_offset": "41400",
+        "time_start": "-1545131260",
+        "zone_id": "279"
+    },
+    "2": {
+        "abbreviation": "JST",
+        "dst": "0",
+        "gmt_offset": "32400",
+        "time_start": "-862918200",
+        "zone_id": "279"
+    },
+    "3": {
+        "abbreviation": "NRT",
+        "dst": "0",
+        "gmt_offset": "41400",
+        "time_start": "-767350800",
+        "zone_id": "279"
+    },
+    "4": {
+        "abbreviation": "NRT",
+        "dst": "0",
+        "gmt_offset": "43200",
+        "time_start": "287418600",
+        "zone_id": "279"
+    },
+    "abbreviation": "LMT",
+    "dst": "0",
+    "gmt_offset": "40060",
+    "time_start": "-1545131261",
+    "zone_id": "279"
+}

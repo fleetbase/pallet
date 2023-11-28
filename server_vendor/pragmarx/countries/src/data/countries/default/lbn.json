@@ -1,0 +1,390 @@
+{
+    "abbrev": "Leb.",
+    "abbrev_len": "4",
+    "adm0_a3": "LBN",
+    "adm0_a3_ar": "LBN",
+    "adm0_a3_bd": "LBN",
+    "adm0_a3_br": "LBN",
+    "adm0_a3_cn": "LBN",
+    "adm0_a3_de": "LBN",
+    "adm0_a3_eg": "LBN",
+    "adm0_a3_es": "LBN",
+    "adm0_a3_fr": "LBN",
+    "adm0_a3_gb": "LBN",
+    "adm0_a3_gr": "LBN",
+    "adm0_a3_id": "LBN",
+    "adm0_a3_il": "LBN",
+    "adm0_a3_in": "LBN",
+    "adm0_a3_it": "LBN",
+    "adm0_a3_jp": "LBN",
+    "adm0_a3_ko": "LBN",
+    "adm0_a3_ma": "LBN",
+    "adm0_a3_nl": "LBN",
+    "adm0_a3_np": "LBN",
+    "adm0_a3_pk": "LBN",
+    "adm0_a3_pl": "LBN",
+    "adm0_a3_ps": "LBN",
+    "adm0_a3_pt": "LBN",
+    "adm0_a3_ru": "LBN",
+    "adm0_a3_sa": "LBN",
+    "adm0_a3_se": "LBN",
+    "adm0_a3_tr": "LBN",
+    "adm0_a3_tw": "LBN",
+    "adm0_a3_ua": "LBN",
+    "adm0_a3_un": "-99",
+    "adm0_a3_us": "LBN",
+    "adm0_a3_vn": "LBN",
+    "adm0_a3_wb": "-99",
+    "adm0_dif": "0",
+    "adm0_diff": "",
+    "adm0_iso": "LBN",
+    "adm0_tlc": "LBN",
+    "admin": "Lebanon",
+    "alt_spellings": [
+        "LB",
+        "Lebanese Republic",
+        "Al-Jumh\u016br\u012byah Al-Libn\u0101n\u012byah"
+    ],
+    "borders": [
+        "ISR",
+        "SYR"
+    ],
+    "brk_a3": "LBN",
+    "brk_diff": "0",
+    "brk_group": "",
+    "brk_name": "Lebanon",
+    "calling_codes": [
+        "+961"
+    ],
+    "capital": [
+        "Beirut"
+    ],
+    "capital_rinvex": "Beirut",
+    "cca2": "LB",
+    "cca3": "LBN",
+    "ccn3": "422",
+    "cioc": "LIB",
+    "currencies": [
+        "LBP"
+    ],
+    "data_sources": [
+        "mledoze",
+        "natural"
+    ],
+    "demonym": "Lebanese",
+    "demonyms": {
+        "eng": {
+            "f": "Lebanese",
+            "m": "Lebanese"
+        },
+        "fra": {
+            "f": "Libanaise",
+            "m": "Libanais"
+        }
+    },
+    "dialling": {
+        "calling_code": [
+            "961"
+        ],
+        "international_prefix": "00",
+        "national_destination_code_lengths": [
+            2
+        ],
+        "national_number_lengths": [
+            8
+        ],
+        "national_prefix": "0"
+    },
+    "economy": "6. Developing region",
+    "extra": {
+        "address_format": "{{recipient}}{{street}}{{postalcode}} {{city}}{{country}}",
+        "ar5": "MAF",
+        "cowc": "LEB",
+        "cown": 660,
+        "data_protection": "Other",
+        "ds": "RL",
+        "edgar": "M8",
+        "emoji": "\ud83c\uddf1\ud83c\udde7",
+        "eu_member": null,
+        "fao": 121,
+        "fifa": "LIB",
+        "fips": "LE",
+        "gaul": 141,
+        "geonameid": 272103,
+        "imf": 446,
+        "ioc": "LBN",
+        "itu": "LBN",
+        "marc": "le",
+        "vat_rates": null,
+        "wmo": "LB"
+    },
+    "fclass_ar": "",
+    "fclass_bd": "",
+    "fclass_br": "",
+    "fclass_cn": "",
+    "fclass_de": "",
+    "fclass_eg": "",
+    "fclass_es": "",
+    "fclass_fr": "",
+    "fclass_gb": "",
+    "fclass_gr": "",
+    "fclass_id": "",
+    "fclass_il": "",
+    "fclass_in": "",
+    "fclass_iso": "Admin-0 country",
+    "fclass_it": "",
+    "fclass_jp": "",
+    "fclass_ko": "",
+    "fclass_ma": "",
+    "fclass_nl": "",
+    "fclass_np": "",
+    "fclass_pk": "",
+    "fclass_pl": "",
+    "fclass_ps": "",
+    "fclass_pt": "",
+    "fclass_ru": "",
+    "fclass_sa": "",
+    "fclass_se": "",
+    "fclass_tlc": "Admin-0 country",
+    "fclass_tr": "",
+    "fclass_tw": "",
+    "fclass_ua": "",
+    "fclass_us": "",
+    "fclass_vn": "",
+    "featurecla": "Admin-0 country",
+    "fips_10": "LE",
+    "flag": {
+        "emoji": "\ud83c\uddf1\ud83c\udde7"
+    },
+    "formal_en": "Lebanese Republic",
+    "formal_fr": "",
+    "gdp_md": "51991",
+    "gdp_year": "2019",
+    "geo": {
+        "area": 10452,
+        "borders": [
+            "ISR",
+            "SYR"
+        ],
+        "continent": {
+            "AS": "Asia"
+        },
+        "independent": "Yes",
+        "landlocked": false,
+        "latitude": "33 50 N",
+        "latitude_desc": "33.925411224365234",
+        "latlng": [
+            33.83333333,
+            35.83333333
+        ],
+        "longitude": "35 50 E",
+        "longitude_desc": "35.89972686767578",
+        "max_latitude": "34.69",
+        "max_longitude": "36.592778",
+        "min_latitude": "33.078333",
+        "min_longitude": "35.103611",
+        "postal_code": true,
+        "region": "Asia",
+        "region_code": "142",
+        "region_un": "Asia",
+        "region_wb": "Middle East & North Africa",
+        "subregion": "Western Asia",
+        "subregion_code": "145",
+        "world_region": "EMEA"
+    },
+    "geou_dif": "0",
+    "geounit": "Lebanon",
+    "gu_a3": "LBN",
+    "homepart": "1",
+    "idd": {
+        "root": "+9",
+        "suffixes": [
+            "61"
+        ]
+    },
+    "income_grp": "3. Upper middle income",
+    "independent": true,
+    "iso_3166_1_alpha2": "LB",
+    "iso_3166_1_alpha3": "LBN",
+    "iso_3166_1_numeric": "422",
+    "iso_a2": "LB",
+    "iso_a2_eh": "LB",
+    "iso_a3": "LBN",
+    "iso_a3_eh": "LBN",
+    "iso_n3": "422",
+    "iso_n3_eh": "422",
+    "label_x": "35.992892",
+    "label_y": "34.133368",
+    "labelrank": "5",
+    "languages": {
+        "ara": "Arabic",
+        "fra": "French"
+    },
+    "level": "2",
+    "long_len": "7",
+    "mapcolor7": "4",
+    "mapcolor8": "4",
+    "mapcolor9": "4",
+    "mapcolor13": "12",
+    "max_label": "9.0",
+    "min_label": "4.0",
+    "min_zoom": "0.0",
+    "name": {
+        "common": "Lebanon",
+        "native": {
+            "ara": {
+                "common": "\u0644\u0628\u0646\u0627\u0646",
+                "official": "\u0627\u0644\u062c\u0645\u0647\u0648\u0631\u064a\u0629 \u0627\u0644\u0644\u0628\u0646\u0627\u0646\u064a\u0629"
+            },
+            "fra": {
+                "common": "Liban",
+                "official": "R\u00e9publique libanaise"
+            }
+        },
+        "official": "Lebanese Republic"
+    },
+    "name_alt": "",
+    "name_ar": "\u0644\u0628\u0646\u0627\u0646",
+    "name_bn": "\u09b2\u09c7\u09ac\u09be\u09a8\u09a8",
+    "name_ciawf": "Lebanon",
+    "name_de": "Libanon",
+    "name_el": "\u039b\u03af\u03b2\u03b1\u03bd\u03bf\u03c2",
+    "name_en": "Lebanon",
+    "name_es": "L\u00edbano",
+    "name_fa": "\u0644\u0628\u0646\u0627\u0646",
+    "name_fr": "Liban",
+    "name_he": "\u05dc\u05d1\u05e0\u05d5\u05df",
+    "name_hi": "\u0932\u0947\u092c\u0928\u093e\u0928",
+    "name_hu": "Libanon",
+    "name_id": "Lebanon",
+    "name_it": "Libano",
+    "name_ja": "\u30ec\u30d0\u30ce\u30f3",
+    "name_ko": "\ub808\ubc14\ub17c",
+    "name_len": "7",
+    "name_long": "Lebanon",
+    "name_nev": "Lebanon",
+    "name_nl": "Libanon",
+    "name_pl": "Liban",
+    "name_pt": "L\u00edbano",
+    "name_ru": "\u041b\u0438\u0432\u0430\u043d",
+    "name_sort": "Lebanon",
+    "name_sv": "Libanon",
+    "name_tr": "L\u00fcbnan",
+    "name_uk": "\u041b\u0456\u0432\u0430\u043d",
+    "name_ur": "\u0644\u0628\u0646\u0627\u0646",
+    "name_vi": "Liban",
+    "name_zh": "\u9ece\u5df4\u5ae9",
+    "name_zht": "\u9ece\u5df4\u5ae9",
+    "ne_id": "1159321013",
+    "note_adm0": "",
+    "note_brk": "",
+    "pop_est": "6855713.0",
+    "pop_rank": "13",
+    "pop_year": "2019",
+    "postal": "LB",
+    "record_type": "country",
+    "scalerank": "0",
+    "sov_a3": "LBN",
+    "sovereignt": "Lebanon",
+    "status": "officially-assigned",
+    "su_a3": "LBN",
+    "su_dif": "0",
+    "subunit": "Lebanon",
+    "tiny": "4",
+    "tlc": "1",
+    "tlc_diff": "",
+    "tld": [
+        ".lb"
+    ],
+    "translations": {
+        "ces": {
+            "common": "Libanon",
+            "official": "Libanonsk\u00e1 republika"
+        },
+        "deu": {
+            "common": "Libanon",
+            "official": "Libanesische Republik"
+        },
+        "est": {
+            "common": "Liibanon",
+            "official": "Liibanoni Vabariik"
+        },
+        "fin": {
+            "common": "Libanon",
+            "official": "Libanonin tasavalta"
+        },
+        "fra": {
+            "common": "Liban",
+            "official": "R\u00e9publique libanaise"
+        },
+        "hrv": {
+            "common": "Libanon",
+            "official": "Libanonska Republika"
+        },
+        "hun": {
+            "common": "Libanon",
+            "official": "Libanoni K\u00f6zt\u00e1rsas\u00e1g"
+        },
+        "ita": {
+            "common": "Libano",
+            "official": "Repubblica libanese"
+        },
+        "jpn": {
+            "common": "\u30ec\u30d0\u30ce\u30f3",
+            "official": "\u30ec\u30d0\u30ce\u30f3\u5171\u548c\u56fd"
+        },
+        "kor": {
+            "common": "\ub808\ubc14\ub17c",
+            "official": "\ub808\ubc14\ub17c \uacf5\ud654\uad6d"
+        },
+        "nld": {
+            "common": "Libanon",
+            "official": "Libanese Republiek"
+        },
+        "per": {
+            "common": "\u0644\u0628\u0646\u0627\u0646",
+            "official": "\u062c\u0645\u0647\u0648\u0631\u06cc \u0644\u0628\u0646\u0627\u0646"
+        },
+        "pol": {
+            "common": "Liban",
+            "official": "Republika Liba\u0144ska"
+        },
+        "por": {
+            "common": "L\u00edbano",
+            "official": "Rep\u00fablica Libanesa"
+        },
+        "rus": {
+            "common": "\u041b\u0438\u0432\u0430\u043d",
+            "official": "\u041b\u0438\u0432\u0430\u043d\u0441\u043a\u0430\u044f \u0420\u0435\u0441\u043f\u0443\u0431\u043b\u0438\u043a\u0430"
+        },
+        "slk": {
+            "common": "Libanon",
+            "official": "Libanonsk\u00e1 republika"
+        },
+        "spa": {
+            "common": "L\u00edbano",
+            "official": "Rep\u00fablica Libanesa"
+        },
+        "swe": {
+            "common": "Libanon",
+            "official": "Republiken Libanon"
+        },
+        "urd": {
+            "common": "\u0644\u0628\u0646\u0627\u0646",
+            "official": "\u062c\u0645\u06c1\u0648\u0631\u06cc\u06c1 \u0644\u0628\u0646\u0627\u0646"
+        },
+        "zho": {
+            "common": "\u9ece\u5df4\u5ae9",
+            "official": "\u9ece\u5df4\u5ae9\u5171\u548c\u56fd"
+        }
+    },
+    "type": "Sovereign country",
+    "un_a3": "422",
+    "un_member": true,
+    "wb_a2": "LB",
+    "wb_a3": "LBN",
+    "wikidataid": "Q822",
+    "woe_id": "23424873",
+    "woe_id_eh": "23424873",
+    "woe_note": "Exact WOE match as country"
+}

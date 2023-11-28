@@ -8,6 +8,8 @@ export default class WarehouseSerializer extends ApplicationSerializer.extend(Em
      * @var {Object}
      */
     get attrs() {
-        return {};
+        return {
+            sections: { embedded: 'always' },
+        };
     }
 }

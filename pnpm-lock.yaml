@@ -11,12 +11,9 @@ dependencies:
   '@fleetbase/ember-ui':
     specifier: ^0.2.5
     version: 0.2.5(@babel/core@7.23.3)(@ember/test-helpers@2.9.4)(ember-source@4.6.0)(postcss@8.4.31)(webpack@5.89.0)
-  '@fleetbase/fleetops':
-    specifier: link:../fleetops
-    version: link:../fleetops
   '@fleetbase/fleetops-data':
-    specifier: link:../fleetops-data
-    version: link:../fleetops-data
+    specifier: ^0.1.5
+    version: 0.1.5
   '@fortawesome/ember-fontawesome':
     specifier: ^0.4.1
     version: 0.4.3
@@ -2338,6 +2335,17 @@ packages:
       - webpack
       - webpack-cli
       - webpack-command
+    dev: false
+
+  /@fleetbase/fleetops-data@0.1.5:
+    resolution: {integrity: sha512-AMAp7QBHCMHfgH1lDN7E5yAaYANEnY/OlhbUmBuIbZRLzfnhH5OJQvyOWMf9kT/5hXYYSx52FBZjaqmh0k3bzg==}
+    engines: {node: 14.* || >= 16}
+    dependencies:
+      date-fns: 2.30.0
+      ember-cli-babel: 7.26.11
+      ember-cli-htmlbars: 6.3.0
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /@floating-ui/core@1.5.0:

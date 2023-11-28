@@ -11,9 +11,9 @@ export default class BatchModel extends Model {
     @attr('string') product_uuid;
 
     /** @relationships */
-    @belongsTo('company', { async: true }) company;
-    @belongsTo('user', { async: true }) createdBy;
-    @belongsTo('pallet-product', { async: true }) product;
+    @belongsTo('company') company;
+    @belongsTo('user') createdBy;
+    @belongsTo('pallet-product') product;
 
     /** @attributes */
     @attr('string') batch_number;

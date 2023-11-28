@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class InventoryController extends PalletResourceController
 {
     /**
-     * The resource to query
+     * The resource to query.
      *
      * @var string
      */
@@ -18,9 +18,10 @@ class InventoryController extends PalletResourceController
     public function queryRecord(Request $request)
     {
         $limit = $request->input('limit');
-        $data = Inventory::summarizeByProduct()->paginate($limit);
+        $data  = Inventory::summarizeByProduct()->paginate($limit);
 
         IndexInventory::wrap($this->resourcePluralName);
+
         return IndexInventory::collection($data);
     }
 }

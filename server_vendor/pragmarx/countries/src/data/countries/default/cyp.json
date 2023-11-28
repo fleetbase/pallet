@@ -1,0 +1,402 @@
+{
+    "abbrev": "Cyp.",
+    "abbrev_len": "4",
+    "adm0_a3": "CYP",
+    "adm0_a3_ar": "CYP",
+    "adm0_a3_bd": "CYP",
+    "adm0_a3_br": "CYP",
+    "adm0_a3_cn": "CYP",
+    "adm0_a3_de": "CYP",
+    "adm0_a3_eg": "CYP",
+    "adm0_a3_es": "CYP",
+    "adm0_a3_fr": "CYP",
+    "adm0_a3_gb": "CYP",
+    "adm0_a3_gr": "CYP",
+    "adm0_a3_id": "CYP",
+    "adm0_a3_il": "CYP",
+    "adm0_a3_in": "CYP",
+    "adm0_a3_it": "CYP",
+    "adm0_a3_jp": "CYP",
+    "adm0_a3_ko": "CYP",
+    "adm0_a3_ma": "CYP",
+    "adm0_a3_nl": "CYP",
+    "adm0_a3_np": "CYP",
+    "adm0_a3_pk": "CYP",
+    "adm0_a3_pl": "CYP",
+    "adm0_a3_ps": "CYP",
+    "adm0_a3_pt": "CYP",
+    "adm0_a3_ru": "CYP",
+    "adm0_a3_sa": "CYP",
+    "adm0_a3_se": "CYP",
+    "adm0_a3_tr": "CYP",
+    "adm0_a3_tw": "CYP",
+    "adm0_a3_ua": "CYP",
+    "adm0_a3_un": "-99",
+    "adm0_a3_us": "CYP",
+    "adm0_a3_vn": "CYP",
+    "adm0_a3_wb": "-99",
+    "adm0_dif": "0",
+    "adm0_diff": "",
+    "adm0_iso": "CYP",
+    "adm0_tlc": "CYP",
+    "admin": "Cyprus",
+    "alt_spellings": [
+        "CY",
+        "K\u00fdpros",
+        "K\u0131br\u0131s",
+        "Republic of Cyprus",
+        "\u039a\u03c5\u03c0\u03c1\u03b9\u03b1\u03ba\u03ae \u0394\u03b7\u03bc\u03bf\u03ba\u03c1\u03b1\u03c4\u03af\u03b1",
+        "K\u0131br\u0131s Cumhuriyeti"
+    ],
+    "borders": [],
+    "brk_a3": "CYP",
+    "brk_diff": "0",
+    "brk_group": "",
+    "brk_name": "Cyprus",
+    "calling_codes": [
+        "+357"
+    ],
+    "capital": [
+        "Nicosia"
+    ],
+    "capital_rinvex": "Nicosia",
+    "cca2": "CY",
+    "cca3": "CYP",
+    "ccn3": "196",
+    "cioc": "CYP",
+    "currencies": [
+        "EUR"
+    ],
+    "data_sources": [
+        "mledoze",
+        "natural"
+    ],
+    "demonym": "Cypriot",
+    "demonyms": {
+        "eng": {
+            "f": "Cypriot",
+            "m": "Cypriot"
+        },
+        "fra": {
+            "f": "Chypriote",
+            "m": "Chypriote"
+        }
+    },
+    "dialling": {
+        "calling_code": [
+            "357"
+        ],
+        "international_prefix": "00",
+        "national_destination_code_lengths": [
+            2
+        ],
+        "national_number_lengths": [
+            8
+        ],
+        "national_prefix": null
+    },
+    "economy": "6. Developing region",
+    "extra": {
+        "address_format": null,
+        "ar5": "EIT",
+        "cowc": "CYP",
+        "cown": 352,
+        "data_protection": "GDPR",
+        "ds": "CY",
+        "edgar": "G4",
+        "emoji": "\ud83c\udde8\ud83c\uddfe",
+        "eu_member": true,
+        "fao": 50,
+        "fifa": "CYP",
+        "fips": "CY",
+        "gaul": 64,
+        "geonameid": 146669,
+        "imf": 423,
+        "ioc": "CYP",
+        "itu": "CYP",
+        "marc": "cy",
+        "vat_rates": {
+            "parking": null,
+            "reduced": [
+                5,
+                9
+            ],
+            "standard": 19,
+            "super_reduced": null
+        },
+        "wmo": "CY"
+    },
+    "fclass_ar": "",
+    "fclass_bd": "",
+    "fclass_br": "",
+    "fclass_cn": "",
+    "fclass_de": "",
+    "fclass_eg": "",
+    "fclass_es": "",
+    "fclass_fr": "",
+    "fclass_gb": "",
+    "fclass_gr": "",
+    "fclass_id": "",
+    "fclass_il": "",
+    "fclass_in": "",
+    "fclass_iso": "Admin-0 country",
+    "fclass_it": "",
+    "fclass_jp": "",
+    "fclass_ko": "",
+    "fclass_ma": "",
+    "fclass_nl": "",
+    "fclass_np": "",
+    "fclass_pk": "",
+    "fclass_pl": "",
+    "fclass_ps": "",
+    "fclass_pt": "",
+    "fclass_ru": "",
+    "fclass_sa": "",
+    "fclass_se": "",
+    "fclass_tlc": "Admin-0 country",
+    "fclass_tr": "",
+    "fclass_tw": "",
+    "fclass_ua": "",
+    "fclass_us": "",
+    "fclass_vn": "",
+    "featurecla": "Admin-0 country",
+    "fips_10": "CY",
+    "flag": {
+        "emoji": "\ud83c\udde8\ud83c\uddfe"
+    },
+    "formal_en": "Republic of Cyprus",
+    "formal_fr": "",
+    "gdp_md": "24948",
+    "gdp_year": "2019",
+    "geo": {
+        "area": 9251,
+        "borders": [
+            "GBR"
+        ],
+        "continent": {
+            "EU": "Europe"
+        },
+        "independent": "Yes",
+        "landlocked": false,
+        "latitude": "35 00 N",
+        "latitude_desc": "35.11473846435547",
+        "latlng": [
+            35,
+            33
+        ],
+        "longitude": "33 00 E",
+        "longitude_desc": "33.486717224121094",
+        "max_latitude": "35.7",
+        "max_longitude": "34.6",
+        "min_latitude": "34.566667",
+        "min_longitude": "32.270833",
+        "postal_code": true,
+        "region": "Europe",
+        "region_code": "142",
+        "region_un": "Asia",
+        "region_wb": "Europe & Central Asia",
+        "subregion": "Eastern Europe",
+        "subregion_code": "145",
+        "world_region": "EMEA"
+    },
+    "geou_dif": "0",
+    "geounit": "Cyprus",
+    "gu_a3": "CYP",
+    "homepart": "1",
+    "idd": {
+        "root": "+3",
+        "suffixes": [
+            "57"
+        ]
+    },
+    "income_grp": "2. High income: nonOECD",
+    "independent": true,
+    "iso_3166_1_alpha2": "CY",
+    "iso_3166_1_alpha3": "CYP",
+    "iso_3166_1_numeric": "196",
+    "iso_a2": "CY",
+    "iso_a2_eh": "CY",
+    "iso_a3": "CYP",
+    "iso_a3_eh": "CYP",
+    "iso_n3": "196",
+    "iso_n3_eh": "196",
+    "label_x": "33.084182",
+    "label_y": "34.913329",
+    "labelrank": "5",
+    "languages": {
+        "ell": "Greek",
+        "tur": "Turkish"
+    },
+    "level": "2",
+    "long_len": "6",
+    "mapcolor7": "1",
+    "mapcolor8": "2",
+    "mapcolor9": "3",
+    "mapcolor13": "7",
+    "max_label": "9.5",
+    "min_label": "4.5",
+    "min_zoom": "0.0",
+    "name": {
+        "common": "Cyprus",
+        "native": {
+            "ell": {
+                "common": "\u039a\u03cd\u03c0\u03c1\u03bf\u03c2",
+                "official": "\u0394\u03b7\u03bc\u03bf\u03ba\u03c1\u03b1\u03c4\u03af\u03b1 \u03c4\u03b7\u03c2 \u039a\u03cd\u03c0\u03c1\u03bf\u03c2"
+            },
+            "tur": {
+                "common": "K\u0131br\u0131s",
+                "official": "K\u0131br\u0131s Cumhuriyeti"
+            }
+        },
+        "official": "Republic of Cyprus"
+    },
+    "name_alt": "",
+    "name_ar": "\u0642\u0628\u0631\u0635",
+    "name_bn": "\u09b8\u09be\u0987\u09aa\u09cd\u09b0\u09be\u09b8",
+    "name_ciawf": "Cyprus",
+    "name_de": "Republik Zypern",
+    "name_el": "\u039a\u03cd\u03c0\u03c1\u03bf\u03c2",
+    "name_en": "Cyprus",
+    "name_es": "Chipre",
+    "name_fa": "\u0642\u0628\u0631\u0633",
+    "name_fr": "Chypre",
+    "name_he": "\u05e7\u05e4\u05e8\u05d9\u05e1\u05d9\u05df",
+    "name_hi": "\u0938\u093e\u0907\u092a\u094d\u0930\u0938",
+    "name_hu": "Ciprus",
+    "name_id": "Siprus",
+    "name_it": "Cipro",
+    "name_ja": "\u30ad\u30d7\u30ed\u30b9",
+    "name_ko": "\ud0a4\ud504\ub85c\uc2a4",
+    "name_len": "6",
+    "name_long": "Cyprus",
+    "name_nev": "Cyprus",
+    "name_nl": "Cyprus",
+    "name_pl": "Cypr",
+    "name_pt": "Chipre",
+    "name_ru": "\u041a\u0438\u043f\u0440",
+    "name_sort": "Cyprus",
+    "name_sv": "Cypern",
+    "name_tr": "K\u0131br\u0131s Cumhuriyeti",
+    "name_uk": "\u041a\u0456\u043f\u0440",
+    "name_ur": "\u0642\u0628\u0631\u0635",
+    "name_vi": "C\u1ed9ng h\u00f2a S\u00edp",
+    "name_zh": "\u585e\u6d66\u8def\u65af",
+    "name_zht": "\u8cfd\u666e\u52d2\u65af",
+    "ne_id": "1159320533",
+    "note_adm0": "",
+    "note_brk": "",
+    "pop_est": "1198575.0",
+    "pop_rank": "12",
+    "pop_year": "2019",
+    "postal": "CY",
+    "record_type": "country",
+    "scalerank": "1",
+    "sov_a3": "CYP",
+    "sovereignt": "Cyprus",
+    "status": "officially-assigned",
+    "su_a3": "CYP",
+    "su_dif": "0",
+    "subregion_nev": "Western Asia",
+    "subunit": "Cyprus",
+    "tiny": "-99",
+    "tlc": "1",
+    "tlc_diff": "",
+    "tld": [
+        ".cy"
+    ],
+    "translations": {
+        "ces": {
+            "common": "Kypr",
+            "official": "Kypersk\u00e1 republika"
+        },
+        "cym": {
+            "common": "Cyprus",
+            "official": "Republic of Cyprus"
+        },
+        "deu": {
+            "common": "Zypern",
+            "official": "Republik Zypern"
+        },
+        "est": {
+            "common": "K\u00fcpros",
+            "official": "K\u00fcprose Vabariik"
+        },
+        "fin": {
+            "common": "Kypros",
+            "official": "Kyproksen tasavalta"
+        },
+        "fra": {
+            "common": "Chypre",
+            "official": "R\u00e9publique de Chypre"
+        },
+        "hrv": {
+            "common": "Cipar",
+            "official": "Republika Cipar"
+        },
+        "hun": {
+            "common": "Ciprus",
+            "official": "Ciprusi K\u00f6zt\u00e1rsas\u00e1g"
+        },
+        "ita": {
+            "common": "Cipro",
+            "official": "Repubblica di Cipro"
+        },
+        "jpn": {
+            "common": "\u30ad\u30d7\u30ed\u30b9",
+            "official": "\u30ad\u30d7\u30ed\u30b9\u5171\u548c\u56fd"
+        },
+        "kor": {
+            "common": "\ud0a4\ud504\ub85c\uc2a4",
+            "official": "\ud0a4\ud504\ub85c\uc2a4 \uacf5\ud654\uad6d"
+        },
+        "nld": {
+            "common": "Cyprus",
+            "official": "Republiek Cyprus"
+        },
+        "per": {
+            "common": "\u0642\u0650\u0628\u0631\u0650\u0633",
+            "official": "\u062c\u0645\u0647\u0648\u0631\u06cc \u0642\u0628\u0631\u0633"
+        },
+        "pol": {
+            "common": "Cypr",
+            "official": "Republika Cypryjska"
+        },
+        "por": {
+            "common": "Chipre",
+            "official": "Rep\u00fablica de Chipre"
+        },
+        "rus": {
+            "common": "\u041a\u0438\u043f\u0440",
+            "official": "\u0420\u0435\u0441\u043f\u0443\u0431\u043b\u0438\u043a\u0430 \u041a\u0438\u043f\u0440"
+        },
+        "slk": {
+            "common": "Cyprus",
+            "official": "Cypersk\u00e1 republika"
+        },
+        "spa": {
+            "common": "Chipre",
+            "official": "Rep\u00fablica de Chipre"
+        },
+        "swe": {
+            "common": "Cypern",
+            "official": "Republiken Cypern"
+        },
+        "urd": {
+            "common": "\u0642\u0628\u0631\u0635",
+            "official": "\u062c\u0645\u06c1\u0648\u0631\u06cc\u06c1 \u0642\u0628\u0631\u0635"
+        },
+        "zho": {
+            "common": "\u585e\u6d66\u8def\u65af",
+            "official": "\u585e\u6d66\u8def\u65af\u5171\u548c\u56fd"
+        }
+    },
+    "type": "Sovereign country",
+    "un_a3": "196",
+    "un_member": true,
+    "wb_a2": "CY",
+    "wb_a3": "CYP",
+    "wikidataid": "Q229",
+    "woe_id": "-90",
+    "woe_id_eh": "23424994",
+    "woe_note": "WOE lists as subunit of united Cyprus"
+}

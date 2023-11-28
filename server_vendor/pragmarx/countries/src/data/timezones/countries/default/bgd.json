@@ -1,0 +1,21 @@
+{
+    "asia_dhaka": {
+        "abbreviations": [
+            "BDT",
+            "BST",
+            "BURT",
+            "HMT",
+            "IST",
+            "LMT"
+        ],
+        "cca2": "BD",
+        "cca3": "BGD",
+        "country_code": "BD",
+        "data_sources": [
+            "timezonedb"
+        ],
+        "record_type": "timezone",
+        "zone_id": "50",
+        "zone_name": "Asia\/Dhaka"
+    }
+}

@@ -41,8 +41,7 @@
     "dependencies": {
         "@fleetbase/ember-core": "^0.1.8",
         "@fleetbase/ember-ui": "^0.2.5",
-        "@fleetbase/fleetops-data": "link:../fleetops-data",
-        "@fleetbase/fleetops": "link:../fleetops",
+        "@fleetbase/fleetops-data": "^0.1.5",
         "@fortawesome/ember-fontawesome": "^0.4.1",
         "@fortawesome/fontawesome-svg-core": "^6.4.0",
         "@fortawesome/free-solid-svg-icons": "^6.4.0",

@@ -1,0 +1,386 @@
+{
+    "abbrev": "Mong.",
+    "abbrev_len": "5",
+    "adm0_a3": "MNG",
+    "adm0_a3_ar": "MNG",
+    "adm0_a3_bd": "MNG",
+    "adm0_a3_br": "MNG",
+    "adm0_a3_cn": "MNG",
+    "adm0_a3_de": "MNG",
+    "adm0_a3_eg": "MNG",
+    "adm0_a3_es": "MNG",
+    "adm0_a3_fr": "MNG",
+    "adm0_a3_gb": "MNG",
+    "adm0_a3_gr": "MNG",
+    "adm0_a3_id": "MNG",
+    "adm0_a3_il": "MNG",
+    "adm0_a3_in": "MNG",
+    "adm0_a3_it": "MNG",
+    "adm0_a3_jp": "MNG",
+    "adm0_a3_ko": "MNG",
+    "adm0_a3_ma": "MNG",
+    "adm0_a3_nl": "MNG",
+    "adm0_a3_np": "MNG",
+    "adm0_a3_pk": "MNG",
+    "adm0_a3_pl": "MNG",
+    "adm0_a3_ps": "MNG",
+    "adm0_a3_pt": "MNG",
+    "adm0_a3_ru": "MNG",
+    "adm0_a3_sa": "MNG",
+    "adm0_a3_se": "MNG",
+    "adm0_a3_tr": "MNG",
+    "adm0_a3_tw": "MNG",
+    "adm0_a3_ua": "MNG",
+    "adm0_a3_un": "-99",
+    "adm0_a3_us": "MNG",
+    "adm0_a3_vn": "MNG",
+    "adm0_a3_wb": "-99",
+    "adm0_dif": "0",
+    "adm0_diff": "",
+    "adm0_iso": "MNG",
+    "adm0_tlc": "MNG",
+    "admin": "Mongolia",
+    "alt_spellings": [
+        "MN"
+    ],
+    "borders": [
+        "CHN",
+        "RUS"
+    ],
+    "brk_a3": "MNG",
+    "brk_diff": "0",
+    "brk_group": "",
+    "brk_name": "Mongolia",
+    "calling_codes": [
+        "+976"
+    ],
+    "capital": [
+        "Ulan Bator"
+    ],
+    "capital_rinvex": "Ulan Bator",
+    "cca2": "MN",
+    "cca3": "MNG",
+    "ccn3": "496",
+    "cioc": "MGL",
+    "currencies": [
+        "MNT"
+    ],
+    "data_sources": [
+        "mledoze",
+        "natural"
+    ],
+    "demonym": "Mongolian",
+    "demonyms": {
+        "eng": {
+            "f": "Mongolian",
+            "m": "Mongolian"
+        },
+        "fra": {
+            "f": "Mongole",
+            "m": "Mongol"
+        }
+    },
+    "dialling": {
+        "calling_code": [
+            "976"
+        ],
+        "international_prefix": "001",
+        "national_destination_code_lengths": [
+            2
+        ],
+        "national_number_lengths": [
+            7,
+            8,
+            9,
+            10
+        ],
+        "national_prefix": "0"
+    },
+    "economy": "6. Developing region",
+    "extra": {
+        "address_format": null,
+        "ar5": "ASIA",
+        "cowc": "MON",
+        "cown": 712,
+        "data_protection": "Other",
+        "ds": "MGL",
+        "edgar": "P0",
+        "emoji": "\ud83c\uddf2\ud83c\uddf3",
+        "eu_member": null,
+        "fao": 141,
+        "fifa": "MNG",
+        "fips": "MG",
+        "gaul": 167,
+        "geonameid": 2029969,
+        "imf": 948,
+        "ioc": "MGL",
+        "itu": "MNG",
+        "marc": "mp",
+        "vat_rates": null,
+        "wmo": "MO"
+    },
+    "fclass_ar": "",
+    "fclass_bd": "",
+    "fclass_br": "",
+    "fclass_cn": "",
+    "fclass_de": "",
+    "fclass_eg": "",
+    "fclass_es": "",
+    "fclass_fr": "",
+    "fclass_gb": "",
+    "fclass_gr": "",
+    "fclass_id": "",
+    "fclass_il": "",
+    "fclass_in": "",
+    "fclass_iso": "Admin-0 country",
+    "fclass_it": "",
+    "fclass_jp": "",
+    "fclass_ko": "",
+    "fclass_ma": "",
+    "fclass_nl": "",
+    "fclass_np": "",
+    "fclass_pk": "",
+    "fclass_pl": "",
+    "fclass_ps": "",
+    "fclass_pt": "",
+    "fclass_ru": "",
+    "fclass_sa": "",
+    "fclass_se": "",
+    "fclass_tlc": "Admin-0 country",
+    "fclass_tr": "",
+    "fclass_tw": "",
+    "fclass_ua": "",
+    "fclass_us": "",
+    "fclass_vn": "",
+    "featurecla": "Admin-0 country",
+    "fips_10": "MG",
+    "flag": {
+        "emoji": "\ud83c\uddf2\ud83c\uddf3"
+    },
+    "formal_en": "Mongolia",
+    "formal_fr": "",
+    "gdp_md": "13996",
+    "gdp_year": "2019",
+    "geo": {
+        "area": 1564110,
+        "borders": [
+            "CHN",
+            "RUS"
+        ],
+        "continent": {
+            "AS": "Asia"
+        },
+        "independent": "Yes",
+        "landlocked": true,
+        "latitude": "46 00 N",
+        "latitude_desc": "46.83647918701172",
+        "latlng": [
+            46,
+            105
+        ],
+        "longitude": "105 00 E",
+        "longitude_desc": "103.06689453125",
+        "max_latitude": "52.1",
+        "max_longitude": "119.916667",
+        "min_latitude": "41.55",
+        "min_longitude": "87.783333",
+        "postal_code": true,
+        "region": "Asia",
+        "region_code": "142",
+        "region_un": "Asia",
+        "region_wb": "East Asia & Pacific",
+        "subregion": "Eastern Asia",
+        "subregion_code": "030",
+        "world_region": "APAC"
+    },
+    "geou_dif": "0",
+    "geounit": "Mongolia",
+    "gu_a3": "MNG",
+    "homepart": "1",
+    "idd": {
+        "root": "+9",
+        "suffixes": [
+            "76"
+        ]
+    },
+    "income_grp": "4. Lower middle income",
+    "independent": true,
+    "iso_3166_1_alpha2": "MN",
+    "iso_3166_1_alpha3": "MNG",
+    "iso_3166_1_numeric": "496",
+    "iso_a2": "MN",
+    "iso_a2_eh": "MN",
+    "iso_a3": "MNG",
+    "iso_a3_eh": "MNG",
+    "iso_n3": "496",
+    "iso_n3_eh": "496",
+    "label_x": "104.150405",
+    "label_y": "45.997488",
+    "labelrank": "3",
+    "languages": {
+        "mon": "Mongolian"
+    },
+    "level": "2",
+    "long_len": "8",
+    "mapcolor7": "3",
+    "mapcolor8": "5",
+    "mapcolor9": "5",
+    "mapcolor13": "6",
+    "max_label": "7.0",
+    "min_label": "3.0",
+    "min_zoom": "0.0",
+    "name": {
+        "common": "Mongolia",
+        "native": {
+            "mon": {
+                "common": "\u041c\u043e\u043d\u0433\u043e\u043b \u0443\u043b\u0441",
+                "official": "\u041c\u043e\u043d\u0433\u043e\u043b \u0443\u043b\u0441"
+            }
+        },
+        "official": "Mongolia"
+    },
+    "name_alt": "",
+    "name_ar": "\u0645\u0646\u063a\u0648\u0644\u064a\u0627",
+    "name_bn": "\u09ae\u0999\u09cd\u0997\u09cb\u09b2\u09bf\u09af\u09bc\u09be",
+    "name_ciawf": "Mongolia",
+    "name_de": "Mongolei",
+    "name_el": "\u039c\u03bf\u03b3\u03b3\u03bf\u03bb\u03af\u03b1",
+    "name_en": "Mongolia",
+    "name_es": "Mongolia",
+    "name_fa": "\u0645\u063a\u0648\u0644\u0633\u062a\u0627\u0646",
+    "name_fr": "Mongolie",
+    "name_he": "\u05de\u05d5\u05e0\u05d2\u05d5\u05dc\u05d9\u05d4",
+    "name_hi": "\u092e\u0902\u0917\u094b\u0932\u093f\u092f\u093e",
+    "name_hu": "Mong\u00f3lia",
+    "name_id": "Mongolia",
+    "name_it": "Mongolia",
+    "name_ja": "\u30e2\u30f3\u30b4\u30eb\u56fd",
+    "name_ko": "\ubabd\uace8",
+    "name_len": "8",
+    "name_long": "Mongolia",
+    "name_nev": "Mongolia",
+    "name_nl": "Mongoli\u00eb",
+    "name_pl": "Mongolia",
+    "name_pt": "Mong\u00f3lia",
+    "name_ru": "\u041c\u043e\u043d\u0433\u043e\u043b\u0438\u044f",
+    "name_sort": "Mongolia",
+    "name_sv": "Mongoliet",
+    "name_tr": "Mo\u011folistan",
+    "name_uk": "\u041c\u043e\u043d\u0433\u043e\u043b\u0456\u044f",
+    "name_ur": "\u0645\u0646\u06af\u0648\u0644\u06cc\u0627",
+    "name_vi": "M\u00f4ng C\u1ed5",
+    "name_zh": "\u8499\u53e4\u56fd",
+    "name_zht": "\u8499\u53e4\u570b",
+    "ne_id": "1159321071",
+    "note_adm0": "",
+    "note_brk": "",
+    "pop_est": "3225167.0",
+    "pop_rank": "12",
+    "pop_year": "2019",
+    "postal": "MN",
+    "record_type": "country",
+    "scalerank": "0",
+    "sov_a3": "MNG",
+    "sovereignt": "Mongolia",
+    "status": "officially-assigned",
+    "su_a3": "MNG",
+    "su_dif": "0",
+    "subunit": "Mongolia",
+    "tiny": "-99",
+    "tlc": "1",
+    "tlc_diff": "",
+    "tld": [
+        ".mn"
+    ],
+    "translations": {
+        "ces": {
+            "common": "Mongolsko",
+            "official": "St\u00e1t Mongolsko"
+        },
+        "deu": {
+            "common": "Mongolei",
+            "official": "Mongolei"
+        },
+        "est": {
+            "common": "Mongoolia",
+            "official": "Mongoolia"
+        },
+        "fin": {
+            "common": "Mongolia",
+            "official": "Mongolian tasavalta"
+        },
+        "fra": {
+            "common": "Mongolie",
+            "official": "Mongolie"
+        },
+        "hrv": {
+            "common": "Mongolija",
+            "official": "Mongolija"
+        },
+        "hun": {
+            "common": "Mong\u00f3lia",
+            "official": "Mong\u00f3lia"
+        },
+        "ita": {
+            "common": "Mongolia",
+            "official": "Mongolia"
+        },
+        "jpn": {
+            "common": "\u30e2\u30f3\u30b4\u30eb",
+            "official": "\u30e2\u30f3\u30b4\u30eb"
+        },
+        "kor": {
+            "common": "\ubabd\uace8\uad6d",
+            "official": "\ubabd\uace8"
+        },
+        "nld": {
+            "common": "Mongoli\u00eb",
+            "official": "Mongoli\u00eb"
+        },
+        "per": {
+            "common": "\u0645\u063a\u0648\u0644\u0633\u062a\u0627\u0646",
+            "official": "\u0645\u063a\u0648\u0644\u0633\u062a\u0627\u0646"
+        },
+        "pol": {
+            "common": "Mongolia",
+            "official": "Mongolia"
+        },
+        "por": {
+            "common": "Mong\u00f3lia",
+            "official": "Mong\u00f3lia"
+        },
+        "rus": {
+            "common": "\u041c\u043e\u043d\u0433\u043e\u043b\u0438\u044f",
+            "official": "\u041c\u043e\u043d\u0433\u043e\u043b\u0438\u044f"
+        },
+        "slk": {
+            "common": "Mongolsko",
+            "official": "Mongolsko"
+        },
+        "spa": {
+            "common": "Mongolia",
+            "official": "Mongolia"
+        },
+        "swe": {
+            "common": "Mongoliet",
+            "official": "Mongoliet"
+        },
+        "urd": {
+            "common": "\u0645\u0646\u06af\u0648\u0644\u06cc\u0627",
+            "official": "\u0645\u0646\u06af\u0648\u0644\u06cc\u0627"
+        },
+        "zho": {
+            "common": "\u8499\u53e4",
+            "official": "\u8499\u53e4"
+        }
+    },
+    "type": "Sovereign country",
+    "un_a3": "496",
+    "un_member": true,
+    "wb_a2": "MN",
+    "wb_a3": "MNG",
+    "wikidataid": "Q711",
+    "woe_id": "23424887",
+    "woe_id_eh": "23424887",
+    "woe_note": "Exact WOE match as country"
+}

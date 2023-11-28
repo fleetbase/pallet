@@ -1,0 +1,20 @@
+{
+    "america_nassau": {
+        "abbreviations": [
+            "EDT",
+            "EPT",
+            "EST",
+            "EWT",
+            "LMT"
+        ],
+        "cca2": "BS",
+        "cca3": "BHS",
+        "country_code": "BS",
+        "data_sources": [
+            "timezonedb"
+        ],
+        "record_type": "timezone",
+        "zone_id": "78",
+        "zone_name": "America\/Nassau"
+    }
+}

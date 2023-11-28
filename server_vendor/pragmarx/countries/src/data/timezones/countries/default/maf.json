@@ -1,0 +1,19 @@
+{
+    "america_marigot": {
+        "abbreviations": [
+            "APT",
+            "AST",
+            "AWT",
+            "LMT"
+        ],
+        "cca2": "MF",
+        "cca3": "MAF",
+        "country_code": "MF",
+        "data_sources": [
+            "timezonedb"
+        ],
+        "record_type": "timezone",
+        "zone_id": "237",
+        "zone_name": "America\/Marigot"
+    }
+}

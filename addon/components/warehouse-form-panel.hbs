@@ -73,18 +73,8 @@
                 <InputGroup @name="External" @value={{this.warehouse.meta.external}} @wrapperClass="col-span-2">
                     <Checkbox @value={{this.warehouse.meta.external}} @onChange={{fn this.updateMetaProperty "external"}} />
                 </InputGroup>
-                <div class="flex items-center justify-center">Create Batch</div>
                 <div>
-                    <InputGroup @name="Add Sections" @autocomplete="nope" @value={{this.warehouse.section}} @placeholder="Amount of sections" />
-                    {{#if this.warehouse.section}}
-                        <InputGroup @name="Add Aisles" @autocomplete="nope" @value={{this.warehouse.aisle}} @placeholder="Amount of aisles" />
-                        {{#if this.warehouse.aisle}}
-                            <InputGroup @name="Add Racks" @autocomplete="nope" @value={{this.warehouse.rack}} @placeholder="Amount of racks" />
-                            {{#if this.warehouse.rack}}
-                                <InputGroup @name="Add Bins" @autocomplete="nope" @value={{this.warehouse.bin}} @placeholder="Amount of bins" />
-                            {{/if}}
-                        {{/if}}
-                    {{/if}}
+                    <WarehouseEditor @warehouse={{this.warehouse}} />
                 </div>
             </ContentPanel>
         </div>

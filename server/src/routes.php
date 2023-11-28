@@ -28,7 +28,7 @@ Route::prefix(config('pallet.api.routing.prefix', 'pallet'))->namespace('Fleetba
                     ['prefix' => 'v1', 'middleware' => ['fleetbase.protected']],
                     function ($router) {
                         $router->fleetbaseRoutes('audits');
-                        $router->fleetbaseRoutes('batches', function ($router, $controller){
+                        $router->fleetbaseRoutes('batches', function ($router, $controller) {
                             $router->delete('bulk-delete', $controller('bulkDelete'));
                         });
                         $router->fleetbaseRoutes('inventories', function ($router, $controller) {
@@ -37,17 +37,17 @@ Route::prefix(config('pallet.api.routing.prefix', 'pallet'))->namespace('Fleetba
                         $router->fleetbaseRoutes('products', function ($router, $controller) {
                             $router->delete('bulk-delete', $controller('bulkDelete'));
                         });
-                        $router->fleetbaseRoutes('sales-orders', function($router, $controller){
+                        $router->fleetbaseRoutes('sales-orders', function ($router, $controller) {
                             $router->delete('bulk-delete', $controller('bulkDelete'));
                         });
-                        $router->fleetbaseRoutes('purchase-orders', function($router, $controller){
+                        $router->fleetbaseRoutes('purchase-orders', function ($router, $controller) {
                             $router->delete('bulk-delete', $controller('bulkDelete'));
                         });
                         $router->fleetbaseRoutes('stock-adjustments');
-                        $router->fleetbaseRoutes('suppliers', function($router, $controller){
+                        $router->fleetbaseRoutes('suppliers', function ($router, $controller) {
                             $router->delete('bulk-delete', $controller('bulkDelete'));
                         });
-                        $router->fleetbaseRoutes('warehouses', function ($router, $controller){
+                        $router->fleetbaseRoutes('warehouses', function ($router, $controller) {
                             $router->delete('bulk-delete', $controller('bulkDelete'));
                         });
                     }

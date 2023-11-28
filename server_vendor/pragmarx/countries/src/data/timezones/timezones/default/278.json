@@ -1,0 +1,21 @@
+{
+    "1": {
+        "abbreviation": "IST",
+        "dst": "0",
+        "gmt_offset": "19800",
+        "time_start": "-1577943676",
+        "zone_id": "278"
+    },
+    "2": {
+        "abbreviation": "NPT",
+        "dst": "0",
+        "gmt_offset": "20700",
+        "time_start": "504901800",
+        "zone_id": "278"
+    },
+    "abbreviation": "LMT",
+    "dst": "0",
+    "gmt_offset": "20476",
+    "time_start": "-1577943677",
+    "zone_id": "278"
+}

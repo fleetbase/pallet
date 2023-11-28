@@ -1,0 +1,21 @@
+{
+    "1": {
+        "abbreviation": "NUT",
+        "dst": "0",
+        "gmt_offset": "-40800",
+        "time_start": "-543069620",
+        "zone_id": "280"
+    },
+    "2": {
+        "abbreviation": "NUT",
+        "dst": "0",
+        "gmt_offset": "-39600",
+        "time_start": "-173623200",
+        "zone_id": "280"
+    },
+    "abbreviation": "LMT",
+    "dst": "0",
+    "gmt_offset": "-40780",
+    "time_start": "-543069621",
+    "zone_id": "280"
+}

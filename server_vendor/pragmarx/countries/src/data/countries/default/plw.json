@@ -1,0 +1,384 @@
+{
+    "abbrev": "Palau",
+    "abbrev_len": "5",
+    "adm0_a3": "PLW",
+    "adm0_a3_ar": "PLW",
+    "adm0_a3_bd": "PLW",
+    "adm0_a3_br": "PLW",
+    "adm0_a3_cn": "PLW",
+    "adm0_a3_de": "PLW",
+    "adm0_a3_eg": "PLW",
+    "adm0_a3_es": "PLW",
+    "adm0_a3_fr": "PLW",
+    "adm0_a3_gb": "PLW",
+    "adm0_a3_gr": "PLW",
+    "adm0_a3_id": "PLW",
+    "adm0_a3_il": "PLW",
+    "adm0_a3_in": "PLW",
+    "adm0_a3_it": "PLW",
+    "adm0_a3_jp": "PLW",
+    "adm0_a3_ko": "PLW",
+    "adm0_a3_ma": "PLW",
+    "adm0_a3_nl": "PLW",
+    "adm0_a3_np": "PLW",
+    "adm0_a3_pk": "PLW",
+    "adm0_a3_pl": "PLW",
+    "adm0_a3_ps": "PLW",
+    "adm0_a3_pt": "PLW",
+    "adm0_a3_ru": "PLW",
+    "adm0_a3_sa": "PLW",
+    "adm0_a3_se": "PLW",
+    "adm0_a3_tr": "PLW",
+    "adm0_a3_tw": "PLW",
+    "adm0_a3_ua": "PLW",
+    "adm0_a3_un": "-99",
+    "adm0_a3_us": "PLW",
+    "adm0_a3_vn": "PLW",
+    "adm0_a3_wb": "-99",
+    "adm0_dif": "0",
+    "adm0_diff": "",
+    "adm0_iso": "PLW",
+    "adm0_tlc": "PLW",
+    "admin": "Palau",
+    "alt_spellings": [
+        "PW",
+        "Republic of Palau",
+        "Beluu er a Belau"
+    ],
+    "borders": [],
+    "brk_a3": "PLW",
+    "brk_diff": "0",
+    "brk_group": "",
+    "brk_name": "Palau",
+    "calling_codes": [
+        "+680"
+    ],
+    "capital": [
+        "Ngerulmud"
+    ],
+    "capital_rinvex": "Ngerulmud",
+    "cca2": "PW",
+    "cca3": "PLW",
+    "ccn3": "585",
+    "cioc": "PLW",
+    "currencies": [
+        "USD"
+    ],
+    "data_sources": [
+        "mledoze",
+        "natural"
+    ],
+    "demonym": "Palauan",
+    "demonyms": {
+        "eng": {
+            "f": "Palauan",
+            "m": "Palauan"
+        },
+        "fra": {
+            "f": "Paluane",
+            "m": "Paluan"
+        }
+    },
+    "dialling": {
+        "calling_code": [
+            "680"
+        ],
+        "international_prefix": "00",
+        "national_destination_code_lengths": [
+            2
+        ],
+        "national_number_lengths": [
+            7
+        ],
+        "national_prefix": null
+    },
+    "economy": "6. Developing region",
+    "extra": {
+        "address_format": null,
+        "ar5": "ASIA",
+        "cowc": "PAL",
+        "cown": 986,
+        "data_protection": "Other",
+        "ds": null,
+        "edgar": "1Y",
+        "emoji": "\ud83c\uddf5\ud83c\uddfc",
+        "eu_member": null,
+        "fao": 180,
+        "fifa": "PLW",
+        "fips": "PS",
+        "gaul": 189,
+        "geonameid": 1559582,
+        "imf": 565,
+        "ioc": "PLW",
+        "itu": "PLW",
+        "marc": "pw",
+        "vat_rates": null,
+        "wmo": null
+    },
+    "fclass_ar": "",
+    "fclass_bd": "",
+    "fclass_br": "",
+    "fclass_cn": "",
+    "fclass_de": "",
+    "fclass_eg": "",
+    "fclass_es": "",
+    "fclass_fr": "",
+    "fclass_gb": "",
+    "fclass_gr": "",
+    "fclass_id": "",
+    "fclass_il": "",
+    "fclass_in": "",
+    "fclass_iso": "Admin-0 country",
+    "fclass_it": "",
+    "fclass_jp": "",
+    "fclass_ko": "",
+    "fclass_ma": "",
+    "fclass_nl": "",
+    "fclass_np": "",
+    "fclass_pk": "",
+    "fclass_pl": "",
+    "fclass_ps": "",
+    "fclass_pt": "",
+    "fclass_ru": "",
+    "fclass_sa": "",
+    "fclass_se": "",
+    "fclass_tlc": "Admin-0 country",
+    "fclass_tr": "",
+    "fclass_tw": "",
+    "fclass_ua": "",
+    "fclass_us": "",
+    "fclass_vn": "",
+    "featurecla": "Admin-0 country",
+    "fips_10": "PS",
+    "flag": {
+        "emoji": "\ud83c\uddf5\ud83c\uddfc"
+    },
+    "formal_en": "Republic of Palau",
+    "formal_fr": "",
+    "gdp_md": "268",
+    "gdp_year": "2019",
+    "geo": {
+        "area": 459,
+        "borders": [],
+        "continent": {
+            "OC": "Oceania"
+        },
+        "independent": "Yes",
+        "landlocked": false,
+        "latitude": "7 30 N",
+        "latitude_desc": "7.441900730133057",
+        "latlng": [
+            7.5,
+            134.5
+        ],
+        "longitude": "134 30 E",
+        "longitude_desc": "134.54205322265625",
+        "max_latitude": "8.166667",
+        "max_longitude": "134.716389",
+        "min_latitude": "2.898333",
+        "min_longitude": "131.175",
+        "postal_code": true,
+        "region": "Oceania",
+        "region_code": "009",
+        "region_un": "Oceania",
+        "region_wb": "East Asia & Pacific",
+        "subregion": "Micronesia",
+        "subregion_code": "057",
+        "world_region": "APAC"
+    },
+    "geou_dif": "0",
+    "geounit": "Palau",
+    "gu_a3": "PLW",
+    "homepart": "1",
+    "idd": {
+        "root": "+6",
+        "suffixes": [
+            "80"
+        ]
+    },
+    "income_grp": "3. Upper middle income",
+    "independent": true,
+    "iso_3166_1_alpha2": "PW",
+    "iso_3166_1_alpha3": "PLW",
+    "iso_3166_1_numeric": "585",
+    "iso_a2": "PW",
+    "iso_a2_eh": "PW",
+    "iso_a3": "PLW",
+    "iso_a3_eh": "PLW",
+    "iso_n3": "585",
+    "iso_n3_eh": "585",
+    "label_x": "134.580157",
+    "label_y": "7.518252",
+    "labelrank": "6",
+    "languages": {
+        "eng": "English",
+        "pau": "Palauan"
+    },
+    "level": "2",
+    "long_len": "5",
+    "mapcolor7": "2",
+    "mapcolor8": "5",
+    "mapcolor9": "1",
+    "mapcolor13": "12",
+    "max_label": "10.0",
+    "min_label": "5.0",
+    "min_zoom": "0.0",
+    "name": {
+        "common": "Palau",
+        "native": {
+            "eng": {
+                "common": "Palau",
+                "official": "Republic of Palau"
+            },
+            "pau": {
+                "common": "Belau",
+                "official": "Beluu er a Belau"
+            }
+        },
+        "official": "Republic of Palau"
+    },
+    "name_alt": "",
+    "name_ar": "\u0628\u0627\u0644\u0627\u0648",
+    "name_bn": "\u09aa\u09be\u09b2\u09be\u0989",
+    "name_ciawf": "Palau",
+    "name_de": "Palau",
+    "name_el": "\u03a0\u03b1\u03bb\u03ac\u03bf\u03c5",
+    "name_en": "Palau",
+    "name_es": "Palaos",
+    "name_fa": "\u067e\u0627\u0644\u0627\u0626\u0648",
+    "name_fr": "Palaos",
+    "name_he": "\u05e4\u05dc\u05d0\u05d5",
+    "name_hi": "\u092a\u0932\u093e\u0909",
+    "name_hu": "Palau",
+    "name_id": "Palau",
+    "name_it": "Palau",
+    "name_ja": "\u30d1\u30e9\u30aa",
+    "name_ko": "\ud314\ub77c\uc6b0",
+    "name_len": "5",
+    "name_long": "Palau",
+    "name_nev": "Palau",
+    "name_nl": "Palau",
+    "name_pl": "Palau",
+    "name_pt": "Palau",
+    "name_ru": "\u041f\u0430\u043b\u0430\u0443",
+    "name_sort": "Palau",
+    "name_sv": "Palau",
+    "name_tr": "Palau",
+    "name_uk": "\u0420\u0435\u0441\u043f\u0443\u0431\u043b\u0456\u043a\u0430 \u041f\u0430\u043b\u0430\u0443",
+    "name_ur": "\u067e\u0644\u0627\u0624",
+    "name_vi": "Palau",
+    "name_zh": "\u5e15\u52b3",
+    "name_zht": "\u5e1b\u7409",
+    "ne_id": "1159321171",
+    "note_adm0": "",
+    "note_brk": "",
+    "pop_est": "18008.0",
+    "pop_rank": "6",
+    "pop_year": "2019",
+    "postal": "PW",
+    "record_type": "country",
+    "scalerank": "5",
+    "sov_a3": "PLW",
+    "sovereignt": "Palau",
+    "status": "officially-assigned",
+    "su_a3": "PLW",
+    "su_dif": "0",
+    "subunit": "Palau",
+    "tiny": "2",
+    "tlc": "1",
+    "tlc_diff": "",
+    "tld": [
+        ".pw"
+    ],
+    "translations": {
+        "ces": {
+            "common": "Palau",
+            "official": "Republika Palau"
+        },
+        "deu": {
+            "common": "Palau",
+            "official": "Palau"
+        },
+        "est": {
+            "common": "Belau",
+            "official": "Belau Vabariik"
+        },
+        "fin": {
+            "common": "Palau",
+            "official": "Palaun tasavalta"
+        },
+        "fra": {
+            "common": "Palaos (Palau)",
+            "official": "R\u00e9publique des Palaos (Palau)"
+        },
+        "hrv": {
+            "common": "Palau",
+            "official": "Republika Palau"
+        },
+        "hun": {
+            "common": "Palau",
+            "official": "Palaui K\u00f6zt\u00e1rsas\u00e1g"
+        },
+        "ita": {
+            "common": "Palau",
+            "official": "Repubblica di Palau"
+        },
+        "jpn": {
+            "common": "\u30d1\u30e9\u30aa",
+            "official": "\u30d1\u30e9\u30aa\u5171\u548c\u56fd"
+        },
+        "kor": {
+            "common": "\ud314\ub77c\uc6b0",
+            "official": "\ud314\ub77c\uc6b0 \uacf5\ud654\uad6d"
+        },
+        "nld": {
+            "common": "Palau",
+            "official": "Republiek van Palau"
+        },
+        "per": {
+            "common": "\u067e\u0627\u0644\u0627\u0626\u0648",
+            "official": "\u062c\u0645\u0647\u0648\u0631\u06cc \u067e\u0627\u0644\u0627\u0626\u0648"
+        },
+        "pol": {
+            "common": "Palau",
+            "official": "Republika Palau"
+        },
+        "por": {
+            "common": "Palau",
+            "official": "Rep\u00fablica de Palau"
+        },
+        "rus": {
+            "common": "\u041f\u0430\u043b\u0430\u0443",
+            "official": "\u0420\u0435\u0441\u043f\u0443\u0431\u043b\u0438\u043a\u0430 \u041f\u0430\u043b\u0430\u0443"
+        },
+        "slk": {
+            "common": "Palau",
+            "official": "Palausk\u00e1 republika"
+        },
+        "spa": {
+            "common": "Palau",
+            "official": "Rep\u00fablica de Palau"
+        },
+        "swe": {
+            "common": "Palau",
+            "official": "Republiken Palau"
+        },
+        "urd": {
+            "common": "\u067e\u0644\u0627\u0624",
+            "official": "\u062c\u0645\u06c1\u0648\u0631\u06cc\u06c1 \u067e\u0644\u0627\u0624"
+        },
+        "zho": {
+            "common": "\u5e15\u52b3",
+            "official": "\u5e15\u52b3\u5171\u548c\u56fd"
+        }
+    },
+    "type": "Sovereign country",
+    "un_a3": "585",
+    "un_member": true,
+    "wb_a2": "PW",
+    "wb_a3": "PLW",
+    "wikidataid": "Q695",
+    "woe_id": "23424927",
+    "woe_id_eh": "23424927",
+    "woe_note": "Exact WOE match as country"
+}

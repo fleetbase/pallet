@@ -1,5 +1,5 @@
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import { computed } from '@ember/object';
-import { attr, belongsTo } from '@ember-data/model';
 import { format as formatDate, isValid as isValidDate } from 'date-fns';
 
 export default class WarehouseAisle extends Model {
@@ -11,9 +11,9 @@ export default class WarehouseAisle extends Model {
     @attr('string') section_uuid;
 
     /** @relationships */
-    @belongsTo('company', { async: true }) company;
-    @belongsTo('user', { async: true }) createdBy;
-    @belongsTo('pallet-warehouse-section', { async: true }) section;
+    @belongsTo('company') company;
+    @belongsTo('user') createdBy;
+    @hasMany('warehouse-rack') racks;
 
     /** @attributes */
     @attr('string') aisle_number;

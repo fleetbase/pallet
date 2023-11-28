@@ -1,5 +1,5 @@
+import Model, { attr, belongsTo } from '@ember-data/model';
 import { computed } from '@ember/object';
-import { attr, belongsTo } from '@ember-data/model';
 import { format as formatDate, isValid as isValidDate } from 'date-fns';
 
 export default class WarehouseDock extends Model {
@@ -11,9 +11,9 @@ export default class WarehouseDock extends Model {
     @attr('string') warehouse_uuid;
 
     /** @relationships */
-    @belongsTo('company', { async: true }) company;
-    @belongsTo('user', { async: true }) createdBy;
-    @belongsTo('place', { async: true }) warehouse;
+    @belongsTo('company') company;
+    @belongsTo('user') createdBy;
+    @belongsTo('place') warehouse;
 
     /** @attributes */
     @attr('string') dock_number;

@@ -2,13 +2,14 @@
 
 namespace Fleetbase\Pallet\Models;
 
-use Fleetbase\Traits\HasUuid;
-use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Models\Model;
+use Fleetbase\Traits\HasApiModelBehavior;
+use Fleetbase\Traits\HasUuid;
 
 class Batch extends Model
 {
-    use HasUuid, HasApiModelBehavior;
+    use HasUuid;
+    use HasApiModelBehavior;
 
     /**
      * The database table used by the model.
@@ -18,21 +19,21 @@ class Batch extends Model
     protected $table = 'pallet_batches';
 
     /**
-     * Overwrite both entity resource name with `payloadKey`
+     * Overwrite both entity resource name with `payloadKey`.
      *
      * @var string
      */
     protected $payloadKey = 'batch';
 
     /**
-     * The type of `public_id` to generate
+     * The type of `public_id` to generate.
      *
      * @var string
      */
     protected $publicIdType = 'batch';
 
     /**
-     * These attributes that can be queried
+     * These attributes that can be queried.
      *
      * @var array
      */
@@ -62,7 +63,7 @@ class Batch extends Model
     protected $casts = [];
 
     /**
-     * Dynamic attributes that are appended to object
+     * Dynamic attributes that are appended to object.
      *
      * @var array
      */

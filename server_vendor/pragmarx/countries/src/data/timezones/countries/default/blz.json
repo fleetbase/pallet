@@ -1,0 +1,20 @@
+{
+    "america_belize": {
+        "abbreviations": [
+            "CDT",
+            "CPT",
+            "CST",
+            "CWT",
+            "LMT"
+        ],
+        "cca2": "BZ",
+        "cca3": "BLZ",
+        "country_code": "BZ",
+        "data_sources": [
+            "timezonedb"
+        ],
+        "record_type": "timezone",
+        "zone_id": "82",
+        "zone_name": "America\/Belize"
+    }
+}

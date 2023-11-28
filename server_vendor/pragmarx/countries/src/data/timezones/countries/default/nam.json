@@ -1,0 +1,19 @@
+{
+    "africa_windhoek": {
+        "abbreviations": [
+            "CAT",
+            "LMT",
+            "SAST",
+            "WAT"
+        ],
+        "cca2": "NA",
+        "cca3": "NAM",
+        "country_code": "NA",
+        "data_sources": [
+            "timezonedb"
+        ],
+        "record_type": "timezone",
+        "zone_id": "270",
+        "zone_name": "Africa\/Windhoek"
+    }
+}

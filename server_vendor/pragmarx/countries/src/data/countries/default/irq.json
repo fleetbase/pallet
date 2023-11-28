@@ -1,0 +1,405 @@
+{
+    "abbrev": "Iraq",
+    "abbrev_len": "4",
+    "adm0_a3": "IRQ",
+    "adm0_a3_ar": "IRQ",
+    "adm0_a3_bd": "IRQ",
+    "adm0_a3_br": "IRQ",
+    "adm0_a3_cn": "IRQ",
+    "adm0_a3_de": "IRQ",
+    "adm0_a3_eg": "IRQ",
+    "adm0_a3_es": "IRQ",
+    "adm0_a3_fr": "IRQ",
+    "adm0_a3_gb": "IRQ",
+    "adm0_a3_gr": "IRQ",
+    "adm0_a3_id": "IRQ",
+    "adm0_a3_il": "IRQ",
+    "adm0_a3_in": "IRQ",
+    "adm0_a3_it": "IRQ",
+    "adm0_a3_jp": "IRQ",
+    "adm0_a3_ko": "IRQ",
+    "adm0_a3_ma": "IRQ",
+    "adm0_a3_nl": "IRQ",
+    "adm0_a3_np": "IRQ",
+    "adm0_a3_pk": "IRQ",
+    "adm0_a3_pl": "IRQ",
+    "adm0_a3_ps": "IRQ",
+    "adm0_a3_pt": "IRQ",
+    "adm0_a3_ru": "IRQ",
+    "adm0_a3_sa": "IRQ",
+    "adm0_a3_se": "IRQ",
+    "adm0_a3_tr": "IRQ",
+    "adm0_a3_tw": "IRQ",
+    "adm0_a3_ua": "IRQ",
+    "adm0_a3_un": "-99",
+    "adm0_a3_us": "IRQ",
+    "adm0_a3_vn": "IRQ",
+    "adm0_a3_wb": "-99",
+    "adm0_dif": "0",
+    "adm0_diff": "",
+    "adm0_iso": "IRQ",
+    "adm0_tlc": "IRQ",
+    "admin": "Iraq",
+    "alt_spellings": [
+        "IQ",
+        "Republic of Iraq",
+        "Jumh\u016briyyat al-\u2018Ir\u0101q"
+    ],
+    "borders": [
+        "IRN",
+        "JOR",
+        "KWT",
+        "SAU",
+        "SYR",
+        "TUR"
+    ],
+    "brk_a3": "IRQ",
+    "brk_diff": "0",
+    "brk_group": "",
+    "brk_name": "Iraq",
+    "calling_codes": [
+        "+964"
+    ],
+    "capital": [
+        "Baghdad"
+    ],
+    "capital_rinvex": "Baghdad",
+    "cca2": "IQ",
+    "cca3": "IRQ",
+    "ccn3": "368",
+    "cioc": "IRQ",
+    "currencies": [
+        "IQD"
+    ],
+    "data_sources": [
+        "mledoze",
+        "natural"
+    ],
+    "demonym": "Iraqi",
+    "demonyms": {
+        "eng": {
+            "f": "Iraqi",
+            "m": "Iraqi"
+        },
+        "fra": {
+            "f": "Irakienne",
+            "m": "Irakien"
+        }
+    },
+    "dialling": {
+        "calling_code": [
+            "964"
+        ],
+        "international_prefix": "00",
+        "national_destination_code_lengths": [
+            2
+        ],
+        "national_number_lengths": [
+            8,
+            9,
+            10
+        ],
+        "national_prefix": null
+    },
+    "economy": "6. Developing region",
+    "extra": {
+        "address_format": null,
+        "ar5": "MAF",
+        "cowc": "IRQ",
+        "cown": 645,
+        "data_protection": "Other",
+        "ds": "IRQ",
+        "edgar": "L0",
+        "emoji": "\ud83c\uddee\ud83c\uddf6",
+        "eu_member": null,
+        "fao": 103,
+        "fifa": "IRQ",
+        "fips": "IZ",
+        "gaul": 118,
+        "geonameid": 99237,
+        "imf": 433,
+        "ioc": "IRQ",
+        "itu": "IRQ",
+        "marc": "iq",
+        "vat_rates": null,
+        "wmo": "IQ"
+    },
+    "fclass_ar": "",
+    "fclass_bd": "",
+    "fclass_br": "",
+    "fclass_cn": "",
+    "fclass_de": "",
+    "fclass_eg": "",
+    "fclass_es": "",
+    "fclass_fr": "",
+    "fclass_gb": "",
+    "fclass_gr": "",
+    "fclass_id": "",
+    "fclass_il": "",
+    "fclass_in": "",
+    "fclass_iso": "Admin-0 country",
+    "fclass_it": "",
+    "fclass_jp": "",
+    "fclass_ko": "",
+    "fclass_ma": "",
+    "fclass_nl": "",
+    "fclass_np": "",
+    "fclass_pk": "",
+    "fclass_pl": "",
+    "fclass_ps": "",
+    "fclass_pt": "",
+    "fclass_ru": "",
+    "fclass_sa": "",
+    "fclass_se": "",
+    "fclass_tlc": "Admin-0 country",
+    "fclass_tr": "",
+    "fclass_tw": "",
+    "fclass_ua": "",
+    "fclass_us": "",
+    "fclass_vn": "",
+    "featurecla": "Admin-0 country",
+    "fips_10": "IZ",
+    "flag": {
+        "emoji": "\ud83c\uddee\ud83c\uddf6"
+    },
+    "formal_en": "Republic of Iraq",
+    "formal_fr": "",
+    "gdp_md": "234094",
+    "gdp_year": "2019",
+    "geo": {
+        "area": 438317,
+        "borders": [
+            "IRN",
+            "JOR",
+            "KWT",
+            "SAU",
+            "SYR",
+            "TUR"
+        ],
+        "continent": {
+            "AS": "Asia"
+        },
+        "independent": "Yes",
+        "landlocked": false,
+        "latitude": "33 00 N",
+        "latitude_desc": "33.044586181640625",
+        "latlng": [
+            33,
+            44
+        ],
+        "longitude": "44 00 E",
+        "longitude_desc": "43.77495574951172",
+        "max_latitude": "37.352778",
+        "max_longitude": "48.833333",
+        "min_latitude": "28.866667",
+        "min_longitude": "38.800871",
+        "postal_code": true,
+        "region": "Asia",
+        "region_code": "142",
+        "region_un": "Asia",
+        "region_wb": "Middle East & North Africa",
+        "subregion": "Western Asia",
+        "subregion_code": "145",
+        "world_region": "EMEA"
+    },
+    "geou_dif": "0",
+    "geounit": "Iraq",
+    "gu_a3": "IRQ",
+    "homepart": "1",
+    "idd": {
+        "root": "+9",
+        "suffixes": [
+            "64"
+        ]
+    },
+    "income_grp": "4. Lower middle income",
+    "independent": true,
+    "iso_3166_1_alpha2": "IQ",
+    "iso_3166_1_alpha3": "IRQ",
+    "iso_3166_1_numeric": "368",
+    "iso_a2": "IQ",
+    "iso_a2_eh": "IQ",
+    "iso_a3": "IRQ",
+    "iso_a3_eh": "IRQ",
+    "iso_n3": "368",
+    "iso_n3_eh": "368",
+    "label_x": "43.261810",
+    "label_y": "33.094030",
+    "labelrank": "3",
+    "languages": {
+        "ara": "Arabic",
+        "arc": "Aramaic",
+        "ckb": "Sorani"
+    },
+    "level": "2",
+    "long_len": "4",
+    "mapcolor7": "1",
+    "mapcolor8": "4",
+    "mapcolor9": "3",
+    "mapcolor13": "1",
+    "max_label": "7.5",
+    "min_label": "3.0",
+    "min_zoom": "0.0",
+    "name": {
+        "common": "Iraq",
+        "native": {
+            "ara": {
+                "common": "\u0627\u0644\u0639\u0631\u0627\u0642",
+                "official": "\u062c\u0645\u0647\u0648\u0631\u064a\u0629 \u0627\u0644\u0639\u0631\u0627\u0642"
+            },
+            "arc": {
+                "common": "\u0729\u0718\u073c\u071b\u0722\u0735\u0710",
+                "official": "\u0729\u0718\u073c\u071b\u0722\u0735\u0710 \u0710\u071d\u073c\u072a\u0732\u0729"
+            },
+            "ckb": {
+                "common": "\u06a9\u06c6\u0645\u0627\u0631\u06cc",
+                "official": "\u06a9\u06c6\u0645\u0627\u0631\u06cc \u0639\u06ce\u0631\u0627\u0642"
+            }
+        },
+        "official": "Republic of Iraq"
+    },
+    "name_alt": "",
+    "name_ar": "\u0627\u0644\u0639\u0631\u0627\u0642",
+    "name_bn": "\u0987\u09b0\u09be\u0995",
+    "name_ciawf": "Iraq",
+    "name_de": "Irak",
+    "name_el": "\u0399\u03c1\u03ac\u03ba",
+    "name_en": "Iraq",
+    "name_es": "Irak",
+    "name_fa": "\u0639\u0631\u0627\u0642",
+    "name_fr": "Irak",
+    "name_he": "\u05e2\u05d9\u05e8\u05d0\u05e7",
+    "name_hi": "\u0907\u0930\u093e\u0915",
+    "name_hu": "Irak",
+    "name_id": "Irak",
+    "name_it": "Iraq",
+    "name_ja": "\u30a4\u30e9\u30af",
+    "name_ko": "\uc774\ub77c\ud06c",
+    "name_len": "4",
+    "name_long": "Iraq",
+    "name_nev": "Iraq",
+    "name_nl": "Irak",
+    "name_pl": "Irak",
+    "name_pt": "Iraque",
+    "name_ru": "\u0418\u0440\u0430\u043a",
+    "name_sort": "Iraq",
+    "name_sv": "Irak",
+    "name_tr": "Irak",
+    "name_uk": "\u0406\u0440\u0430\u043a",
+    "name_ur": "\u0639\u0631\u0627\u0642",
+    "name_vi": "Iraq",
+    "name_zh": "\u4f0a\u62c9\u514b",
+    "name_zht": "\u4f0a\u62c9\u514b",
+    "ne_id": "1159320887",
+    "note_adm0": "",
+    "note_brk": "",
+    "pop_est": "39309783.0",
+    "pop_rank": "15",
+    "pop_year": "2019",
+    "postal": "IRQ",
+    "record_type": "country",
+    "scalerank": "0",
+    "sov_a3": "IRQ",
+    "sovereignt": "Iraq",
+    "status": "officially-assigned",
+    "su_a3": "IRQ",
+    "su_dif": "0",
+    "subunit": "Iraq",
+    "tiny": "-99",
+    "tlc": "1",
+    "tlc_diff": "",
+    "tld": [
+        ".iq"
+    ],
+    "translations": {
+        "ces": {
+            "common": "Ir\u00e1k",
+            "official": "Ir\u00e1ck\u00e1 republika"
+        },
+        "deu": {
+            "common": "Irak",
+            "official": "Republik Irak"
+        },
+        "est": {
+            "common": "Iraak",
+            "official": "Iraagi Vabariik"
+        },
+        "fin": {
+            "common": "Irak",
+            "official": "Irakin tasavalta"
+        },
+        "fra": {
+            "common": "Irak",
+            "official": "R\u00e9publique d'Irak"
+        },
+        "hrv": {
+            "common": "Irak",
+            "official": "Republika Irak"
+        },
+        "hun": {
+            "common": "Irak",
+            "official": "Iraki K\u00f6zt\u00e1rsas\u00e1g"
+        },
+        "ita": {
+            "common": "Iraq",
+            "official": "Repubblica dell'Iraq"
+        },
+        "jpn": {
+            "common": "\u30a4\u30e9\u30af",
+            "official": "\u30a4\u30e9\u30af\u5171\u548c\u56fd"
+        },
+        "kor": {
+            "common": "\uc774\ub77c\ud06c",
+            "official": "\uc774\ub77c\ud06c \uacf5\ud654\uad6d"
+        },
+        "nld": {
+            "common": "Irak",
+            "official": "Republiek Irak"
+        },
+        "per": {
+            "common": "\u0639\u0631\u0627\u0642",
+            "official": "\u062c\u0645\u0647\u0648\u0631\u06cc \u0639\u0631\u0627\u0642"
+        },
+        "pol": {
+            "common": "Irak",
+            "official": "Republika Iraku"
+        },
+        "por": {
+            "common": "Iraque",
+            "official": "Rep\u00fablica do Iraque"
+        },
+        "rus": {
+            "common": "\u0418\u0440\u0430\u043a",
+            "official": "\u0420\u0435\u0441\u043f\u0443\u0431\u043b\u0438\u043a\u0430 \u0418\u0440\u0430\u043a"
+        },
+        "slk": {
+            "common": "Irak",
+            "official": "Irack\u00e1 republika"
+        },
+        "spa": {
+            "common": "Irak",
+            "official": "Rep\u00fablica de Irak"
+        },
+        "swe": {
+            "common": "Irak",
+            "official": "Republiken Irak"
+        },
+        "urd": {
+            "common": "\u0639\u0631\u0627\u0642",
+            "official": "\u062c\u0645\u06c1\u0648\u0631\u06cc\u06c1 \u0639\u0631\u0627\u0642"
+        },
+        "zho": {
+            "common": "\u4f0a\u62c9\u514b",
+            "official": "\u4f0a\u62c9\u514b\u5171\u548c\u56fd"
+        }
+    },
+    "type": "Sovereign country",
+    "un_a3": "368",
+    "un_member": true,
+    "wb_a2": "IQ",
+    "wb_a3": "IRQ",
+    "wikidataid": "Q796",
+    "woe_id": "23424855",
+    "woe_id_eh": "23424855",
+    "woe_note": "Exact WOE match as country"
+}

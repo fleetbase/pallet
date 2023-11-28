@@ -103,7 +103,7 @@ export default class InventoryIndexController extends Controller {
      * @var {String}
      */
     @tracked batch;
-    
+
     /**
      * The filterable param `status`
      *

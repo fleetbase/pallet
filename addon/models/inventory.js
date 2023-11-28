@@ -14,12 +14,12 @@ export default class InventoryModel extends Model {
     @attr('string') batch_uuid;
 
     /** @relationships */
-    @belongsTo('company', { async: true }) company;
-    @belongsTo('user', { async: true }) createdBy;
-    @belongsTo('pallet-product', { async: true }) product;
-    @belongsTo('warehouse', { async: true }) warehouse;
-    @belongsTo('vendor', { async: true }) supplier;
-    @belongsTo('batch', { async: true }) batch;
+    @belongsTo('company') company;
+    @belongsTo('user') createdBy;
+    @belongsTo('pallet-product') product;
+    @belongsTo('warehouse') warehouse;
+    @belongsTo('vendor') supplier;
+    @belongsTo('batch') batch;
 
     /** @attributes */
     @attr('string') comments;

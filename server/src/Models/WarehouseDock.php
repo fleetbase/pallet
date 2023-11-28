@@ -2,14 +2,16 @@
 
 namespace Fleetbase\Pallet\Models;
 
-use Fleetbase\Traits\HasUuid;
-use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Models\Model;
+use Fleetbase\Traits\HasApiModelBehavior;
+use Fleetbase\Traits\HasUuid;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class WarehouseDock extends Model
 {
-    use HasUuid, HasApiModelBehavior, SoftDeletes;
+    use HasUuid;
+    use HasApiModelBehavior;
+    use SoftDeletes;
 
     /**
      * The database table used by the model.

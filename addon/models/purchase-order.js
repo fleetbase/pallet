@@ -14,12 +14,12 @@ export default class PurchaseOrderModel extends Model {
     @attr('string') point_of_contact_uuid;
 
     /** @relationships */
-    @belongsTo('company', { async: true }) company;
-    @belongsTo('user', { async: true }) createdBy;
-    @belongsTo('vendor', { async: true }) supplier;
-    @belongsTo('transaction', { async: true }) transaction;
-    @belongsTo('user', { async: true }) assignedTo;
-    @belongsTo('contact', { async: true }) pointOfContact;
+    @belongsTo('company') company;
+    @belongsTo('user') createdBy;
+    @belongsTo('vendor') supplier;
+    @belongsTo('transaction') transaction;
+    @belongsTo('user') assignedTo;
+    @belongsTo('contact') pointOfContact;
 
     /** @attributes */
     @attr('string') reference_code;

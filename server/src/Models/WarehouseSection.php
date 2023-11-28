@@ -2,14 +2,21 @@
 
 namespace Fleetbase\Pallet\Models;
 
-use Fleetbase\Traits\HasUuid;
-use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Models\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Fleetbase\Traits\HasApiModelBehavior;
+use Fleetbase\Traits\HasUuid;
 
 class WarehouseSection extends Model
 {
-    use HasUuid, HasApiModelBehavior, SoftDeletes;
+    use HasUuid;
+    use HasApiModelBehavior;
+
+    /**
+     * Overwrite both place resource name with `payloadKey`.
+     *
+     * @var string
+     */
+    protected $payloadKey = 'warehouse_section';
 
     /**
      * The database table used by the model.
@@ -19,24 +26,12 @@ class WarehouseSection extends Model
     protected $table = 'pallet_warehouse_sections';
 
     /**
-     * The singularName overwrite.
+     * The type of public Id to generate.
      *
      * @var string
      */
-    protected $singularName = 'warehouse_section';
+    protected $publicIdType = 'warehouse_section';
 
-    /**
-     * These attributes that can be queried.
-     *
-     * @var array
-     */
-    protected $searchableColumns = ['uuid', 'public_id', 'company_uuid', 'created_by_uuid', 'warehouse_uuid', 'name', 'created_at'];
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'uuid',
         'public_id',
@@ -49,18 +44,19 @@ class WarehouseSection extends Model
         'meta',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
     protected $casts = [
         'area' => 'json',
         'meta' => 'json',
     ];
 
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
     /**
-     * Relationship with the company associated with the warehouse section.
+     * Relationship with the company associated with the warehouse rack.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -70,7 +66,7 @@ class WarehouseSection extends Model
     }
 
     /**
-     * Relationship with the user who created the warehouse section.
+     * Relationship with the company associated with the warehouse rack.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -80,12 +76,20 @@ class WarehouseSection extends Model
     }
 
     /**
-     * Relationship with the warehouse associated with the warehouse section.
+     * Relationship with the company associated with the warehouse rack.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function warehouse()
     {
         return $this->belongsTo(Place::class, 'warehouse_uuid', 'uuid');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function aisles()
+    {
+        return $this->hasMany(WarehouseAisle::class, 'section_uuid');
     }
 }

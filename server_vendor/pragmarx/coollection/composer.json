@@ -1,0 +1,64 @@
+{
+    "name": "pragmarx/coollection",
+    "type": "library",
+    "description": "Laravel Illuminate collection with objectified properties",
+    "keywords": [
+        "pragmarx",
+        "collection",
+        "laravel"
+    ],
+    "homepage": "https://github.com/antonioribeiro/coollection",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Antonio Carlos Ribeiro",
+            "email": "acr@antoniocarlosribeiro.com",
+            "homepage": "https://antoniocarlosribeiro.com",
+            "role": "Creator"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "pragmarx/ia-collection": "~5.0|~6.0|~7.0",
+        "pragmarx/ia-str": "~5.0|~6.0|~7.0",
+        "pragmarx/ia-arr": "~5.0|~6.0|~7.0"
+    },
+    "require-dev": {
+        "mockery/mockery": "~1.0",
+        "phpunit/php-timer": "~1.0|~2.0",
+        "phpunit/phpunit": "~6.0|~7.0|~8.0|~9.0",
+        "squizlabs/php_codesniffer": "^2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "PragmaRX\\Coollection\\Package\\": "src/package",
+            "PragmaRX\\Coollection\\Tests\\": "tests",
+            "IlluminateExtracted\\": "src/package/Support/IlluminateExtracted",
+            "IlluminateExtracted\\Tests\\": "tests/IlluminateExtracted"
+        },
+        "files": [
+            "src/package/Support/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PragmaRX\\Coollection\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": [
+            "@composer install",
+            "vendor/bin/phpunit"
+        ],
+        "check-style": "phpcs -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 src tests",
+        "fix-style": "phpcbf -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 src tests"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
