@@ -1,7 +1,7 @@
 import ApplicationSerializer from '@fleetbase/ember-core/serializers/application';
 import { EmbeddedRecordsMixin } from '@ember-data/serializer/rest';
 
-export default class WarehouseSerializer extends ApplicationSerializer.extend(EmbeddedRecordsMixin) {
+export default class WarehouseAisleSerializer extends ApplicationSerializer.extend(EmbeddedRecordsMixin) {
     /**
      * Embedded relationship attributes
      *
@@ -9,10 +9,7 @@ export default class WarehouseSerializer extends ApplicationSerializer.extend(Em
      */
     get attrs() {
         return {
-            sections: { embedded: 'always' },
-            aisles: { embedded: 'always' },
             racks: { embedded: 'always' },
-            bins: { embedded: 'always' },
         };
     }
 }

@@ -38,4 +38,32 @@ export default class WarehouseAisle extends Model {
         }
         return formatDate(this.updated_at, 'PPP p');
     }
+
+    @computed('area.coordinates', 'isNew') get locations() {
+        let coordinates = getWithDefault(this.area, 'coordinates', []);
+
+        // hotfix patch when coordinates are wrapped in array
+        if (isArray(coordinates) && isArray(coordinates[0]) && coordinates[0].length > 2) {
+            coordinates = first(coordinates);
+        }
+
+        if (this.isNew) {
+            return coordinates;
+        }
+
+        return coordinates.map((coord) => coord.reverse());
+    }
+
+    @computed('bounds') get firstCoordinatePair() {
+        return first(this.bounds) ?? [0, 0];
+    }
+
+    @computed('locations') get centerCoordinates() {
+        const x = this.locations.map((xy) => xy[0]);
+        const y = this.locations.map((xy) => xy[1]);
+        const cx = (Math.min(...x) + Math.max(...x)) / 2;
+        const cy = (Math.min(...y) + Math.max(...y)) / 2;
+
+        return [cx, cy];
+    }
 }

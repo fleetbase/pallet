@@ -11,7 +11,20 @@ class WarehouseBin extends Model
 {
     use HasUuid;
     use HasApiModelBehavior;
-    use SoftDeletes;
+
+    /**
+     * Overwrite both place resource name with `payloadKey`.
+     *
+     * @var string
+     */
+    protected $payloadKey = 'warehouse_bin';
+
+    /**
+     * The type of public Id to generate.
+     *
+     * @var string
+     */
+    protected $publicIdType = 'warehouse_bin';
 
     /**
      * The database table used by the model.
@@ -85,7 +98,7 @@ class WarehouseBin extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function rack()
+    public function racks()
     {
         return $this->belongsTo(WarehouseRack::class, 'rack_uuid', 'uuid');
     }

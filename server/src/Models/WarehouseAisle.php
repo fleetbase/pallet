@@ -12,6 +12,20 @@ class WarehouseAisle extends Model
     use HasApiModelBehavior;
 
     /**
+     * Overwrite both place resource name with `payloadKey`.
+     *
+     * @var string
+     */
+    protected $payloadKey = 'warehouse_aisle';
+
+    /**
+     * The type of public Id to generate.
+     *
+     * @var string
+     */
+    protected $publicIdType = 'warehouse_aisle';
+
+    /**
      * The database table used by the model.
      *
      * @var string

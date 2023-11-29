@@ -37,7 +37,21 @@ export default class WarehousesIndexNewController extends Controller {
      *
      * @var {PlaceModel}
      */
-    @tracked warehouse = this.store.createRecord('warehouse', { type: 'pallet-warehouse', status: 'active', meta: {}, sections: []});
+    @tracked warehouse = this.store.createRecord('warehouse', {
+        type: 'pallet-warehouse',
+        status: 'active',
+        meta: {},
+        sections: [
+            this.store.createRecord('warehouse-section', {
+                aisles: [
+                    this.store.createRecord('warehouse-aisle', 
+                    { racks: [
+                        this.store.createRecord('warehouse-rack', 
+                        { bins: [this.store.createRecord('warehouse-bin')]})] 
+                    })],
+            }),
+        ],
+    });
 
     /**
      * Set the overlay component context object.
@@ -83,6 +97,15 @@ export default class WarehousesIndexNewController extends Controller {
      * @memberof WarehousesIndexNewController
      */
     resetForm() {
-        this.warehouse = this.store.createRecord('warehouse', { type: 'pallet-warehouse', status: 'active', meta: {}, sections: []});
+        this.warehouse = this.store.createRecord('warehouse', {
+            type: 'pallet-warehouse',
+            status: 'active',
+            meta: {},
+            sections: [
+                this.store.createRecord('warehouse-section', {
+                    aisles: [this.store.createRecord('warehouse-aisle', { racks: [this.store.createRecord('warehouse-rack', {bins: [this.store.createRecord('warehouse-bin')]})] })],
+                }),
+            ],
+        });
     }
 }

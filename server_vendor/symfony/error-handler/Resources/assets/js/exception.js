@@ -1,19 +1,37 @@
 /* This file is based on WebProfilerBundle/Resources/views/Profiler/base_js.html.twig.
    If you make any change in this file, verify the same change is needed in the other file. */
 /*<![CDATA[*/
-(function() {
-    "use strict";
+(function () {
+    'use strict';
 
     if ('classList' in document.documentElement) {
-        var hasClass = function (el, cssClass) { return el.classList.contains(cssClass); };
-        var removeClass = function(el, cssClass) { el.classList.remove(cssClass); };
-        var addClass = function(el, cssClass) { el.classList.add(cssClass); };
-        var toggleClass = function(el, cssClass) { el.classList.toggle(cssClass); };
+        var hasClass = function (el, cssClass) {
+            return el.classList.contains(cssClass);
+        };
+        var removeClass = function (el, cssClass) {
+            el.classList.remove(cssClass);
+        };
+        var addClass = function (el, cssClass) {
+            el.classList.add(cssClass);
+        };
+        var toggleClass = function (el, cssClass) {
+            el.classList.toggle(cssClass);
+        };
     } else {
-        var hasClass = function (el, cssClass) { return el.className.match(new RegExp('\\b' + cssClass + '\\b')); };
-        var removeClass = function(el, cssClass) { el.className = el.className.replace(new RegExp('\\b' + cssClass + '\\b'), ' '); };
-        var addClass = function(el, cssClass) { if (!hasClass(el, cssClass)) { el.className += " " + cssClass; } };
-        var toggleClass = function(el, cssClass) { hasClass(el, cssClass) ? removeClass(el, cssClass) : addClass(el, cssClass); };
+        var hasClass = function (el, cssClass) {
+            return el.className.match(new RegExp('\\b' + cssClass + '\\b'));
+        };
+        var removeClass = function (el, cssClass) {
+            el.className = el.className.replace(new RegExp('\\b' + cssClass + '\\b'), ' ');
+        };
+        var addClass = function (el, cssClass) {
+            if (!hasClass(el, cssClass)) {
+                el.className += ' ' + cssClass;
+            }
+        };
+        var toggleClass = function (el, cssClass) {
+            hasClass(el, cssClass) ? removeClass(el, cssClass) : addClass(el, cssClass);
+        };
     }
 
     var addEventListener;
@@ -30,11 +48,11 @@
     }
 
     if (navigator.clipboard) {
-        document.querySelectorAll('[data-clipboard-text]').forEach(function(element) {
+        document.querySelectorAll('[data-clipboard-text]').forEach(function (element) {
             removeClass(element, 'hidden');
-            element.addEventListener('click', function() {
+            element.addEventListener('click', function () {
                 navigator.clipboard.writeText(element.getAttribute('data-clipboard-text'));
-            })
+            });
         });
     }
 
@@ -54,8 +72,12 @@
 
                 var tabNavigationItem = document.createElement('li');
                 tabNavigationItem.setAttribute('data-tab-id', tabId);
-                if (hasClass(tabs[j], 'active')) { selectedTabId = tabId; }
-                if (hasClass(tabs[j], 'disabled')) { addClass(tabNavigationItem, 'disabled'); }
+                if (hasClass(tabs[j], 'active')) {
+                    selectedTabId = tabId;
+                }
+                if (hasClass(tabs[j], 'disabled')) {
+                    addClass(tabNavigationItem, 'disabled');
+                }
                 tabNavigationItem.innerHTML = tabTitle;
                 tabNavigation.appendChild(tabNavigationItem);
 
@@ -81,7 +103,7 @@
                     document.getElementById(tabId).className = 'hidden';
                 }
 
-                tabNavigation[j].addEventListener('click', function(e) {
+                tabNavigation[j].addEventListener('click', function (e) {
                     var activeTab = e.target || e.srcElement;
 
                     /* needed because when the tab contains HTML contents, user can click */
@@ -125,7 +147,7 @@
                 addClass(element, 'sf-toggle-hidden');
             }
 
-            addEventListener(toggles[i], 'click', function(e) {
+            addEventListener(toggles[i], 'click', function (e) {
                 e.preventDefault();
 
                 if ('' !== window.getSelection().toString()) {
@@ -166,7 +188,7 @@
             /* Prevents from disallowing clicks on links inside toggles */
             var toggleLinks = toggles[i].querySelectorAll('a');
             for (var j = 0; j < toggleLinks.length; j++) {
-                addEventListener(toggleLinks[j], 'click', function(e) {
+                addEventListener(toggleLinks[j], 'click', function (e) {
                     e.stopPropagation();
                 });
             }
@@ -174,7 +196,7 @@
             /* Prevents from disallowing clicks on "copy to clipboard" elements inside toggles */
             var copyToClipboardElements = toggles[i].querySelectorAll('span[data-clipboard-text]');
             for (var k = 0; k < copyToClipboardElements.length; k++) {
-                addEventListener(copyToClipboardElements[k], 'click', function(e) {
+                addEventListener(copyToClipboardElements[k], 'click', function (e) {
                     e.stopPropagation();
                 });
             }
@@ -188,9 +210,9 @@
             var filters = filter.closest('[data-filters]'),
                 type = 'choice',
                 name = filter.dataset.filter,
-                ucName = name.charAt(0).toUpperCase()+name.slice(1),
+                ucName = name.charAt(0).toUpperCase() + name.slice(1),
                 list = document.createElement('ul'),
-                values = filters.dataset['filter'+ucName] || filters.querySelectorAll('[data-filter-'+name+']'),
+                values = filters.dataset['filter' + ucName] || filters.querySelectorAll('[data-filter-' + name + ']'),
                 labels = {},
                 defaults = null,
                 indexed = {},
@@ -202,10 +224,10 @@
                 defaults = values.length - 1;
             }
             addClass(list, 'filter-list');
-            addClass(list, 'filter-list-'+type);
+            addClass(list, 'filter-list-' + type);
             values.forEach(function (value, i) {
                 if (value instanceof HTMLElement) {
-                    value = value.dataset['filter'+ucName];
+                    value = value.dataset['filter' + ucName];
                 }
                 if (value in processed) {
                     return;
@@ -220,14 +242,17 @@
                     option.innerText = label;
                 }
                 option.dataset.filter = value;
-                option.setAttribute('title', 1 === (matches = filters.querySelectorAll('[data-filter-'+name+'="'+value+'"]').length) ? 'Matches 1 row' : 'Matches '+matches+' rows');
+                option.setAttribute(
+                    'title',
+                    1 === (matches = filters.querySelectorAll('[data-filter-' + name + '="' + value + '"]').length) ? 'Matches 1 row' : 'Matches ' + matches + ' rows'
+                );
                 indexed[value] = i;
                 list.appendChild(option);
                 addEventListener(option, 'click', function () {
                     if ('choice' === type) {
-                        filters.querySelectorAll('[data-filter-'+name+']').forEach(function (row) {
-                            if (option.dataset.filter === row.dataset['filter'+ucName]) {
-                                toggleClass(row, 'filter-hidden-'+name);
+                        filters.querySelectorAll('[data-filter-' + name + ']').forEach(function (row) {
+                            if (option.dataset.filter === row.dataset['filter' + ucName]) {
+                                toggleClass(row, 'filter-hidden-' + name);
                             }
                         });
                         toggleClass(option, 'active');
@@ -248,11 +273,11 @@
                                 removeClass(currentOption, 'last-active');
                             }
                         });
-                        filters.querySelectorAll('[data-filter-'+name+']').forEach(function (row) {
-                            if (i < indexed[row.dataset['filter'+ucName]]) {
-                                addClass(row, 'filter-hidden-'+name);
+                        filters.querySelectorAll('[data-filter-' + name + ']').forEach(function (row) {
+                            if (i < indexed[row.dataset['filter' + ucName]]) {
+                                addClass(row, 'filter-hidden-' + name);
                             } else {
-                                removeClass(row, 'filter-hidden-'+name);
+                                removeClass(row, 'filter-hidden-' + name);
                             }
                         });
                     }
@@ -268,8 +293,8 @@
                 if (active) {
                     addClass(option, 'active');
                 } else {
-                    filters.querySelectorAll('[data-filter-'+name+'="'+value+'"]').forEach(function (row) {
-                        toggleClass(row, 'filter-hidden-'+name);
+                    filters.querySelectorAll('[data-filter-' + name + '="' + value + '"]').forEach(function (row) {
+                        toggleClass(row, 'filter-hidden-' + name);
                     });
                 }
                 processed[value] = true;

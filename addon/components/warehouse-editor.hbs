@@ -11,19 +11,72 @@
                 <div>{{section.name}}</div>
                 <div class="flex flex-row items-center justify-end">
                     <Button @icon="trash" @type="danger" @onClick={{fn this.removeSection section}} />
-                    <Button @text="Add Aisle" @icon="plus" @onClick={{this.addAisle}} />
+                    <Button @text="Add Aisle" @icon="plus" @onClick={{fn this.addAisle section}} />
                 </div>
             </div>
             <div class="p-3">
                 <div class="grid grid-cols-3 gap-2">
                     <InputGroup @name="Name" @wrapperClass="col-span-2">
-                        <Input @value={{section.name}} @type="text" class="w-full form-input" placeholder="Name"/>
+                        <Input @value={{section.name}} @type="text" class="w-full form-input" placeholder="Name" />
                     </InputGroup>
                     <InputGroup @name="Description" @helpText="Additional description text of section." @wrapperClass="col-span-2 mb-2 onChange">
                         <Textarea @value={{section.description}} type="text" class="w-full form-input" placeholder="Description" />
                     </InputGroup>
                 </div>
             </div>
+            {{#each section.aisles as |aisle|}}
+                <div class="flex flex-row items-center px-4 py-2 border border-gray-700 rounded-md">
+                    <div class="flex flex-row items-center justify-end">
+                        <Button @icon="trash" @type="danger" @onClick={{fn this.removeAisle aisle}} />
+                        <Button @text="Add Racks" @icon="plus" @onClick={{fn this.addRacks aisle}} />
+                    </div>
+                </div>
+                <div class="p-3">
+                    <div class="grid grid-cols-3 gap-2">
+                        <InputGroup @name="Aisle Number" @wrapperClass="col-span-2">
+                            <Input @value={{aisle.aisle_number}} @type="text" class="w-full form-input" placeholder="Aisle Number" />
+                        </InputGroup>
+                    </div>
+                </div>
+                {{#each aisle.racks as |rack|}}
+                    <div class="flex flex-row items-center px-4 py-2 border border-gray-700 rounded-md">
+                        <div class="flex flex-row items-center justify-end">
+                            <Button @icon="trash" @type="danger" @onClick={{fn this.removeRack rack}} />
+                            <Button @text="Add Bins" @icon="plus" @onClick={{fn this.addBins rack}} />
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <div class="grid grid-cols-3 gap-2">
+                            <InputGroup @name="Rack Number" @wrapperClass="col-span-2">
+                                <Input @value={{rack.rack_number}} @type="text" class="w-full form-input" placeholder="Rack Number" />
+                            </InputGroup>
+                            <InputGroup @name="Rack Capacity" @wrapperClass="col-span-2">
+                                <Input @value={{rack.capacity}} @type="text" class="w-full form-input" placeholder="Rack Capacity" />
+                            </InputGroup>
+                        </div>
+                    </div>
+                    {{#each rack.bins as |bin|}}
+                        <div class="flex flex-row items-center px-4 py-2 border border-gray-700 rounded-md">
+                            <div class="flex flex-row items-center justify-end">
+                                <Button @icon="trash" @type="danger" @onClick={{fn this.removeBin bin}} />
+                            </div>
+                        </div>
+                        <div class="p-3">
+                            <div class="grid grid-cols-3 gap-2">
+                                <InputGroup @name="Bin Number" @wrapperClass="col-span-2">
+                                    <Input @value={{bin.bin_number}} @type="text" class="w-full form-input" placeholder="Bin Number" />
+                                </InputGroup>
+                                <InputGroup @name="Size" @wrapperClass="col-span-2">
+                                    <Input @value={{bin.size}} @type="text" class="w-full form-input" placeholder="Size" />
+                                </InputGroup>
+                                <InputGroup @name="Max Weight" @wrapperClass="col-span-2">
+                                    <Input @value={{bin.max_weight}} @type="text" class="w-full form-input" placeholder="Max Weight" />
+                                </InputGroup>
+                            </div>
+                        </div>
+                    {{/each}}
+                {{/each}}
+            {{/each}}
         {{/each}}
     </div>
 </div>

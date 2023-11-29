@@ -56,33 +56,11 @@ export default class WarehousesIndexController extends Controller {
     @service crud;
 
     /**
-     * Inject the `crud` service
-     *
-     * @var {Service}
-     */
-    @tracked section;
-
-    /**
      * Queryable parameters for this controller's model
      *
      * @var {Array}
      */
-    queryParams = [
-        'name',
-        'page',
-        'limit',
-        'sort',
-        'query',
-        'public_id',
-        'country',
-        'phone',
-        'created_at',
-        'updated_at',
-        'city',
-        'neighborhood',
-        'state',
-        'description',
-    ];
+    queryParams = ['name', 'page', 'limit', 'sort', 'query', 'public_id', 'country', 'phone', 'created_at', 'updated_at', 'city', 'neighborhood', 'state', 'description'];
 
     /**
      * The current page of data being viewed
