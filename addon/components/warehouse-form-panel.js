@@ -86,10 +86,6 @@ export default class WarehouseFormPanelComponent extends Component {
     @action save() {
         const { warehouse } = this;
 
-        // if (warehouse.sections) {
-        //     all(warehouse.sections.map((section) => section.save()));
-        // }
-
         this.loader.showLoader('.next-content-overlay-panel-container', { loadingMessage: 'Saving place...', preserveTargetPosition: true });
         this.isLoading = true;
 

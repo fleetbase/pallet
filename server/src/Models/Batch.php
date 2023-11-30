@@ -76,6 +76,8 @@ class Batch extends Model
      */
     protected $hidden = [];
 
+    protected $with = ['inventory'];
+
     /**
      * Relationship with the company associated with the batch.
      *

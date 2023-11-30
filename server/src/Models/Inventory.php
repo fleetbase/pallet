@@ -76,6 +76,10 @@ class Inventory extends Model
      */
     protected $hidden = [];
 
+    protected $with = ['product', 'batch', 'warehouse'];
+
+    protected $filterParams = ['supplier_uuid', 'comments','expiry_date_at', 'status', 'company', 'createdBy', 'supplier'];
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

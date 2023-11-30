@@ -131,6 +131,8 @@ export default class WarehousesIndexController extends Controller {
      * @var {String}
      */
     @tracked neighborhood;
+    
+    @tracked warehouse;
 
     /**
      * All columns applicable for orders

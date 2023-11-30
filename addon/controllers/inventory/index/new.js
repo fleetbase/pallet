@@ -37,7 +37,11 @@ export default class InventoryIndexNewController extends Controller {
      *
      * @var {InventoryModel}
      */
-    @tracked inventory = this.store.createRecord('inventory');
+    @tracked inventory = this.store.createRecord('inventory', {
+        type: 'pallet-inventory',
+        meta: {},
+        batches: [this.store.createRecord('batch')],
+    });
 
     /**
      * Set the overlay component context object.
@@ -83,6 +87,10 @@ export default class InventoryIndexNewController extends Controller {
      * @memberof InventoryIndexNewController
      */
     resetForm() {
-        this.inventory = this.store.createRecord('inventory');
+        this.inventory = this.store.createRecord('inventory', {
+            type: 'pallet-inventory',
+            meta: {},
+            batches: [this.store.createRecord('batch')],
+        });
     }
 }

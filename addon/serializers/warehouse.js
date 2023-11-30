@@ -10,9 +10,6 @@ export default class WarehouseSerializer extends ApplicationSerializer.extend(Em
     get attrs() {
         return {
             sections: { embedded: 'always' },
-            aisles: { embedded: 'always' },
-            racks: { embedded: 'always' },
-            bins: { embedded: 'always' },
         };
     }
 }

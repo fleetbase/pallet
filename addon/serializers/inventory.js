@@ -11,6 +11,7 @@ export default class InventorySerializer extends ApplicationSerializer.extend(Em
         return {
             product: { embedded: 'always' },
             warehouse: { embedded: 'always' },
+            batch: { embedded: 'always' },
         };
     }
 }

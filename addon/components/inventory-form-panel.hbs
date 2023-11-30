@@ -46,21 +46,6 @@
                         {{model.name}}
                     </ModelSelect>
                 </InputGroup>
-                <InputGroup @name="Supplier">
-                    <ModelSelect
-                        @modelName="vendor"
-                        @selectedModel={{this.inventory.supplier}}
-                        @placeholder="Select Supplier"
-                        @triggerClass="form-select form-input"
-                        @infiniteScroll={{false}}
-                        @renderInPlace={{true}}
-                        @onChange={{fn (mut this.inventory.supplier)}}
-                        @onChangeId={{fn (mut this.inventory.supplier_uuid)}}
-                        as |model|
-                    >
-                        {{model.name}}
-                    </ModelSelect>
-                </InputGroup>
                 <InputGroup @name="Warehouse">
                     <ModelSelect
                         @modelName="warehouse"
@@ -112,7 +97,7 @@
                 <InputGroup @name="Batch Quantity" @type="number" @value={{this.inventory.batch.quantity}} />
                 <InputGroup @name="Batch Number" @type="number" @value={{this.inventory.batch.batch_number}} />
                 <InputGroup @name="Batch Reason">
-                    <Textarea @value={{this.batch.reason}} aria-label="Reason" class="w-full form-input" placeholder="Reason" rows={{5}} />
+                    <Textarea @value={{this.inventory.batch.reason}} aria-label="Reason" class="w-full form-input" placeholder="Reason" rows={{5}} />
                 </InputGroup>
             </ContentPanel>
         </div>

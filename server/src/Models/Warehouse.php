@@ -20,6 +20,8 @@ class Warehouse extends Place
      */
     protected $publicIdType = 'warehouse';
 
+    protected $with = ['sections'];
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
