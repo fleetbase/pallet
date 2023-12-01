@@ -26,6 +26,7 @@ export default class InventoryModel extends Model {
     @attr('number') quantity;
     @attr('number') min_quantity;
     @attr('number') status;
+    @attr('raw') meta;
 
     /** @date */
     @attr('date') created_at;

@@ -131,7 +131,7 @@ export default class WarehousesIndexController extends Controller {
      * @var {String}
      */
     @tracked neighborhood;
-    
+
     @tracked warehouse;
 
     /**

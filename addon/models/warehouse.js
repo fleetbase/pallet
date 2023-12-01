@@ -3,4 +3,5 @@ import { hasMany } from '@ember-data/model';
 
 export default class WarehouseModel extends PlaceModel {
     @hasMany('warehouse-section') sections;
+    @hasMany('warehouse-dock') docks;
 }

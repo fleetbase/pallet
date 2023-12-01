@@ -22,6 +22,7 @@ export default class BatchModel extends Model {
     @attr('date') expiry_date_at;
     @attr('date') created_at;
     @attr('date') updated_at;
+    @attr('raw') meta;
 
     /** @computed */
     @computed('created_at') get createdAgo() {

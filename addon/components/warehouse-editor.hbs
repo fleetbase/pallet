@@ -79,4 +79,62 @@
             {{/each}}
         {{/each}}
     </div>
+    <div class="content-panel mb-2">
+        <div class="content-panel-header items-center">
+            <h3 class="text-lg font-semibold dark:text-gray-100">
+                Docks
+            </h3>
+            <Button @text="Add Dock" @icon="plus" @iconPrefix="fas" @onClick={{this.addDock}} />
+        </div>
+        <div class="content-panel-body">
+            {{#each this.warehouse.docks as |dock|}}
+                <div class="flex flex-row items-center px-4 py-2 border border-gray-700 rounded-md">
+                    <div class="flex flex-row items-center justify-end">
+                        <Button @icon="trash" @type="danger" @onClick={{fn this.removeDock dock}} />
+                    </div>
+                    <div class="p-3">
+                        <div class="grid grid-cols-3 gap-2">
+                            <InputGroup @name="Dock Number" @wrapperClass="col-span-2">
+                                <Input @value={{dock.dock_number}} @type="text" class="w-full form-input" placeholder="Dock Number" />
+                            </InputGroup>
+                            <InputGroup @name="Direction" @wrapperClass="col-span-2">
+                                <Input @value={{dock.direction}} @type="text" class="w-full form-input" placeholder="Direction" />
+                            </InputGroup>
+                            <InputGroup @name="Capacity" @wrapperClass="col-span-2">
+                                <Input @value={{dock.capacity}} @type="text" class="w-full form-input" placeholder="Capacity" />
+                            </InputGroup>
+                            <InputGroup @name="Status">
+                                <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                                    <PowerSelect
+                                        @options={{dock.statusOptions}}
+                                        @selected={{dock.status}}
+                                        @onChange={{fn (mut dock.status)}}
+                                        @placeholder="Select dock status"
+                                        @triggerClass="form-select form-input"
+                                        as |status|
+                                    >
+                                        {{smart-humanize status}}
+                                    </PowerSelect>
+                                </div>
+                            </InputGroup>
+                            <InputGroup @name="Type">
+                                <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                                    <PowerSelect
+                                        @options={{dock.typeOptions}}
+                                        @selected={{dock.type}}
+                                        @onChange={{fn (mut dock.type)}}
+                                        @placeholder="Select dock type"
+                                        @triggerClass="form-select form-input"
+                                        as |type|
+                                    >
+                                        {{smart-humanize type}}
+                                    </PowerSelect>
+                                </div>
+                            </InputGroup>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
 </div>

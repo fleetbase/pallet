@@ -5,13 +5,10 @@ namespace Fleetbase\Pallet\Models;
 use Fleetbase\Models\Model;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasUuid;
-use Illuminate\Database\Eloquent\SoftDeletes;
-
 class WarehouseDock extends Model
 {
     use HasUuid;
     use HasApiModelBehavior;
-    use SoftDeletes;
 
     /**
      * The database table used by the model.
@@ -26,6 +23,20 @@ class WarehouseDock extends Model
      * @var string
      */
     protected $singularName = 'warehouse_dock';
+
+    /**
+     * Overwrite both place resource name with `payloadKey`.
+     *
+     * @var string
+     */
+    protected $payloadKey = 'warehouse_dock';
+
+    /**
+     * The type of public Id to generate.
+     *
+     * @var string
+     */
+    protected $publicIdType = 'warehouse_dock';
 
     /**
      * These attributes that can be queried.

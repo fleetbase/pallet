@@ -15,6 +15,6 @@ export default class InventoryIndexRoute extends Route {
     };
 
     model(params) {
-        return this.store.query('inventory', { ...params, with: ['product', 'warehouse', 'batch'] });
+        return this.store.query('inventory', { ...params, with: ['product', 'warehouse'] });
     }
 }

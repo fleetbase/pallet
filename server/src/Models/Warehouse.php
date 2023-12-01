@@ -29,4 +29,9 @@ class Warehouse extends Place
     {
         return $this->hasMany(WarehouseSection::class, 'warehouse_uuid');
     }
+
+    public function docks()
+    {
+        return $this->hasMany(WarehouseDock::class, 'warehouse_uuid');
+    }
 }

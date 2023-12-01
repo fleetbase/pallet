@@ -60,7 +60,9 @@ class Batch extends Model
      *
      * @var array
      */
-    protected $casts = [];
+    protected $casts = [
+        'meta' => 'json',
+    ];
 
     /**
      * Dynamic attributes that are appended to object.

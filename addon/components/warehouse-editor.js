@@ -58,6 +58,15 @@ export default class WarehouseEditorComponent extends Component {
         rack.bins.pushObject(bin);
     }
 
+    @action addDock() {
+        const dock = this.store.createRecord('warehouse-dock', { warehouse_uuid: this.warehouse.id });
+        this.warehouse.docks.pushObject(dock);
+    }
+
+    @action removeDock(dock) {
+        dock.destroyRecord();
+    }
+
     @action removeSection(section) {
         section.destroyRecord();
     }

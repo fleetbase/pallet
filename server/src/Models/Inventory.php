@@ -60,7 +60,9 @@ class Inventory extends Model
      *
      * @var array
      */
-    protected $casts = [];
+    protected $casts = [
+        'meta' => 'json',
+    ];
 
     /**
      * Dynamic attributes that are appended to object.
@@ -79,6 +81,8 @@ class Inventory extends Model
     protected $with = ['product', 'batch', 'warehouse'];
 
     protected $filterParams = ['supplier_uuid', 'comments','expiry_date_at', 'status', 'company', 'createdBy', 'supplier'];
+
+    
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -21,6 +21,7 @@ class IndexInventory extends FleetbaseResource
             'product_uuid' => $this->product_uuid,
             'product'      => $this->whenLoaded('product', $this->product),
             'batch'        => $this->whenLoaded('batch', $this->batch),
+            'batch_uuid'   => $this->batch_uuid,
             'quantity'     => (int) $this->total_quantity,
             'comments'     => $this->latest_comments,
             'updated_at'   => $this->latest_updated_at,
