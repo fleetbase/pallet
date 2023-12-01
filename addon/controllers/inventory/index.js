@@ -136,6 +136,7 @@ export default class InventoryIndexController extends Controller {
             valuePath: 'product.name',
             width: '170px',
             cellComponent: 'cell/product-info',
+            modelPath: 'product',
             resizable: true,
             sortable: true,
             filterable: true,
