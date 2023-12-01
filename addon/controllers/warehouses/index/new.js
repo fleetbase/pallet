@@ -41,12 +41,6 @@ export default class WarehousesIndexNewController extends Controller {
         type: 'pallet-warehouse',
         status: 'active',
         meta: {},
-        sections: [
-            this.store.createRecord('warehouse-section', {
-                aisles: [this.store.createRecord('warehouse-aisle', { racks: [this.store.createRecord('warehouse-rack', { bins: [this.store.createRecord('warehouse-bin')] })] })],
-            }),
-        ],
-        docks: [this.store.createRecord('warehouse-dock')],
     });
 
     /**
@@ -96,13 +90,7 @@ export default class WarehousesIndexNewController extends Controller {
         this.warehouse = this.store.createRecord('warehouse', {
             type: 'pallet-warehouse',
             status: 'active',
-            meta: {},
-            sections: [
-                this.store.createRecord('warehouse-section', {
-                    aisles: [this.store.createRecord('warehouse-aisle', { racks: [this.store.createRecord('warehouse-rack', { bins: [this.store.createRecord('warehouse-bin')] })] })],
-                }),
-            ],
-            docks: [this.store.createRecord('warehouse-dock')],
+            meta: {}
         });
     }
 }

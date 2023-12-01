@@ -1,4 +1,100 @@
-<div class="content-panel mb-2">
+<a href="javascript:;" class="flex flex-row items-center px-4 py-2 rounded-md border border-gray-200 border-gray-700 shadow-sm hover:text-blue-400" {{on "click" this.openEditor}}>
+    Warehouse Editor
+</a>
+
+<EmberWormhole @to="warehouse-overlay-render-outlet">
+    <Overlay @isOpen={{false}} @onLoad={{this.setOverlayContext}} @position="right" @fullHeight={{true}} @isResizeble={{true}} @width="800px" @overlayClass="!z-[999]">
+        <Overlay::Header @title="Warehouse Editor" @onPressCancel={{this.closeEditor}} />
+        <Overlay::Body>
+            <div class="px-5 py-3">
+                <div class="flex flex-row items-center px-4 py-2 border border-gray-700 rounded-md mb-4">
+                    <Button @text="Add Section" @icon="plus" @iconPrefix="fas" @onClick={{this.addSection}} />
+                </div>
+                <div>
+                    {{#each this.warehouse.sections as |section|}}
+                        <div>
+                            <div class="flex flex-row items-center px-4 py-2 border border-gray-700 rounded-md">
+                                <div>{{section.name}}</div>
+                                <div class="flex flex-row items-center justify-end">
+                                    <Button @icon="trash" @type="danger" @onClick={{fn this.removeSection section}} />
+                                    <Button @text="Add Aisle" @icon="plus" @onClick={{fn this.addAisle section}} />
+                                </div>
+                            </div>
+                            <div class="flex flex-col">
+                                <InputGroup @name="Name">
+                                    <Input @value={{section.name}} @type="text" class="w-full form-input" placeholder="Name" />
+                                </InputGroup>
+                                <InputGroup @name="Description" @helpText="Additional description text of section.">
+                                    <Textarea @value={{section.description}} type="text" class="w-full form-input" placeholder="Description" />
+                                </InputGroup>
+                            </div>
+                        </div>
+                        <div>
+                            {{#each section.aisles as |aisle|}}
+                                <div>
+                                    <div class="flex flex-row items-center px-4 py-2 border border-gray-700 rounded-md">
+                                        <div>{{aisle.name}}</div>
+                                        <div class="flex flex-row items-center justify-end">
+                                            <Button @icon="trash" @type="danger" @onClick={{fn this.removeAisle aisle}} />
+                                            <Button @text="Add Rack" @icon="plus" @onClick={{fn this.addRack aisle}} />
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <InputGroup @name="Name">
+                                            <Input @value={{aisle.name}} @type="text" class="w-full form-input" placeholder="Name" />
+                                        </InputGroup>
+                                        <InputGroup @name="Description" @helpText="Additional description text of section.">
+                                            <Textarea @value={{aisle.description}} type="text" class="w-full form-input" placeholder="Description" />
+                                        </InputGroup>
+                                    </div>
+                                </div>
+                                <div>
+                                    {{#each aisle.racks as |rack|}}
+                                        <div>
+                                            <div class="flex flex-row items-center px-4 py-2 border border-gray-700 rounded-md">
+                                                <div>{{rack.name}}</div>
+                                                <div class="flex flex-row items-center justify-end">
+                                                    <Button @icon="trash" @type="danger" @onClick={{fn this.removeRack rack}} />
+                                                    <Button @text="Add Bin" @icon="plus" @onClick={{fn this.addBin rack}} />
+                                                </div>
+                                            </div>
+                                            <div class="flex flex-col">
+                                                <InputGroup @name="Name">
+                                                    <Input @value={{rack.name}} @type="text" class="w-full form-input" placeholder="Name" />
+                                                </InputGroup>
+                                                <InputGroup @name="Description" @helpText="Additional description text of section.">
+                                                    <Textarea @value={{rack.description}} type="text" class="w-full form-input" placeholder="Description" />
+                                                </InputGroup>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            {{#each rack.bins as |bin|}}
+                                                <div>
+                                                    <div class="flex flex-row items-center px-4 py-2 border border-gray-700 rounded-md">
+                                                        <div>{{bin.bin_number}}</div>
+                                                        <div class="flex flex-row items-center justify-end">
+                                                            <Button @icon="trash" @type="danger" @onClick={{fn this.removeBin bin}} />
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex flex-col">
+                                                        <InputGroup @name="Name">
+                                                            <Input @value={{bin.bin_number}} @type="text" class="w-full form-input" placeholder="Bin Number" />
+                                                        </InputGroup>
+                                                    </div>
+                                                </div>
+                                            {{/each}}
+                                        </div>
+                                    {{/each}}
+                                </div>
+                            {{/each}}
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+        </Overlay::Body>
+    </Overlay>
+</EmberWormhole>
+{{!-- <div class="content-panel mb-2">
     <div class="content-panel-header items-center">
         <h3 class="text-lg font-semibold dark:text-gray-100">
             Create
@@ -137,4 +233,4 @@
             {{/each}}
         </div>
     </div>
-</div>
+</div> --}}

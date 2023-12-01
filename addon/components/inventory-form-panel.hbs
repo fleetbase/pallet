@@ -78,24 +78,24 @@
                 <InputGroup @name="Quantity" @type="number" @value={{this.inventory.quantity}} />
                 <InputGroup @name="Minimum Quantity" @type="number" @value={{this.inventory.min_quantity}} />
             </ContentPanel>
-            <ContentPanel @title="Batch" @open={{false}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
+            <ContentPanel @title="Batch" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
                 <InputGroup @name="Batch">
                     <ModelSelect
                         @modelName="batch"
-                        @selectedModel={{this.inventory.batch}}
+                        @selectedModel={{this.batch}}
                         @placeholder="Select Batch"
                         @triggerClass="form-select form-input"
                         @infiniteScroll={{false}}
                         @renderInPlace={{true}}
-                        @onChange={{fn (mut this.inventory.batch)}}
-                        @onChangeId={{fn (mut this.inventory.batch_uuid)}}
+                        @onChange={{fn (mut this.batch)}}
+                        @onChangeId={{fn (mut this.batch_uuid)}}
                         as |model|
                     >
                         {{model.display_name}}
                     </ModelSelect>
                 </InputGroup>
-                <InputGroup @name="Batch Quantity" @type="number" @value={{this.inventory.batch.quantity}} />
-                <InputGroup @name="Batch Number" @type="number" @value={{this.inventory.batch.batch_number}} />
+                <InputGroup @name="Batch Quantity" @type="number" @value={{this.batch.quantity}} />
+                <InputGroup @name="Batch Number" @type="number" @value={{this.batch.batch_number}} />
             </ContentPanel>
         </div>
     </Overlay::Body>

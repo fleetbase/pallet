@@ -1,4 +1,5 @@
 import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 
@@ -18,9 +19,28 @@ export default class WarehouseEditorComponent extends Component {
      */
     @service notifications;
 
+    @tracked overlayContextApi;
+
     constructor() {
         super(...arguments);
         this.warehouse = this.args.warehouse;
+    }
+
+    @action setOverlayContext(overlayContextApi) {
+        this.overlayContextApi = overlayContextApi;
+    }
+
+    @action openEditor() {
+        console.log('openEditor() #overlayContextApi', this.overlayContextApi)
+        if (this.overlayContextApi) {
+            this.overlayContextApi.open();
+        }
+    }
+
+    @action closeEditor() {
+        if (this.overlayContextApi) {
+            this.overlayContextApi.close();
+        }
     }
 
     @action addSection() {
@@ -38,7 +58,7 @@ export default class WarehouseEditorComponent extends Component {
         section.aisles.pushObject(aisle);
     }
 
-    @action addRacks(aisle) {
+    @action addRack(aisle) {
         const rack = this.store.createRecord('warehouse-rack', { aisle: aisle });
 
         if (!aisle.racks) {
@@ -48,7 +68,7 @@ export default class WarehouseEditorComponent extends Component {
         aisle.racks.pushObject(rack);
     }
 
-    @action addBins(rack) {
+    @action addBin(rack) {
         const bin = this.store.createRecord('warehouse-bin', { rack: rack });
 
         if (!rack.bins) {

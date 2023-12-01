@@ -55,6 +55,7 @@ export default class InventoryFormPanelComponent extends Component {
     constructor() {
         super(...arguments);
         this.inventory = this.args.inventory;
+        this.batch = this.store.createRecord('batch');
         applyContextComponentArguments(this);
     }
 
@@ -76,10 +77,13 @@ export default class InventoryFormPanelComponent extends Component {
      * @returns {Promise<any>}
      */
     @action save() {
-        const { inventory } = this;
+        const { inventory, batch } = this;
 
         this.loader.showLoader('.next-content-overlay-panel-container', { loadingMessage: 'Saving inventory...', preserveTargetPosition: true });
         this.isLoading = true;
+
+        // set batch to inventory
+        inventory.setProperties({ batch });
 
         contextComponentCallback(this, 'onBeforeSave', inventory);
 

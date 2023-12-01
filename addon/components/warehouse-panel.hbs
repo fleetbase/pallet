@@ -6,7 +6,7 @@
     @isResizable={{or this.isResizable @isResizable}}
     @width={{or this.width @width "600px"}}
 >
-    <Overlay::Header @title={{this.warehouse.name}} @status={{this.warehouse.public_id}} @hideStatusDot={{true}} @createdAt={{this.warehouse.createdAt}}>
+    <Overlay::Header @title={{this.warehouse.name}} @createdAt={{this.warehouse.createdAt}}>
         <Button @type="default" @icon="pen" @helpText="Edit warehouse" @onClick={{this.onEdit}} @wrapperClass="mr-2" />
         <Button @type="default" @icon="times" @helpText={{if this.warehouse.id "Cancel edit warehouse" "Cancel new warehouse"}} @onClick={{this.onPressCancel}} />
     </Overlay::Header>
