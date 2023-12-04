@@ -10,6 +10,8 @@ export default buildRoutes(function () {
         });
     });
     this.route('inventory', function () {
+        this.route('low-stock');
+        this.route('expired-stock');
         this.route('index', { path: '/' }, function () {
             this.route('new');
             this.route('new-stock-adjustment');

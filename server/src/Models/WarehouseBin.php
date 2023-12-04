@@ -5,7 +5,6 @@ namespace Fleetbase\Pallet\Models;
 use Fleetbase\Models\Model;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasUuid;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class WarehouseBin extends Model
 {

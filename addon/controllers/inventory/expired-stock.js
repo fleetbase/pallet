@@ -3,10 +3,9 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { isBlank } from '@ember/utils';
-import { timeout } from 'ember-concurrency';
-import { task } from 'ember-concurrency-decorators';
+import { task, timeout } from 'ember-concurrency';
 
-export default class SalesOrdersIndexController extends Controller {
+export default class InventoryExpiredStockController extends Controller {
     /**
      * Inject the `notifications` service
      *
@@ -22,13 +21,6 @@ export default class SalesOrdersIndexController extends Controller {
     @service modalsManager;
 
     /**
-     * Inject the `crud` service
-     *
-     * @var {Service}
-     */
-    @service crud;
-
-    /**
      * Inject the `store` service
      *
      * @var {Service}
@@ -36,18 +28,11 @@ export default class SalesOrdersIndexController extends Controller {
     @service store;
 
     /**
-     * Inject the `hostRouter` service
+     * Inject the `fetch` service
      *
      * @var {Service}
      */
-    @service hostRouter;
-
-    /**
-     * Inject the `contextPanel` service
-     *
-     * @var {Service}
-     */
-    @service contextPanel;
+    @service fetch;
 
     /**
      * Inject the `filters` service
@@ -57,18 +42,25 @@ export default class SalesOrdersIndexController extends Controller {
     @service filters;
 
     /**
-     * Inject the `loader` service
+     * Inject the `hostRouter` service
      *
      * @var {Service}
      */
-    @service loader;
+    @service hostRouter;
+
+    /**
+     * Inject the `crud` service
+     *
+     * @var {Service}
+     */
+    @service crud;
 
     /**
      * Queryable parameters for this controller's model
      *
      * @var {Array}
      */
-    queryParams = ['page', 'limit', 'sort', 'query', 'public_id', 'created_by', 'updated_by', 'status', 'delivered_at'];
+    queryParams = ['page', 'limit', 'sort', 'product', 'warehouse', 'batch', 'status', 'view'];
 
     /**
      * The current page of data being viewed
@@ -76,6 +68,8 @@ export default class SalesOrdersIndexController extends Controller {
      * @var {Integer}
      */
     @tracked page = 1;
+
+    @tracked view = 'expired_stock'
 
     /**
      * The maximum number of items to show per page
@@ -92,16 +86,44 @@ export default class SalesOrdersIndexController extends Controller {
     @tracked sort = '-created_at';
 
     /**
-     * The filterable param `public_id`
+     * The filterable param `sku`
      *
      * @var {String}
      */
-    @tracked public_id;
+    @tracked sku;
+
+    /**
+     * The filterable param `warehouse`
+     *
+     * @var {String}
+     */
+    @tracked warehouse;
+
+    /**
+     * The filterable param `batch`
+     *
+     * @var {String}
+     */
+    @tracked batch;
 
     /**
      * The filterable param `status`
      *
-     * @var {Array}
+     * @var {String|Array}
+     */
+    @tracked status;
+
+    /**
+     * The filterable param `pallet-product`
+     *
+     * @var {String}
+     */
+    @tracked product;
+
+    /**
+     * The filterable param `status`
+     *
+     * @var {String}
      */
     @tracked status;
 
@@ -112,33 +134,76 @@ export default class SalesOrdersIndexController extends Controller {
      */
     @tracked columns = [
         {
-            label: 'ID',
-            valuePath: 'public_id',
-            width: '130px',
-            cellComponent: 'table/cell/anchor',
-            action: this.viewSalesOrder,
+            label: 'Product',
+            valuePath: 'product.name',
+            width: '170px',
+            cellComponent: 'cell/product-info',
+            modelPath: 'product',
             resizable: true,
             sortable: true,
             filterable: true,
-            hidden: false,
+            filterComponent: 'filter/string',
+        },
+        {
+            label: 'Product SKU',
+            valuePath: 'product.sku',
+            cellComponent: 'click-to-copy',
+            width: '120px',
+            resizable: true,
+            sortable: true,
+            filterable: true,
+            filterComponent: 'filter/string',
+        },
+        {
+            label: 'Quantity',
+            valuePath: 'quantity',
+            width: '120px',
+        },
+        {
+            label: 'Warehouse',
+            valuePath: 'warehouse.address',
+            width: '120px',
+            cellComponent: 'click-to-copy',
+            resizable: true,
+            sortable: true,
+            filterable: true,
+            filterComponent: 'filter/string',
+        },
+        {
+            label: 'Batch',
+            valuePath: 'batch.name',
+            width: '120px',
+            cellComponent: 'click-to-copy',
+            resizable: true,
+            sortable: true,
+            filterable: true,
             filterComponent: 'filter/string',
         },
         {
             label: 'Status',
             valuePath: 'status',
             cellComponent: 'table/cell/status',
-            width: '100px',
+            width: '10%',
             resizable: true,
             sortable: true,
             filterable: true,
             filterComponent: 'filter/multi-option',
-            filterOptions: this.statusOption,
         },
         {
-            label: 'Created At',
+            label: 'Last Stocked',
             valuePath: 'createdAt',
-            sortParam: 'createdAt',
-            width: '120px',
+            sortParam: 'created_at',
+            width: '10%',
+            resizable: true,
+            sortable: true,
+            filterable: true,
+            filterComponent: 'filter/date',
+        },
+        {
+            label: 'Expiry Date',
+            valuePath: 'expiredAt',
+            sortParam: 'expiry_date_at',
+            width: '10%',
             resizable: true,
             sortable: true,
             filterable: true,
@@ -148,7 +213,7 @@ export default class SalesOrdersIndexController extends Controller {
             label: 'Updated At',
             valuePath: 'updatedAt',
             sortParam: 'updated_at',
-            width: '120px',
+            width: '10%',
             resizable: true,
             sortable: true,
             hidden: true,
@@ -161,25 +226,18 @@ export default class SalesOrdersIndexController extends Controller {
             ddButtonText: false,
             ddButtonIcon: 'ellipsis-h',
             ddButtonIconPrefix: 'fas',
-            ddMenuLabel: 'Sales Order Actions',
+            ddMenuLabel: 'Inventory Actions',
             cellClassNames: 'overflow-visible',
             wrapperClass: 'flex items-center justify-end mx-2',
             width: '10%',
             actions: [
                 {
-                    label: 'View Details',
-                    fn: this.viewSalesOrder,
+                    label: 'View Inventory',
+                    fn: this.viewInventory,
                 },
                 {
-                    label: 'Edit Sales Order',
-                    fn: this.editSalesOrder,
-                },
-                {
-                    separator: true,
-                },
-                {
-                    label: 'Delete Sales Order',
-                    fn: this.deleteSalesOrder,
+                    label: 'Edit Inventory',
+                    fn: this.editInventory,
                 },
             ],
             sortable: false,
@@ -214,78 +272,47 @@ export default class SalesOrdersIndexController extends Controller {
     }
 
     /**
-     * Toggles dialog to export a Sales Order
+     * Toggles dialog to export `inventory`
      *
      * @void
      */
-    @action exportFuelReports() {
-        this.crud.export('sales-order');
+    @action exportProcuts() {
+        this.crud.export('inventory');
     }
 
     /**
-     * View the selected Sales Order
+     * View a `inventory` details in overlay
      *
-     * @param {SalesOrderModel} fuelReport
+     * @param {InventoryModel} inventory
      * @param {Object} options
      * @void
      */
-    @action viewSalesOrder(salesOrder) {
-        this.transitionToRoute('sales-orders.index.details', salesOrder);
+    @action viewInventory(inventory) {
+        return this.transitionToRoute('inventory.index.details', inventory);
     }
 
     /**
-     * Create a new Sales Order
+     * Create a new `inventory` in modal
      *
-     * @void
-     */
-    @action createSalesOrder() {
-        this.transitionToRoute('sales-orders.index.new');
-    }
-
-    /**
-     * Edit a Sales Order
-     *
-     * @param {SalesOrderModel} salesOrder
-     * @void
-     */
-    @action editSalesOrder(salesOrder) {
-        this.transitionToRoute('sales-orders.index.edit', salesOrder);
-    }
-
-    /**
-     * Prompt to delete a Sales Order
-     *
-     * @param {SalesOrderModel} salesOrder
      * @param {Object} options
      * @void
      */
-    @action deleteSalesOrder(salesOrder, options = {}) {
-        this.crud.delete(salesOrder, {
-            onConfirm: () => {
-                this.hostRouter.refresh();
-            },
-            ...options,
-        });
+    @action createInventory() {
+        return this.transitionToRoute('inventory.index.new');
+    }
+
+    @action makeStockAdjustment() {
+        return this.transitionToRoute('inventory.index.new-stock-adjustment');
     }
 
     /**
-     * Bulk deletes selected Sales Order's via confirm prompt
+     * Edit a `inventory` details
      *
-     * @param {Array} selected an array of selected models
+     * @param {InventoryModel} inventory
+     * @param {Object} options
      * @void
      */
-    @action bulkDeleteSalesOrders() {
-        const selected = this.table.selectedRows;
-
-        this.crud.bulkDelete(selected, {
-            modelNamePath: 'public_id',
-            acceptButtonText: "Delete Sales Order's",
-            fetchOptions: {
-                namespace: 'pallet/int/v1',
-            },
-            onSuccess: () => {
-                return this.hostRouter.refresh();
-            },
-        });
+    @action async editInventory(inventory) {
+        return this.transitionToRoute('inventory.index.edit', inventory);
     }
 }

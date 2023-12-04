@@ -1,7 +1,7 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
-export default class InventoryIndexRoute extends Route {
+export default class InventoryLowStockRoute extends Route {
     @service store;
 
     queryParams = {
@@ -15,6 +15,6 @@ export default class InventoryIndexRoute extends Route {
     };
 
     model(params) {
-        return this.store.query('inventory', { ...params, with: ['product', 'warehouse', 'batch'] });
+        return this.store.query('inventory', { ...params, view: 'low_stock', with: ['product', 'warehouse'] });
     }
 }

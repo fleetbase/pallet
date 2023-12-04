@@ -39,7 +39,22 @@
                         @triggerClass="form-select form-input"
                         @infiniteScroll={{false}}
                         @renderInPlace={{true}}
-                        @onChange={{fn (mut this.inventory.product)}}
+                        @onChange={{this.handleProductChange}}
+                        @onChangeId={{fn (mut this.inventory.product_uuid)}}
+                        as |model|
+                    >
+                        {{model.name}}
+                    </ModelSelect>
+                </InputGroup>
+                <InputGroup @name="Supplier">
+                    <ModelSelect
+                        @modelName="supplier"
+                        @selectedModel={{this.inventory.supplier}}
+                        @placeholder="Select Supplier"
+                        @triggerClass="form-select form-input"
+                        @infiniteScroll={{false}}
+                        @renderInPlace={{true}}
+                        @onChange={{this.inventory.supplier.name}}
                         @onChangeId={{fn (mut this.inventory.product_uuid)}}
                         as |model|
                     >

@@ -129,4 +129,18 @@ export default class InventoryFormPanelComponent extends Component {
     @action onPressCancel() {
         return contextComponentCallback(this, 'onPressCancel', this.inventory);
     }
+
+    @action handleProductChange(selectedProduct) {
+        this.store
+            .findRecord('supplier', selectedProduct.supplier_uuid)
+            .then((supplier) => {
+                this.inventory.setProperties({
+                    product: selectedProduct,
+                    supplier: supplier,
+                });
+            })
+            .catch((error) => {
+                console.error('Error fetching supplier:', error);
+            });
+    }
 }

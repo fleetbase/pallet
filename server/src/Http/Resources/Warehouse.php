@@ -42,8 +42,8 @@ class Warehouse extends FleetbaseResource
             'tracking_number'      => $this->whenLoaded('trackingNumber', $this->trackingNumber),
             'type'                 => data_get($this, 'type'),
             'meta'                 => data_get($this, 'meta', []),
-            'sections'             => $this->whenLoaded('sections', $this->sections),
-            'docks'                => $this->whenLoaded('docks', $this->docks),
+            'sections'             => $this->whenLoaded('sections', $this->sections, []),
+            'docks'                => $this->whenLoaded('docks', $this->docks, []),
             'updated_at'           => $this->updated_at,
             'created_at'           => $this->created_at,
         ];

@@ -31,7 +31,7 @@ export default class WarehouseEditorComponent extends Component {
     }
 
     @action openEditor() {
-        console.log('openEditor() #overlayContextApi', this.overlayContextApi)
+        console.log('openEditor() #overlayContextApi', this.overlayContextApi);
         if (this.overlayContextApi) {
             this.overlayContextApi.open();
         }

@@ -5,6 +5,7 @@ namespace Fleetbase\Pallet\Models;
 use Fleetbase\Models\Model;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasUuid;
+
 class WarehouseDock extends Model
 {
     use HasUuid;

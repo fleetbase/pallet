@@ -6,9 +6,9 @@
         <Layout::Sidebar::Item @route="console.pallet.suppliers" @icon="user-tie">Suppliers</Layout::Sidebar::Item>
     </Layout::Sidebar::Panel>
     <Layout::Sidebar::Panel @open={{true}} @title="Inventory">
-        <Layout::Sidebar::Item @route="console.pallet.inventory" @icon="barcode">Dashboard</Layout::Sidebar::Item>
-        <Layout::Sidebar::Item @route="console.pallet.low-stock" @icon="exclamation-triangle">Low Stock</Layout::Sidebar::Item>
-        <Layout::Sidebar::Item @route="console.pallet.expired-stock" @icon="calendar-times">Expired Stock</Layout::Sidebar::Item>
+        <Layout::Sidebar::Item @route="console.pallet.inventory" @icon="barcode">All</Layout::Sidebar::Item>
+        <Layout::Sidebar::Item @route="console.pallet.inventory.low-stock" @icon="exclamation-triangle">Low Stock</Layout::Sidebar::Item>
+        <Layout::Sidebar::Item @route="console.pallet.inventory.expired-stock" @icon="calendar-times">Expired Stock</Layout::Sidebar::Item>
     </Layout::Sidebar::Panel>
     <Layout::Sidebar::Panel @open={{true}} @title="Transact">
         <Layout::Sidebar::Item @route="console.pallet.sales-orders" @icon="cash-register">Sales</Layout::Sidebar::Item>

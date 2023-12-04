@@ -161,7 +161,7 @@ export default class PurchaseOrdersIndexController extends Controller {
             ddButtonText: false,
             ddButtonIcon: 'ellipsis-h',
             ddButtonIconPrefix: 'fas',
-            ddMenuLabel: 'Fuel Report Actions',
+            ddMenuLabel: 'Sales Order Actions',
             cellClassNames: 'overflow-visible',
             wrapperClass: 'flex items-center justify-end mx-2',
             width: '10%',
@@ -171,14 +171,14 @@ export default class PurchaseOrdersIndexController extends Controller {
                     fn: this.viewPurchaseOrder,
                 },
                 {
-                    label: 'Edit Fuel Report',
+                    label: 'Edit Sales Order',
                     fn: this.editPurchaseOrder,
                 },
                 {
                     separator: true,
                 },
                 {
-                    label: 'Delete Fuel Report',
+                    label: 'Delete Sales Order',
                     fn: this.deletePurchaseOrder,
                 },
             ],
@@ -214,7 +214,7 @@ export default class PurchaseOrdersIndexController extends Controller {
     }
 
     /**
-     * Toggles dialog to export a fuel report
+     * Toggles dialog to export a Sales Order
      *
      * @void
      */
@@ -223,7 +223,7 @@ export default class PurchaseOrdersIndexController extends Controller {
     }
 
     /**
-     * View the selected fuel report
+     * View the selected Sales Order
      *
      * @param {PurchaseOrderModel} fuelReport
      * @param {Object} options
@@ -234,7 +234,7 @@ export default class PurchaseOrdersIndexController extends Controller {
     }
 
     /**
-     * Create a new fuel report
+     * Create a new Sales Order
      *
      * @void
      */
@@ -243,7 +243,7 @@ export default class PurchaseOrdersIndexController extends Controller {
     }
 
     /**
-     * Edit a fuel report
+     * Edit a Sales Order
      *
      * @param {PurchaseOrderModel} purchaseOrder
      * @void
@@ -253,7 +253,7 @@ export default class PurchaseOrdersIndexController extends Controller {
     }
 
     /**
-     * Prompt to delete a fuel report
+     * Prompt to delete a Sales Order
      *
      * @param {PurchaseOrderModel} purchaseOrder
      * @param {Object} options
@@ -269,7 +269,7 @@ export default class PurchaseOrdersIndexController extends Controller {
     }
 
     /**
-     * Bulk deletes selected fuel report's via confirm prompt
+     * Bulk deletes selected Sales Order's via confirm prompt
      *
      * @param {Array} selected an array of selected models
      * @void

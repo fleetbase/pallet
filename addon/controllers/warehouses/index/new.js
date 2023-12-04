@@ -90,7 +90,7 @@ export default class WarehousesIndexNewController extends Controller {
         this.warehouse = this.store.createRecord('warehouse', {
             type: 'pallet-warehouse',
             status: 'active',
-            meta: {}
+            meta: {},
         });
     }
 }

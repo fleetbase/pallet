@@ -80,9 +80,7 @@ class Inventory extends Model
 
     protected $with = ['product', 'batch', 'warehouse'];
 
-    protected $filterParams = ['supplier_uuid', 'comments','expiry_date_at', 'status', 'company', 'createdBy', 'supplier'];
-
-    
+    protected $filterParams = ['supplier_uuid', 'comments', 'expiry_date_at', 'status', 'company', 'createdBy', 'supplier'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -127,7 +125,9 @@ class Inventory extends Model
                 MAX(pallet_inventories.comments) as latest_comments,
                 GROUP_CONCAT(DISTINCT pallet_batches.uuid) as batch_uuids,
                 GROUP_CONCAT(DISTINCT pallet_batches.batch_number) as batch_numbers,
-                SUM(pallet_inventories.quantity) as total_quantity
+                SUM(pallet_inventories.quantity) as total_quantity,
+                MAX(pallet_inventories.min_quantity) as minimum_quantity,
+                MAX(pallet_inventories.expiry_date_at) as latest_expiry_date_at
             ')
             ->leftJoin('pallet_batches', 'pallet_inventories.batch_uuid', '=', 'pallet_batches.uuid')
             ->groupBy('pallet_inventories.product_uuid');

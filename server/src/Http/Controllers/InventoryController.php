@@ -2,29 +2,50 @@
 
 namespace Fleetbase\Pallet\Http\Controllers;
 
-use Fleetbase\Exceptions\FleetbaseRequestValidationException;
 use Fleetbase\Pallet\Http\Resources\IndexInventory;
-use Fleetbase\Pallet\Models\Batch;
-use Fleetbase\Pallet\Models\Inventory;
-use Illuminate\Http\Request;
 use Fleetbase\Support\Http;
-use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class InventoryController extends PalletResourceController
 {
-    /**
-     * The resource to query.
-     *
-     * @var string
-     */
     public $resource = 'inventory';
-
     public function queryRecord(Request $request)
     {
-        $limit = $request->input('limit');
-        $data  = Inventory::summarizeByProduct()->paginate($limit);
+        $single = $request->boolean('single');
+        // sort set null as we handle via custom query
+        $request->request->add(['sort' => null]);
 
-        IndexInventory::wrap($this->resourcePluralName);
+        $data  = $this->model->queryFromRequest($request, function ($query) {
+            // hotfix! fix the selected columns
+            $queryBuilder = $query->getQuery();
+            array_shift($queryBuilder->columns);
+
+            // use summarize scope
+            $query->summarizeByProduct();
+        });
+
+        if ($single) {
+            $data = Arr::first($data);
+
+            if (!$data) {
+                return response()->error(Str::title($this->resourceSingularlName) . ' not found', 404);
+            }
+
+            if (Http::isInternalRequest($request)) {
+                IndexInventory::wrap($this->resourceSingularlName);
+
+                return new IndexInventory($data);
+            }
+
+            return new IndexInventory($data);
+        }
+        if (Http::isInternalRequest($request)) {
+            IndexInventory::wrap($this->resourcePluralName);
+
+            return IndexInventory::collection($data);
+        }
 
         return IndexInventory::collection($data);
     }
