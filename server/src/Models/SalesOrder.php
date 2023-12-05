@@ -2,6 +2,7 @@
 
 namespace Fleetbase\Pallet\Models;
 
+use Fleetbase\Casts\Json;
 use Fleetbase\Models\Model;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;
@@ -39,7 +40,7 @@ class SalesOrder extends Model
      *
      * @var array
      */
-    protected $searchableColumns = ['uuid', 'public_id', 'company_uuid', 'created_by_uuid', 'transaction_uuid', 'assigned_to_uuid', 'point_of_contact_uuid', 'customer_uuid', 'customer_type', 'status', 'customer_reference_code', 'reference_code', 'reference_url', 'description', 'comments', 'order_date_at', 'expected_delivery_at', 'created_at'];
+    protected $searchableColumns = [ 'customer_type', 'status', 'reference_code', 'reference_url', 'description', 'comments'];
 
     /**
      * The attributes that are mass assignable.
@@ -54,8 +55,7 @@ class SalesOrder extends Model
         'transaction_uuid',
         'assigned_to_uuid',
         'point_of_contact_uuid',
-        'customer_uuid',
-        'customer_type',
+        'supplier_uuid',
         'meta',
         'status',
         'customer_reference_code',
@@ -75,7 +75,7 @@ class SalesOrder extends Model
      * @var array
      */
     protected $casts = [
-        'meta' => 'json',
+        'meta' => Json::class,
     ];
 
     /**
@@ -147,8 +147,8 @@ class SalesOrder extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function customer()
+    public function supplier()
     {
-        return $this->belongsTo(Contact::class, 'customer_uuid', 'uuid');
+        return $this->belongsTo(Supplier::class, 'uuid');
     }
 }

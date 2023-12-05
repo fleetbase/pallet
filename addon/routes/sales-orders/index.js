@@ -10,6 +10,7 @@ export default class SalesOrdersIndexRoute extends Route {
         sort: { refreshModel: true },
         query: { refreshModel: true },
         status: { refreshModel: true },
+        supplier: { refreshModel: true },
     };
 
     model(params) {

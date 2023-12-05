@@ -55,8 +55,14 @@ export default class InventoryFormPanelComponent extends Component {
     constructor() {
         super(...arguments);
         this.inventory = this.args.inventory;
-        this.batch = this.store.createRecord('batch');
+
+        // set batch if provived via component
+        if (!this.inventory.batch) {
+            this.inventory.batch = this.args.inventory.batch || this.store.createRecord('batch');
+        }
+
         applyContextComponentArguments(this);
+        this.setDefaultBatchValues();
     }
 
     /**
@@ -77,13 +83,10 @@ export default class InventoryFormPanelComponent extends Component {
      * @returns {Promise<any>}
      */
     @action save() {
-        const { inventory, batch } = this;
+        const { inventory } = this;
 
         this.loader.showLoader('.next-content-overlay-panel-container', { loadingMessage: 'Saving inventory...', preserveTargetPosition: true });
         this.isLoading = true;
-
-        // set batch to inventory
-        inventory.setProperties({ batch });
 
         contextComponentCallback(this, 'onBeforeSave', inventory);
 
@@ -95,6 +98,7 @@ export default class InventoryFormPanelComponent extends Component {
                     contextComponentCallback(this, 'onAfterSave', inventory);
                 })
                 .catch((error) => {
+                    console.error(error);
                     this.notifications.serverError(error);
                 })
                 .finally(() => {
@@ -102,6 +106,7 @@ export default class InventoryFormPanelComponent extends Component {
                     this.isLoading = false;
                 });
         } catch (error) {
+            console.error(error);
             this.loader.removeLoader('.next-content-overlay-panel-container ');
             this.isLoading = false;
         }
@@ -130,7 +135,7 @@ export default class InventoryFormPanelComponent extends Component {
         return contextComponentCallback(this, 'onPressCancel', this.inventory);
     }
 
-    @action handleProductChange(selectedProduct) {
+    @action defaultProductSupplier(selectedProduct) {
         this.store
             .findRecord('supplier', selectedProduct.supplier_uuid)
             .then((supplier) => {
@@ -142,5 +147,18 @@ export default class InventoryFormPanelComponent extends Component {
             .catch((error) => {
                 console.error('Error fetching supplier:', error);
             });
+    }
+
+    @action setDefaultBatchValues() {
+        const currentDate = new Date().toISOString().split('T')[0];
+
+        // unlikely to need but incase batch isn't initialized, do it here
+        if (!this.inventory.batch) {
+            this.inventory.batch = this.store.createRecord('batch');
+        }
+
+        this.inventory.batch.set('batch_number', currentDate);
+        this.inventory.batch.set('expiry_date_at', currentDate);
+        this.inventory.batch.set('manufacture_date_at', currentDate);
     }
 }

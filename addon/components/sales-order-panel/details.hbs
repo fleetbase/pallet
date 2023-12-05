@@ -5,13 +5,21 @@
                 <div class="field-name">ID</div>
                 <div class="field-value">{{n-a @salesOrder.public_id}}</div>
             </div>
-            <div class="field-info-container col-span-2">
-                <div class="field-name">Customer Type</div>
-                <div class="field-value">{{n-a @salesOrder.customer_type}}</div>
-            </div>
             <div class="field-info-container">
                 <div class="field-name">Status</div>
                 <div class="field-value">{{n-a @salesOrder.status}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">Supplier</div>
+                <div class="field-value">{{n-a @salesOrder.supplier.name}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">Reference Code</div>
+                <div class="field-value">{{n-a @salesOrder.reference_code}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">Reference URL</div>
+                <div class="field-value">{{n-a @salesOrder.reference_url}}</div>
             </div>
             <div class="field-info-container">
                 <div class="field-name">Description</div>
@@ -23,11 +31,11 @@
             </div>
             <div class="field-info-container">
                 <div class="field-name">Order Date</div>
-                <div class="field-value">{{n-a @salesOrder.createdAtFormatted}}</div>
+                <div class="field-value">{{n-a @salesOrder.created_at}}</div>
             </div>
             <div class="field-info-container">
                 <div class="field-name">Delivery Date</div>
-                <div class="field-value">{{n-a @salesOrder.deliveredAtFormatted}}</div>
+                <div class="field-value">{{n-a @salesOrder.expected_delivery_at}}</div>
             </div>
         </div>
     </ContentPanel>

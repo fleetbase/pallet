@@ -169,7 +169,7 @@ export default class InventoryIndexController extends Controller {
         },
         {
             label: 'Batch',
-            valuePath: 'batch.name',
+            valuePath: 'batch.batch_number',
             width: '120px',
             cellComponent: 'click-to-copy',
             resizable: true,

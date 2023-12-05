@@ -3,6 +3,7 @@
 namespace Fleetbase\Pallet\Http\Resources;
 
 use Fleetbase\Http\Resources\FleetbaseResource;
+use Fleetbase\Support\Http;
 
 class Inventory extends FleetbaseResource
 {
@@ -16,8 +17,9 @@ class Inventory extends FleetbaseResource
     public function toArray($request)
     {
         return [
-            'uuid'             => $this->uuid,
-            'public_id'        => $this->public_id,
+            'id'                   => $this->when(Http::isInternalRequest(), $this->incrementing_id, $this->public_id),
+            'uuid'                 => $this->when(Http::isInternalRequest(), $this->uuid),
+            'public_id'            => $this->when(Http::isInternalRequest(), $this->public_id),
             'product_uuid'     => $this->product_uuid,
             'batch_uuid'       => $this->batch_uuid,
             'warehouse_uuid'   => $this->warehouse_uuid,

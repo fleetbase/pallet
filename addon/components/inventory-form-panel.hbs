@@ -39,7 +39,7 @@
                         @triggerClass="form-select form-input"
                         @infiniteScroll={{false}}
                         @renderInPlace={{true}}
-                        @onChange={{this.handleProductChange}}
+                        @onChange={{this.defaultProductSupplier}}
                         @onChangeId={{fn (mut this.inventory.product_uuid)}}
                         as |model|
                     >
@@ -94,23 +94,9 @@
                 <InputGroup @name="Minimum Quantity" @type="number" @value={{this.inventory.min_quantity}} />
             </ContentPanel>
             <ContentPanel @title="Batch" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
-                <InputGroup @name="Batch">
-                    <ModelSelect
-                        @modelName="batch"
-                        @selectedModel={{this.batch}}
-                        @placeholder="Select Batch"
-                        @triggerClass="form-select form-input"
-                        @infiniteScroll={{false}}
-                        @renderInPlace={{true}}
-                        @onChange={{fn (mut this.batch)}}
-                        @onChangeId={{fn (mut this.batch_uuid)}}
-                        as |model|
-                    >
-                        {{model.display_name}}
-                    </ModelSelect>
-                </InputGroup>
-                <InputGroup @name="Batch Quantity" @type="number" @value={{this.batch.quantity}} />
-                <InputGroup @name="Batch Number" @type="number" @value={{this.batch.batch_number}} />
+                <InputGroup @name="Batch Number" @type="text" @value={{this.inventory.batch.batch_number}} />
+                <InputGroup @name="Expiry Date" @type="date" @value={{this.inventory.batch.expiry_date_at}} />
+                <InputGroup @name="Manufactured Date" @type="date" @value={{this.inventory.batch.manufacture_date_at}} />
             </ContentPanel>
         </div>
     </Overlay::Body>

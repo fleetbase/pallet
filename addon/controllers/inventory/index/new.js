@@ -39,6 +39,7 @@ export default class InventoryIndexNewController extends Controller {
      */
     @tracked inventory = this.store.createRecord('inventory', {
         type: 'pallet-inventory',
+        batch: this.store.createRecord('batch'),
         meta: {},
     });
 
@@ -88,6 +89,7 @@ export default class InventoryIndexNewController extends Controller {
     resetForm() {
         this.inventory = this.store.createRecord('inventory', {
             type: 'pallet-inventory',
+            batch: this.store.createRecord('batch'),
             meta: {},
         });
     }

@@ -59,12 +59,12 @@ export default class PurchaseOrderPanelComponent extends Component {
     @tracked tab;
 
     /**
-     * The fuel-report being displayed or edited.
+     * The purchase-order being displayed or edited.
      *
-     * @type {fuelReport}
+     * @type {purchaseOrder}
      * @tracked
      */
-    @tracked fuelReport;
+    @tracked purchaseOrder;
 
     /**
      * Returns the array of tabs available for the panel.
@@ -83,11 +83,11 @@ export default class PurchaseOrderPanelComponent extends Component {
     }
 
     /**
-     * Initializes the fuel-report panel component.
+     * Initializes the purchase-order panel component.
      */
     constructor() {
         super(...arguments);
-        this.fuelReport = this.args.fuelReport;
+        this.purchaseOrder = this.args.purchaseOrder;
         this.tab = this.getTabUsingSlug(this.args.tab);
         applyContextComponentArguments(this);
     }
@@ -116,7 +116,7 @@ export default class PurchaseOrderPanelComponent extends Component {
     }
 
     /**
-     * Handles edit action for the fuel-report.
+     * Handles edit action for the purchase-order.
      *
      * @method
      * @action
@@ -125,7 +125,7 @@ export default class PurchaseOrderPanelComponent extends Component {
         const isActionOverrided = contextComponentCallback(this, 'onEdit', this.purchaseOrder);
 
         if (!isActionOverrided) {
-            this.contextPanel.focus(this.fuelReport, 'editing', {
+            this.contextPanel.focus(this.purchaseOrder, 'editing', {
                 onAfterSave: () => {
                     this.contextPanel.clear();
                 },

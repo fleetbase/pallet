@@ -7,22 +7,21 @@ export default class SalesOrderModel extends Model {
     @attr('string') uuid;
     @attr('string') public_id;
     @attr('string') company_uuid;
+    @attr('string') supplier_uuid;
     @attr('string') created_by_uuid;
     @attr('string') transaction_uuid;
     @attr('string') assigned_to_uuid;
     @attr('string') point_of_contact_uuid;
-    @attr('string') customer_uuid;
 
     /** @relationships */
     @belongsTo('company') company;
     @belongsTo('user') createdBy;
     @belongsTo('transaction') transaction;
     @belongsTo('user') assignedTo;
+    @belongsTo('vendor') supplier;
     @belongsTo('contact') pointOfContact;
-    @belongsTo('contact') customer;
 
     /** @attributes */
-    @attr('string') customer_type;
     @attr('string') status;
     @attr('string') customer_reference_code;
     @attr('string') reference_code;

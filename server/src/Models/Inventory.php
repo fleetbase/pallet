@@ -2,6 +2,7 @@
 
 namespace Fleetbase\Pallet\Models;
 
+use Fleetbase\Casts\Json;
 use Fleetbase\Models\Model;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;
@@ -39,7 +40,7 @@ class Inventory extends Model
      *
      * @var array
      */
-    protected $searchableColumns = ['uuid', 'product_uuid', 'warehouse_uuid', 'quantity', 'min_quantity', 'created_at'];
+    protected $searchableColumns = ['product.name', 'warehouse.address', 'comments'];
 
     /**
      * The attributes that are mass assignable.
@@ -47,12 +48,13 @@ class Inventory extends Model
      * @var array
      */
     protected $fillable = [
-        'uuid',
         'product_uuid',
         'warehouse_uuid',
         'batch_uuid',
         'quantity',
         'min_quantity',
+        'comments',
+        'status',
     ];
 
     /**
@@ -61,7 +63,7 @@ class Inventory extends Model
      * @var array
      */
     protected $casts = [
-        'meta' => 'json',
+        'meta' => Json::class,
     ];
 
     /**
@@ -69,7 +71,7 @@ class Inventory extends Model
      *
      * @var array
      */
-    protected $appends = [];
+    protected $appends = ['incrementing_id'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -81,6 +83,13 @@ class Inventory extends Model
     protected $with = ['product', 'batch', 'warehouse'];
 
     protected $filterParams = ['supplier_uuid', 'comments', 'expiry_date_at', 'status', 'company', 'createdBy', 'supplier'];
+    
+    /**
+     * @return null|int
+     */
+    public function getIncrementingIdAttribute(): ?int {
+        return static::select('id')->where('uuid', $this->uuid)->value('id');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -41,13 +41,6 @@ export default class InventoryModel extends Model {
         return formatDistanceToNow(this.created_at);
     }
 
-    @computed('expiry_date_at') get expiredAt() {
-        if (!isValidDate(this.expiry_date_at)) {
-            return null;
-        }
-        return formatDate(this.expiry_date_at, 'PPP p');
-    }
-
     @computed('updated_at') get updatedAgo() {
         if (!isValidDate(this.updated_at)) {
             return null;

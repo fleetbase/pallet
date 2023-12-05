@@ -83,7 +83,7 @@ export default class SalesOrdersIndexEditController extends Controller {
         }
 
         this.hostRouter.refresh();
-        return this.transitionToRoute('sales-orders.details', salesOrder);
+        return this.transitionToRoute('sales-orders.index.details', salesOrder);
     }
 
     /**

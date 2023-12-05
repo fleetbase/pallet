@@ -68,7 +68,7 @@ export default class SalesOrdersIndexController extends Controller {
      *
      * @var {Array}
      */
-    queryParams = ['page', 'limit', 'sort', 'query', 'public_id', 'created_by', 'updated_by', 'status', 'delivered_at'];
+    queryParams = ['page', 'limit', 'sort', 'query', 'public_id', 'created_by', 'updated_by', 'status', 'delivered_at', 'supplier'];
 
     /**
      * The current page of data being viewed
@@ -76,6 +76,8 @@ export default class SalesOrdersIndexController extends Controller {
      * @var {Integer}
      */
     @tracked page = 1;
+
+    @tracked supplier;
 
     /**
      * The maximum number of items to show per page
@@ -117,6 +119,17 @@ export default class SalesOrdersIndexController extends Controller {
             width: '130px',
             cellComponent: 'table/cell/anchor',
             action: this.viewSalesOrder,
+            resizable: true,
+            sortable: true,
+            filterable: true,
+            hidden: false,
+            filterComponent: 'filter/string',
+        },
+        {
+            label: 'Comments',
+            valuePath: 'comments',
+            width: '130px',
+            cellComponent: 'table/cell/anchor',
             resizable: true,
             sortable: true,
             filterable: true,

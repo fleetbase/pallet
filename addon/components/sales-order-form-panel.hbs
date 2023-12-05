@@ -30,19 +30,20 @@
 
     <Overlay::Body @wrapperClass="new-service-rate-overlay-body px-4 space-y-4 pt-4" @increaseInnerBodyHeightBy={{1000}}>
         <div class="grid grid-cols-1 text-xs dark:text-gray-100">
-            <InputGroup @name="Customer Type">
-                <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
-                    <PowerSelect
-                        @options={{this.customerType}}
-                        @selected={{this.salesOrder.customerType}}
-                        @onChange={{fn (mut this.salesOrder.customerType)}}
-                        @placeholder="Select customer type"
-                        @triggerClass="form-select form-input"
-                        as |customerType|
-                    >
-                        {{smart-humanize customerType}}
-                    </PowerSelect>
-                </div>
+            <InputGroup @name="Supplier">
+                <ModelSelect
+                    @modelName="vendor"
+                    @selectedModel={{this.salesOrder.supplier}}
+                    @placeholder="Select Supplier"
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{fn (mut this.salesOrder.supplier)}}
+                    @onChangeId={{fn (mut this.salesOrder.supplier_uuid)}}
+                    as |model|
+                >
+                    {{model.name}}
+                </ModelSelect>
             </InputGroup>
             <InputGroup @name="Status">
                 <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
@@ -58,13 +59,15 @@
                     </PowerSelect>
                 </div>
             </InputGroup>
+            <InputGroup @name="Reference Code" @type="text" @value={{this.salesOrder.reference_code}} />
+            <InputGroup @name="Reference URL" @type="text" @value={{this.salesOrder.reference_url}} />
             <InputGroup @name="Sales order description">
                 <Textarea @value={{this.salesOrder.description}} aria-label="Description" class="w-full form-input" placeholder="Description" rows={{5}} />
             </InputGroup>
             <InputGroup @name="Sales order comments">
                 <Textarea @value={{this.salesOrder.comments}} aria-label="Comments" class="w-full form-input" placeholder="Comments" rows={{5}} />
             </InputGroup>
-            <InputGroup @name="Delivery date" @type="date" @value={{this.salesOrder.deliveredAt}} />
+            <InputGroup @name="Delivery date" @type="date" @value={{this.salesOrder.expected_delivery_at}} />
         </div>
     </Overlay::Body>
 </Overlay>

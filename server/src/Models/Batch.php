@@ -2,13 +2,16 @@
 
 namespace Fleetbase\Pallet\Models;
 
+use Fleetbase\Casts\Json;
 use Fleetbase\Models\Model;
 use Fleetbase\Traits\HasApiModelBehavior;
+use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 
 class Batch extends Model
 {
     use HasUuid;
+    use HasPublicId;
     use HasApiModelBehavior;
 
     /**
@@ -37,7 +40,7 @@ class Batch extends Model
      *
      * @var array
      */
-    protected $searchableColumns = ['uuid', 'batch_number', 'product_uuid', 'manufacture_date_at', 'expiry_date_at', 'quantity', 'created_at'];
+    protected $searchableColumns = ['batch_number', 'product.name'];
 
     /**
      * The attributes that are mass assignable.
@@ -45,6 +48,7 @@ class Batch extends Model
      * @var array
      */
     protected $fillable = [
+        'id',
         'uuid',
         'batch_number',
         'product_uuid',
@@ -61,7 +65,7 @@ class Batch extends Model
      * @var array
      */
     protected $casts = [
-        'meta' => 'json',
+        'meta' => Json::class,
     ];
 
     /**
@@ -69,7 +73,7 @@ class Batch extends Model
      *
      * @var array
      */
-    protected $appends = [];
+    protected $appends = ['incrementing_id'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -78,7 +82,14 @@ class Batch extends Model
      */
     protected $hidden = [];
 
-    protected $with = ['inventory'];
+    protected $with = [];
+
+    /**
+     * @return null|int
+     */
+    public function getIncrementingIdAttribute(): ?int {
+        return static::select('id')->where('uuid', $this->uuid)->value('id');
+    }
 
     /**
      * Relationship with the company associated with the batch.
