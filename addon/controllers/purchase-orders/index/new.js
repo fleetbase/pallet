@@ -42,7 +42,7 @@ export default class PurchaseOrdersIndexNewController extends Controller {
     /**
      * The fuel report being created.
      *
-     * @var {FuelReportModel}
+     * @var {SalesOrderModel}
      */
     @tracked purchaseOrder = this.store.createRecord('purchase-order');
 

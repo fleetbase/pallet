@@ -15,4 +15,15 @@ export default class PalletProductSerializer extends ApplicationSerializer.exten
     payloadKeyFromModelName() {
         return 'product';
     }
+
+    /**
+     * Embedded relationship attributes
+     *
+     * @var {Object}
+     */
+    get attrs() {
+        return {
+            supplier: { embedded: 'always' },
+        };
+    }
 }

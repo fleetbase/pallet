@@ -34,11 +34,26 @@ export default class SalesOrderModel extends Model {
     @attr('date') updated_at;
 
     /** @computed */
+
     @computed('created_at') get createdAgo() {
         if (!isValidDate(this.created_at)) {
             return null;
         }
         return formatDistanceToNow(this.created_at);
+    }
+
+    @computed('created_at') get createdAt() {
+        if (!isValidDate(this.created_at)) {
+            return null;
+        }
+        return formatDate(this.created_at, 'PPP p');
+    }
+
+    @computed('created_at') get createdAtShort() {
+        if (!isValidDate(this.created_at)) {
+            return null;
+        }
+        return formatDate(this.created_at, 'PP');
     }
 
     @computed('updated_at') get updatedAgo() {
@@ -53,5 +68,20 @@ export default class SalesOrderModel extends Model {
             return null;
         }
         return formatDate(this.updated_at, 'PPP p');
+    }
+
+    @computed('updated_at') get updatedAtShort() {
+        if (!isValidDate(this.updated_at)) {
+            return null;
+        }
+        return formatDate(this.updated_at, 'PP');
+    }
+
+    @computed('expected_delivery_at') get expectedDeliveryDate() {
+        if (!isValidDate(this.expected_delivery_at)) {
+            return null;
+        }
+
+        return formatDate(this.expected_delivery_at, 'yyyy-MM-dd');
     }
 }

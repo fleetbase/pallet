@@ -5,7 +5,7 @@ namespace Fleetbase\Pallet\Http\Resources;
 use Fleetbase\Http\Resources\FleetbaseResource;
 use Fleetbase\Support\Http;
 
-class SalesOrder extends FleetbaseResource
+class PurchaseOrder extends FleetbaseResource
 {
     /**
      * Transform the resource into an array.

@@ -2,6 +2,7 @@
 
 namespace Fleetbase\Pallet\Models;
 
+use Fleetbase\Casts\Json;
 use Fleetbase\Models\Model;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;
@@ -39,7 +40,7 @@ class PurchaseOrder extends Model
      *
      * @var array
      */
-    protected $searchableColumns = ['uuid', 'public_id', 'company_uuid', 'created_by_uuid', 'supplier_uuid', 'transaction_uuid', 'assigned_to_uuid', 'point_of_contact_uuid', 'reference_code', 'reference_url', 'description', 'comments', 'currency', 'status', 'order_created_at', 'expected_delivery_at', 'created_at'];
+    protected $searchableColumns = ['reference_code', 'reference_url', 'description', 'comments', 'currency', 'status'];
 
     /**
      * The attributes that are mass assignable.
@@ -67,13 +68,17 @@ class PurchaseOrder extends Model
         'updated_at',
     ];
 
+    public $timestamps = true;
+
+    protected $dates = ['expected_delivery_at'];
+
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
     protected $casts = [
-        'meta' => 'json',
+        'meta' => JSON::class,
     ];
 
     /**
@@ -117,7 +122,7 @@ class PurchaseOrder extends Model
      */
     public function supplier()
     {
-        return $this->belongsTo(Vendor::class, 'supplier_uuid', 'uuid');
+        return $this->belongsTo(Supplier::class, 'supplier_uuid', 'uuid');
     }
 
     /**
@@ -148,5 +153,15 @@ class PurchaseOrder extends Model
     public function pointOfContact()
     {
         return $this->belongsTo(Contact::class, 'point_of_contact_uuid', 'uuid');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->created_at = now();
+            $model->order_created_at = now();
+        });
     }
 }

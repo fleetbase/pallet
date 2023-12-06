@@ -40,7 +40,7 @@ class SalesOrder extends Model
      *
      * @var array
      */
-    protected $searchableColumns = [ 'customer_type', 'status', 'reference_code', 'reference_url', 'description', 'comments'];
+    protected $searchableColumns = ['customer_type', 'status', 'reference_code', 'reference_url', 'description', 'comments'];
 
     /**
      * The attributes that are mass assignable.
@@ -68,6 +68,10 @@ class SalesOrder extends Model
         'created_at',
         'updated_at',
     ];
+
+    public $timestamps = true;
+
+    protected $dates = ['expected_delivery_at'];
 
     /**
      * The attributes that should be cast to native types.
@@ -147,8 +151,24 @@ class SalesOrder extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
+    
+    /**
+     * Relationship with the supplier associated with the purchase order.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function supplier()
     {
-        return $this->belongsTo(Supplier::class, 'uuid');
+        return $this->belongsTo(Supplier::class, 'supplier_uuid', 'uuid');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->created_at = now();
+            $model->order_date_at = now();
+        });
     }
 }

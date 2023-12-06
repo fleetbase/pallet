@@ -68,7 +68,7 @@ export default class SalesOrdersIndexController extends Controller {
      *
      * @var {Array}
      */
-    queryParams = ['page', 'limit', 'sort', 'query', 'public_id', 'created_by', 'updated_by', 'status', 'delivered_at', 'supplier'];
+    queryParams = ['page', 'limit', 'sort', 'query', 'public_id', 'created_by', 'updated_by', 'status', 'delivered_at'];
 
     /**
      * The current page of data being viewed
@@ -77,7 +77,6 @@ export default class SalesOrdersIndexController extends Controller {
      */
     @tracked page = 1;
 
-    @tracked supplier;
 
     /**
      * The maximum number of items to show per page
@@ -292,7 +291,7 @@ export default class SalesOrdersIndexController extends Controller {
 
         this.crud.bulkDelete(selected, {
             modelNamePath: 'public_id',
-            acceptButtonText: "Delete Sales Order's",
+            acceptButtonText: "Delete Sales Orders",
             fetchOptions: {
                 namespace: 'pallet/int/v1',
             },

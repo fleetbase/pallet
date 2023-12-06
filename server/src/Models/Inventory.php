@@ -48,6 +48,10 @@ class Inventory extends Model
      * @var array
      */
     protected $fillable = [
+        'manufactured_date_at',
+        'expiry_date_at',
+        'created_at',
+        'updated_at',
         'product_uuid',
         'warehouse_uuid',
         'batch_uuid',
@@ -56,6 +60,10 @@ class Inventory extends Model
         'comments',
         'status',
     ];
+
+    public $timestamps = true;
+
+    protected $dates = ['expiry_date_at'];
 
     /**
      * The attributes that should be cast to native types.
@@ -102,6 +110,14 @@ class Inventory extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class, 'supplier_uuid', 'uuid');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function warehouse()
     {
         return $this->belongsTo(\Fleetbase\FleetOps\Models\Place::class);
@@ -140,5 +156,15 @@ class Inventory extends Model
             ')
             ->leftJoin('pallet_batches', 'pallet_inventories.batch_uuid', '=', 'pallet_batches.uuid')
             ->groupBy('pallet_inventories.product_uuid');
+    }
+    
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->created_at = now();
+            $model->manufactured_date_at = now();
+        });
     }
 }

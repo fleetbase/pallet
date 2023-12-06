@@ -5,29 +5,9 @@
                 <div class="field-name">ID</div>
                 <div class="field-value">{{n-a @purchaseOrder.public_id}}</div>
             </div>
-            <div class="field-info-container col-span-2">
-                <div class="field-name">Company</div>
-                <div class="field-value">{{n-a @purchaseOrder.company.name}}</div>
-            </div>
-            <div class="field-info-container">
-                <div class="field-name">Created By</div>
-                <div class="field-value">{{n-a @purchaseOrder.createdBy.name}}</div>
-            </div>
             <div class="field-info-container">
                 <div class="field-name">Supplier</div>
                 <div class="field-value">{{n-a @purchaseOrder.supplier.name}}</div>
-            </div>
-            <div class="field-info-container">
-                <div class="field-name">Transaction</div>
-                <div class="field-value">{{n-a @purchaseOrder.transaction.name}}</div>
-            </div>
-            <div class="field-info-container">
-                <div class="field-name">Assigned To</div>
-                <div class="field-value">{{n-a @purchaseOrder.assignedTo.name}}</div>
-            </div>
-            <div class="field-info-container">
-                <div class="field-name">Point of Contact</div>
-                <div class="field-value">{{n-a @purchaseOrder.pointOfContact.name}}</div>
             </div>
             <div class="field-info-container">
                 <div class="field-name">Reference Code</div>
@@ -46,20 +26,16 @@
                 <div class="field-value">{{n-a @purchaseOrder.comments}}</div>
             </div>
             <div class="field-info-container">
-                <div class="field-name">Currency</div>
-                <div class="field-value">{{n-a @purchaseOrder.currency}}</div>
-            </div>
-            <div class="field-info-container">
                 <div class="field-name">Status</div>
                 <div class="field-value">{{n-a @purchaseOrder.status}}</div>
             </div>
             <div class="field-info-container">
                 <div class="field-name">Order Created At</div>
-                <div class="field-value">{{n-a @purchaseOrder.orderCreatedAt}}</div>
+                <div class="field-value">{{n-a @purchaseOrder.created_at}}</div>
             </div>
             <div class="field-info-container">
                 <div class="field-name">Expected Delivery At</div>
-                <div class="field-value">{{n-a @purchaseOrder.expectedDeliveryAt}}</div>
+                <div class="field-value">{{n-a @purchaseOrder.expected_delivery_at}}</div>
             </div>
         </div>
     </ContentPanel>

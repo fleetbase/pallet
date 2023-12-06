@@ -152,13 +152,18 @@ export default class InventoryFormPanelComponent extends Component {
     @action setDefaultBatchValues() {
         const currentDate = new Date().toISOString().split('T')[0];
 
-        // unlikely to need but incase batch isn't initialized, do it here
         if (!this.inventory.batch) {
             this.inventory.batch = this.store.createRecord('batch');
         }
 
         this.inventory.batch.set('batch_number', currentDate);
-        this.inventory.batch.set('expiry_date_at', currentDate);
-        this.inventory.batch.set('manufacture_date_at', currentDate);
+    }
+
+    @action setExpiryDate(event) {
+        const {
+            target: { value },
+        } = event;
+
+        this.inventory.set('expiry_date_at', new Date(value));
     }
 }

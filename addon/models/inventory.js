@@ -32,6 +32,7 @@ export default class InventoryModel extends Model {
     @attr('date') created_at;
     @attr('date') updated_at;
     @attr('date') expiry_date_at;
+    @attr('date') manufactured_date_at;
 
     /** @computed */
     @computed('created_at') get createdAgo() {
@@ -39,6 +40,20 @@ export default class InventoryModel extends Model {
             return null;
         }
         return formatDistanceToNow(this.created_at);
+    }
+
+    @computed('created_at') get createdAt() {
+        if (!isValidDate(this.created_at)) {
+            return null;
+        }
+        return formatDate(this.created_at, 'PPP p');
+    }
+
+    @computed('created_at') get createdAtShort() {
+        if (!isValidDate(this.created_at)) {
+            return null;
+        }
+        return formatDate(this.created_at, 'PP');
     }
 
     @computed('updated_at') get updatedAgo() {
@@ -53,5 +68,20 @@ export default class InventoryModel extends Model {
             return null;
         }
         return formatDate(this.updated_at, 'PPP p');
+    }
+
+    @computed('updated_at') get updatedAtShort() {
+        if (!isValidDate(this.updated_at)) {
+            return null;
+        }
+        return formatDate(this.updated_at, 'PP');
+    }
+
+    @computed('expiry_date_at') get expiryDate() {
+        if (!isValidDate(this.expiry_date_at)) {
+            return null;
+        }
+
+        return formatDate(this.expiry_date_at, 'yyyy-MM-dd');
     }
 }

@@ -143,10 +143,12 @@ export default class PurchaseOrderFormPanelComponent extends Component {
     @action onPressCancel() {
         return contextComponentCallback(this, 'onPressCancel', this.purchaseOrder);
     }
+    
+    @action setExpectedDeliveryDate(event) {
+        const {
+            target: { value },
+        } = event;
 
-    /**
-     * Uploads a file to the server for the purchaseOrder.
-     *
-     * @param {File} file
-     */
+        this.purchaseOrder.set('expected_delivery_at', new Date(value));
+    }
 }

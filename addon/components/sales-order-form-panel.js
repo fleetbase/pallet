@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import { isValid as isValidDate } from 'date-fns';
 import contextComponentCallback from '../utils/context-component-callback';
 import applyContextComponentArguments from '../utils/apply-context-component-arguments';
 
@@ -149,4 +150,11 @@ export default class SalesOrderFormPanelComponent extends Component {
      *
      * @param {File} file
      */
+    @action setExpectedDeliveryDate(event) {
+        const {
+            target: { value },
+        } = event;
+
+        this.salesOrder.set('expected_delivery_at', new Date(value));
+    }
 }

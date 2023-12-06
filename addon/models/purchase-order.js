@@ -39,18 +39,25 @@ export default class PurchaseOrderModel extends Model {
     @attr('boolean') isDeleted;
 
     /** @computed */
-    @computed('order_created_at') get orderCreatedAt() {
-        if (!isValidDate(this.order_created_at)) {
+    @computed('created_at') get createdAgo() {
+        if (!isValidDate(this.created_at)) {
             return null;
         }
-        return formatDate(this.order_created_at, 'PPP p');
+        return formatDistanceToNow(this.created_at);
     }
 
-    @computed('expected_delivery_at') get expectedDeliveryAt() {
-        if (!isValidDate(this.expected_delivery_at)) {
+    @computed('created_at') get createdAt() {
+        if (!isValidDate(this.created_at)) {
             return null;
         }
-        return formatDate(this.expected_delivery_at, 'PPP p');
+        return formatDate(this.created_at, 'PPP p');
+    }
+
+    @computed('created_at') get createdAtShort() {
+        if (!isValidDate(this.created_at)) {
+            return null;
+        }
+        return formatDate(this.created_at, 'PP');
     }
 
     @computed('updated_at') get updatedAgo() {
@@ -65,5 +72,20 @@ export default class PurchaseOrderModel extends Model {
             return null;
         }
         return formatDate(this.updated_at, 'PPP p');
+    }
+
+    @computed('updated_at') get updatedAtShort() {
+        if (!isValidDate(this.updated_at)) {
+            return null;
+        }
+        return formatDate(this.updated_at, 'PP');
+    }
+
+    @computed('expected_delivery_at') get expectedDeliveryDate() {
+        if (!isValidDate(this.expected_delivery_at)) {
+            return null;
+        }
+
+        return formatDate(this.expected_delivery_at, 'yyyy-MM-dd');
     }
 }

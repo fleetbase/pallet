@@ -61,13 +61,15 @@
             </InputGroup>
             <InputGroup @name="Reference Code" @type="text" @value={{this.salesOrder.reference_code}} />
             <InputGroup @name="Reference URL" @type="text" @value={{this.salesOrder.reference_url}} />
-            <InputGroup @name="Sales order description">
+            <InputGroup @name="Sale Description">
                 <Textarea @value={{this.salesOrder.description}} aria-label="Description" class="w-full form-input" placeholder="Description" rows={{5}} />
             </InputGroup>
-            <InputGroup @name="Sales order comments">
+            <InputGroup @name="Comments">
                 <Textarea @value={{this.salesOrder.comments}} aria-label="Comments" class="w-full form-input" placeholder="Comments" rows={{5}} />
             </InputGroup>
-            <InputGroup @name="Delivery date" @type="date" @value={{this.salesOrder.expected_delivery_at}} />
+            <InputGroup @name="Expected Delivery Date">
+                <input value={{this.salesOrder.expectedDeliveryDate}} type="date" class="form-input w-full" {{on "change" this.setExpectedDeliveryDate}} />
+            </InputGroup>
         </div>
     </Overlay::Body>
 </Overlay>

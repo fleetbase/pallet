@@ -30,6 +30,21 @@
 
     <Overlay::Body @wrapperClass="new-service-rate-overlay-body px-4 space-y-4 pt-4" @increaseInnerBodyHeightBy={{1000}}>
         <div class="grid grid-cols-1 text-xs dark:text-gray-100">
+            <InputGroup @name="Supplier">
+                <ModelSelect
+                    @modelName="vendor"
+                    @selectedModel={{this.purchaseOrder.supplier}}
+                    @placeholder="Select Supplier"
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{fn (mut this.purchaseOrder.supplier)}}
+                    @onChangeId={{fn (mut this.purchaseOrder.supplier_uuid)}}
+                    as |model|
+                >
+                    {{model.name}}
+                </ModelSelect>
+            </InputGroup>
             <InputGroup @name="Status">
                 <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
                     <PowerSelect
@@ -44,13 +59,17 @@
                     </PowerSelect>
                 </div>
             </InputGroup>
-            <InputGroup @name="Purchase order description">
+            <InputGroup @name="Reference Code" @type="text" @value={{this.purchaseOrder.reference_code}} />
+            <InputGroup @name="Reference URL" @type="text" @value={{this.purchaseOrder.reference_url}} />
+            <InputGroup @name="Description">
                 <Textarea @value={{this.purchaseOrder.description}} aria-label="Description" class="w-full form-input" placeholder="Description" rows={{5}} />
             </InputGroup>
-            <InputGroup @name="Purchase order comments">
+            <InputGroup @name="Comments">
                 <Textarea @value={{this.purchaseOrder.comments}} aria-label="Comments" class="w-full form-input" placeholder="Comments" rows={{5}} />
             </InputGroup>
-            <InputGroup @name="Delivery date" @type="date" @value={{this.purchaseOrder.deliveredAt}} />
+            <InputGroup @name="Expected Delivery Date">
+                <input value={{this.purchaseOrder.expectedDeliveryDate}} type="date" class="form-input w-full" {{on "change" this.setExpectedDeliveryDate}} />
+            </InputGroup>
         </div>
     </Overlay::Body>
 </Overlay>

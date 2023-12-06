@@ -95,8 +95,9 @@
             </ContentPanel>
             <ContentPanel @title="Batch" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
                 <InputGroup @name="Batch Number" @type="text" @value={{this.inventory.batch.batch_number}} />
-                <InputGroup @name="Expiry Date" @type="date" @value={{this.inventory.batch.expiry_date_at}} />
-                <InputGroup @name="Manufactured Date" @type="date" @value={{this.inventory.batch.manufacture_date_at}} />
+                <InputGroup @name="Expiry Date">
+                    <input value={{this.inventory.expiryDate}} type="date" class="form-input w-full" {{on "change" this.setExpiryDate}} />
+                </InputGroup>
             </ContentPanel>
         </div>
     </Overlay::Body>

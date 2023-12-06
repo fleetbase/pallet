@@ -74,7 +74,6 @@ export default class ProductsIndexController extends Controller {
         'query',
         'internal_id',
         'public_id',
-        'supplier',
         'sku',
         'created_at',
         'updated_at',
@@ -129,13 +128,6 @@ export default class ProductsIndexController extends Controller {
      * @var {String}
      */
     @tracked product_id;
-
-    /**
-     * The filterable param `supplier`
-     *
-     * @var {String}
-     */
-    @tracked supplier;
 
     /**
      * The filterable param `internal_id`
@@ -290,6 +282,10 @@ export default class ProductsIndexController extends Controller {
                 {
                     label: 'Edit Product',
                     fn: this.editProduct,
+                },
+                {
+                    label: 'Delete Product',
+                    fn: this.deleteProduct,
                 },
             ],
             sortable: false,

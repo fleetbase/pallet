@@ -89,9 +89,17 @@ export default class ProductPanelComponent extends Component {
     constructor() {
         super(...arguments);
         this.product = this.args.product;
-        console.log('[this.product]', this.product);
+        this.getProductSupplier();
         this.tab = this.getTabUsingSlug(this.args.tab);
         applyContextComponentArguments(this);
+    }
+
+    getProductSupplier() {
+        if (this.product.supplier_uuid) {
+            this.store.findRecord('vendor', this.product.supplier_uuid).then((vendor) => {
+                this.product.set('supplier', vendor);
+            });
+        }
     }
 
     /**
