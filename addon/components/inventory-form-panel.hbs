@@ -55,7 +55,7 @@
                         @infiniteScroll={{false}}
                         @renderInPlace={{true}}
                         @onChange={{this.inventory.supplier.name}}
-                        @onChangeId={{fn (mut this.inventory.product_uuid)}}
+                        @onChangeId={{fn (mut this.inventory.supplier_uuid)}}
                         as |model|
                     >
                         {{model.name}}
@@ -96,7 +96,7 @@
             <ContentPanel @title="Batch" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
                 <InputGroup @name="Batch Number" @type="text" @value={{this.inventory.batch.batch_number}} />
                 <InputGroup @name="Expiry Date">
-                    <input value={{this.inventory.expiryDate}} type="date" class="form-input w-full" {{on "change" this.setExpiryDate}} />
+                    <input value={{this.inventory.batch.expiryDate}} type="date" class="form-input w-full" {{on "change" this.setExpiryDate}} />
                 </InputGroup>
             </ContentPanel>
         </div>

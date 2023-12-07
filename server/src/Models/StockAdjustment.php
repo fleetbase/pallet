@@ -2,13 +2,16 @@
 
 namespace Fleetbase\Pallet\Models;
 
+use Fleetbase\Casts\Json;
 use Fleetbase\Models\Model;
 use Fleetbase\Traits\HasApiModelBehavior;
+use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 
 class StockAdjustment extends Model
 {
     use HasUuid;
+    use HasPublicId;
     use HasApiModelBehavior;
 
     /**
@@ -26,11 +29,25 @@ class StockAdjustment extends Model
     protected $singularName = 'stock_adjustment';
 
     /**
+     * Overwrite both entity resource name with `payloadKey`.
+     *
+     * @var string
+     */
+    protected $payloadKey = 'stock_adjustment';
+
+    /**
+     * The type of `public_id` to generate.
+     *
+     * @var string
+     */
+    protected $publicIdType = 'stock_adjustment';
+
+    /**
      * These attributes that can be queried.
      *
      * @var array
      */
-    protected $searchableColumns = ['uuid', 'public_id', 'company_uuid', 'created_by_uuid', 'product_uuid', 'created_at'];
+    protected $searchableColumns = ['reason'];
 
     /**
      * The attributes that are mass assignable.
@@ -44,7 +61,6 @@ class StockAdjustment extends Model
         'created_by_uuid',
         'product_uuid',
         'assignee_uuid',
-        'meta',
         'type',
         'reason',
         'approval_required',
@@ -61,7 +77,7 @@ class StockAdjustment extends Model
      * @var array
      */
     protected $casts = [
-        'meta' => 'json',
+        'meta' => JSON::class,
     ];
 
     /**
@@ -105,7 +121,7 @@ class StockAdjustment extends Model
      */
     public function product()
     {
-        return $this->belongsTo(Entity::class, 'product_uuid', 'uuid');
+        return $this->belongsTo(Product::class, 'product_uuid', 'uuid');
     }
 
     public function user()

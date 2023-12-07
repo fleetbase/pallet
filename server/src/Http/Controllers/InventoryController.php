@@ -66,6 +66,8 @@ class InventoryController extends PalletResourceController
                 'product_uuid' => data_get($data, 'product_uuid'),
                 'batch_number' => data_get($data, 'batch_number', now()->format('Y-m-d')),
                 'quantity' => data_get($data, 'quantity', 0),
+                'expiry_date_at' => data_get($data, 'expiry_date_at'),
+                'manufacture_date_at' => data_get($data, 'manufacture_date_at'),
             ]);
             $batch->save();
 
@@ -80,7 +82,6 @@ class InventoryController extends PalletResourceController
                 'min_quantity' => data_get($data, 'min_quantity', 0),
                 'comments' => data_get($data, 'comments'),
                 'expiry_date_at' => data_get($data, 'expiry_date_at'),
-                'manufactured_date_at' => data_get($data, 'manufactured_date_at')
             ]);
 
             $inventory->batch()->associate($batch);

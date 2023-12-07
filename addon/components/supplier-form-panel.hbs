@@ -54,7 +54,8 @@
                         @triggerClass="form-select form-input"
                         @infiniteScroll={{false}}
                         @renderInPlace={{true}}
-                        @onChange={{this.supplier.place.address}}
+                        @onChange={{fn (mut this.supplier.place)}}
+                        @onChangeId={{fn (mut this.supplier.place_uuid)}}
                         as |model|
                     >
                         <div class="flex items-center flex-row justify-between">

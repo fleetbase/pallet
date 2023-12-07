@@ -1,0 +1,17 @@
+<Layout::Section::Header @title="Product Category">
+    <Button @icon="envelope" @type="primary" @text="Create Category" {{on "click" this.createCategory}} class="mr-2" />
+    <Button @icon="trash" @type="danger" @text="Delete" {{on "click" this.delete}} />
+</Layout::Section::Header>
+
+<Layout::Section::Body class="h-full w-full">
+    <div class="max-h-[calc(100vh-10rem)] h-full w-full overflow-y-scroll">
+        <div class="h-full w-full">
+        </div>
+    </div>
+</Layout::Section::Body>
+
+<div class="fixed bottom-0 w-full">
+    <Layout::Section::Footer>
+        <Pagination @meta={{@model.meta}} @currentPage={{this.page}} @onPageChange={{fn (mut this.page)}} @tfootVerticalOffset="53" @tfootVerticalOffsetElements=".next-view-section-subheader" />
+    </Layout::Section::Footer>
+</div>
