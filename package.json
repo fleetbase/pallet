@@ -42,8 +42,8 @@
   },
   "dependencies": {
     "@babel/core": "^7.23.2",
-    "@fleetbase/ember-core": "^0.1.8",
-    "@fleetbase/ember-ui": "^0.2.5",
+    "@fleetbase/ember-core": "link:../ember-core",
+    "@fleetbase/ember-ui": "link:../ember-ui",
     "@fleetbase/fleetops-data": "^0.1.5",
     "@fortawesome/ember-fontawesome": "^0.4.1",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
@@ -77,7 +77,7 @@
     "ember-composable-helpers": "^5.0.0",
     "ember-concurrency": "^3.1.1",
     "ember-concurrency-decorators": "^2.0.3",
-    "ember-data": "^5.3.0",
+    "ember-data": "^4.12.5",
     "ember-engines": "^0.9.0",
     "ember-load-initializers": "^2.1.2",
     "ember-math-helpers": "^4.0.0",
@@ -104,8 +104,7 @@
     "webpack": "^5.89.0"
   },
   "peerDependencies": {
-    "ember-engines": "^0.9.0",
-    "ember-source": ">= 4.0.0"
+    "ember-engines": "^0.9.0"
   },
   "engines": {
     "node": ">= 18"
