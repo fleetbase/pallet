@@ -1,1 +1,29 @@
-{{yield}}
+<ContentPanel @title="Categories" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
+    <div class="mt-3 flex items-center justify-end">
+        <Button @type="primary" @size="sm" @icon="plus" @text="Add category" @onClick={{this.addCategory}} @disabled={{this.isLoading}} @isLoading={{this.isLoading}} />
+    </div>
+    <div class="mt-3">
+        <ul>
+            {{#each this.categories as |category|}}
+                    <div class="flex justify-between items-center border-b border-gray-700 py-2">
+                        <span>{{category.name}}</span>
+                        <div class="flex items-center space-x-2">
+                            <Button @type="info" @size="sm" @icon="eye" @text="Add subcategories" @onClick={{fn this.addSubCategory category}} />
+                            <Button @type="danger" @size="sm" @icon="trash" @text="Delete" @onClick={{fn this.deleteCategory category}} />
+                        </div>
+                    </div>
+                {{#each this.categories as |subCategory|}}
+                    {{#if (and (eq subCategory.parent.id category.id) (not (eq subCategory.id category.id)))}}
+                        <div class="ml-4 flex justify-between items-center border-b border-gray-700 py-2">
+                            <span>{{subCategory.name}}</span>
+                            <div class="flex items-center space-x-2">
+                                <Button @type="info" @size="sm" @icon="eye" @text="Add subcategories" @onClick={{fn this.addSubCategory subCategory}} />
+                                <Button @type="danger" @size="sm" @icon="trash" @text="Delete" @onClick={{fn this.deleteCategory subCategory}} />
+                            </div>
+                        </div>
+                    {{/if}}
+                {{/each}}
+            {{/each}}
+        </ul>
+    </div>
+</ContentPanel>
