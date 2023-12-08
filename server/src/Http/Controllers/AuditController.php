@@ -5,7 +5,7 @@ namespace Fleetbase\Pallet\Http\Controllers;
 class AuditController extends PalletResourceController
 {
     /**
-     * The resource to query
+     * The resource to query.
      *
      * @var string
      */

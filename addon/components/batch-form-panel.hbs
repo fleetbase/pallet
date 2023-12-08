@@ -1,0 +1,55 @@
+<Overlay
+    @onLoad={{this.setOverlayContext}}
+    @position="right"
+    @noBackdrop={{true}}
+    @fullHeight={{true}}
+    @isResizeble={{or this.isResizable @isResizable}}
+    @width={{or this.width @width "600px"}}
+>
+    <Overlay::Header
+        @title={{if this.batch.public_id this.batch.name "Add Batch"}}
+        @status={{this.batch.public_id}}
+        @hideStatusDot={{true}}
+        @createdAt={{this.batch.createdAt}}
+        @titleWrapperClass="leading-5"
+    >
+        <div class="flex flex-1 justify-end">
+            <Button
+                @icon={{if this.batch.id "save" "check"}}
+                @type="primary"
+                @text={{if this.batch.id "Save Batch" "Add Batch"}}
+                @onClick={{this.save}}
+                @wrapperClass="mr-2"
+            />
+            {{#if this.batch.id}}
+                <Button @type="default" @icon="batch" @helpText="View batch details" @onClick={{this.onViewDetails}} @wrapperClass="mr-2" />
+            {{/if}}
+            <Button @type="default" @icon="times" @helpText={{if this.batch.id "Cancel edit batch" "Cancel add batch"}} @onClick={{this.onPressCancel}} />
+        </div>
+    </Overlay::Header>
+
+    <Overlay::Body @wrapperClass="new-service-rate-overlay-body px-4 space-y-4 pt-4" @increaseInnerBodyHeightBy={{1000}}>
+        <div class="grid grid-cols-1 text-xs dark:text-gray-100">
+            <InputGroup @name="Product">
+                <ModelSelect
+                    @modelName="pallet-product"
+                    @selectedModel={{this.batch.product}}
+                    @placeholder="Select Product"
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{fn (mut this.batch.product)}}
+                    @onChangeId={{fn (mut this.batch.product_uuid)}}
+                    as |model|
+                >
+                    {{model.name}}
+                </ModelSelect>
+            </InputGroup>
+            <InputGroup @name="Quantity" @type="number" @value={{this.batch.quantity}} />
+            <InputGroup @name="Batch Number" @type="number" @value={{this.batch.batch_number}} />
+            <InputGroup @name="Batch Reason">
+                <Textarea @value={{this.batch.reason}} aria-label="Reason" class="w-full form-input" placeholder="Reason" rows={{5}} />
+            </InputGroup>
+        </div>
+    </Overlay::Body>
+</Overlay>

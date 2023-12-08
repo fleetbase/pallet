@@ -10,10 +10,11 @@ export default class InventoryIndexRoute extends Route {
         sort: { refreshModel: true },
         query: { refreshModel: true },
         product: { refreshModel: true },
-        status: { refreshModel: true },
+        warehouse: { refreshModel: true },
+        batch: { refreshModel: true },
     };
 
     model(params) {
-        return this.store.query('inventory', params);
+        return this.store.query('inventory', { ...params, with: ['product', 'warehouse', 'batch', 'supplier'] });
     }
 }

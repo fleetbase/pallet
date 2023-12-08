@@ -1,0 +1,75 @@
+<Overlay
+    @onLoad={{this.setOverlayContext}}
+    @position="right"
+    @noBackdrop={{true}}
+    @fullHeight={{true}}
+    @isResizeable={{or this.isResizable @isResizable}}
+    @width={{or this.width @width "600px"}}
+>
+    <Overlay::Header
+        @title={{if this.purchaseOrder.public_id this.purchaseOrder.name "New Purchase Order"}}
+        @status={{this.purchaseOrder.public_id}}
+        @hideStatusDot={{true}}
+        @createdAt={{this.purchaseOrder.createdAt}}
+        @titleWrapperClass="leading-5"
+    >
+        <div class="flex flex-1 justify-end">
+            <Button
+                @icon={{if this.purchaseOrder.id "save" "check"}}
+                @type="primary"
+                @text={{if this.purchaseOrder.id "Save Purchase Order" "Create Purchase Order"}}
+                @onClick={{this.save}}
+                @wrapperClass="mr-2"
+            />
+            {{#if this.purchaseOrder.id}}
+                <Button @type="default" @icon="file-invoice" @helpText="View purchase order details" @onClick={{this.onViewDetails}} @wrapperClass="mr-2" />
+            {{/if}}
+            <Button @type="default" @icon="times" @helpText={{if this.purchaseOrder.id "Cancel edit purchase order" "Cancel new purchase order"}} @onClick={{this.onPressCancel}} />
+        </div>
+    </Overlay::Header>
+
+    <Overlay::Body @wrapperClass="new-service-rate-overlay-body px-4 space-y-4 pt-4" @increaseInnerBodyHeightBy={{1000}}>
+        <div class="grid grid-cols-1 text-xs dark:text-gray-100">
+            <InputGroup @name="Supplier">
+                <ModelSelect
+                    @modelName="vendor"
+                    @selectedModel={{this.purchaseOrder.supplier}}
+                    @placeholder="Select Supplier"
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{fn (mut this.purchaseOrder.supplier)}}
+                    @onChangeId={{fn (mut this.purchaseOrder.supplier_uuid)}}
+                    as |model|
+                >
+                    {{model.name}}
+                </ModelSelect>
+            </InputGroup>
+            <InputGroup @name="Status">
+                <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                    <PowerSelect
+                        @options={{this.statusOptions}}
+                        @selected={{this.purchaseOrder.status}}
+                        @onChange={{fn (mut this.purchaseOrder.status)}}
+                        @placeholder="Select purchase order status"
+                        @triggerClass="form-select form-input"
+                        as |status|
+                    >
+                        {{smart-humanize status}}
+                    </PowerSelect>
+                </div>
+            </InputGroup>
+            <InputGroup @name="Reference Code" @type="text" @value={{this.purchaseOrder.reference_code}} />
+            <InputGroup @name="Reference URL" @type="text" @value={{this.purchaseOrder.reference_url}} />
+            <InputGroup @name="Description">
+                <Textarea @value={{this.purchaseOrder.description}} aria-label="Description" class="w-full form-input" placeholder="Description" rows={{5}} />
+            </InputGroup>
+            <InputGroup @name="Comments">
+                <Textarea @value={{this.purchaseOrder.comments}} aria-label="Comments" class="w-full form-input" placeholder="Comments" rows={{5}} />
+            </InputGroup>
+            <InputGroup @name="Expected Delivery Date">
+                <input value={{this.purchaseOrder.expectedDeliveryDate}} type="date" class="form-input w-full" {{on "change" this.setExpectedDeliveryDate}} />
+            </InputGroup>
+        </div>
+    </Overlay::Body>
+</Overlay>
