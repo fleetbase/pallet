@@ -1,0 +1,234 @@
+<Overlay
+    @onLoad={{this.setOverlayContext}}
+    @position="right"
+    @noBackdrop={{true}}
+    @fullHeight={{true}}
+    @isResizeble={{or this.isResizable @isResizable}}
+    @width={{or this.width @width "600px"}}
+>
+    <Overlay::Header
+        @title={{if this.product.public_id this.product.name "Add Product"}}
+        @status={{this.product.public_id}}
+        @hideStatusDot={{true}}
+        @createdAt={{this.product.createdAt}}
+        @titleWrapperClass="leading-5"
+    >
+        <div class="flex flex-1 justify-end">
+            <Button @icon={{if this.product.id "save" "check"}} @type="primary" @text={{if this.product.id "Save Product" "Add Product"}} @onClick={{this.save}} @wrapperClass="mr-2" />
+            {{#if this.product.id}}
+                <Button @type="default" @icon="box-archive" @helpText="View product details" @onClick={{this.onViewDetails}} @wrapperClass="mr-2" />
+            {{/if}}
+            <Button @type="default" @icon="times" @helpText={{if this.product.id "Cancel edit product" "Cancel add product"}} @onClick={{this.onPressCancel}} />
+        </div>
+    </Overlay::Header>
+
+    <Overlay::Body @wrapperClass="new-service-rate-overlay-body px-4 pt-4" @increaseInnerBodyHeightBy={{700}}>
+        <div class="flex-1 space-y-4">
+            <ContentPanel @title="Details" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
+                <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-2">
+                    <InputGroup @name="Name" @value={{this.product.name}} @helpText="Name of item or entity." @wrapperClass="mb-2" />
+                    <InputGroup
+                        @name="Internal ID"
+                        @value={{this.product.internal_id}}
+                        @helpText="Use this field to optionally set a custom identifier or internal identifier for the entity."
+                        @wrapperClass="mb-2"
+                    />
+                    <InputGroup @name="SKU" @value={{this.product.sku}} @helpText="Stock keeping unit number if applicable." @wrapperClass="mb-2" />
+                    <InputGroup @name="Product Category">
+                        <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                            <PowerSelect
+                                @options={{this.productCategories}}
+                                @selected={{this.product.category}}
+                                @onChange={{fn (mut this.product.category)}}
+                                @placeholder="Select product category"
+                                @triggerClass="form-select form-input"
+                                @disabled={{not this.productCategories}}
+                                as |category|
+                            >
+                                {{smart-humanize category}}
+                            </PowerSelect>
+                        </div>
+                    </InputGroup>
+                    <InputGroup @name="Supplier">
+                        <ModelSelect
+                            @modelName="vendor"
+                            @selectedModel={{this.product.supplier}}
+                            @placeholder="Select Supplier"
+                            @triggerClass="form-select form-input"
+                            @infiniteScroll={{false}}
+                            @renderInPlace={{true}}
+                            @onChange={{fn (mut this.product.supplier)}}
+                            @onChangeId={{fn (mut this.product.supplier_uuid)}}
+                            as |model|
+                        >
+                            {{model.name}}
+                        </ModelSelect>
+                    </InputGroup>
+                    <InputGroup @name="Description" @helpText="Additional description text of entity." @wrapperClass="col-span-2 mb-2">
+                        <Textarea @value={{this.product.description}} type="text" class="w-full form-input" placeholder="Description" />
+                    </InputGroup>
+                </div>
+            </ContentPanel>
+
+            <ContentPanel @title="Pricing & Value" @open={{false}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
+                <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-2">
+                    <InputGroup @name="Price" @helpText="Price of entity." @wrapperClass="mb-2">
+                        <MoneyInput
+                            class="w-full"
+                            @value={{this.product.price}}
+                            @currency={{this.product.currency}}
+                            @canSelectCurrency={{true}}
+                            @onCurrencyChange={{this.product.currency}}
+                        />
+                    </InputGroup>
+                    <InputGroup @name="Sale Price" @helpText="Sale price or discounted price of entity." @wrapperClass="mb-2">
+                        <MoneyInput
+                            class="w-full"
+                            @value={{this.product.sale_price}}
+                            @currency={{this.product.currency}}
+                            @canSelectCurrency={{true}}
+                            @onCurrencyChange={{this.product.currency}}
+                        />
+                    </InputGroup>
+                    <InputGroup @name="Declared Value" @helpText="Declared value of entity, useful is insurable." @wrapperClass="mb-2">
+                        <MoneyInput
+                            class="w-full"
+                            @value={{this.product.declared_value}}
+                            @currency={{this.product.currency}}
+                            @canSelectCurrency={{true}}
+                            @onCurrencyChange={{this.product.currency}}
+                        />
+                    </InputGroup>
+                </div>
+            </ContentPanel>
+
+            <ContentPanel @title="Measurements & Weight" @open={{false}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
+                <div class="grid grid-cols-3 gap-1">
+                    <InputGroup @name="Length" @helpText="The length of the entity." @wrapperClass="mb-2">
+                        <UnitInput
+                            class="w-full"
+                            @measurement="length"
+                            @value={{this.product.length}}
+                            @unit={{this.product.dimensions_unit}}
+                            @canSelectUnit={{true}}
+                            @onUnitChange={{fn (mut this.product.dimensions_unit)}}
+                        />
+                    </InputGroup>
+                    <InputGroup @name="Width" @helpText="The width of the entity." @wrapperClass="mb-2">
+                        <UnitInput
+                            class="w-full"
+                            @measurement="length"
+                            @value={{this.product.width}}
+                            @unit={{this.product.dimensions_unit}}
+                            @canSelectUnit={{true}}
+                            @onUnitChange={{fn (mut this.product.dimensions_unit)}}
+                        />
+                    </InputGroup>
+                    <InputGroup @name="Height" @helpText="The height of the entity." @wrapperClass="mb-2">
+                        <UnitInput
+                            class="w-full"
+                            @measurement="length"
+                            @value={{this.product.height}}
+                            @unit={{this.product.dimensions_unit}}
+                            @canSelectUnit={{true}}
+                            @onUnitChange={{fn (mut this.product.dimensions_unit)}}
+                        />
+                    </InputGroup>
+                </div>
+                <div class="grid grid-cols-3 gap-1">
+                    <InputGroup @name="Weight" @helpText="The weight of the entity." @wrapperClass="mb-2">
+                        <UnitInput
+                            class="w-full"
+                            @value={{this.product.weight}}
+                            @measurement="weight"
+                            @unit={{this.product.weight_unit}}
+                            @canSelectUnit={{true}}
+                            @onUnitChange={{fn (mut this.product.weight_unit)}}
+                        />
+                    </InputGroup>
+                </div>
+            </ContentPanel>
+            <ContentPanel @title="Upload Images" @open={{this.product.files.length}} @pad={{false}} @panelBodyWrapperClass="px-0 py-4" @panelBodyClass="bg-white dark:bg-gray-800">
+                <div class="px-6 space-y-4">
+                    {{#if this.isUploading}}
+                        <div
+                            class="min-h-56 dropzone w-full rounded-lg px-4 py-8 min-h bg-gray-50 dark:bg-gray-900 bg-opacity-25 text-gray-900 dark:text-white text-center flex flex-col items-center justify-center border-2 border-dashed border-gray-200 dark:border-indigo-500"
+                        >
+                            <div class="flex items-center justify-center py-5">
+                                <Spinner class="text-sm dar:text-gray-100" @loadingMessage="Uploading..." />
+                            </div>
+                        </div>
+                    {{else}}
+                        {{#let (file-queue name="files" onFileAdded=this.queueFile accept=(join "," this.acceptedFileTypes)) as |queue|}}
+                            <FileDropzone @queue={{queue}} class="dropzone file-dropzone" as |dropzone|>
+                                {{#if dropzone.active}}
+                                    {{#if dropzone.valid}}
+                                        Drop to upload
+                                    {{else}}
+                                        Invalid
+                                    {{/if}}
+                                {{else if queue.files.length}}
+                                    <div class="my-2">
+                                        <FaIcon @icon="photo-video" class="text-indigo-500 mr-2" />
+                                        {{pluralize queue.files.length "file"}}
+                                        ready for upload.
+                                    </div>
+                                    <div class="my-2">({{queue.progress}}%)</div>
+                                {{else}}
+                                    <h4 class="font-semibold mb-8">
+                                        <FaIcon @icon="image" @size="2x" class="text-indigo-500 mr-2" />
+                                        Upload Images
+                                    </h4>
+                                    <div>
+                                        {{#if dropzone.supported}}
+                                            <p class="text-base font-semibold my-5">Drag and drop image files onto this dropzone</p>
+                                        {{/if}}
+                                        <FileUpload @name="files" @for="files" @accept={{join "," this.acceptedFileTypes}} @multiple={{true}} @onFileAdded={{this.queueFile}}>
+                                            <a tabindex={{0}} class="btn btn-magic cursor-pointer ml-1">or select files to upload.</a>
+                                        </FileUpload>
+                                    </div>
+                                {{/if}}
+                            </FileDropzone>
+                        {{/let}}
+                        {{#if this.uploadQueue}}
+                            <div class="mx-4">
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="leading-6 dark:text-gray-100">Upload Queue</span>
+                                </div>
+                                <div class="space-y-2 mb-4">
+                                    {{#each this.uploadQueue as |file|}}
+                                        <div class="flex items-center justify-between bg-green-100 border border-green-800 dark:border-green-800 py-1.5 shadow-sm rounded-lg px-4">
+                                            <div class="text-sm text-green-900">{{file.name}}</div>
+                                            <div class="flex items-center text-sm">
+                                                <Spinner class="text-green-900 mr-2" />
+                                                <span class="font-bold text-green-900">{{round file.progress}}%</span>
+                                            </div>
+                                        </div>
+                                    {{/each}}
+                                </div>
+                            </div>
+                        {{/if}}
+                        <div>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
+                                {{#each this.product.files as |file|}}
+                                    <FileRecord @file={{file}} @fileIconClass={{if (eq this.product.primary_image_uuid file.id) "border-blue-400"}} @onDelete={{this.removeFile}}>
+                                        <div class="flex items-center justify-evenly">
+                                            <Button
+                                                @icon="magic"
+                                                @text="Make Primary"
+                                                @size="xs"
+                                                @textClass="text-xs truncate"
+                                                @onClick={{fn this.setProductPhoto file}}
+                                                @disabled={{eq this.product.photo_uuid file.id}}
+                                            />
+                                        </div>
+                                    </FileRecord>
+                                {{/each}}
+                            </div>
+                        </div>
+                    {{/if}}
+                </div>
+            </ContentPanel>
+        </div>
+    </Overlay::Body>
+</Overlay>

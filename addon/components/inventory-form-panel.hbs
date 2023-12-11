@@ -1,0 +1,104 @@
+<Overlay
+    @onLoad={{this.setOverlayContext}}
+    @position="right"
+    @noBackdrop={{true}}
+    @fullHeight={{true}}
+    @isResizeble={{or this.isResizable @isResizable}}
+    @width={{or this.width @width "600px"}}
+>
+    <Overlay::Header
+        @title={{if this.inventory.public_id this.inventory.name "Add Inventory"}}
+        @status={{this.inventory.public_id}}
+        @hideStatusDot={{true}}
+        @createdAt={{this.inventory.createdAt}}
+        @titleWrapperClass="leading-5"
+    >
+        <div class="flex flex-1 justify-end">
+            <Button
+                @icon={{if this.inventory.id "save" "check"}}
+                @type="primary"
+                @text={{if this.inventory.id "Save Inventory" "Add Inventory"}}
+                @onClick={{this.save}}
+                @wrapperClass="mr-2"
+            />
+            {{#if this.inventory.id}}
+                <Button @type="default" @icon="inventory" @helpText="View inventory details" @onClick={{this.onViewDetails}} @wrapperClass="mr-2" />
+            {{/if}}
+            <Button @type="default" @icon="times" @helpText={{if this.inventory.id "Cancel edit inventory" "Cancel add inventory"}} @onClick={{this.onPressCancel}} />
+        </div>
+    </Overlay::Header>
+
+    <Overlay::Body @wrapperClass="new-service-rate-overlay-body px-4 space-y-4 pt-4" @increaseInnerBodyHeightBy={{1000}}>
+        <div class="flex-1 space-y-4">
+            <ContentPanel @title="Details" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
+                <InputGroup @name="Product">
+                    <ModelSelect
+                        @modelName="pallet-product"
+                        @selectedModel={{this.inventory.product}}
+                        @placeholder="Select Product"
+                        @triggerClass="form-select form-input"
+                        @infiniteScroll={{false}}
+                        @renderInPlace={{true}}
+                        @onChange={{this.defaultProductSupplier}}
+                        @onChangeId={{fn (mut this.inventory.product_uuid)}}
+                        as |model|
+                    >
+                        {{model.name}}
+                    </ModelSelect>
+                </InputGroup>
+                <InputGroup @name="Supplier">
+                    <ModelSelect
+                        @modelName="supplier"
+                        @selectedModel={{this.inventory.supplier}}
+                        @placeholder="Select Supplier"
+                        @triggerClass="form-select form-input"
+                        @infiniteScroll={{false}}
+                        @renderInPlace={{true}}
+                        @onChange={{this.inventory.supplier.name}}
+                        @onChangeId={{fn (mut this.inventory.supplier_uuid)}}
+                        as |model|
+                    >
+                        {{model.name}}
+                    </ModelSelect>
+                </InputGroup>
+                <InputGroup @name="Warehouse">
+                    <ModelSelect
+                        @modelName="warehouse"
+                        @selectedModel={{this.inventory.warehouse}}
+                        @placeholder="Select Warehouse"
+                        @triggerClass="form-select form-input"
+                        @infiniteScroll={{false}}
+                        @renderInPlace={{true}}
+                        @onChange={{fn (mut this.inventory.warehouse)}}
+                        @onChangeId={{fn (mut this.inventory.warehouse_uuid)}}
+                        as |model|
+                    >
+                        {{n-a model.name model.address}}
+                    </ModelSelect>
+                </InputGroup>
+                <InputGroup @name="Status">
+                    <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                        <PowerSelect
+                            @options={{this.statusOptions}}
+                            @selected={{this.inventory.status}}
+                            @onChange={{fn (mut this.inventory.status)}}
+                            @placeholder="Select inventory status"
+                            @triggerClass="form-select form-input"
+                            as |status|
+                        >
+                            {{smart-humanize status}}
+                        </PowerSelect>
+                    </div>
+                </InputGroup>
+                <InputGroup @name="Quantity" @type="number" @value={{this.inventory.quantity}} />
+                <InputGroup @name="Minimum Quantity" @type="number" @value={{this.inventory.min_quantity}} />
+            </ContentPanel>
+            <ContentPanel @title="Batch" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
+                <InputGroup @name="Batch Number" @type="text" @value={{this.inventory.batch.batch_number}} />
+                <InputGroup @name="Expiry Date">
+                    <input value={{this.inventory.batch.expiryDate}} type="date" class="form-input w-full" {{on "change" this.setExpiryDate}} />
+                </InputGroup>
+            </ContentPanel>
+        </div>
+    </Overlay::Body>
+</Overlay>
