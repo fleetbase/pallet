@@ -3,6 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { dasherize } from '@ember/string';
+
 export default class AdminProductCategoryComponent extends Component {
     @service store;
     @service modalsManager;
@@ -19,7 +20,7 @@ export default class AdminProductCategoryComponent extends Component {
     constructor() {
         super(...arguments);
         this.category = this.args.category;
-        this.fetchCategories();
+        this.fetchCategoryHierarchy();
     }
 
     @action async addCategory() {
@@ -57,22 +58,28 @@ export default class AdminProductCategoryComponent extends Component {
 
                 return category.save().then(() => {
                     this.notifications.success('New product category created.');
-                    return this.fetchCategories();
+                    return this.fetchCategoryHierarchy();
                 });
             },
         });
     }
 
-    @action async fetchCategories() {
-        this.categories = await this.store.query('category', {
+    @action async fetchCategoryHierarchy() {
+        const allCategories = await this.store.query('category', {
             for: 'pallet_product',
+            with_subcategories: true,
+        });
+
+        this.categories = allCategories.filter((category) => !category.parent);
+        this.categories.forEach((parentCategory) => {
+            parentCategory.subcategories = allCategories.filter((subcategory) => subcategory.parent?.id === parentCategory.id);
         });
     }
 
-    @action async addSubCategory(category) {
+    @action async addSubCategory(parentCategory) {
         const subCategory = this.store.createRecord('category', {
+            parent: parentCategory,
             for: 'pallet_product',
-            parent: category,
         });
 
         this.modalsManager.show('modals/create-product-category', {
@@ -86,13 +93,13 @@ export default class AdminProductCategoryComponent extends Component {
                 this.fetch.uploadFile.perform(
                     file,
                     {
-                        path: `uploads/${subCategory.company_uuid}/product-category-icon/${dasherize(subCategory.name ?? this.currentUser.companyId)}`,
-                        subject_uuid: subCategory.id,
+                        path: `uploads/${category.company_uuid}/product-category-icon/${dasherize(category.name ?? this.currentUser.companyId)}`,
+                        subject_uuid: category.id,
                         subject_type: `category`,
                         type: `category_icon`,
                     },
                     (uploadedFile) => {
-                        subCategory.setProperties({
+                        category.setProperties({
                             icon_file_uuid: uploadedFile.id,
                             icon_url: uploadedFile.url,
                             icon: uploadedFile,
@@ -106,12 +113,10 @@ export default class AdminProductCategoryComponent extends Component {
                 try {
                     await subCategory.save();
                     this.notifications.success('New subcategory created.');
-                    await this.fetchCategories();
+                    await this.fetchCategoryHierarchy();
                 } catch (error) {
                     this.notifications.error('Error creating subcategory.');
                     console.error('Error creating subcategory:', error);
-                } finally {
-                    modal.stopLoading();
                 }
             },
         });
@@ -124,7 +129,7 @@ export default class AdminProductCategoryComponent extends Component {
             try {
                 await category.destroyRecord();
                 this.notifications.success('Category deleted successfully.');
-                await this.fetchCategories();
+                await this.fetchCategoryHierarchy();
             } catch (error) {
                 this.notifications.error('Error deleting category.');
                 console.error('Error deleting category:', error);
