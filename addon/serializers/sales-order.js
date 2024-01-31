@@ -8,6 +8,8 @@ export default class SalesOrderSerializer extends ApplicationSerializer.extend(E
      * @var {Object}
      */
     get attrs() {
-        return {};
+        return {
+            supplier: { embedded: 'always' },
+        };
     }
 }

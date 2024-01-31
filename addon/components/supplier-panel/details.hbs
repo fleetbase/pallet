@@ -1,0 +1,44 @@
+<div class="p-4">
+    <ContentPanel @title="Details" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-900">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 text-xs dark:text-gray-100">
+                <div class="field-info-container">
+                    <div class="field-name">Name</div>
+                    <div class="field-value">{{n-a @supplier.name}}</div>
+                </div>
+
+                <div class="field-info-container">
+                    <div class="field-name">Email</div>
+                    <div class="field-value">{{n-a @supplier.email}}</div>
+                </div>
+
+                <div class="field-info-container">
+                    <div class="field-name">Phone</div>
+                    <div class="field-value">{{n-a @supplier.phone}}</div>
+                </div>
+
+                <div class="field-info-container">
+                    <div class="field-name">Website URL</div>
+                    <div class="field-value">{{n-a @supplier.website_url}}</div>
+                </div>
+
+                <div class="field-info-container">
+                    <div class="field-name">Country</div>
+                    <div class="field-value">
+                        <CountryName @country={{@supplier.country}} @showFlag={{true}} />
+                    </div>
+                </div>
+
+                <div class="field-info-container">
+                    <div class="field-name">Status</div>
+                    <div class="field-value">
+                        <Badge @status={{@supplier.status}} />
+                    </div>
+                </div>
+
+                <div class="field-info-container col-span-2">
+                    <div class="field-name">Address</div>
+                    <div class="field-value">{{n-a @supplier.address}}</div>
+                </div>
+            </div>
+    </ContentPanel>
+</div>

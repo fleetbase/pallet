@@ -2,8 +2,8 @@
 
 namespace Fleetbase\Pallet\Providers;
 
-use Fleetbase\Providers\CoreServiceProvider;
 use Fleetbase\FleetOps\Providers\FleetOpsServiceProvider;
+use Fleetbase\Providers\CoreServiceProvider;
 
 if (!class_exists(CoreServiceProvider::class)) {
     throw new \Exception('Storefront cannot be loaded without `fleetbase/core-api` installed!');
@@ -15,8 +15,6 @@ if (!class_exists(FleetOpsServiceProvider::class)) {
 
 /**
  * Billing extension service provider.
- *
- * @package \Fleetbase\Billing\Providers
  */
 class PalletServiceProvider extends CoreServiceProvider
 {
@@ -30,9 +28,9 @@ class PalletServiceProvider extends CoreServiceProvider
     /**
      * Register any application services.
      *
-     * Within the register method, you should only bind things into the 
-     * service container. You should never attempt to register any event 
-     * listeners, routes, or any other piece of functionality within the 
+     * Within the register method, you should only bind things into the
+     * service container. You should never attempt to register any event
+     * listeners, routes, or any other piece of functionality within the
      * register method.
      *
      * More information on this can be found in the Laravel documentation:
@@ -51,7 +49,7 @@ class PalletServiceProvider extends CoreServiceProvider
      *
      * @return void
      *
-     * @throws \Exception If the `fleetbase/core-api` package is not installed.
+     * @throws \Exception if the `fleetbase/core-api` package is not installed
      */
     public function boot()
     {

@@ -1,0 +1,67 @@
+<Overlay
+    @onLoad={{this.setOverlayContext}}
+    @position="right"
+    @noBackdrop={{true}}
+    @fullHeight={{true}}
+    @isResizeble={{or this.isResizable @isResizable}}
+    @width={{or this.width @width "600px"}}
+>
+    <Overlay::Header
+        @title={{if this.stockAdjustment.public_id this.stockAdjustment.name "Make Stock Adjustment"}}
+        @status={{this.stockAdjustment.public_id}}
+        @hideStatusDot={{true}}
+        @createdAt={{this.stockAdjustment.createdAt}}
+        @titleWrapperClass="leading-5"
+    >
+        <div class="flex flex-1 justify-end">
+            <Button
+                @icon={{if this.stockAdjustment.id "save" "check"}}
+                @type="primary"
+                @text={{if this.stockAdjustment.id "Save Stock Adjustment" "Make Stock Adjustment"}}
+                @onClick={{this.save}}
+                @wrapperClass="mr-2"
+            />
+            {{#if this.stockAdjustment.id}}
+                <Button @type="default" @icon="inventory" @helpText="View inventory details" @onClick={{this.onViewDetails}} @wrapperClass="mr-2" />
+            {{/if}}
+            <Button @type="default" @icon="times" @helpText={{if this.stockAdjustment.id "Cancel edit stock adjustment" "Cancel add stock adjustment"}} @onClick={{this.onPressCancel}} />
+        </div>
+    </Overlay::Header>
+
+    <Overlay::Body @wrapperClass="new-service-rate-overlay-body px-4 space-y-4 pt-4" @increaseInnerBodyHeightBy={{1000}}>
+        <div class="grid grid-cols-1 text-xs dark:text-gray-100">
+            <InputGroup @name="Type">
+                <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                    <PowerSelect
+                        @options={{this.stockAdjustmentTypeOption}}
+                        @selected={{this.stockAdjustment.type}}
+                        @onChange={{fn (mut this.stockAdjustment.type)}}
+                        @placeholder="Select stock adjustment type"
+                        @triggerClass="form-select form-input"
+                        as |type|
+                    >
+                        {{smart-humanize type}}
+                    </PowerSelect>
+                </div>
+            </InputGroup>
+            <InputGroup @name="Approval Required">
+                <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                    <PowerSelect
+                        @options={{this.statusOptions}}
+                        @selected={{this.stockAdjustment.approval_required}}
+                        @onChange={{fn (mut this.stockAdjustment.approval_required)}}
+                        @placeholder="Select approval status"
+                        @triggerClass="form-select form-input"
+                        as |status|
+                    >
+                        {{smart-humanize status}}
+                    </PowerSelect>
+                </div>
+            </InputGroup>
+            <InputGroup @name="Stock Adjustment Reason">
+                <Textarea @value={{this.stockAdjustment.reason}} aria-label="Reason" class="w-full form-input" placeholder="Reason" rows={{5}} />
+            </InputGroup>
+            <InputGroup @name="Quantity" @type="number" @value={{this.stockAdjustment.quantity}} />
+        </div>
+    </Overlay::Body>
+</Overlay>

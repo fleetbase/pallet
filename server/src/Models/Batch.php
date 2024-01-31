@@ -2,13 +2,17 @@
 
 namespace Fleetbase\Pallet\Models;
 
-use Fleetbase\Traits\HasUuid;
-use Fleetbase\Traits\HasApiModelBehavior;
+use Fleetbase\Casts\Json;
 use Fleetbase\Models\Model;
+use Fleetbase\Traits\HasApiModelBehavior;
+use Fleetbase\Traits\HasPublicId;
+use Fleetbase\Traits\HasUuid;
 
 class Batch extends Model
 {
-    use HasUuid, HasApiModelBehavior;
+    use HasUuid;
+    use HasPublicId;
+    use HasApiModelBehavior;
 
     /**
      * The database table used by the model.
@@ -17,40 +21,63 @@ class Batch extends Model
      */
     protected $table = 'pallet_batches';
 
-     /**
-     * The singularName overwrite.
+    /**
+     * Overwrite both entity resource name with `payloadKey`.
      *
      * @var string
      */
-    protected $singularName = 'batch';
+    protected $payloadKey = 'batch';
 
     /**
-     * These attributes that can be queried
+     * The type of `public_id` to generate.
+     *
+     * @var string
+     */
+    protected $publicIdType = 'batch';
+
+    /**
+     * These attributes that can be queried.
      *
      * @var array
      */
-    protected $searchableColumns = [];
+    protected $searchableColumns = ['batch_number', 'product.name'];
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'id',
+        'uuid',
+        'batch_number',
+        'product_uuid',
+        'manufacture_date_at',
+        'expiry_date_at',
+        'quantity',
+        'created_at',
+        'updated_at',
+    ];
+
+    public $timestamps = true;
+
+    protected $dates = ['expiry_date_at'];
 
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
-    protected $casts = [];
+    protected $casts = [
+        'meta' => Json::class,
+    ];
 
     /**
-     * Dynamic attributes that are appended to object
+     * Dynamic attributes that are appended to object.
      *
      * @var array
      */
-    protected $appends = [];
+    protected $appends = ['incrementing_id'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -58,4 +85,53 @@ class Batch extends Model
      * @var array
      */
     protected $hidden = [];
+
+    protected $with = [];
+
+    /**
+     * @return null|int
+     */
+    public function getIncrementingIdAttribute(): ?int {
+        return static::select('id')->where('uuid', $this->uuid)->value('id');
+    }
+
+    /**
+     * Relationship with the company associated with the batch.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_uuid', 'uuid');
+    }
+
+    /**
+     * Relationship with the user who created the batch.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by_uuid', 'uuid');
+    }
+
+    /**
+     * Relationship with the product associated with the batch.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->created_at = now();
+            $model->manufacture_date_at = now();
+        });
+    }
 }

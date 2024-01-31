@@ -1,0 +1,9 @@
+<div class="relative flex items-center" ...attributes>
+    <img src={{this.product.photo_url}} alt={{this.product.name}} {{fallback-img-src (config "defaultValues.productImage")}} class="w-10 h-10 mr-2 rounded-md" />
+    <div class="ml-2">
+        <a href="javascript:;" class="relative block" {{on "click" this.onClick}}>
+            <span>{{get-default-value this.product.name}}</span>
+        </a>
+        <p class="text-sm text-gray-500">{{get @row 'description'}}</p>
+    </div>
+</div>

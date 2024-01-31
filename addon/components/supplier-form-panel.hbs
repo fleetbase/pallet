@@ -1,0 +1,70 @@
+<Overlay
+    @onLoad={{this.setOverlayContext}}
+    @position="right"
+    @noBackdrop={{true}}
+    @fullHeight={{true}}
+    @isResizeble={{or this.isResizable @isResizable}}
+    @width={{or this.width @width "600px"}}
+>
+    <Overlay::Header
+        @title={{if this.supplier.public_id this.supplier.name "Add Supplier"}}
+        @status={{this.supplier.public_id}}
+        @hideStatusDot={{true}}
+        @createdAt={{this.supplier.createdAt}}
+        @titleWrapperClass="leading-5"
+    >
+        <div class="flex flex-1 justify-end">
+            <Button @icon={{if this.supplier.id "save" "check"}} @type="primary" @text={{if this.supplier.id "Save Supplier" "Add Supplier"}} @onClick={{this.save}} @wrapperClass="mr-2" />
+            {{#if this.supplier.id}}
+                <Button @type="default" @icon="supplier" @helpText="View supplier details" @onClick={{this.onViewDetails}} @wrapperClass="mr-2" />
+            {{/if}}
+            <Button @type="default" @icon="times" @helpText={{if this.supplier.id "Cancel edit supplier" "Cancel add supplier"}} @onClick={{this.onPressCancel}} />
+        </div>
+    </Overlay::Header>
+
+    <Overlay::Body @wrapperClass="new-service-rate-overlay-body px-4 space-y-4 pt-4" @increaseInnerBodyHeightBy={{1000}}>
+        <div class="grid grid-cols-1 text-xs dark:text-gray-100">
+            <InputGroup @name="Name" @value={{this.supplier.name}} @helpText="The supplier's name, typically the name of a business." />
+            <InputGroup @name="Email" @type="email" @value={{this.supplier.email}} @helpText="The supplier's email, this can be used to trigger emails to the supplier." />
+            <InputGroup @name="Phone" @type="tel" @value={{this.supplier.phone}} @helpText="The supplier's phone #, this can be used to trigger SMS or messages to the supplier." />
+            <InputGroup @name="Website" @value={{this.supplier.website_url}} @helpText="The supplier's website, optionally add the suppliers website for reference." />
+            <InputGroup @name="Country">
+                <CountrySelect class="w-full form-input form-select form-datalist" @value={{this.supplier.country}} @onChange={{fn (mut this.supplier.country)}} placeholder="Country" />
+            </InputGroup>
+            <InputGroup @name="Status">
+                <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                    <PowerSelect
+                        @options={{@supplierStatusOptions}}
+                        @selected={{this.supplier.status}}
+                        @onChange={{fn (mut this.supplier.status)}}
+                        @placeholder="Select supplier status"
+                        @triggerClass="form-select form-input"
+                        as |status|
+                    >
+                        {{smart-humanize status}}
+                    </PowerSelect>
+                </div>
+            </InputGroup>
+            <InputGroup @name="Address">
+                <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                    <ModelSelect
+                        @modelName="place"
+                        @selectedModel={{this.supplier.place}}
+                        @placeholder="Select Address"
+                        @triggerClass="form-select form-input"
+                        @infiniteScroll={{false}}
+                        @renderInPlace={{true}}
+                        @onChange={{fn (mut this.supplier.place)}}
+                        @onChangeId={{fn (mut this.supplier.place_uuid)}}
+                        as |model|
+                    >
+                        <div class="flex items-center flex-row justify-between">
+                            <div class="truncate flex-1">{{n-a model.address}}</div>
+                            <Badge @hideStatusDot={{true}} @status="info">{{model.public_id}}</Badge>
+                        </div>
+                    </ModelSelect>
+                </div>
+            </InputGroup>
+        </div>
+    </Overlay::Body>
+</Overlay>

@@ -39,17 +39,20 @@
         "publish:github": "npm config set '@fleetbase:registry' https://npm.pkg.github.com/ && npm publish"
     },
     "dependencies": {
-        "@fleetbase/ember-core": "^0.1.4",
-        "@fleetbase/ember-ui": "^0.2.0",
-        "@fleetbase/fleetops-data": "^0.1.1",
+        "@fleetbase/ember-core": "^0.1.8",
+        "@fleetbase/ember-ui": "^0.2.5",
+        "@fleetbase/fleetops-data": "^0.1.5",
         "@fortawesome/ember-fontawesome": "^0.4.1",
         "@fortawesome/fontawesome-svg-core": "^6.4.0",
         "@fortawesome/free-solid-svg-icons": "^6.4.0",
-        "ember-intl": "^6.0.0-beta.6",
+        "broccoli-funnel": "^3.0.8",
         "ember-cli-babel": "^7.26.11",
         "ember-cli-htmlbars": "^6.1.0",
+        "ember-intl": "6.0.0-beta.6",
         "ember-radio-button": "^3.0.0-beta.1",
-        "ember-wormhole": "^0.6.0"
+        "ember-wormhole": "^0.6.0",
+        "ember-leaflet": "^5.1.1",
+        "leaflet": "^1.9.4"
     },
     "devDependencies": {
         "@ember/optional-features": "^2.0.0",

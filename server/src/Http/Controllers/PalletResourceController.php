@@ -8,8 +8,6 @@ class PalletResourceController extends FleetbaseController
 {
     /**
      * The package namespace used to resolve from.
-     *
-     * @var string
      */
     public string $namespace = '\\Fleetbase\\Pallet';
 }
