@@ -5,7 +5,7 @@ namespace Fleetbase\Pallet\Http\Resources;
 use Fleetbase\Http\Resources\FleetbaseResource;
 use Fleetbase\Support\Http;
 use Fleetbase\Support\Resolve;
-use Grimzy\LaravelMysqlSpatial\Types\Point;
+use Fleetbase\LaravelMysqlSpatial\Types\Point;
 
 class Warehouse extends FleetbaseResource
 {
