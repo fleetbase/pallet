@@ -2,8 +2,8 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
-import contextComponentCallback from '../utils/context-component-callback';
-import applyContextComponentArguments from '../utils/apply-context-component-arguments';
+import contextComponentCallback from '@fleetbase/ember-core/utils/context-component-callback';
+import applyContextComponentArguments from '@fleetbase/ember-core/utils/apply-context-component-arguments';
 
 export default class PurchaseOrderFormPanelComponent extends Component {
     /**
@@ -143,7 +143,7 @@ export default class PurchaseOrderFormPanelComponent extends Component {
     @action onPressCancel() {
         return contextComponentCallback(this, 'onPressCancel', this.purchaseOrder);
     }
-    
+
     @action setExpectedDeliveryDate(event) {
         const {
             target: { value },

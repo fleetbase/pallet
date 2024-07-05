@@ -48,6 +48,10 @@ class Inventory extends Model
      * @var array
      */
     protected $fillable = [
+        'supplier',
+        'supplier_uuid',
+        'company_uuid',
+        'created_by_uuid',
         'manufactured_date_at',
         'expiry_date_at',
         'created_at',
@@ -88,14 +92,15 @@ class Inventory extends Model
      */
     protected $hidden = [];
 
-    protected $with = ['product', 'batch', 'warehouse'];
+    protected $with = ['product', 'batch', 'warehouse', 'supplier'];
 
-    protected $filterParams = ['supplier_uuid', 'comments', 'expiry_date_at', 'status', 'company', 'createdBy', 'supplier'];
-    
+    protected $filterParams = ['comments', 'expiry_date_at', 'status', 'company', 'createdBy',];
+
     /**
      * @return null|int
      */
-    public function getIncrementingIdAttribute(): ?int {
+    public function getIncrementingIdAttribute(): ?int
+    {
         return static::select('id')->where('uuid', $this->uuid)->value('id');
     }
 
@@ -143,28 +148,30 @@ class Inventory extends Model
         return $query
             ->selectRaw('
                 pallet_inventories.product_uuid,
+                pallet_inventories.batch_uuid,
+                pallet_inventories.supplier_uuid,
+                pallet_inventories.warehouse_uuid,
                 MAX(pallet_inventories.created_at) as latest_created_at,
                 MAX(pallet_inventories.updated_at) as latest_updated_at,
                 MAX(pallet_inventories.public_id) as latest_public_id,
                 MAX(pallet_inventories.uuid) as latest_uuid,
                 MAX(pallet_inventories.comments) as latest_comments,
-                GROUP_CONCAT(DISTINCT pallet_batches.uuid) as batch_uuids,
-                GROUP_CONCAT(DISTINCT pallet_batches.batch_number) as batch_numbers,
+                (SELECT GROUP_CONCAT(DISTINCT pallet_batches.uuid) FROM pallet_batches WHERE pallet_batches.uuid = pallet_inventories.batch_uuid) as batch_uuids,
+                (SELECT GROUP_CONCAT(DISTINCT pallet_batches.batch_number) FROM pallet_batches WHERE pallet_batches.uuid = pallet_inventories.batch_uuid) as batch_numbers,
                 SUM(pallet_inventories.quantity) as total_quantity,
                 MAX(pallet_inventories.min_quantity) as minimum_quantity,
                 MAX(pallet_inventories.expiry_date_at) as latest_expiry_date_at
             ')
             ->leftJoin('pallet_batches', 'pallet_inventories.batch_uuid', '=', 'pallet_batches.uuid')
-            ->groupBy('pallet_inventories.product_uuid');
+            ->groupBy('pallet_inventories.product_uuid', 'pallet_inventories.batch_uuid', 'pallet_inventories.supplier_uuid', 'pallet_inventories.warehouse_uuid');
     }
-    
+
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($model) {
             $model->created_at = now();
-            $model->manufactured_date_at = now();
         });
     }
 }

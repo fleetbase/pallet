@@ -59,6 +59,10 @@ class Batch extends Model
         'updated_at',
     ];
 
+    public $timestamps = true;
+
+    protected $dates = ['expiry_date_at'];
+
     /**
      * The attributes that should be cast to native types.
      *
@@ -119,5 +123,15 @@ class Batch extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->created_at = now();
+            $model->manufacture_date_at = now();
+        });
     }
 }

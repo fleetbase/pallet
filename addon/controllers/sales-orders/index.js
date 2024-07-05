@@ -77,7 +77,6 @@ export default class SalesOrdersIndexController extends Controller {
      */
     @tracked page = 1;
 
-
     /**
      * The maximum number of items to show per page
      *
@@ -291,7 +290,7 @@ export default class SalesOrdersIndexController extends Controller {
 
         this.crud.bulkDelete(selected, {
             modelNamePath: 'public_id',
-            acceptButtonText: "Delete Sales Orders",
+            acceptButtonText: 'Delete Sales Orders',
             fetchOptions: {
                 namespace: 'pallet/int/v1',
             },

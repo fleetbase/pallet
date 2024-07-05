@@ -32,7 +32,6 @@ class Inventory extends FleetbaseResource
             'min_quantity'          => (int) $this->min_quantity,
             'comments'              => $this->comments,
             'expiry_date_at'        => $this->expiry_date_at,
-            'manufactured_date_at'  => $this->manufactured_date_at,
             'updated_at'            => $this->updated_at,
             'created_at'            => $this->created_at,
         ];
