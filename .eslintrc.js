@@ -16,6 +16,9 @@ module.exports = {
     env: {
         browser: true,
     },
+    globals: {
+        Stripe: 'readonly',
+    },
     rules: {
         'ember/no-array-prototype-extensions': 'off',
         'ember/no-computed-properties-in-native-classes': 'off',
@@ -24,7 +27,7 @@ module.exports = {
         'ember/no-get': 'off',
         'ember/classic-decorator-no-classic-methods': 'off',
         'no-prototype-builtins': 'off',
-        'node/no-unpublished-require': [
+        'n/no-unpublished-require': [
             'error',
             {
                 allowModules: ['resolve', 'broccoli-funnel'],

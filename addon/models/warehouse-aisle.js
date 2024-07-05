@@ -1,6 +1,9 @@
 import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import { computed } from '@ember/object';
-import { format as formatDate, isValid as isValidDate } from 'date-fns';
+import { isArray } from '@ember/array';
+import { format as formatDate, isValid as isValidDate, formatDistanceToNow } from 'date-fns';
+import getWithDefault from '@fleetbase/ember-core/utils/get-with-default';
+import first from '@fleetbase/ember-core/utils/first';
 
 export default class WarehouseAisle extends Model {
     /** @ids */

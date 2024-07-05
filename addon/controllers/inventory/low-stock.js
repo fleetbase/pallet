@@ -107,13 +107,6 @@ export default class InventoryLowStockController extends Controller {
     @tracked batch;
 
     /**
-     * The filterable param `status`
-     *
-     * @var {String|Array}
-     */
-    @tracked status;
-
-    /**
      * The filterable param `pallet-product`
      *
      * @var {String}

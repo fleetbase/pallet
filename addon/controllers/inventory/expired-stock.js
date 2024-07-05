@@ -121,13 +121,6 @@ export default class InventoryExpiredStockController extends Controller {
     @tracked product;
 
     /**
-     * The filterable param `status`
-     *
-     * @var {String}
-     */
-    @tracked status;
-
-    /**
      * All columns applicable for orders
      *
      * @var {Array}
