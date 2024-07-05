@@ -69,7 +69,7 @@ export default class InventoryExpiredStockController extends Controller {
      */
     @tracked page = 1;
 
-    @tracked view = 'expired_stock'
+    @tracked view = 'expired_stock';
 
     /**
      * The maximum number of items to show per page
@@ -136,6 +136,7 @@ export default class InventoryExpiredStockController extends Controller {
         {
             label: 'Product',
             valuePath: 'product.name',
+            action: this.viewInventory,
             width: '170px',
             cellComponent: 'cell/product-info',
             modelPath: 'product',
@@ -158,16 +159,6 @@ export default class InventoryExpiredStockController extends Controller {
             label: 'Quantity',
             valuePath: 'quantity',
             width: '120px',
-        },
-        {
-            label: 'Warehouse',
-            valuePath: 'warehouse.address',
-            width: '120px',
-            cellComponent: 'click-to-copy',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterComponent: 'filter/string',
         },
         {
             label: 'Batch',
@@ -193,16 +184,6 @@ export default class InventoryExpiredStockController extends Controller {
             label: 'Last Stocked',
             valuePath: 'createdAt',
             sortParam: 'created_at',
-            width: '10%',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterComponent: 'filter/date',
-        },
-        {
-            label: 'Expiry Date',
-            valuePath: 'expiredAt',
-            sortParam: 'expiry_date_at',
             width: '10%',
             resizable: true,
             sortable: true,

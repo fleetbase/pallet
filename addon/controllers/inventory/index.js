@@ -134,6 +134,7 @@ export default class InventoryIndexController extends Controller {
         {
             label: 'Product',
             valuePath: 'product.name',
+            action: this.viewInventory,
             width: '170px',
             cellComponent: 'cell/product-info',
             modelPath: 'product',
@@ -156,16 +157,6 @@ export default class InventoryIndexController extends Controller {
             label: 'Quantity',
             valuePath: 'quantity',
             width: '120px',
-        },
-        {
-            label: 'Warehouse',
-            valuePath: 'warehouse.address',
-            width: '120px',
-            cellComponent: 'click-to-copy',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterComponent: 'filter/string',
         },
         {
             label: 'Batch',
@@ -199,7 +190,7 @@ export default class InventoryIndexController extends Controller {
         },
         {
             label: 'Expiry Date',
-            valuePath: 'expiredAt',
+            valuePath: 'expiryDate',
             sortParam: 'expiry_date_at',
             width: '10%',
             resizable: true,
@@ -286,7 +277,7 @@ export default class InventoryIndexController extends Controller {
      * @void
      */
     @action viewInventory(inventory) {
-        return this.transitionToRoute('inventory.index.details', inventory);
+        return this.transitionToRoute('inventory.index.details', inventory.public_id);
     }
 
     /**
@@ -312,42 +303,5 @@ export default class InventoryIndexController extends Controller {
      */
     @action async editInventory(inventory) {
         return this.transitionToRoute('inventory.index.edit', inventory);
-    }
-
-    /**
-     * Delete a `inventory` via confirm prompt
-     *
-     * @param {InventoryModel} inventory
-     * @param {Object} options
-     * @void
-     */
-    @action deleteInventory(inventory, options = {}) {
-        this.crud.delete(inventory, {
-            onConfirm: () => {
-                return this.hostRouter.refresh();
-            },
-            ...options,
-        });
-    }
-
-    /**
-     * Bulk deletes selected `inventory` via confirm prompt
-     *
-     * @param {Array} selected an array of selected models
-     * @void
-     */
-    @action bulkDeleteInventorys() {
-        const selected = this.table.selectedRows;
-
-        this.crud.bulkDelete(selected, {
-            modelNamePath: `public_id`,
-            acceptButtonText: 'Delete Inventories',
-            fetchOptions: {
-                namespace: 'pallet/int/v1',
-            },
-            onSuccess: () => {
-                return this.hostRouter.refresh();
-            },
-        });
     }
 }
