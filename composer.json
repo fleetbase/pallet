@@ -37,6 +37,12 @@
         "phpstan/phpstan": "^1.10.38",
         "symfony/var-dumper": "^5.4.29"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/fleetbase/laravel-model-caching"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Fleetbase\\Pallet\\": "server/src/",
