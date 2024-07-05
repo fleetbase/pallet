@@ -24,9 +24,9 @@
         }
     ],
     "require": {
-        "php": "^7.4|^8.0",
-        "fleetbase/core-api": "^1.4.26",
-        "fleetbase/fleetops-api": "^0.5.1",
+        "php": "^8.0",
+        "fleetbase/core-api": "^1.4.27",
+        "fleetbase/fleetops-api": "^0.5.2",
         "php-http/guzzle7-adapter": "^1.0",
         "psr/http-factory-implementation": "*"
     },
