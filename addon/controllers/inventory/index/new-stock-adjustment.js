@@ -66,7 +66,7 @@ export default class InventoryIndexNewStockAdjustmentController extends Controll
      * @return {Promise}
      * @memberof InventoryIndexNewStockAdjustmentController
      */
-    @action onAfterSave(stockAdjustment) {
+    @action onAfterSave() {
         if (this.overlay) {
             this.overlay.close();
         }

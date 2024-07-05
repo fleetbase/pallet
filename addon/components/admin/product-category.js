@@ -6,7 +6,6 @@ import { dasherize } from '@ember/string';
 
 export default class AdminProductCategoryComponent extends Component {
     @service store;
-    @service modalsManager;
     @service currentUser;
     @service modalsManager;
     @service notifications;
@@ -90,6 +89,7 @@ export default class AdminProductCategoryComponent extends Component {
             declineButtonIconPrefix: 'fas',
             category: subCategory,
             uploadNewPhoto: (file) => {
+                const category = this.modalsManager.getOption('category');
                 this.fetch.uploadFile.perform(
                     file,
                     {
