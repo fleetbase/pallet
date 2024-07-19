@@ -1,6 +1,6 @@
 {
     "name": "fleetbase/pallet-api",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Inventory & Warehouse Management Extension for Fleetbase",
     "keywords": [
         "fleetbase",
@@ -25,8 +25,8 @@
     ],
     "require": {
         "php": "^8.0",
-        "fleetbase/core-api": "^1.4.27",
-        "fleetbase/fleetops-api": "^0.5.2",
+        "fleetbase/core-api": "^1.4.30",
+        "fleetbase/fleetops-api": "^0.5.4",
         "php-http/guzzle7-adapter": "^1.0",
         "psr/http-factory-implementation": "*"
     },
