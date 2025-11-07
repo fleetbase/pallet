@@ -1,0 +1,222 @@
+<div class="form-wrapper" ...attributes>
+    <ContentPanel @title={{t "product.sections.details"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 text-xs no-input-group-padding">
+            <InputGroup @name={{t "common.name"}} @wrapperClass="col-span-2">
+                <Input @value={{@resource.name}} @type="text" class="w-full form-input" placeholder={{t "product.fields.name-placeholder"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+
+            <InputGroup @name={{t "common.internal-id"}}>
+                <Input @value={{@resource.internal_id}} @type="text" class="w-full form-input" placeholder={{t "common.internal-id"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+
+            <InputGroup @name={{t "product.fields.sku"}}>
+                <Input @value={{@resource.sku}} @type="text" class="w-full form-input" placeholder={{t "product.fields.sku"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+
+            <InputGroup @name={{t "product.fields.barcode"}}>
+                <Input @value={{@resource.barcode}} @type="text" class="w-full form-input" placeholder={{t "product.fields.barcode"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+
+            <InputGroup @name={{t "product.fields.category"}}>
+                <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                    <PowerSelect
+                        @options={{this.productCategories}}
+                        @selected={{@resource.category}}
+                        @onChange={{fn (mut @resource.category)}}
+                        @placeholder={{t "product.fields.select-category"}}
+                        @triggerClass="form-select form-input"
+                        @disabled={{or (cannot-write @resource) (not this.productCategories)}}
+                        as |category|
+                    >
+                        {{smart-humanize category}}
+                    </PowerSelect>
+                </div>
+            </InputGroup>
+
+            <InputGroup @name={{t "product.fields.supplier"}}>
+                <ModelSelect
+                    @modelName="vendor"
+                    @selectedModel={{@resource.supplier}}
+                    @placeholder={{t "product.fields.select-supplier"}}
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{fn (mut @resource.supplier)}}
+                    @onChangeId={{fn (mut @resource.supplier_uuid)}}
+                    @disabled={{cannot-write @resource}}
+                    as |model|
+                >
+                    {{model.name}}
+                </ModelSelect>
+            </InputGroup>
+
+            <InputGroup @name={{t "common.status"}}>
+                <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                    <PowerSelect
+                        @options={{this.statusOptions}}
+                        @selected={{find-by "value" @resource.status this.statusOptions}}
+                        @onChange={{set-model-attr @resource "status"}}
+                        @placeholder={{t "common.select-status"}}
+                        @triggerClass="form-select form-input"
+                        @disabled={{cannot-write @resource}}
+                        as |option|
+                    >
+                        {{option.label}}
+                    </PowerSelect>
+                </div>
+            </InputGroup>
+
+            <InputGroup @name={{t "common.description"}} @wrapperClass="col-span-2">
+                <Textarea @value={{@resource.description}} class="w-full form-input" placeholder={{t "common.description"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+        </div>
+    </ContentPanel>
+
+    <ContentPanel @title={{t "product.sections.inventory-settings"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 text-xs no-input-group-padding">
+            <InputGroup @name={{t "product.fields.reorder-point"}}>
+                <Input @value={{@resource.reorder_point}} @type="number" class="w-full form-input" placeholder={{t "product.fields.reorder-point"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+
+            <InputGroup @name={{t "product.fields.reorder-quantity"}}>
+                <Input @value={{@resource.reorder_quantity}} @type="number" class="w-full form-input" placeholder={{t "product.fields.reorder-quantity"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+
+            <InputGroup @name={{t "product.fields.shelf-life-days"}}>
+                <Input @value={{@resource.shelf_life_days}} @type="number" class="w-full form-input" placeholder={{t "product.fields.shelf-life-days"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+
+            <InputGroup @name={{t "product.fields.is-serialized"}}>
+                <Checkbox @checked={{@resource.is_serialized}} @onChange={{fn (mut @resource.is_serialized)}} @disabled={{cannot-write @resource}}>
+                    {{t "product.fields.track-serial-numbers"}}
+                </Checkbox>
+            </InputGroup>
+
+            <InputGroup @name={{t "product.fields.is-lot-tracked"}}>
+                <Checkbox @checked={{@resource.is_lot_tracked}} @onChange={{fn (mut @resource.is_lot_tracked)}} @disabled={{cannot-write @resource}}>
+                    {{t "product.fields.track-lot-numbers"}}
+                </Checkbox>
+            </InputGroup>
+
+            <InputGroup @name={{t "product.fields.is-perishable"}}>
+                <Checkbox @checked={{@resource.is_perishable}} @onChange={{fn (mut @resource.is_perishable)}} @disabled={{cannot-write @resource}}>
+                    {{t "product.fields.perishable-item"}}
+                </Checkbox>
+            </InputGroup>
+
+            <InputGroup @name={{t "product.fields.requires-quality-check"}}>
+                <Checkbox @checked={{@resource.requires_quality_check}} @onChange={{fn (mut @resource.requires_quality_check)}} @disabled={{cannot-write @resource}}>
+                    {{t "product.fields.requires-qc"}}
+                </Checkbox>
+            </InputGroup>
+        </div>
+    </ContentPanel>
+
+    <ContentPanel @title={{t "product.sections.pricing"}} @open={{false}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 text-xs no-input-group-padding">
+            <InputGroup @name={{t "product.fields.unit-cost"}}>
+                <MoneyInput
+                    class="w-full"
+                    @value={{@resource.unit_cost}}
+                    @currency={{@resource.currency}}
+                    @canSelectCurrency={{true}}
+                    @onCurrencyChange={{fn (mut @resource.currency)}}
+                    @disabled={{cannot-write @resource}}
+                />
+            </InputGroup>
+
+            <InputGroup @name={{t "product.fields.unit-price"}}>
+                <MoneyInput
+                    class="w-full"
+                    @value={{@resource.unit_price}}
+                    @currency={{@resource.currency}}
+                    @canSelectCurrency={{true}}
+                    @onCurrencyChange={{fn (mut @resource.currency)}}
+                    @disabled={{cannot-write @resource}}
+                />
+            </InputGroup>
+
+            <InputGroup @name={{t "product.fields.sale-price"}}>
+                <MoneyInput
+                    class="w-full"
+                    @value={{@resource.sale_price}}
+                    @currency={{@resource.currency}}
+                    @canSelectCurrency={{true}}
+                    @onCurrencyChange={{fn (mut @resource.currency)}}
+                    @disabled={{cannot-write @resource}}
+                />
+            </InputGroup>
+
+            <InputGroup @name={{t "product.fields.declared-value"}}>
+                <MoneyInput
+                    class="w-full"
+                    @value={{@resource.declared_value}}
+                    @currency={{@resource.currency}}
+                    @canSelectCurrency={{true}}
+                    @onCurrencyChange={{fn (mut @resource.currency)}}
+                    @disabled={{cannot-write @resource}}
+                />
+            </InputGroup>
+        </div>
+    </ContentPanel>
+
+    <ContentPanel @title={{t "product.sections.dimensions"}} @open={{false}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-3 gap-2 text-xs no-input-group-padding mb-2">
+            <InputGroup @name={{t "common.length"}}>
+                <UnitInput
+                    class="w-full"
+                    @measurement="length"
+                    @value={{@resource.length}}
+                    @unit={{@resource.dimensions_unit}}
+                    @canSelectUnit={{true}}
+                    @onUnitChange={{fn (mut @resource.dimensions_unit)}}
+                    @disabled={{cannot-write @resource}}
+                />
+            </InputGroup>
+
+            <InputGroup @name={{t "common.width"}}>
+                <UnitInput
+                    class="w-full"
+                    @measurement="length"
+                    @value={{@resource.width}}
+                    @unit={{@resource.dimensions_unit}}
+                    @canSelectUnit={{true}}
+                    @onUnitChange={{fn (mut @resource.dimensions_unit)}}
+                    @disabled={{cannot-write @resource}}
+                />
+            </InputGroup>
+
+            <InputGroup @name={{t "common.height"}}>
+                <UnitInput
+                    class="w-full"
+                    @measurement="length"
+                    @value={{@resource.height}}
+                    @unit={{@resource.dimensions_unit}}
+                    @canSelectUnit={{true}}
+                    @onUnitChange={{fn (mut @resource.dimensions_unit)}}
+                    @disabled={{cannot-write @resource}}
+                />
+            </InputGroup>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 text-xs no-input-group-padding">
+            <InputGroup @name={{t "common.weight"}}>
+                <UnitInput
+                    class="w-full"
+                    @measurement="weight"
+                    @value={{@resource.weight}}
+                    @unit={{@resource.weight_unit}}
+                    @canSelectUnit={{true}}
+                    @onUnitChange={{fn (mut @resource.weight_unit)}}
+                    @disabled={{cannot-write @resource}}
+                />
+            </InputGroup>
+        </div>
+    </ContentPanel>
+
+    <CustomField::Yield @subject={{@resource}} @wrapperClass="bordered-top" />
+
+    <ContentPanel @title={{t "common.metadata"}} @open={{true}} @wrapperClass="bordered-top">
+        <MetadataEditor @value={{@resource.meta}} @onChange={{fn (mut @resource.meta)}} />
+    </ContentPanel>
+</div>

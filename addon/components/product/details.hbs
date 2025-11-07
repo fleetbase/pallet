@@ -1,0 +1,131 @@
+<div class="details-wrapper" ...attributes>
+    <ContentPanel @title={{t "product.sections.details"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-2 gap-2 text-xs dark:text-gray-100">
+            <div class="field-info-container">
+                <div class="field-name">{{t "common.id"}}</div>
+                <ClickToCopy @value={{@resource.public_id}} class="field-value">{{n-a @resource.public_id}}</ClickToCopy>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "common.internal-id"}}</div>
+                <div class="field-value">{{n-a @resource.internal_id}}</div>
+            </div>
+            <div class="field-info-container md:col-span-2">
+                <div class="field-name">{{t "common.name"}}</div>
+                <div class="field-value">{{n-a @resource.name}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "product.fields.sku"}}</div>
+                <ClickToCopy @value={{@resource.sku}} class="field-value">{{n-a @resource.sku}}</ClickToCopy>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "product.fields.barcode"}}</div>
+                <ClickToCopy @value={{@resource.barcode}} class="field-value">{{n-a @resource.barcode}}</ClickToCopy>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "product.fields.category"}}</div>
+                <div class="field-value">{{smart-humanize @resource.category}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "product.fields.supplier"}}</div>
+                <div class="field-value">{{n-a @resource.supplier_name}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "common.status"}}</div>
+                <div class="field-value">
+                    <Badge @status={{@resource.status}}>{{smart-humanize @resource.status}}</Badge>
+                </div>
+            </div>
+            <div class="field-info-container md:col-span-2">
+                <div class="field-name">{{t "common.description"}}</div>
+                <div class="field-value">{{n-a @resource.description}}</div>
+            </div>
+        </div>
+    </ContentPanel>
+
+    <ContentPanel @title={{t "product.sections.inventory-info"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-2 gap-2 text-xs dark:text-gray-100">
+            <div class="field-info-container">
+                <div class="field-name">{{t "product.fields.total-stock"}}</div>
+                <div class="field-value">{{format-number @resource.total_stock}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "product.fields.available-stock"}}</div>
+                <div class="field-value">{{format-number @resource.available_stock}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "product.fields.reorder-point"}}</div>
+                <div class="field-value">{{format-number @resource.reorder_point}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "product.fields.reorder-quantity"}}</div>
+                <div class="field-value">{{format-number @resource.reorder_quantity}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "product.fields.shelf-life-days"}}</div>
+                <div class="field-value">{{n-a @resource.shelf_life_days}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "product.fields.tracking"}}</div>
+                <div class="field-value">
+                    {{#if @resource.is_serialized}}
+                        <Badge @status="info">{{t "product.fields.serialized"}}</Badge>
+                    {{/if}}
+                    {{#if @resource.is_lot_tracked}}
+                        <Badge @status="info">{{t "product.fields.lot-tracked"}}</Badge>
+                    {{/if}}
+                    {{#if @resource.is_perishable}}
+                        <Badge @status="warning">{{t "product.fields.perishable"}}</Badge>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </ContentPanel>
+
+    <ContentPanel @title={{t "product.sections.pricing"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-2 gap-2 text-xs dark:text-gray-100">
+            <div class="field-info-container">
+                <div class="field-name">{{t "product.fields.unit-cost"}}</div>
+                <div class="field-value">{{format-currency @resource.unit_cost @resource.currency}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "product.fields.unit-price"}}</div>
+                <div class="field-value">{{format-currency @resource.unit_price @resource.currency}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "product.fields.sale-price"}}</div>
+                <div class="field-value">{{format-currency @resource.sale_price @resource.currency}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "product.fields.declared-value"}}</div>
+                <div class="field-value">{{format-currency @resource.declared_value @resource.currency}}</div>
+            </div>
+        </div>
+    </ContentPanel>
+
+    <ContentPanel @title={{t "product.sections.dimensions"}} @open={{false}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-2 gap-2 text-xs dark:text-gray-100">
+            <div class="field-info-container">
+                <div class="field-name">{{t "common.length"}}</div>
+                <div class="field-value">{{@resource.length}} {{@resource.dimensions_unit}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "common.width"}}</div>
+                <div class="field-value">{{@resource.width}} {{@resource.dimensions_unit}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "common.height"}}</div>
+                <div class="field-value">{{@resource.height}} {{@resource.dimensions_unit}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "common.weight"}}</div>
+                <div class="field-value">{{@resource.weight}} {{@resource.weight_unit}}</div>
+            </div>
+        </div>
+    </ContentPanel>
+
+    <CustomField::Yield @subject={{@resource}} @viewMode={{true}} @wrapperClass="bordered-top" />
+
+    <ContentPanel @title={{t "common.metadata"}} @open={{true}} @actionButtons={{this.metadataButtons}} @wrapperClass="bordered-top" @panelBodyWrapperClass={{unless (is-object-empty @resource.meta) "px-0i" ""}}>
+        <MetadataViewer @metadata={{@resource.meta}} />
+    </ContentPanel>
+</div>
