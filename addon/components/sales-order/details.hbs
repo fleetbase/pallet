@@ -1,0 +1,40 @@
+<div class="details-wrapper" ...attributes>
+    <ContentPanel @title={{t "sales-order.sections.details"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-2 gap-2 text-xs dark:text-gray-100">
+            <div class="field-info-container">
+                <div class="field-name">{{t "common.id"}}</div>
+                <ClickToCopy @value={{@resource.public_id}} class="field-value">{{n-a @resource.public_id}}</ClickToCopy>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "sales-order.fields.order-number"}}</div>
+                <ClickToCopy @value={{@resource.order_number}} class="field-value">{{n-a @resource.order_number}}</ClickToCopy>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "sales-order.fields.customer"}}</div>
+                <div class="field-value">{{n-a @resource.customer_name}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "sales-order.fields.warehouse"}}</div>
+                <div class="field-value">{{n-a @resource.warehouse_name}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "common.status"}}</div>
+                <div class="field-value">
+                    <Badge @status={{@resource.status}}>{{smart-humanize @resource.status}}</Badge>
+                </div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "sales-order.fields.expected-shipment"}}</div>
+                <div class="field-value">{{format-date @resource.expected_shipment_at}}</div>
+            </div>
+            <div class="field-info-container md:col-span-2">
+                <div class="field-name">{{t "common.notes"}}</div>
+                <div class="field-value">{{n-a @resource.notes}}</div>
+            </div>
+        </div>
+    </ContentPanel>
+    <CustomField::Yield @subject={{@resource}} @viewMode={{true}} @wrapperClass="bordered-top" />
+    <ContentPanel @title={{t "common.metadata"}} @open={{true}} @wrapperClass="bordered-top" @panelBodyWrapperClass={{unless (is-object-empty @resource.meta) "px-0i" ""}}>
+        <MetadataViewer @metadata={{@resource.meta}} />
+    </ContentPanel>
+</div>

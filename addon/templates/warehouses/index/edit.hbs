@@ -1,1 +1,12 @@
-<WarehouseFormPanel @warehouse={{@model}} @onPressCancel={{this.transitionBack}} @onAfterSave={{this.onAfterSave}} @onViewDetails={{this.onViewDetails}} @onLoad={{this.setOverlayContext}} />
+<Layout::Resource::Panel
+    @resource={{@model}}
+    @controller={{this}}
+    @headerTitle={{t "common.edit-resource-name" resourceName=@model.name}}
+    @actionButtons={{this.actionButtons}}
+    @saveTask={{this.save}}
+    @onPressCancel={{this.cancel}}
+    @onOverlayReady={{fn (mut this.overlay)}}
+>
+    <Warehouse::Form @resource={{@model}} @controller={{this}} />
+    <Spacer @height="200px" />
+</Layout::Resource::Panel>

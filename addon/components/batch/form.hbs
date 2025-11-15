@@ -1,0 +1,54 @@
+<div class="form-wrapper" ...attributes>
+    <ContentPanel @title={{t "batch.sections.details"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 text-xs no-input-group-padding">
+            <InputGroup @name={{t "batch.fields.batch-number"}} @wrapperClass="col-span-2">
+                <Input @value={{@resource.batch_number}} @type="text" class="w-full form-input" placeholder={{t "batch.fields.batch-number"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+            <InputGroup @name={{t "batch.fields.product"}}>
+                <ModelSelect
+                    @modelName="pallet-product"
+                    @selectedModel={{@resource.product}}
+                    @placeholder={{t "batch.fields.select-product"}}
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{fn (mut @resource.product)}}
+                    @onChangeId={{fn (mut @resource.product_uuid)}}
+                    @disabled={{cannot-write @resource}}
+                    as |model|
+                >
+                    {{model.name}}
+                </ModelSelect>
+            </InputGroup>
+            <InputGroup @name={{t "batch.fields.supplier"}}>
+                <ModelSelect
+                    @modelName="supplier"
+                    @selectedModel={{@resource.supplier}}
+                    @placeholder={{t "batch.fields.select-supplier"}}
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{fn (mut @resource.supplier)}}
+                    @onChangeId={{fn (mut @resource.supplier_uuid)}}
+                    @disabled={{cannot-write @resource}}
+                    as |model|
+                >
+                    {{model.name}}
+                </ModelSelect>
+            </InputGroup>
+            <InputGroup @name={{t "batch.fields.production-date"}}>
+                <input value={{@resource.production_date_at}} type="date" class="form-input w-full" disabled={{cannot-write @resource}} />
+            </InputGroup>
+            <InputGroup @name={{t "batch.fields.expiry-date"}}>
+                <input value={{@resource.expiry_date_at}} type="date" class="form-input w-full" disabled={{cannot-write @resource}} />
+            </InputGroup>
+            <InputGroup @name={{t "common.notes"}} @wrapperClass="col-span-2">
+                <Textarea @value={{@resource.notes}} class="w-full form-input" placeholder={{t "common.notes"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+        </div>
+    </ContentPanel>
+    <CustomField::Yield @subject={{@resource}} @wrapperClass="bordered-top" />
+    <ContentPanel @title={{t "common.metadata"}} @open={{true}} @wrapperClass="bordered-top">
+        <MetadataEditor @value={{@resource.meta}} @onChange={{fn (mut @resource.meta)}} />
+    </ContentPanel>
+</div>

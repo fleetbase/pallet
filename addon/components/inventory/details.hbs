@@ -1,0 +1,108 @@
+<div class="details-wrapper" ...attributes>
+    <ContentPanel @title={{t "inventory.sections.details"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-2 gap-2 text-xs dark:text-gray-100">
+            <div class="field-info-container">
+                <div class="field-name">{{t "common.id"}}</div>
+                <ClickToCopy @value={{@resource.public_id}} class="field-value">{{n-a @resource.public_id}}</ClickToCopy>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "inventory.fields.product"}}</div>
+                <div class="field-value">{{n-a @resource.product_name}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "inventory.fields.warehouse"}}</div>
+                <div class="field-value">{{n-a @resource.warehouse_name}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "inventory.fields.supplier"}}</div>
+                <div class="field-value">{{n-a @resource.supplier_name}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "common.status"}}</div>
+                <div class="field-value">
+                    <Badge @status={{@resource.status}}>{{smart-humanize @resource.status}}</Badge>
+                </div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "inventory.fields.quantity"}}</div>
+                <div class="field-value">{{format-number @resource.quantity}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "inventory.fields.available-quantity"}}</div>
+                <div class="field-value">{{format-number @resource.available_quantity}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "inventory.fields.reserved-quantity"}}</div>
+                <div class="field-value">{{format-number @resource.reserved_quantity}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "inventory.fields.min-quantity"}}</div>
+                <div class="field-value">{{format-number @resource.min_quantity}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "inventory.fields.max-quantity"}}</div>
+                <div class="field-value">{{format-number @resource.max_quantity}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "inventory.fields.reorder-point"}}</div>
+                <div class="field-value">{{format-number @resource.reorder_point}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "inventory.fields.unit-cost"}}</div>
+                <div class="field-value">{{format-currency @resource.unit_cost @resource.currency}}</div>
+            </div>
+        </div>
+    </ContentPanel>
+
+    <ContentPanel @title={{t "inventory.sections.tracking"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-2 gap-2 text-xs dark:text-gray-100">
+            <div class="field-info-container">
+                <div class="field-name">{{t "inventory.fields.lot-number"}}</div>
+                <ClickToCopy @value={{@resource.lot_number}} class="field-value">{{n-a @resource.lot_number}}</ClickToCopy>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "inventory.fields.serial-number"}}</div>
+                <ClickToCopy @value={{@resource.serial_number}} class="field-value">{{n-a @resource.serial_number}}</ClickToCopy>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "inventory.fields.batch-number"}}</div>
+                <div class="field-value">{{n-a @resource.batch.batch_number}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "inventory.fields.expiry-date"}}</div>
+                <div class="field-value">{{format-date @resource.batch.expiry_date_at}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "inventory.fields.received-at"}}</div>
+                <div class="field-value">{{format-date @resource.received_at}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "inventory.fields.last-counted"}}</div>
+                <div class="field-value">{{format-date @resource.last_counted_at}}</div>
+            </div>
+        </div>
+    </ContentPanel>
+
+    <ContentPanel @title={{t "inventory.sections.location"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-2 gap-2 text-xs dark:text-gray-100">
+            <div class="field-info-container">
+                <div class="field-name">{{t "inventory.fields.bin-location"}}</div>
+                <div class="field-value">{{n-a @resource.binLocation.bin_number}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "inventory.fields.zone"}}</div>
+                <div class="field-value">{{n-a @resource.zone.name}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "inventory.fields.uom"}}</div>
+                <div class="field-value">{{n-a @resource.uom}}</div>
+            </div>
+        </div>
+    </ContentPanel>
+
+    <CustomField::Yield @subject={{@resource}} @viewMode={{true}} @wrapperClass="bordered-top" />
+
+    <ContentPanel @title={{t "common.metadata"}} @open={{true}} @wrapperClass="bordered-top" @panelBodyWrapperClass={{unless (is-object-empty @resource.meta) "px-0i" ""}}>
+        <MetadataViewer @metadata={{@resource.meta}} />
+    </ContentPanel>
+</div>
