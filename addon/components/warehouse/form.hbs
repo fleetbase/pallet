@@ -1,0 +1,63 @@
+<div class="form-wrapper" ...attributes>
+    <ContentPanel @title={{t "warehouse.sections.details"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 text-xs no-input-group-padding">
+            <InputGroup @name={{t "common.name"}} @wrapperClass="col-span-2">
+                <Input @value={{@resource.name}} @type="text" class="w-full form-input" placeholder={{t "warehouse.fields.name"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+            <InputGroup @name={{t "common.phone"}}>
+                <PhoneInput @value={{@resource.phone}} class="form-input w-full" disabled={{cannot-write @resource}} />
+            </InputGroup>
+            <InputGroup @name={{t "common.email"}}>
+                <Input @value={{@resource.email}} @type="email" class="w-full form-input" placeholder={{t "common.email"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+            <InputGroup @name={{t "common.description"}} @wrapperClass="col-span-2">
+                <Textarea @value={{@resource.meta.description}} class="w-full form-input" placeholder={{t "common.description"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+        </div>
+    </ContentPanel>
+
+    <ContentPanel @title={{t "warehouse.sections.address"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 text-xs no-input-group-padding">
+            <InputGroup @name={{t "common.street1"}} @wrapperClass="col-span-2">
+                <Input @value={{@resource.street1}} @type="text" class="w-full form-input" placeholder={{t "common.street1"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+            <InputGroup @name={{t "common.street2"}} @wrapperClass="col-span-2">
+                <Input @value={{@resource.street2}} @type="text" class="w-full form-input" placeholder={{t "common.street2"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+            <InputGroup @name={{t "common.city"}}>
+                <Input @value={{@resource.city}} @type="text" class="w-full form-input" placeholder={{t "common.city"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+            <InputGroup @name={{t "common.state"}}>
+                <Input @value={{@resource.province}} @type="text" class="w-full form-input" placeholder={{t "common.state"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+            <InputGroup @name={{t "common.postal-code"}}>
+                <Input @value={{@resource.postal_code}} @type="text" class="w-full form-input" placeholder={{t "common.postal-code"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+            <InputGroup @name={{t "common.country"}}>
+                <CountrySelect class="w-full form-input form-select" @value={{@resource.country}} @onChange={{fn (mut @resource.country)}} @disabled={{cannot-write @resource}} />
+            </InputGroup>
+        </div>
+    </ContentPanel>
+
+    <ContentPanel @title={{t "warehouse.sections.capacity"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 text-xs no-input-group-padding">
+            <InputGroup @name={{t "warehouse.fields.capacity"}}>
+                <Input @value={{@resource.capacity}} @type="number" class="w-full form-input" placeholder={{t "warehouse.fields.capacity"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+            <InputGroup @name={{t "warehouse.fields.current-utilization"}}>
+                <Input @value={{@resource.current_utilization}} @type="number" class="w-full form-input" placeholder={{t "warehouse.fields.current-utilization"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+            <InputGroup @name={{t "warehouse.fields.is-3pl"}}>
+                <Checkbox @checked={{@resource.is_3pl}} @onChange={{fn (mut @resource.is_3pl)}} @disabled={{cannot-write @resource}}>
+                    {{t "warehouse.fields.third-party-logistics"}}
+                </Checkbox>
+            </InputGroup>
+        </div>
+    </ContentPanel>
+
+    <CustomField::Yield @subject={{@resource}} @wrapperClass="bordered-top" />
+
+    <ContentPanel @title={{t "common.metadata"}} @open={{true}} @wrapperClass="bordered-top">
+        <MetadataEditor @value={{@resource.meta}} @onChange={{fn (mut @resource.meta)}} />
+    </ContentPanel>
+</div>

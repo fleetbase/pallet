@@ -1,0 +1,66 @@
+<div class="form-wrapper" ...attributes>
+    <ContentPanel @title={{t "sales-order.sections.details"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 text-xs no-input-group-padding">
+            <InputGroup @name={{t "sales-order.fields.order-number"}} @wrapperClass="col-span-2">
+                <Input @value={{@resource.order_number}} @type="text" class="w-full form-input" placeholder={{t "sales-order.fields.order-number"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+            <InputGroup @name={{t "sales-order.fields.customer"}}>
+                <ModelSelect
+                    @modelName="contact"
+                    @selectedModel={{@resource.customer}}
+                    @placeholder={{t "sales-order.fields.select-customer"}}
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{fn (mut @resource.customer)}}
+                    @onChangeId={{fn (mut @resource.customer_uuid)}}
+                    @disabled={{cannot-write @resource}}
+                    as |model|
+                >
+                    {{model.name}}
+                </ModelSelect>
+            </InputGroup>
+            <InputGroup @name={{t "sales-order.fields.warehouse"}}>
+                <ModelSelect
+                    @modelName="warehouse"
+                    @selectedModel={{@resource.warehouse}}
+                    @placeholder={{t "sales-order.fields.select-warehouse"}}
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{fn (mut @resource.warehouse)}}
+                    @onChangeId={{fn (mut @resource.warehouse_uuid)}}
+                    @disabled={{cannot-write @resource}}
+                    as |model|
+                >
+                    {{model.name}}
+                </ModelSelect>
+            </InputGroup>
+            <InputGroup @name={{t "common.status"}}>
+                <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                    <PowerSelect
+                        @options={{this.statusOptions}}
+                        @selected={{find-by "value" @resource.status this.statusOptions}}
+                        @onChange={{set-model-attr @resource "status"}}
+                        @placeholder={{t "common.select-status"}}
+                        @triggerClass="form-select form-input"
+                        @disabled={{cannot-write @resource}}
+                        as |option|
+                    >
+                        {{option.label}}
+                    </PowerSelect>
+                </div>
+            </InputGroup>
+            <InputGroup @name={{t "sales-order.fields.expected-shipment"}}>
+                <input value={{@resource.expected_shipment_at}} type="date" class="form-input w-full" disabled={{cannot-write @resource}} />
+            </InputGroup>
+            <InputGroup @name={{t "common.notes"}} @wrapperClass="col-span-2">
+                <Textarea @value={{@resource.notes}} class="w-full form-input" placeholder={{t "common.notes"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+        </div>
+    </ContentPanel>
+    <CustomField::Yield @subject={{@resource}} @wrapperClass="bordered-top" />
+    <ContentPanel @title={{t "common.metadata"}} @open={{true}} @wrapperClass="bordered-top">
+        <MetadataEditor @value={{@resource.meta}} @onChange={{fn (mut @resource.meta)}} />
+    </ContentPanel>
+</div>
