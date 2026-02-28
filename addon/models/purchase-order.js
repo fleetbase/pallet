@@ -16,21 +16,24 @@ export default class PurchaseOrderModel extends Model {
     /** @relationships */
     @belongsTo('company') company;
     @belongsTo('user') createdBy;
-    @belongsTo('vendor') supplier;
+    @belongsTo('supplier') supplier;
     @belongsTo('transaction') transaction;
     @belongsTo('user') assignedTo;
     @belongsTo('contact') pointOfContact;
 
     /** @attributes */
+    @attr('string') order_number;
     @attr('string') reference_code;
     @attr('string') reference_url;
+    @attr('string') customer_reference_code;
     @attr('string') description;
     @attr('string') comments;
     @attr('string') currency;
     @attr('string') status;
+    @attr('raw') meta;
 
     /** @date */
-    @attr('date') order_created_at;
+    @attr('date') order_date_at;
     @attr('date') expected_delivery_at;
     @attr('date') created_at;
     @attr('date') updated_at;
@@ -85,7 +88,13 @@ export default class PurchaseOrderModel extends Model {
         if (!isValidDate(this.expected_delivery_at)) {
             return null;
         }
-
         return formatDate(this.expected_delivery_at, 'yyyy-MM-dd');
+    }
+
+    @computed('order_date_at') get orderDate() {
+        if (!isValidDate(this.order_date_at)) {
+            return null;
+        }
+        return formatDate(this.order_date_at, 'PPP');
     }
 }

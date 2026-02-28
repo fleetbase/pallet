@@ -6,15 +6,15 @@ use Fleetbase\FleetOps\Providers\FleetOpsServiceProvider;
 use Fleetbase\Providers\CoreServiceProvider;
 
 if (!class_exists(CoreServiceProvider::class)) {
-    throw new \Exception('Storefront cannot be loaded without `fleetbase/core-api` installed!');
+    throw new \Exception('Pallet cannot be loaded without `fleetbase/core-api` installed!');
 }
 
 if (!class_exists(FleetOpsServiceProvider::class)) {
-    throw new \Exception('Storefront cannot be loaded without `fleetbase/fleetops-api` installed!');
+    throw new \Exception('Pallet cannot be loaded without `fleetbase/fleetops-api` installed!');
 }
 
 /**
- * Billing extension service provider.
+ * Pallet WMS extension service provider.
  */
 class PalletServiceProvider extends CoreServiceProvider
 {

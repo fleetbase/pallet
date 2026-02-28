@@ -18,23 +18,27 @@ export default class SalesOrderModel extends Model {
     @belongsTo('user') createdBy;
     @belongsTo('transaction') transaction;
     @belongsTo('user') assignedTo;
-    @belongsTo('vendor') supplier;
+    @belongsTo('supplier') supplier;
     @belongsTo('contact') pointOfContact;
 
     /** @attributes */
+    @attr('string') order_number;
     @attr('string') status;
     @attr('string') customer_reference_code;
     @attr('string') reference_code;
     @attr('string') reference_url;
     @attr('string') description;
     @attr('string') comments;
+    @attr('string') currency;
+    @attr('raw') meta;
+
+    /** @date */
     @attr('date') order_date_at;
     @attr('date') expected_delivery_at;
     @attr('date') created_at;
     @attr('date') updated_at;
 
     /** @computed */
-
     @computed('created_at') get createdAgo() {
         if (!isValidDate(this.created_at)) {
             return null;
@@ -81,7 +85,13 @@ export default class SalesOrderModel extends Model {
         if (!isValidDate(this.expected_delivery_at)) {
             return null;
         }
-
         return formatDate(this.expected_delivery_at, 'yyyy-MM-dd');
+    }
+
+    @computed('order_date_at') get orderDate() {
+        if (!isValidDate(this.order_date_at)) {
+            return null;
+        }
+        return formatDate(this.order_date_at, 'PPP');
     }
 }

@@ -1,2 +1,198 @@
 pallet:
   extension-name: Pallet
+
+# Resource titles (used in page headers and table titles)
+resource:
+  inventory: Inventory
+  products: Products
+  purchase-orders: Purchase Orders
+  sales-orders: Sales Orders
+  suppliers: Suppliers
+  warehouses: Warehouses
+  audits: Audit Trail
+  reports: Reports
+  batches: Batches
+
+# Common / shared labels
+common:
+  address: Address
+  city: City
+  country: Country
+  description: Description
+  edit-resource-name: Edit {name}
+  email: Email
+  height: Height
+  id: ID
+  internal-id: Internal ID
+  length: Length
+  metadata: Metadata
+  name: Name
+  no: No
+  notes: Notes
+  phone: Phone
+  postal-code: Postal Code
+  select-status: Select Status
+  state: State / Province
+  status: Status
+  street1: Street 1
+  street2: Street 2
+  weight: Weight
+  width: Width
+  yes: Yes
+  save: Save
+  cancel: Cancel
+  delete: Delete
+  edit: Edit
+  view: View
+  create: Create
+  search: Search
+  filter: Filter
+  export: Export
+  import: Import
+  actions: Actions
+  created-at: Created At
+  updated-at: Updated At
+
+# Product translations
+product:
+  sections:
+    details: Details
+    dimensions: Dimensions
+    inventory-info: Inventory Information
+    inventory-settings: Inventory Settings
+    pricing: Pricing
+  fields:
+    available-stock: Available Stock
+    barcode: Barcode
+    category: Category
+    declared-value: Declared Value
+    is-lot-tracked: Lot Tracked
+    is-perishable: Perishable
+    is-serialized: Serialized
+    lot-tracked: Track Lot Numbers
+    name-placeholder: Product name
+    perishable: Perishable
+    perishable-item: Perishable Item
+    reorder-point: Reorder Point
+    reorder-quantity: Reorder Quantity
+    requires-qc: Requires QC
+    requires-quality-check: Requires Quality Check
+    sale-price: Sale Price
+    select-category: Select Category
+    select-supplier: Select Supplier
+    serialized: Serialized
+    shelf-life-days: Shelf Life (Days)
+    sku: SKU
+    supplier: Supplier
+    total-stock: Total Stock
+    track-lot-numbers: Track Lot Numbers
+    track-serial-numbers: Track Serial Numbers
+    tracking: Tracking
+    unit-cost: Unit Cost
+    unit-price: Unit Price
+
+# Inventory translations
+inventory:
+  sections:
+    details: Details
+    location: Location
+    tracking: Tracking
+  fields:
+    available-quantity: Available Quantity
+    batch-number: Batch Number
+    bin-location: Bin Location
+    expiry-date: Expiry Date
+    last-counted: Last Counted
+    lot-number: Lot Number
+    max-quantity: Max Quantity
+    min-quantity: Min Quantity
+    product: Product
+    quantity: Quantity
+    received-at: Received At
+    reorder-point: Reorder Point
+    reserved-quantity: Reserved Quantity
+    select-bin: Select Bin Location
+    select-product: Select Product
+    select-supplier: Select Supplier
+    select-warehouse: Select Warehouse
+    select-zone: Select Zone
+    serial-number: Serial Number
+    supplier: Supplier
+    unit-cost: Unit Cost
+    uom: Unit of Measure
+    warehouse: Warehouse
+    zone: Zone
+
+# Warehouse translations
+warehouse:
+  sections:
+    address: Address
+    capacity: Capacity
+    details: Details
+  fields:
+    capacity: Capacity
+    current-utilization: Current Utilization
+    is-3pl: Third-Party Logistics
+    name: Warehouse Name
+    third-party-logistics: Third-Party Logistics (3PL)
+
+# Supplier translations
+supplier:
+  sections:
+    details: Details
+  fields:
+    name: Supplier Name
+    select-type: Select Supplier Type
+    type: Supplier Type
+
+# Purchase Order translations
+purchase-order:
+  sections:
+    details: Details
+  fields:
+    expected-delivery: Expected Delivery Date
+    order-number: Order Number
+    select-supplier: Select Supplier
+    select-warehouse: Select Warehouse
+    supplier: Supplier
+    warehouse: Warehouse
+
+# Sales Order translations
+sales-order:
+  sections:
+    details: Details
+  fields:
+    customer: Customer
+    expected-shipment: Expected Shipment Date
+    order-number: Order Number
+    select-customer: Select Customer
+    select-warehouse: Select Warehouse
+    warehouse: Warehouse
+
+# Batch translations
+batch:
+  sections:
+    details: Details
+  fields:
+    batch-number: Batch Number
+    expiry-date: Expiry Date
+    product: Product
+    production-date: Production Date
+    select-product: Select Product
+    select-supplier: Select Supplier
+    supplier: Supplier
+
+# Audit Trail translations
+audit:
+  sections:
+    details: Details
+  fields:
+    action: Action
+    auditable-type: Resource Type
+    auditable-id: Resource ID
+    performed-by: Performed By
+    reason: Reason
+    comments: Comments
+    old-values: Previous Values
+    new-values: New Values
+    date: Date

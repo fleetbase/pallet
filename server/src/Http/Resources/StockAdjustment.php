@@ -17,11 +17,16 @@ class StockAdjustment extends FleetbaseResource
     public function toArray($request)
     {
         return [
-            'id'                        => $this->when(Http::isInternalRequest(), $this->id, $this->public_id),
+            'id'                        => $this->when(Http::isInternalRequest(), $this->incrementing_id, $this->public_id),
             'uuid'                      => $this->when(Http::isInternalRequest(), $this->uuid),
             'public_id'                 => $this->when(Http::isInternalRequest(), $this->public_id),
             'product_uuid'              => $this->product_uuid,
             'product'                   => $this->whenLoaded('product', $this->product),
+            'inventory_uuid'            => $this->inventory_uuid,
+            'warehouse_uuid'            => $this->warehouse_uuid,
+            'reason'                    => $this->reason,
+            'notes'                     => $this->notes,
+            'adjustment_type'           => $this->adjustment_type,
             'quantity'                  => (int) $this->quantity,
             'before_quantity'           => (int) $this->before_quantity,
             'after_quantity'            => (int) $this->after_quantity,

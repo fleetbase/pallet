@@ -3,14 +3,19 @@
 namespace Fleetbase\Pallet\Models;
 
 use Fleetbase\Models\Model;
+use Fleetbase\Models\User;
 use Fleetbase\Traits\HasApiModelBehavior;
+use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Audit extends Model
 {
     use HasUuid;
+    use HasPublicId;
     use HasApiModelBehavior;
+    use SoftDeletes;
 
     /**
      * The database table used by the model.
@@ -20,11 +25,11 @@ class Audit extends Model
     protected $table = 'pallet_audits';
 
     /**
-     * The primary key for the model.
+     * The type of public Id to generate.
      *
      * @var string
      */
-    protected $primaryKey = 'uuid';
+    protected $publicIdType = 'audit';
 
     /**
      * The singularName overwrite.
@@ -38,7 +43,7 @@ class Audit extends Model
      *
      * @var array
      */
-    protected $searchableColumns = ['uuid', 'user_uuid', 'action', 'auditable_type', 'auditable_uuid', 'created_at'];
+    protected $searchableColumns = ['action', 'type', 'auditable_type', 'auditable_uuid'];
 
     /**
      * The attributes that are mass assignable.
@@ -47,12 +52,21 @@ class Audit extends Model
      */
     protected $fillable = [
         'uuid',
-        'user_uuid',
-        'action',
-        'auditable_type',
+        'public_id',
+        'company_uuid',
+        'created_by_uuid',
+        'performed_by_uuid',
         'auditable_uuid',
+        'auditable_type',
+        'action',
+        'type',
+        'reason',
+        'comments',
+        'meta',
         'old_values',
         'new_values',
+        'scheduled_at',
+        'completed_at',
         'created_at',
         'updated_at',
     ];
@@ -62,14 +76,18 @@ class Audit extends Model
      *
      * @var array
      */
-    protected $casts = [];
+    protected $casts = [
+        'meta'       => 'array',
+        'old_values' => 'array',
+        'new_values' => 'array',
+    ];
 
     /**
      * The relationships to be eager loaded.
      *
      * @var array
      */
-    protected $with = ['user'];
+    protected $with = ['performedBy'];
 
     /**
      * Dynamic attributes that are appended to object.
@@ -86,12 +104,35 @@ class Audit extends Model
     protected $hidden = [];
 
     /**
-     * Get the user that performed the audit.
+     * The dates that should be mutated to Carbon instances.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'scheduled_at',
+        'completed_at',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
+    /**
+     * Get the user who performed the audit action.
      *
      * @return BelongsTo
      */
-    public function user()
+    public function performedBy(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\User::class, 'user_uuid');
+        return $this->belongsTo(User::class, 'performed_by_uuid');
+    }
+
+    /**
+     * Get the user who created the audit record.
+     *
+     * @return BelongsTo
+     */
+    public function createdBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by_uuid');
     }
 }
