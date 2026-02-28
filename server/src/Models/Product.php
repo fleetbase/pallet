@@ -6,6 +6,9 @@ use Fleetbase\Casts\Json;
 use Fleetbase\FleetOps\Models\Entity;
 use Fleetbase\Traits\HasMetaAttributes;
 
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
+
 class Product extends Entity
 {
     use HasMetaAttributes;
@@ -205,4 +208,28 @@ class Product extends Entity
             'status'         => 'active',
         ]);
     }
+    /**
+     * Configure Spatie activity log options.
+     * Logs only the specified attributes when they change (dirty only).
+     *
+     * @return LogOptions
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'name',
+                'sku',
+                'description',
+                'price',
+                'cost',
+                'weight',
+                'category',
+                'status',
+                'barcode',
+            ])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
+
 }

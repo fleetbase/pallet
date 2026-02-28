@@ -9,6 +9,7 @@ use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 use Fleetbase\Traits\TracksApiCredential;
 use Fleetbase\Traits\HasMetaAttributes;
+use Fleetbase\Pallet\Traits\HasOperationalAuditTrail;
 
 class CycleCount extends Model
 {
@@ -17,6 +18,7 @@ class CycleCount extends Model
     use HasApiModelBehavior;
     use TracksApiCredential;
     use HasMetaAttributes;
+    use HasOperationalAuditTrail;
 
     /**
      * The database table used by the model.
@@ -193,8 +195,24 @@ class CycleCount extends Model
     {
         $this->status = 'completed';
         $this->completed_at = now();
+        $result = $this->save();
 
-        return $this->save();
+        // Log operational audit event
+        $this->logAuditEvent(
+            AuditEventType::CYCLE_COUNT,
+            'Cycle Count Completed',
+            'completed',
+            null,
+            [
+                'count_number'        => $this->count_number,
+                'warehouse_uuid'      => $this->warehouse_uuid,
+                'total_items'         => $this->total_items,
+                'discrepancies_count' => $this->discrepancies_count,
+                'accuracy_percentage' => $this->accuracy_percentage,
+            ]
+        );
+
+        return $result;
     }
 
     /**
@@ -212,8 +230,23 @@ class CycleCount extends Model
         }
 
         $this->status = 'approved';
+        $result = $this->save();
 
-        return $this->save();
+        // Log operational audit event
+        $this->logAuditEvent(
+            AuditEventType::CYCLE_COUNT,
+            'Cycle Count Approved',
+            'approved',
+            null,
+            [
+                'count_number'        => $this->count_number,
+                'warehouse_uuid'      => $this->warehouse_uuid,
+                'discrepancies_count' => $this->discrepancies_count,
+                'accuracy_percentage' => $this->accuracy_percentage,
+            ]
+        );
+
+        return $result;
     }
 
     /**

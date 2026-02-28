@@ -9,6 +9,9 @@ use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 use Fleetbase\Traits\HasMetaAttributes;
 
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
+
 class Inventory extends Model
 {
     use HasUuid;
@@ -436,4 +439,25 @@ class Inventory extends Model
             }
         });
     }
+    /**
+     * Configure Spatie activity log options.
+     * Logs only the specified attributes when they change (dirty only).
+     *
+     * @return LogOptions
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'quantity',
+                'unit_price',
+                'status',
+                'warehouse_uuid',
+                'product_uuid',
+                'batch_uuid',
+            ])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
+
 }

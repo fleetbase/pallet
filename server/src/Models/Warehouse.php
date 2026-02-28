@@ -6,6 +6,9 @@ use Fleetbase\Casts\Json;
 use Fleetbase\FleetOps\Models\Place;
 use Fleetbase\Traits\HasMetaAttributes;
 
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
+
 class Warehouse extends Place
 {
     use HasMetaAttributes;
@@ -257,4 +260,22 @@ class Warehouse extends Place
             ->orderBy('priority', 'desc')
             ->first();
     }
+    /**
+     * Configure Spatie activity log options.
+     * Logs only the specified attributes when they change (dirty only).
+     *
+     * @return LogOptions
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'name',
+                'type',
+                'status',
+            ])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
+
 }

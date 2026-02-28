@@ -4,15 +4,22 @@ namespace Fleetbase\Pallet\Models;
 
 use Fleetbase\Casts\Json;
 use Fleetbase\Models\Model;
+use Fleetbase\Models\User;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
+use Fleetbase\Pallet\Traits\HasOperationalAuditTrail;
+
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class StockAdjustment extends Model
 {
     use HasUuid;
     use HasPublicId;
     use HasApiModelBehavior;
+    use HasOperationalAuditTrail;
+    use LogsActivity;
 
     /**
      * The database table used by the model.
@@ -77,7 +84,8 @@ class StockAdjustment extends Model
      * @var array
      */
     protected $casts = [
-        'meta' => JSON::class,
+        'meta'              => Json::class,
+        'approval_required' => 'boolean',
     ];
 
     /**
@@ -101,7 +109,7 @@ class StockAdjustment extends Model
      */
     public function company()
     {
-        return $this->belongsTo(Company::class, 'company_uuid', 'uuid');
+        return $this->belongsTo(\Fleetbase\Models\Company::class, 'company_uuid', 'uuid');
     }
 
     /**
@@ -111,7 +119,7 @@ class StockAdjustment extends Model
      */
     public function createdBy()
     {
-        return $this->belongsTo(User::class, 'created_by_uuid', 'uuid');
+        return $this->belongsTo(\Fleetbase\Models\User::class, 'created_by_uuid', 'uuid');
     }
 
     /**
@@ -126,6 +134,50 @@ class StockAdjustment extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'assignee_uuid');
+        return $this->belongsTo(\Fleetbase\Models\User::class, 'assignee_uuid');
     }
+
+    /**
+     * Boot the model.
+     * Automatically logs an operational audit event when a stock adjustment is created.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function (StockAdjustment $adjustment) {
+            $adjustment->logAuditEvent(
+                AuditEventType::STOCK_ADJUSTMENT,
+                'Stock Adjusted',
+                $adjustment->type,
+                $adjustment->reason,
+                [
+                    'product_uuid'    => $adjustment->product_uuid,
+                    'before_quantity' => $adjustment->before_quantity,
+                    'after_quantity'  => $adjustment->after_quantity,
+                    'quantity_delta'  => $adjustment->quantity,
+                ]
+            );
+        });
+    }
+    /**
+     * Configure Spatie activity log options.
+     * Logs only the specified attributes when they change (dirty only).
+     *
+     * @return LogOptions
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'type',
+                'reason',
+                'quantity',
+                'before_quantity',
+                'after_quantity',
+            ])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
+
 }

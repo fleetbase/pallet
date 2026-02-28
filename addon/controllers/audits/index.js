@@ -6,131 +6,139 @@ import { isBlank } from '@ember/utils';
 import { timeout } from 'ember-concurrency';
 import { task } from 'ember-concurrency-decorators';
 
+/**
+ * AuditsIndexController
+ *
+ * Displays the WMS operational audit trail. This is a read-only view of
+ * intentional warehouse events (stock adjustments, cycle counts, PO receipts,
+ * SO fulfilments, stock transfers). It is NOT a generic data-change log —
+ * that is handled by Spatie Activity Log at the framework level.
+ */
 export default class AuditsIndexController extends Controller {
     /**
-     * Inject the `notifications` service
-     *
-     * @var {Service}
+     * @service notifications
      */
     @service notifications;
 
     /**
-     * Inject the `store` service
-     *
-     * @var {Service}
+     * @service store
      */
     @service store;
 
     /**
-     * Inject the `filters` service
-     *
-     * @var {Service}
+     * @service filters
      */
     @service filters;
 
     /**
-     * Inject the `hostRouter` service
-     *
-     * @var {Service}
+     * @service hostRouter
      */
     @service hostRouter;
 
     /**
-     * Inject the `fetch` service
-     *
-     * @var {Service}
+     * @service fetch
      */
     @service fetch;
 
     /**
-     * Queryable parameters for this controller's model
+     * Queryable parameters for this controller's model.
+     * Note: `auditable_type` has been replaced by `subject_type` and `event_type`
+     * to match the refactored backend schema.
      *
      * @var {Array}
      */
-    queryParams = ['page', 'limit', 'sort', 'query', 'action', 'auditable_type'];
+    queryParams = ['page', 'limit', 'sort', 'query', 'event_type', 'subject_type'];
 
-    /**
-     * The current page of data being viewed
-     *
-     * @var {Integer}
-     */
+    /** @tracked page = 1 */
     @tracked page = 1;
 
-    /**
-     * The maximum number of items to show per page
-     *
-     * @var {Integer}
-     */
+    /** @tracked limit */
     @tracked limit;
 
-    /**
-     * The param to sort the data on, the param with prepended `-` is descending
-     *
-     * @var {String}
-     */
+    /** @tracked sort = '-created_at' */
     @tracked sort = '-created_at';
 
-    /**
-     * The filterable param `query`
-     *
-     * @var {String}
-     */
+    /** @tracked query — free-text search */
     @tracked query;
 
     /**
-     * The filterable param `action`
-     *
+     * Filter by WMS event type (e.g. 'stock_adjustment', 'cycle_count').
      * @var {String}
      */
-    @tracked action;
+    @tracked event_type;
 
     /**
-     * The filterable param `auditable_type`
-     *
+     * Filter by the subject model class (e.g. 'Inventory', 'PurchaseOrder').
      * @var {String}
      */
-    @tracked auditable_type;
+    @tracked subject_type;
 
     /**
-     * Reference to the table component
-     *
+     * Reference to the rendered table component.
      * @var {Object}
      */
     @tracked table;
 
     /**
-     * The columns for the audit table.
+     * Available event type filter options, matching AuditEventType constants.
+     * @var {Array}
+     */
+    eventTypeOptions = [
+        { label: 'All Events', value: null },
+        { label: 'Stock Adjustment', value: 'stock_adjustment' },
+        { label: 'Cycle Count', value: 'cycle_count' },
+        { label: 'PO Received', value: 'po_received' },
+        { label: 'SO Fulfilled', value: 'so_fulfilled' },
+        { label: 'Stock Transfer', value: 'stock_transfer' },
+        { label: 'Inventory Received', value: 'inventory_receive' },
+        { label: 'Batch Created', value: 'batch_created' },
+        { label: 'Product Created', value: 'product_created' },
+        { label: 'Warehouse Created', value: 'warehouse_created' },
+    ];
+
+    /**
+     * Column definitions for the operational audit trail table.
+     * Columns reflect the new schema: event_type, subject, action, reason, performed_by, date.
      *
      * @var {Array}
      */
     @tracked columns = [
         {
-            label: 'Performed By',
-            valuePath: 'performedBy.name',
+            label: 'Event',
+            valuePath: 'eventTypeLabel',
+            cellComponent: 'table/cell/status',
             width: '160px',
             resizable: true,
-            sortable: false,
+            sortable: true,
+            filterable: true,
+            filterComponent: 'filter/select',
+            filterOptions: [
+                { label: 'Stock Adjustment', value: 'stock_adjustment' },
+                { label: 'Cycle Count', value: 'cycle_count' },
+                { label: 'PO Received', value: 'po_received' },
+                { label: 'SO Fulfilled', value: 'so_fulfilled' },
+                { label: 'Stock Transfer', value: 'stock_transfer' },
+                { label: 'Inventory Received', value: 'inventory_receive' },
+            ],
+            filterParam: 'event_type',
         },
         {
             label: 'Action',
             valuePath: 'action',
-            cellComponent: 'table/cell/status',
-            width: '120px',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterComponent: 'filter/string',
-        },
-        {
-            label: 'Resource Type',
-            valuePath: 'resourceLabel',
-            width: '160px',
+            width: '140px',
             resizable: true,
             sortable: false,
         },
         {
-            label: 'Resource ID',
-            valuePath: 'auditable_uuid',
+            label: 'Subject',
+            valuePath: 'subjectLabel',
+            width: '140px',
+            resizable: true,
+            sortable: false,
+        },
+        {
+            label: 'Subject ID',
+            valuePath: 'subject_uuid',
             width: '200px',
             resizable: true,
             sortable: false,
@@ -139,6 +147,13 @@ export default class AuditsIndexController extends Controller {
             label: 'Reason',
             valuePath: 'reason',
             width: '200px',
+            resizable: true,
+            sortable: false,
+        },
+        {
+            label: 'Performed By',
+            valuePath: 'performedBy.name',
+            width: '160px',
             resizable: true,
             sortable: false,
         },
@@ -154,26 +169,37 @@ export default class AuditsIndexController extends Controller {
     ];
 
     /**
-     * The search task.
-     *
+     * Search task — debounced free-text search.
      * @void
      */
     @task({ restartable: true }) *search({ target: { value } }) {
-        // if no query don't search
         if (isBlank(value)) {
             this.query = null;
             return;
         }
-
-        // timeout for typing
         yield timeout(250);
-
-        // reset page for results
         if (this.page > 1) {
             this.page = 1;
         }
-
-        // update the query param
         this.query = value;
+    }
+
+    /**
+     * Filter by event type from the dropdown.
+     * @param {String|null} value
+     */
+    @action filterByEventType(value) {
+        this.event_type = value || null;
+        this.page = 1;
+    }
+
+    /**
+     * Clear all active filters.
+     */
+    @action clearFilters() {
+        this.event_type = null;
+        this.subject_type = null;
+        this.query = null;
+        this.page = 1;
     }
 }

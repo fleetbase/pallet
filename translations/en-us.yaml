@@ -52,6 +52,9 @@ common:
   actions: Actions
   created-at: Created At
   updated-at: Updated At
+  clear_filters: Clear Filters
+  no-records: No records found
+  loading: Loading...
 
 # Product translations
 product:
@@ -183,16 +186,36 @@ batch:
     supplier: Supplier
 
 # Audit Trail translations
+# The Pallet audit trail captures intentional WMS operational events (stock adjustments,
+# cycle counts, PO receipts, SO fulfilments, stock transfers). It is NOT a generic
+# data-change log — that is handled by Spatie Activity Log at the framework level.
 audit:
+  title: Audit Trail
+  search_placeholder: Search audit events...
+  all_events: All Events
+  filter_event_type: Event Type
+  no_records: No audit events found
   sections:
     details: Details
   fields:
+    event-type: Event Type
     action: Action
-    auditable-type: Resource Type
-    auditable-id: Resource ID
+    subject-type: Subject Type
+    subject-id: Subject ID
     performed-by: Performed By
     reason: Reason
     comments: Comments
-    old-values: Previous Values
-    new-values: New Values
+    meta: Event Data
     date: Date
+    scheduled-at: Scheduled At
+    completed-at: Completed At
+  event-types:
+    stock_adjustment: Stock Adjustment
+    cycle_count: Cycle Count
+    po_received: PO Received
+    so_fulfilled: SO Fulfilled
+    stock_transfer: Stock Transfer
+    inventory_receive: Inventory Received
+    batch_created: Batch Created
+    product_created: Product Created
+    warehouse_created: Warehouse Created

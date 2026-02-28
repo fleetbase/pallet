@@ -7,12 +7,18 @@ use Fleetbase\Models\Model;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
+use Fleetbase\Pallet\Traits\HasOperationalAuditTrail;
+
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class SalesOrder extends Model
 {
     use HasUuid;
     use HasPublicId;
     use HasApiModelBehavior;
+    use HasOperationalAuditTrail;
+    use LogsActivity;
 
     /**
      * The database table used by the model.
@@ -147,19 +153,41 @@ class SalesOrder extends Model
     }
 
     /**
-     * Relationship with the customer associated with the sales order.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    
-    /**
-     * Relationship with the supplier associated with the purchase order.
+     * Relationship with the supplier associated with the sales order.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function supplier()
     {
         return $this->belongsTo(Supplier::class, 'supplier_uuid', 'uuid');
+    }
+
+    /**
+     * Mark the sales order as fulfilled and log an operational audit event.
+     * This method is called by SalesOrderController::fulfill().
+     *
+     * @param array $fulfilledItems  Array of fulfilled line items with quantities
+     * @return bool
+     */
+    public function markAsFulfilled(array $fulfilledItems = []): bool
+    {
+        $this->status = 'fulfilled';
+        $result = $this->save();
+
+        // Log operational audit event
+        $this->logAuditEvent(
+            AuditEventType::SO_FULFILLED,
+            'Sales Order Fulfilled',
+            'fulfilled',
+            null,
+            [
+                'order_number'    => $this->public_id,
+                'supplier_uuid'   => $this->supplier_uuid,
+                'fulfilled_items' => $fulfilledItems,
+            ]
+        );
+
+        return $result;
     }
 
     protected static function boot()
@@ -171,4 +199,24 @@ class SalesOrder extends Model
             $model->order_date_at = now();
         });
     }
+    /**
+     * Configure Spatie activity log options.
+     * Logs only the specified attributes when they change (dirty only).
+     *
+     * @return LogOptions
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'status',
+                'reference_code',
+                'description',
+                'currency',
+                'expected_delivery_at',
+            ])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
+
 }
