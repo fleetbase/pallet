@@ -1,4 +1,4 @@
-<Overlay @onLoad={{this.setOverlayContext}} @position="right" @noBackdrop={{true}} @fullHeight={{true}} @isResizeble={{or this.isResizable @isResizable}} @width={{or this.width @width "600px"}}>
+<Overlay @onLoad={{this.setOverlayContext}} @position="right" @noBackdrop={{true}} @fullHeight={{true}} @isResizable={{or this.isResizable @isResizable}} @width={{or this.width @width "600px"}}>
     <Overlay::Header @title={{if this.warehouse.public_id this.warehouse.name "New Warehouse"}} @status={{this.warehouse.public_id}} @hideStatusDot={{true}} @createdAt={{this.warehouse.createdAt}} @titleWrapperClass="leading-5">
         <div class="flex flex-1 justify-end">
             <Button @icon={{if this.warehouse.id "save" "check"}} @type="primary" @text={{if this.warehouse.id "Save Warehouse" "Create Warehouse"}} @onClick={{this.save}} @wrapperClass="mr-2" />

@@ -1,1 +1,13 @@
+<Layout::Resource::Tabular
+    @resource="audit"
+    @title="Audit Trail"
+    @searchQuery={{this.query}}
+    @onSearch={{perform this.search}}
+    @data={{@model}}
+    @columns={{this.columns}}
+    @page={{this.page}}
+    @onPageChange={{fn (mut this.page)}}
+    @setupTable={{fn (mut this.table)}}
+    @controller={{this}}
+/>
 {{outlet}}

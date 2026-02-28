@@ -3,7 +3,7 @@
 </a>
 
 <EmberWormhole @to="warehouse-overlay-render-outlet">
-    <Overlay @isOpen={{false}} @onLoad={{this.setOverlayContext}} @position="right" @fullHeight={{true}} @isResizeble={{true}} @width="800px" @overlayClass="!z-[999]">
+    <Overlay @isOpen={{false}} @onLoad={{this.setOverlayContext}} @position="right" @fullHeight={{true}} @isResizable={{true}} @width="800px" @overlayClass="!z-[999]">
         <Overlay::Header @title="Warehouse Editor" @onPressCancel={{this.closeEditor}} />
         <Overlay::Body>
             <div class="px-5 py-3">

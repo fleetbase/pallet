@@ -47,7 +47,13 @@ export default buildRoutes(function () {
             this.route('edit', { path: '/edit/:public_id' });
         });
     });
-    this.route('batch', function () {});
-    this.route('audits', function () {});
-    this.route('reports', function () {});
+    this.route('batch', function () {
+        this.route('index', { path: '/' });
+    });
+    this.route('audits', function () {
+        this.route('index', { path: '/' });
+    });
+    this.route('reports', function () {
+        this.route('index', { path: '/' });
+    });
 });

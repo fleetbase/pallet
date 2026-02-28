@@ -3,7 +3,7 @@
     @position="right"
     @noBackdrop={{true}}
     @fullHeight={{true}}
-    @isResizeble={{or this.isResizable @isResizable}}
+    @isResizable={{or this.isResizable @isResizable}}
     @width={{or this.width @width "600px"}}
 >
     <Overlay::Header
@@ -54,7 +54,7 @@
                         @triggerClass="form-select form-input"
                         @infiniteScroll={{false}}
                         @renderInPlace={{true}}
-                        @onChange={{this.inventory.supplier.name}}
+                        @onChange={{fn (mut this.inventory.supplier)}}
                         @onChangeId={{fn (mut this.inventory.supplier_uuid)}}
                         as |model|
                     >
