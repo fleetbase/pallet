@@ -106,15 +106,34 @@ export default class PurchaseOrdersIndexController extends Controller {
     @tracked status;
 
     /**
-     * All columns applicable for orders
+     * The table instance
+     *
+     * @var {Object}
+     */
+    @tracked table;
+
+    /**
+     * Status options for the filter
+     *
+     * @var {Array}
+     */
+    statusOptions = [
+        { value: 'pending', label: 'Pending' },
+        { value: 'partial', label: 'Partial' },
+        { value: 'received', label: 'Received' },
+        { value: 'cancelled', label: 'Cancelled' },
+    ];
+
+    /**
+     * All columns applicable for purchase orders
      *
      * @var {Array}
      */
     @tracked columns = [
         {
-            label: 'ID',
+            label: 'PO Number',
             valuePath: 'public_id',
-            width: '130px',
+            width: '140px',
             cellComponent: 'table/cell/anchor',
             action: this.viewPurchaseOrder,
             resizable: true,
@@ -124,20 +143,54 @@ export default class PurchaseOrdersIndexController extends Controller {
             filterComponent: 'filter/string',
         },
         {
+            label: 'Supplier',
+            valuePath: 'supplier.name',
+            width: '160px',
+            resizable: true,
+            sortable: false,
+            filterable: false,
+        },
+        {
+            label: 'Reference',
+            valuePath: 'reference_code',
+            width: '130px',
+            resizable: true,
+            sortable: false,
+            filterable: true,
+            filterComponent: 'filter/string',
+        },
+        {
+            label: 'Items',
+            valuePath: 'item_count',
+            width: '70px',
+            resizable: false,
+            sortable: false,
+            filterable: false,
+        },
+        {
             label: 'Status',
             valuePath: 'status',
             cellComponent: 'table/cell/status',
-            width: '100px',
+            width: '110px',
             resizable: true,
             sortable: true,
             filterable: true,
             filterComponent: 'filter/multi-option',
-            filterOptions: this.statusOption,
+            filterOptions: this.statusOptions,
+        },
+        {
+            label: 'Expected Delivery',
+            valuePath: 'expected_delivery_at',
+            width: '140px',
+            resizable: true,
+            sortable: true,
+            filterable: true,
+            filterComponent: 'filter/date',
         },
         {
             label: 'Created At',
             valuePath: 'createdAt',
-            sortParam: 'createdAt',
+            sortParam: 'created_at',
             width: '120px',
             resizable: true,
             sortable: true,
@@ -161,7 +214,7 @@ export default class PurchaseOrdersIndexController extends Controller {
             ddButtonText: false,
             ddButtonIcon: 'ellipsis-h',
             ddButtonIconPrefix: 'fas',
-            ddMenuLabel: 'Sales Order Actions',
+            ddMenuLabel: 'Purchase Order Actions',
             cellClassNames: 'overflow-visible',
             wrapperClass: 'flex items-center justify-end mx-2',
             width: '10%',
@@ -171,14 +224,22 @@ export default class PurchaseOrdersIndexController extends Controller {
                     fn: this.viewPurchaseOrder,
                 },
                 {
-                    label: 'Edit Sales Order',
+                    label: 'Receive Goods',
+                    fn: this.receivePurchaseOrder,
+                    isVisible: (purchaseOrder) => ['pending', 'partial'].includes(purchaseOrder.status),
+                },
+                {
+                    separator: true,
+                },
+                {
+                    label: 'Edit Purchase Order',
                     fn: this.editPurchaseOrder,
                 },
                 {
                     separator: true,
                 },
                 {
-                    label: 'Delete Sales Order',
+                    label: 'Delete Purchase Order',
                     fn: this.deletePurchaseOrder,
                 },
             ],
@@ -214,19 +275,18 @@ export default class PurchaseOrdersIndexController extends Controller {
     }
 
     /**
-     * Toggles dialog to export a Sales Order
+     * Export purchase orders
      *
      * @void
      */
-    @action exportFuelReports() {
+    @action exportPurchaseOrders() {
         this.crud.export('purchase-order');
     }
 
     /**
-     * View the selected Sales Order
+     * View the selected Purchase Order
      *
-     * @param {PurchaseOrderModel} fuelReport
-     * @param {Object} options
+     * @param {PurchaseOrderModel} purchaseOrder
      * @void
      */
     @action viewPurchaseOrder(purchaseOrder) {
@@ -234,7 +294,7 @@ export default class PurchaseOrdersIndexController extends Controller {
     }
 
     /**
-     * Create a new Sales Order
+     * Create a new Purchase Order
      *
      * @void
      */
@@ -243,7 +303,7 @@ export default class PurchaseOrdersIndexController extends Controller {
     }
 
     /**
-     * Edit a Sales Order
+     * Edit a Purchase Order
      *
      * @param {PurchaseOrderModel} purchaseOrder
      * @void
@@ -253,7 +313,35 @@ export default class PurchaseOrdersIndexController extends Controller {
     }
 
     /**
-     * Prompt to delete a Sales Order
+     * Open the Receive Goods panel for a Purchase Order.
+     * Loads the PO with its items before opening the panel.
+     *
+     * @param {PurchaseOrderModel} purchaseOrder
+     * @void
+     */
+    @action async receivePurchaseOrder(purchaseOrder) {
+        this.loader.showOnInitialTransition = false;
+
+        // Ensure items are loaded
+        if (!purchaseOrder.items || purchaseOrder.items.length === 0) {
+            try {
+                await purchaseOrder.reload();
+            } catch (e) {
+                // proceed with whatever is loaded
+            }
+        }
+
+        this.contextPanel.focus(purchaseOrder, 'receiving', {
+            args: {
+                onReceived: () => {
+                    this.hostRouter.refresh();
+                },
+            },
+        });
+    }
+
+    /**
+     * Prompt to delete a Purchase Order
      *
      * @param {PurchaseOrderModel} purchaseOrder
      * @param {Object} options
@@ -269,7 +357,7 @@ export default class PurchaseOrdersIndexController extends Controller {
     }
 
     /**
-     * Bulk deletes selected Sales Order's via confirm prompt
+     * Bulk deletes selected Purchase Orders via confirm prompt
      *
      * @param {Array} selected an array of selected models
      * @void
@@ -279,7 +367,7 @@ export default class PurchaseOrdersIndexController extends Controller {
 
         this.crud.bulkDelete(selected, {
             modelNamePath: 'public_id',
-            acceptButtonText: 'Delete Sales Order',
+            acceptButtonText: 'Delete Purchase Orders',
             onSuccess: () => {
                 return this.hostRouter.refresh();
             },

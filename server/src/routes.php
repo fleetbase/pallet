@@ -74,6 +74,8 @@ Route::prefix(config('pallet.api.routing.prefix', 'pallet'))->namespace('Fleetba
                         $router->fleetbaseRoutes('sales-orders', function ($router, $controller) {
                             $router->delete('bulk-delete', $controller('bulkDelete'));
                         });
+                        // Fulfill workflow
+                        $router->post('sales-orders/{id}/fulfill', 'SalesOrderController@fulfill');
                         // Nested line-item routes for Sales Orders
                         $router->get('sales-orders/{salesOrder}/items', 'SalesOrderItemController@index');
                         $router->post('sales-orders/{salesOrder}/items', 'SalesOrderItemController@store');
@@ -88,6 +90,8 @@ Route::prefix(config('pallet.api.routing.prefix', 'pallet'))->namespace('Fleetba
                         $router->fleetbaseRoutes('purchase-orders', function ($router, $controller) {
                             $router->delete('bulk-delete', $controller('bulkDelete'));
                         });
+                        // Receive workflow
+                        $router->post('purchase-orders/{id}/receive', 'PurchaseOrderController@receive');
                         // Nested line-item routes for Purchase Orders
                         $router->get('purchase-orders/{purchaseOrder}/items', 'PurchaseOrderItemController@index');
                         $router->post('purchase-orders/{purchaseOrder}/items', 'PurchaseOrderItemController@store');

@@ -153,6 +153,7 @@ purchase-order:
   sections:
     details: Details
     line-items: Line Items
+    receive: Receive Goods
   fields:
     expected-delivery: Expected Delivery Date
     order-number: Order Number
@@ -162,6 +163,31 @@ purchase-order:
     warehouse: Warehouse
     item-count: Item Count
     total-value: Total Value
+  actions:
+    receive: Receive Goods
+    view: View Purchase Order
+    edit: Edit Purchase Order
+    delete: Delete Purchase Order
+  receive:
+    title: Receive Purchase Order
+    summary: Order Summary
+    po-number: PO Number
+    supplier: Supplier
+    reference: Reference
+    expected-delivery: Expected Delivery
+    total-items: Total Items
+    receive-items: Receive Items
+    ordered: Ordered
+    previously-received: Previously Received
+    outstanding: Outstanding
+    receive-now: Receive Now
+    lot-number: Lot Number (optional)
+    expiry-date: Expiry Date (optional)
+    notes: Notes (optional)
+    submit: Confirm Receipt
+    all-received: All items on this purchase order have already been received.
+    success: Purchase order received successfully. Inventory has been updated.
+    error: Failed to receive purchase order. Please try again.
   line-items:
     title: Line Items
     add: Add Line Item
@@ -183,6 +209,7 @@ sales-order:
   sections:
     details: Details
     line-items: Line Items
+    fulfill: Fulfill Order
   fields:
     customer: Customer
     expected-shipment: Expected Shipment Date
@@ -192,6 +219,31 @@ sales-order:
     warehouse: Warehouse
     item-count: Item Count
     total-value: Total Value
+  actions:
+    fulfill: Fulfill Order
+    view: View Sales Order
+    edit: Edit Sales Order
+    delete: Delete Sales Order
+  fulfill:
+    title: Fulfill Sales Order
+    summary: Order Summary
+    so-number: SO Number
+    customer-ref: Customer Reference
+    reference: Reference
+    expected-delivery: Expected Delivery
+    total-items: Total Items
+    fulfill-items: Fulfill Items
+    ordered: Ordered
+    previously-fulfilled: Previously Fulfilled
+    outstanding: Outstanding
+    fulfill-now: Fulfill Now
+    notes: Notes (optional)
+    status: Status
+    submit: Confirm Fulfillment
+    fefo-notice: Inventory will be deducted using FEFO (First Expired, First Out) unless a specific inventory record is selected.
+    all-fulfilled: All items on this sales order have already been fulfilled.
+    success: Sales order fulfilled successfully. Inventory has been deducted.
+    error: Failed to fulfill sales order. Please try again.
   line-items:
     title: Line Items
     add: Add Line Item

@@ -106,15 +106,34 @@ export default class SalesOrdersIndexController extends Controller {
     @tracked status;
 
     /**
-     * All columns applicable for orders
+     * The table instance
+     *
+     * @var {Object}
+     */
+    @tracked table;
+
+    /**
+     * Status options for the filter
+     *
+     * @var {Array}
+     */
+    statusOptions = [
+        { value: 'pending', label: 'Pending' },
+        { value: 'partial', label: 'Partial' },
+        { value: 'fulfilled', label: 'Fulfilled' },
+        { value: 'cancelled', label: 'Cancelled' },
+    ];
+
+    /**
+     * All columns applicable for sales orders
      *
      * @var {Array}
      */
     @tracked columns = [
         {
-            label: 'ID',
+            label: 'SO Number',
             valuePath: 'public_id',
-            width: '130px',
+            width: '140px',
             cellComponent: 'table/cell/anchor',
             action: this.viewSalesOrder,
             resizable: true,
@@ -124,31 +143,55 @@ export default class SalesOrdersIndexController extends Controller {
             filterComponent: 'filter/string',
         },
         {
-            label: 'Comments',
-            valuePath: 'comments',
-            width: '130px',
-            cellComponent: 'table/cell/anchor',
+            label: 'Customer Ref',
+            valuePath: 'customer_reference_code',
+            width: '140px',
             resizable: true,
-            sortable: true,
+            sortable: false,
             filterable: true,
-            hidden: false,
             filterComponent: 'filter/string',
+        },
+        {
+            label: 'Reference',
+            valuePath: 'reference_code',
+            width: '130px',
+            resizable: true,
+            sortable: false,
+            filterable: true,
+            filterComponent: 'filter/string',
+        },
+        {
+            label: 'Items',
+            valuePath: 'item_count',
+            width: '70px',
+            resizable: false,
+            sortable: false,
+            filterable: false,
         },
         {
             label: 'Status',
             valuePath: 'status',
             cellComponent: 'table/cell/status',
-            width: '100px',
+            width: '110px',
             resizable: true,
             sortable: true,
             filterable: true,
             filterComponent: 'filter/multi-option',
-            filterOptions: this.statusOption,
+            filterOptions: this.statusOptions,
+        },
+        {
+            label: 'Expected Delivery',
+            valuePath: 'expected_delivery_at',
+            width: '140px',
+            resizable: true,
+            sortable: true,
+            filterable: true,
+            filterComponent: 'filter/date',
         },
         {
             label: 'Created At',
             valuePath: 'createdAt',
-            sortParam: 'createdAt',
+            sortParam: 'created_at',
             width: '120px',
             resizable: true,
             sortable: true,
@@ -180,6 +223,14 @@ export default class SalesOrdersIndexController extends Controller {
                 {
                     label: 'View Details',
                     fn: this.viewSalesOrder,
+                },
+                {
+                    label: 'Fulfill Order',
+                    fn: this.fulfillSalesOrder,
+                    isVisible: (salesOrder) => ['pending', 'partial'].includes(salesOrder.status),
+                },
+                {
+                    separator: true,
                 },
                 {
                     label: 'Edit Sales Order',
@@ -225,19 +276,18 @@ export default class SalesOrdersIndexController extends Controller {
     }
 
     /**
-     * Toggles dialog to export a Sales Order
+     * Export sales orders
      *
      * @void
      */
-    @action exportFuelReports() {
+    @action exportSalesOrders() {
         this.crud.export('sales-order');
     }
 
     /**
      * View the selected Sales Order
      *
-     * @param {SalesOrderModel} fuelReport
-     * @param {Object} options
+     * @param {SalesOrderModel} salesOrder
      * @void
      */
     @action viewSalesOrder(salesOrder) {
@@ -264,6 +314,34 @@ export default class SalesOrdersIndexController extends Controller {
     }
 
     /**
+     * Open the Fulfill Order panel for a Sales Order.
+     * Loads the SO with its items before opening the panel.
+     *
+     * @param {SalesOrderModel} salesOrder
+     * @void
+     */
+    @action async fulfillSalesOrder(salesOrder) {
+        this.loader.showOnInitialTransition = false;
+
+        // Ensure items are loaded
+        if (!salesOrder.items || salesOrder.items.length === 0) {
+            try {
+                await salesOrder.reload();
+            } catch (e) {
+                // proceed with whatever is loaded
+            }
+        }
+
+        this.contextPanel.focus(salesOrder, 'fulfilling', {
+            args: {
+                onFulfilled: () => {
+                    this.hostRouter.refresh();
+                },
+            },
+        });
+    }
+
+    /**
      * Prompt to delete a Sales Order
      *
      * @param {SalesOrderModel} salesOrder
@@ -280,7 +358,7 @@ export default class SalesOrdersIndexController extends Controller {
     }
 
     /**
-     * Bulk deletes selected Sales Order's via confirm prompt
+     * Bulk deletes selected Sales Orders via confirm prompt
      *
      * @param {Array} selected an array of selected models
      * @void
@@ -291,9 +369,6 @@ export default class SalesOrdersIndexController extends Controller {
         this.crud.bulkDelete(selected, {
             modelNamePath: 'public_id',
             acceptButtonText: 'Delete Sales Orders',
-            fetchOptions: {
-                namespace: 'pallet/int/v1',
-            },
             onSuccess: () => {
                 return this.hostRouter.refresh();
             },
