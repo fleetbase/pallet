@@ -1,4 +1,4 @@
-import Model, { attr, belongsTo } from '@ember-data/model';
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import { computed } from '@ember/object';
 import { format as formatDate, isValid as isValidDate, formatDistanceToNow } from 'date-fns';
 
@@ -20,9 +20,12 @@ export default class SalesOrderModel extends Model {
     @belongsTo('user') assignedTo;
     @belongsTo('supplier') supplier;
     @belongsTo('contact') pointOfContact;
+    @hasMany('sales-order-item', { async: false }) items;
 
     /** @attributes */
     @attr('string') order_number;
+    @attr('number') item_count;
+    @attr('number') total_value;
     @attr('string') status;
     @attr('string') customer_reference_code;
     @attr('string') reference_code;

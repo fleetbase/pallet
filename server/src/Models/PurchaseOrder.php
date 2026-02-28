@@ -132,6 +132,37 @@ class PurchaseOrder extends Model
     }
 
     /**
+     * Relationship: the line items on this Purchase Order.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function items()
+    {
+        return $this->hasMany(PurchaseOrderItem::class, 'purchase_order_uuid', 'uuid')
+                    ->orderBy('created_at', 'asc');
+    }
+
+    /**
+     * Returns the total order value (sum of all item total_prices).
+     *
+     * @return float
+     */
+    public function getTotalValueAttribute(): float
+    {
+        return (float) $this->items()->sum('total_price');
+    }
+
+    /**
+     * Returns the total number of line items.
+     *
+     * @return int
+     */
+    public function getItemCountAttribute(): int
+    {
+        return $this->items()->count();
+    }
+
+    /**
      * Relationship with the transaction associated with the purchase order.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

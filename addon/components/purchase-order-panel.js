@@ -4,6 +4,7 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { isArray } from '@ember/array';
 import PurchaseOrderPanelDetailsComponent from './purchase-order-panel/details';
+import PurchaseOrderPanelItemsComponent from './purchase-order-panel/items';
 import contextComponentCallback from '@fleetbase/ember-core/utils/context-component-callback';
 import applyContextComponentArguments from '@fleetbase/ember-core/utils/apply-context-component-arguments';
 
@@ -73,7 +74,10 @@ export default class PurchaseOrderPanelComponent extends Component {
      */
     get tabs() {
         const registeredTabs = this.universe.getMenuItemsFromRegistry('component:purchase-order-panel');
-        const defaultTabs = [this.universe._createMenuItem('Details', null, { icon: 'circle-info', component: PurchaseOrderPanelDetailsComponent })];
+        const defaultTabs = [
+            this.universe._createMenuItem('Details', null, { icon: 'circle-info', component: PurchaseOrderPanelDetailsComponent }),
+            this.universe._createMenuItem('Line Items', null, { icon: 'list', component: PurchaseOrderPanelItemsComponent }),
+        ];
 
         if (isArray(registeredTabs)) {
             return [...defaultTabs, ...registeredTabs];

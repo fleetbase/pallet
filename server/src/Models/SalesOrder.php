@@ -163,6 +163,37 @@ class SalesOrder extends Model
     }
 
     /**
+     * Relationship: the line items on this Sales Order.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function items()
+    {
+        return $this->hasMany(SalesOrderItem::class, 'sales_order_uuid', 'uuid')
+                    ->orderBy('created_at', 'asc');
+    }
+
+    /**
+     * Returns the total order value (sum of all item total_prices).
+     *
+     * @return float
+     */
+    public function getTotalValueAttribute(): float
+    {
+        return (float) $this->items()->sum('total_price');
+    }
+
+    /**
+     * Returns the total number of line items.
+     *
+     * @return int
+     */
+    public function getItemCountAttribute(): int
+    {
+        return $this->items()->count();
+    }
+
+    /**
      * Mark the sales order as fulfilled and log an operational audit event.
      * This method is called by SalesOrderController::fulfill().
      *

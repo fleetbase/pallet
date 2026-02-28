@@ -152,6 +152,7 @@ supplier:
 purchase-order:
   sections:
     details: Details
+    line-items: Line Items
   fields:
     expected-delivery: Expected Delivery Date
     order-number: Order Number
@@ -159,11 +160,29 @@ purchase-order:
     select-warehouse: Select Warehouse
     supplier: Supplier
     warehouse: Warehouse
+    item-count: Item Count
+    total-value: Total Value
+  line-items:
+    title: Line Items
+    add: Add Line Item
+    product: Product
+    sku: SKU
+    quantity: Quantity
+    quantity-received: Qty Received
+    unit-price: Unit Price
+    total-price: Total Price
+    status: Status
+    notes: Notes
+    lot-number: Lot Number
+    serial-number: Serial Number
+    expiry-date: Expiry Date
+    unit-of-measure: Unit of Measure
 
 # Sales Order translations
 sales-order:
   sections:
     details: Details
+    line-items: Line Items
   fields:
     customer: Customer
     expected-shipment: Expected Shipment Date
@@ -171,6 +190,22 @@ sales-order:
     select-customer: Select Customer
     select-warehouse: Select Warehouse
     warehouse: Warehouse
+    item-count: Item Count
+    total-value: Total Value
+  line-items:
+    title: Line Items
+    add: Add Line Item
+    product: Product
+    sku: SKU
+    quantity: Quantity
+    quantity-fulfilled: Qty Fulfilled
+    unit-price: Unit Price
+    total-price: Total Price
+    status: Status
+    notes: Notes
+    lot-number: Lot Number
+    serial-number: Serial Number
+    unit-of-measure: Unit of Measure
 
 # Batch translations
 batch:

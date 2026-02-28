@@ -68,21 +68,31 @@ Route::prefix(config('pallet.api.routing.prefix', 'pallet'))->namespace('Fleetba
 
                         /*
                         |--------------------------------------------------------------
-                        | Sales Orders
+                        | Sales Orders + Line Items
                         |--------------------------------------------------------------
                         */
                         $router->fleetbaseRoutes('sales-orders', function ($router, $controller) {
                             $router->delete('bulk-delete', $controller('bulkDelete'));
                         });
+                        // Nested line-item routes for Sales Orders
+                        $router->get('sales-orders/{salesOrder}/items', 'SalesOrderItemController@index');
+                        $router->post('sales-orders/{salesOrder}/items', 'SalesOrderItemController@store');
+                        $router->put('sales-orders/{salesOrder}/items/{item}', 'SalesOrderItemController@update');
+                        $router->delete('sales-orders/{salesOrder}/items/{item}', 'SalesOrderItemController@destroy');
 
                         /*
                         |--------------------------------------------------------------
-                        | Purchase Orders
+                        | Purchase Orders + Line Items
                         |--------------------------------------------------------------
                         */
                         $router->fleetbaseRoutes('purchase-orders', function ($router, $controller) {
                             $router->delete('bulk-delete', $controller('bulkDelete'));
                         });
+                        // Nested line-item routes for Purchase Orders
+                        $router->get('purchase-orders/{purchaseOrder}/items', 'PurchaseOrderItemController@index');
+                        $router->post('purchase-orders/{purchaseOrder}/items', 'PurchaseOrderItemController@store');
+                        $router->put('purchase-orders/{purchaseOrder}/items/{item}', 'PurchaseOrderItemController@update');
+                        $router->delete('purchase-orders/{purchaseOrder}/items/{item}', 'PurchaseOrderItemController@destroy');
 
                         /*
                         |--------------------------------------------------------------
