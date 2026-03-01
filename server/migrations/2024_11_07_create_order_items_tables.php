@@ -40,11 +40,11 @@ return new class extends Migration
             $table->foreignUuid('purchase_order_uuid')->nullable()->index()->references('uuid')->on('pallet_purchase_orders');
             $table->foreignUuid('created_by_uuid')->nullable()->index()->references('uuid')->on('users');
 
-            // Product reference — references pallet_products which extends fleetops_entities
-            $table->foreignUuid('product_uuid')->nullable()->index()->references('uuid')->on('pallet_products');
+            // Product reference — products extend fleetops entities, so the backing table is 'entities'
+            $table->foreignUuid('product_uuid')->nullable()->index()->references('uuid')->on('entities');
 
-            // Warehouse destination for received goods
-            $table->foreignUuid('warehouse_uuid')->nullable()->index()->references('uuid')->on('pallet_warehouses');
+            // Warehouse destination — warehouses extend fleetbase places, so the backing table is 'places'
+            $table->foreignUuid('warehouse_uuid')->nullable()->index()->references('uuid')->on('places');
 
             // Quantities
             $table->unsignedInteger('quantity')->default(0)->comment('Ordered quantity');
@@ -94,11 +94,11 @@ return new class extends Migration
             $table->foreignUuid('sales_order_uuid')->nullable()->index()->references('uuid')->on('pallet_sales_orders');
             $table->foreignUuid('created_by_uuid')->nullable()->index()->references('uuid')->on('users');
 
-            // Product reference
-            $table->foreignUuid('product_uuid')->nullable()->index()->references('uuid')->on('pallet_products');
+            // Product reference — products extend fleetops entities, so the backing table is 'entities'
+            $table->foreignUuid('product_uuid')->nullable()->index()->references('uuid')->on('entities');
 
-            // Source warehouse / inventory record
-            $table->foreignUuid('warehouse_uuid')->nullable()->index()->references('uuid')->on('pallet_warehouses');
+            // Source warehouse — warehouses extend fleetbase places, so the backing table is 'places'
+            $table->foreignUuid('warehouse_uuid')->nullable()->index()->references('uuid')->on('places');
             $table->foreignUuid('inventory_uuid')->nullable()->index()->references('uuid')->on('pallet_inventory');
 
             // Quantities
