@@ -52,6 +52,9 @@ common:
   actions: Actions
   created-at: Created At
   updated-at: Updated At
+  clear_filters: Clear Filters
+  no-records: No records found
+  loading: Loading...
 
 # Product translations
 product:
@@ -149,6 +152,8 @@ supplier:
 purchase-order:
   sections:
     details: Details
+    line-items: Line Items
+    receive: Receive Goods
   fields:
     expected-delivery: Expected Delivery Date
     order-number: Order Number
@@ -156,11 +161,55 @@ purchase-order:
     select-warehouse: Select Warehouse
     supplier: Supplier
     warehouse: Warehouse
+    item-count: Item Count
+    total-value: Total Value
+  actions:
+    receive: Receive Goods
+    view: View Purchase Order
+    edit: Edit Purchase Order
+    delete: Delete Purchase Order
+  receive:
+    title: Receive Purchase Order
+    summary: Order Summary
+    po-number: PO Number
+    supplier: Supplier
+    reference: Reference
+    expected-delivery: Expected Delivery
+    total-items: Total Items
+    receive-items: Receive Items
+    ordered: Ordered
+    previously-received: Previously Received
+    outstanding: Outstanding
+    receive-now: Receive Now
+    lot-number: Lot Number (optional)
+    expiry-date: Expiry Date (optional)
+    notes: Notes (optional)
+    submit: Confirm Receipt
+    all-received: All items on this purchase order have already been received.
+    success: Purchase order received successfully. Inventory has been updated.
+    error: Failed to receive purchase order. Please try again.
+  line-items:
+    title: Line Items
+    add: Add Line Item
+    product: Product
+    sku: SKU
+    quantity: Quantity
+    quantity-received: Qty Received
+    unit-price: Unit Price
+    total-price: Total Price
+    status: Status
+    notes: Notes
+    lot-number: Lot Number
+    serial-number: Serial Number
+    expiry-date: Expiry Date
+    unit-of-measure: Unit of Measure
 
 # Sales Order translations
 sales-order:
   sections:
     details: Details
+    line-items: Line Items
+    fulfill: Fulfill Order
   fields:
     customer: Customer
     expected-shipment: Expected Shipment Date
@@ -168,6 +217,47 @@ sales-order:
     select-customer: Select Customer
     select-warehouse: Select Warehouse
     warehouse: Warehouse
+    item-count: Item Count
+    total-value: Total Value
+  actions:
+    fulfill: Fulfill Order
+    view: View Sales Order
+    edit: Edit Sales Order
+    delete: Delete Sales Order
+  fulfill:
+    title: Fulfill Sales Order
+    summary: Order Summary
+    so-number: SO Number
+    customer-ref: Customer Reference
+    reference: Reference
+    expected-delivery: Expected Delivery
+    total-items: Total Items
+    fulfill-items: Fulfill Items
+    ordered: Ordered
+    previously-fulfilled: Previously Fulfilled
+    outstanding: Outstanding
+    fulfill-now: Fulfill Now
+    notes: Notes (optional)
+    status: Status
+    submit: Confirm Fulfillment
+    fefo-notice: Inventory will be deducted using FEFO (First Expired, First Out) unless a specific inventory record is selected.
+    all-fulfilled: All items on this sales order have already been fulfilled.
+    success: Sales order fulfilled successfully. Inventory has been deducted.
+    error: Failed to fulfill sales order. Please try again.
+  line-items:
+    title: Line Items
+    add: Add Line Item
+    product: Product
+    sku: SKU
+    quantity: Quantity
+    quantity-fulfilled: Qty Fulfilled
+    unit-price: Unit Price
+    total-price: Total Price
+    status: Status
+    notes: Notes
+    lot-number: Lot Number
+    serial-number: Serial Number
+    unit-of-measure: Unit of Measure
 
 # Batch translations
 batch:
@@ -183,16 +273,36 @@ batch:
     supplier: Supplier
 
 # Audit Trail translations
+# The Pallet audit trail captures intentional WMS operational events (stock adjustments,
+# cycle counts, PO receipts, SO fulfilments, stock transfers). It is NOT a generic
+# data-change log — that is handled by Spatie Activity Log at the framework level.
 audit:
+  title: Audit Trail
+  search_placeholder: Search audit events...
+  all_events: All Events
+  filter_event_type: Event Type
+  no_records: No audit events found
   sections:
     details: Details
   fields:
+    event-type: Event Type
     action: Action
-    auditable-type: Resource Type
-    auditable-id: Resource ID
+    subject-type: Subject Type
+    subject-id: Subject ID
     performed-by: Performed By
     reason: Reason
     comments: Comments
-    old-values: Previous Values
-    new-values: New Values
+    meta: Event Data
     date: Date
+    scheduled-at: Scheduled At
+    completed-at: Completed At
+  event-types:
+    stock_adjustment: Stock Adjustment
+    cycle_count: Cycle Count
+    po_received: PO Received
+    so_fulfilled: SO Fulfilled
+    stock_transfer: Stock Transfer
+    inventory_receive: Inventory Received
+    batch_created: Batch Created
+    product_created: Product Created
+    warehouse_created: Warehouse Created

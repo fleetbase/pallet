@@ -9,6 +9,7 @@ use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 use Fleetbase\Traits\TracksApiCredential;
 use Fleetbase\Traits\HasMetaAttributes;
+use Fleetbase\Pallet\Traits\HasOperationalAuditTrail;
 
 class StockTransfer extends Model
 {
@@ -17,6 +18,7 @@ class StockTransfer extends Model
     use HasApiModelBehavior;
     use TracksApiCredential;
     use HasMetaAttributes;
+    use HasOperationalAuditTrail;
 
     /**
      * The database table used by the model.
@@ -191,8 +193,24 @@ class StockTransfer extends Model
 
         $this->status = 'in_transit';
         $this->shipped_at = now();
+        $result = $this->save();
 
-        return $this->save();
+        // Log operational audit event
+        $this->logAuditEvent(
+            AuditEventType::STOCK_TRANSFER,
+            'Stock Transfer Shipped',
+            'shipped',
+            null,
+            [
+                'transfer_number'     => $this->transfer_number,
+                'from_warehouse_uuid' => $this->from_warehouse_uuid,
+                'to_warehouse_uuid'   => $this->to_warehouse_uuid,
+                'total_items'         => $this->total_items,
+                'total_quantity'      => $this->total_quantity,
+            ]
+        );
+
+        return $result;
     }
 
     /**
@@ -221,8 +239,24 @@ class StockTransfer extends Model
 
         $this->status = 'completed';
         $this->received_at = now();
+        $result = $this->save();
 
-        return $this->save();
+        // Log operational audit event
+        $this->logAuditEvent(
+            AuditEventType::STOCK_TRANSFER,
+            'Stock Transfer Completed',
+            'completed',
+            null,
+            [
+                'transfer_number'     => $this->transfer_number,
+                'from_warehouse_uuid' => $this->from_warehouse_uuid,
+                'to_warehouse_uuid'   => $this->to_warehouse_uuid,
+                'total_items'         => $this->total_items,
+                'total_quantity'      => $this->total_quantity,
+            ]
+        );
+
+        return $result;
     }
 
     /**

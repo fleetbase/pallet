@@ -7,12 +7,18 @@ use Fleetbase\Models\Model;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
+use Fleetbase\Pallet\Traits\HasOperationalAuditTrail;
+
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class PurchaseOrder extends Model
 {
     use HasUuid;
     use HasPublicId;
     use HasApiModelBehavior;
+    use HasOperationalAuditTrail;
+    use LogsActivity;
 
     /**
      * The database table used by the model.
@@ -126,6 +132,37 @@ class PurchaseOrder extends Model
     }
 
     /**
+     * Relationship: the line items on this Purchase Order.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function items()
+    {
+        return $this->hasMany(PurchaseOrderItem::class, 'purchase_order_uuid', 'uuid')
+                    ->orderBy('created_at', 'asc');
+    }
+
+    /**
+     * Returns the total order value (sum of all item total_prices).
+     *
+     * @return float
+     */
+    public function getTotalValueAttribute(): float
+    {
+        return (float) $this->items()->sum('total_price');
+    }
+
+    /**
+     * Returns the total number of line items.
+     *
+     * @return int
+     */
+    public function getItemCountAttribute(): int
+    {
+        return $this->items()->count();
+    }
+
+    /**
      * Relationship with the transaction associated with the purchase order.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -155,6 +192,34 @@ class PurchaseOrder extends Model
         return $this->belongsTo(Contact::class, 'point_of_contact_uuid', 'uuid');
     }
 
+    /**
+     * Mark the purchase order as received and log an operational audit event.
+     * This method is called by PurchaseOrderController::receive().
+     *
+     * @param array $receivedItems  Array of received line items with quantities
+     * @return bool
+     */
+    public function markAsReceived(array $receivedItems = []): bool
+    {
+        $this->status = 'received';
+        $result = $this->save();
+
+        // Log operational audit event
+        $this->logAuditEvent(
+            AuditEventType::PO_RECEIVED,
+            'Purchase Order Received',
+            'received',
+            null,
+            [
+                'order_number'   => $this->public_id,
+                'supplier_uuid'  => $this->supplier_uuid,
+                'received_items' => $receivedItems,
+            ]
+        );
+
+        return $result;
+    }
+
     protected static function boot()
     {
         parent::boot();
@@ -164,4 +229,24 @@ class PurchaseOrder extends Model
             $model->order_created_at = now();
         });
     }
+    /**
+     * Configure Spatie activity log options.
+     * Logs only the specified attributes when they change (dirty only).
+     *
+     * @return LogOptions
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'status',
+                'reference_code',
+                'description',
+                'currency',
+                'expected_delivery_at',
+            ])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
+
 }

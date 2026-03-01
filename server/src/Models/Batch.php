@@ -8,11 +8,15 @@ use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
+
 class Batch extends Model
 {
     use HasUuid;
     use HasPublicId;
     use HasApiModelBehavior;
+    use LogsActivity;
 
     /**
      * The database table used by the model.
@@ -134,4 +138,24 @@ class Batch extends Model
             $model->manufacture_date_at = now();
         });
     }
+    /**
+     * Configure Spatie activity log options.
+     * Logs only the specified attributes when they change (dirty only).
+     *
+     * @return LogOptions
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'batch_number',
+                'quantity',
+                'status',
+                'expiry_date_at',
+                'product_uuid',
+            ])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
+
 }

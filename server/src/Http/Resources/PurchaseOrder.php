@@ -37,6 +37,10 @@ class PurchaseOrder extends FleetbaseResource
             'meta'                      => $this->meta ?? [],
             'order_date_at'             => $this->order_created_at,
             'expected_delivery_at'      => $this->expected_delivery_at,
+            // Line items — always included so the frontend can render the items tab
+            'items'                     => PurchaseOrderItem::collection($this->whenLoaded('items', $this->items ?? [])),
+            'item_count'                => $this->item_count,
+            'total_value'               => $this->total_value,
             'updated_at'                => $this->updated_at,
             'created_at'                => $this->created_at,
         ];

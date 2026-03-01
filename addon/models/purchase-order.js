@@ -1,4 +1,4 @@
-import Model, { attr, belongsTo } from '@ember-data/model';
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import { computed } from '@ember/object';
 import { format as formatDate, isValid as isValidDate, formatDistanceToNow } from 'date-fns';
 
@@ -20,9 +20,12 @@ export default class PurchaseOrderModel extends Model {
     @belongsTo('transaction') transaction;
     @belongsTo('user') assignedTo;
     @belongsTo('contact') pointOfContact;
+    @hasMany('purchase-order-item', { async: false }) items;
 
     /** @attributes */
     @attr('string') order_number;
+    @attr('number') item_count;
+    @attr('number') total_value;
     @attr('string') reference_code;
     @attr('string') reference_url;
     @attr('string') customer_reference_code;

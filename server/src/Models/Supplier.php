@@ -4,6 +4,9 @@ namespace Fleetbase\Pallet\Models;
 
 use Fleetbase\FleetOps\Models\Vendor;
 
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
+
 class Supplier extends Vendor
 {
     /**
@@ -19,4 +22,23 @@ class Supplier extends Vendor
      * @var string
      */
     protected $publicIdType = 'supplier';
+    /**
+     * Configure Spatie activity log options.
+     * Logs only the specified attributes when they change (dirty only).
+     *
+     * @return LogOptions
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'name',
+                'email',
+                'phone',
+                'status',
+            ])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
+
 }
