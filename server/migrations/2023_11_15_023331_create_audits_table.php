@@ -34,7 +34,7 @@ use Illuminate\Support\Facades\Schema;
  *   - `scheduled_at`    : When the event was scheduled (for planned operations)
  *   - `completed_at`    : When the event was completed
  */
-class CreateAuditsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -105,4 +105,4 @@ class CreateAuditsTable extends Migration
     {
         Schema::dropIfExists('pallet_audits');
     }
-}
+};

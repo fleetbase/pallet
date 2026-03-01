@@ -11,8 +11,10 @@ use Illuminate\Support\Facades\Schema;
  * Line items are the foundation of the Receive PO and Fulfill SO workflows —
  * receiving a PO iterates its items to create Inventory records, and fulfilling
  * a SO iterates its items to decrement Inventory quantities.
+ *
+ * Uses an anonymous class to avoid migration class name conflicts across packages.
  */
-class CreateOrderItemsTables extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -139,4 +141,4 @@ class CreateOrderItemsTables extends Migration
         Schema::dropIfExists('pallet_sales_order_items');
         Schema::dropIfExists('pallet_purchase_order_items');
     }
-}
+};
