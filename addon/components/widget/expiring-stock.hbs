@@ -1,0 +1,44 @@
+<div class="flex flex-col h-full overflow-hidden">
+    {{#if this.isLoading}}
+        <div class="flex items-center justify-center h-full">
+            <Spinner />
+        </div>
+    {{else if (eq this.items.length 0)}}
+        <div class="flex flex-col items-center justify-center h-full text-gray-400 dark:text-gray-600">
+            <FaIcon @icon="calendar-check" class="text-green-400 text-3xl mb-2" />
+            <span class="text-sm">No stock expiring within 30 days</span>
+        </div>
+    {{else}}
+        <div class="overflow-y-auto flex-1">
+            <table class="w-full text-xs">
+                <thead class="sticky top-0 bg-white dark:bg-gray-900 z-10">
+                    <tr class="border-b border-gray-100 dark:border-gray-700 text-gray-500 dark:text-gray-400">
+                        <th class="text-left px-3 py-2 font-medium">Product</th>
+                        <th class="text-right px-3 py-2 font-medium">Qty</th>
+                        <th class="text-right px-3 py-2 font-medium">Expires</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each this.items as |item|}}
+                        <tr class="border-b border-gray-50 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                            <td class="px-3 py-2 font-medium text-gray-800 dark:text-gray-100 truncate max-w-[120px]">
+                                {{n-a item.product_name}}
+                                {{#if item.lot_number}}
+                                    <span class="text-gray-400 font-normal"> · {{item.lot_number}}</span>
+                                {{/if}}
+                            </td>
+                            <td class="px-3 py-2 text-right text-gray-600 dark:text-gray-300">{{item.quantity}}</td>
+                            <td class="px-3 py-2 text-right">
+                                {{#let (this.daysUntilExpiry item.expiry_date) as |days|}}
+                                    <span class="px-1.5 py-0.5 rounded text-xs font-medium {{this.expiryBadgeClass days}}">
+                                        {{days}}d
+                                    </span>
+                                {{/let}}
+                            </td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    {{/if}}
+</div>

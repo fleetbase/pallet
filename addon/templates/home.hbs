@@ -1,1 +1,10 @@
-{{outlet}}
+<Layout::Section::Body class="overflow-y-scroll h-full">
+    <Dashboard
+        @defaultDashboardId="pallet"
+        @defaultDashboardName="Pallet Dashboard"
+        @extension="pallet"
+        class="flex items-center justify-between p-2"
+    />
+    <Spacer @height="300px" />
+    {{outlet}}
+</Layout::Section::Body>

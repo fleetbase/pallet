@@ -1,0 +1,35 @@
+<div class="flex flex-col h-full">
+    {{#if this.isLoading}}
+        <div class="flex items-center justify-center h-full">
+            <Spinner />
+        </div>
+    {{else}}
+        <div class="grid grid-cols-5 gap-4 p-4 h-full">
+            <div class="flex flex-col items-center justify-center bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 text-center">
+                <FaIcon @icon="boxes-stacked" class="text-blue-500 text-2xl mb-2" />
+                <span class="text-2xl font-bold text-gray-800 dark:text-gray-100">{{this.totalSkus}}</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400 mt-1">Total SKUs</span>
+            </div>
+            <div class="flex flex-col items-center justify-center bg-green-50 dark:bg-green-900/20 rounded-lg p-3 text-center">
+                <FaIcon @icon="cubes" class="text-green-500 text-2xl mb-2" />
+                <span class="text-2xl font-bold text-gray-800 dark:text-gray-100">{{this.totalUnits}}</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400 mt-1">Total Units</span>
+            </div>
+            <div class="flex flex-col items-center justify-center bg-purple-50 dark:bg-purple-900/20 rounded-lg p-3 text-center">
+                <FaIcon @icon="dollar-sign" class="text-purple-500 text-2xl mb-2" />
+                <span class="text-2xl font-bold text-gray-800 dark:text-gray-100">{{this.totalValue}}</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400 mt-1">Stock Value</span>
+            </div>
+            <div class="flex flex-col items-center justify-center bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 text-center">
+                <FaIcon @icon="warehouse" class="text-yellow-500 text-2xl mb-2" />
+                <span class="text-2xl font-bold text-gray-800 dark:text-gray-100">{{this.warehouseCount}}</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400 mt-1">Warehouses</span>
+            </div>
+            <div class="flex flex-col items-center justify-center bg-red-50 dark:bg-red-900/20 rounded-lg p-3 text-center">
+                <FaIcon @icon="triangle-exclamation" class="text-red-500 text-2xl mb-2" />
+                <span class="text-2xl font-bold text-gray-800 dark:text-gray-100">{{this.lowStockCount}}</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400 mt-1">Low Stock</span>
+            </div>
+        </div>
+    {{/if}}
+</div>

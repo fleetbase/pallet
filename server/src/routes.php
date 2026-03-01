@@ -122,6 +122,23 @@ Route::prefix(config('pallet.api.routing.prefix', 'pallet'))->namespace('Fleetba
                         $router->fleetbaseRoutes('warehouses', function ($router, $controller) {
                             $router->delete('bulk-delete', $controller('bulkDelete'));
                         });
+
+                        /*
+                        |--------------------------------------------------------------
+                        | Dashboard Metrics
+                        |--------------------------------------------------------------
+                        | Read-only aggregated data endpoints consumed by the Pallet
+                        | dashboard widgets. All are scoped to the authenticated company.
+                        */
+                        $router->prefix('metrics')->group(function ($router) {
+                            $router->get('inventory-summary', 'MetricsController@inventorySummary');
+                            $router->get('low-stock', 'MetricsController@lowStock');
+                            $router->get('po-status', 'MetricsController@poStatus');
+                            $router->get('so-status', 'MetricsController@soStatus');
+                            $router->get('stock-value', 'MetricsController@stockValue');
+                            $router->get('expiring-stock', 'MetricsController@expiringStock');
+                            $router->get('top-products', 'MetricsController@topProducts');
+                        });
                     }
                 );
             }
