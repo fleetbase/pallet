@@ -99,7 +99,7 @@ return new class extends Migration
 
             // Source warehouse — warehouses extend fleetbase places, so the backing table is 'places'
             $table->foreignUuid('warehouse_uuid')->nullable()->index()->references('uuid')->on('places');
-            $table->foreignUuid('inventory_uuid')->nullable()->index()->references('uuid')->on('pallet_inventory');
+            $table->foreignUuid('inventory_uuid')->nullable()->index()->references('uuid')->on('pallet_inventories');
 
             // Quantities
             $table->unsignedInteger('quantity')->default(0)->comment('Ordered quantity');
