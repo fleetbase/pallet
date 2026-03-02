@@ -93,7 +93,7 @@ class StockTransfer extends Model
      */
     public function fromWarehouse()
     {
-        return $this->belongsTo(\Fleetbase\FleetOps\Models\Place::class, 'from_warehouse_uuid');
+        return $this->belongsTo(Warehouse::class, 'from_warehouse_uuid');
     }
 
     /**
@@ -103,7 +103,7 @@ class StockTransfer extends Model
      */
     public function toWarehouse()
     {
-        return $this->belongsTo(\Fleetbase\FleetOps\Models\Place::class, 'to_warehouse_uuid');
+        return $this->belongsTo(Warehouse::class, 'to_warehouse_uuid');
     }
 
     /**

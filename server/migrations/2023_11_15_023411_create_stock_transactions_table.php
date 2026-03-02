@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignUuid('company_uuid')->nullable()->index()->references('uuid')->on('companies');
             $table->foreignUuid('created_by_uuid')->nullable()->index()->references('uuid')->on('users');
             $table->foreignUuid('product_uuid')->nullable()->index()->references('uuid')->on('entities');
-            $table->foreignUuid('destination_uuid')->nullable()->index()->references('uuid')->on('places');
+            $table->foreignUuid('destination_uuid')->nullable()->index()->references('uuid')->on('pallet_warehouses');
             $table->foreignUuid('batch_uuid')->nullable()->index()->references('uuid')->on('pallet_batches');
             $table->uuid('source_uuid')->nullable()->index();
             $table->string('source_type')->nullabe();

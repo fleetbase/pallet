@@ -15,6 +15,7 @@ resource:
 
 # Common / shared labels
 common:
+  active: Active
   address: Address
   city: City
   country: Country
@@ -23,6 +24,7 @@ common:
   email: Email
   height: Height
   id: ID
+  inactive: Inactive
   internal-id: Internal ID
   length: Length
   metadata: Metadata
@@ -134,10 +136,23 @@ warehouse:
     details: Details
   fields:
     capacity: Capacity
+    code: Warehouse Code
     current-utilization: Current Utilization
+    email: Email
+    floor-area: Floor Area (sqm)
     is-3pl: Third-Party Logistics
+    is-active: Active
+    is-default: Default Warehouse
     name: Warehouse Name
+    phone: Phone
+    status: Status
     third-party-logistics: Third-Party Logistics (3PL)
+    timezone: Timezone
+    total-bins: Total Bins
+    total-docks: Total Docks
+    total-zones: Total Zones
+    type: Warehouse Type
+    utilization: Utilization
 
 # Supplier translations
 supplier:

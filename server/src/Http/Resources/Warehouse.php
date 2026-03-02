@@ -4,8 +4,6 @@ namespace Fleetbase\Pallet\Http\Resources;
 
 use Fleetbase\Http\Resources\FleetbaseResource;
 use Fleetbase\Support\Http;
-use Fleetbase\Support\Resolve;
-use Fleetbase\LaravelMysqlSpatial\Types\Point;
 
 class Warehouse extends FleetbaseResource
 {
@@ -18,34 +16,62 @@ class Warehouse extends FleetbaseResource
      */
     public function toArray($request)
     {
+        // Resolve the linked Place for address/location fields
+        $place = $this->place;
+
         return [
-            'id'                   => $this->when(Http::isInternalRequest(), $this->id, $this->public_id),
-            'uuid'                 => $this->when(Http::isInternalRequest(), $this->uuid),
-            'public_id'            => $this->when(Http::isInternalRequest(), $this->public_id),
-            'name'                 => $this->name,
-            'location'             => data_get($this, 'location', new Point(0, 0)),
-            'address'              => $this->address,
-            'address_html'         => $this->when(Http::isInternalRequest(), $this->address_html),
-            'street1'              => data_get($this, 'street1'),
-            'street2'              => data_get($this, 'street2'),
-            'city'                 => data_get($this, 'city'),
-            'province'             => data_get($this, 'province'),
-            'postal_code'          => data_get($this, 'postal_code'),
-            'neighborhood'         => data_get($this, 'neighborhood'),
-            'district'             => data_get($this, 'district'),
-            'building'             => data_get($this, 'building'),
-            'security_access_code' => data_get($this, 'security_access_code'),
-            'country'              => data_get($this, 'country'),
-            'country_name'         => $this->when(Http::isInternalRequest(), $this->country_name),
-            'phone'                => data_get($this, 'phone'),
-            'owner'                => $this->when(!Http::isInternalRequest(), Resolve::resourceForMorph($this->owner_type, $this->owner_uuid)),
-            'tracking_number'      => $this->whenLoaded('trackingNumber', $this->trackingNumber),
-            'type'                 => data_get($this, 'type'),
-            'meta'                 => data_get($this, 'meta', []),
-            'sections'             => $this->whenLoaded('sections', $this->sections, []),
-            'docks'                => $this->whenLoaded('docks', $this->docks, []),
-            'updated_at'           => $this->updated_at,
-            'created_at'           => $this->created_at,
+            // Identity
+            'id'                     => $this->when(Http::isInternalRequest(), $this->id, $this->public_id),
+            'uuid'                   => $this->when(Http::isInternalRequest(), $this->uuid),
+            'public_id'              => $this->when(Http::isInternalRequest(), $this->public_id),
+
+            // Warehouse-specific fields
+            'name'                   => $this->name,
+            'code'                   => $this->code,
+            'type'                   => $this->type,
+            'status'                 => $this->status,
+            'capacity'               => $this->capacity,
+            'current_utilization'    => $this->current_utilization,
+            'utilization_percentage' => $this->utilization_percentage,
+            'floor_area_sqm'         => $this->floor_area_sqm,
+            'operating_hours'        => $this->operating_hours ?? [],
+            'timezone'               => $this->timezone,
+            'phone'                  => $this->phone,
+            'email'                  => $this->email,
+            'total_docks'            => $this->total_docks,
+            'is_active'              => $this->is_active,
+            'is_default'             => $this->is_default,
+            'meta'                   => $this->meta ?? [],
+
+            // Place / address fields (proxied from the linked Place)
+            'place_uuid'             => $this->when(Http::isInternalRequest(), $this->place_uuid),
+            'place'                  => $this->whenLoaded('place', $place),
+            'address'                => $this->address,
+            'address_html'           => $this->when(Http::isInternalRequest(), $place?->address_html),
+            'location'               => $place?->location,
+            'street1'                => $place?->street1,
+            'street2'                => $place?->street2,
+            'city'                   => $place?->city,
+            'province'               => $place?->province,
+            'postal_code'            => $place?->postal_code,
+            'neighborhood'           => $place?->neighborhood,
+            'district'               => $place?->district,
+            'building'               => $place?->building,
+            'country'                => $place?->country,
+            'country_name'           => $this->when(Http::isInternalRequest(), $place?->country_name),
+            'latitude'               => $place?->latitude ?? null,
+            'longitude'              => $place?->longitude ?? null,
+
+            // Sub-resources
+            'sections'               => $this->whenLoaded('sections', $this->sections, []),
+            'zones'                  => $this->whenLoaded('zones', $this->zones, []),
+            'docks'                  => $this->whenLoaded('docks', $this->docks, []),
+            'total_zones'            => $this->total_zones,
+            'total_bins'             => $this->total_bins,
+
+            // Timestamps
+            'updated_at'             => $this->updated_at,
+            'created_at'             => $this->created_at,
         ];
     }
 
@@ -56,29 +82,31 @@ class Warehouse extends FleetbaseResource
      */
     public function toWebhookPayload()
     {
+        $place = $this->place;
+
         return [
-            'id'                   => $this->public_id,
-            'internal_id'          => $this->internal_id,
-            'name'                 => $this->name,
-            'latitude'             => $this->latitude ?? null,
-            'longitude'            => $this->longitude ?? null,
-            'street1'              => $this->street1 ?? null,
-            'street2'              => $this->street2 ?? null,
-            'city'                 => $this->city ?? null,
-            'province'             => $this->province ?? null,
-            'postal_code'          => $this->postal_code ?? null,
-            'neighborhood'         => $this->neighborhood ?? null,
-            'district'             => $this->district ?? null,
-            'building'             => $this->building ?? null,
-            'security_access_code' => $this->security_access_code ?? null,
-            'country'              => $this->country ?? null,
-            'phone'                => $this->phone ?? null,
-            'owner'                => Resolve::resourceForMorph($this->owner_type, $this->owner_uuid),
-            'type'                 => $this->type ?? null,
-            'meta'                 => $this->meta ?? [],
-            'sections'             => $this->sections ?? [],
-            'updated_at'           => $this->updated_at,
-            'created_at'           => $this->created_at,
+            'id'                  => $this->public_id,
+            'name'                => $this->name,
+            'code'                => $this->code,
+            'type'                => $this->type,
+            'status'              => $this->status,
+            'capacity'            => $this->capacity,
+            'current_utilization' => $this->current_utilization,
+            'is_active'           => $this->is_active,
+            'latitude'            => $place?->latitude ?? null,
+            'longitude'           => $place?->longitude ?? null,
+            'street1'             => $place?->street1 ?? null,
+            'street2'             => $place?->street2 ?? null,
+            'city'                => $place?->city ?? null,
+            'province'            => $place?->province ?? null,
+            'postal_code'         => $place?->postal_code ?? null,
+            'country'             => $place?->country ?? null,
+            'phone'               => $this->phone ?? null,
+            'email'               => $this->email ?? null,
+            'meta'                => $this->meta ?? [],
+            'sections'            => $this->sections ?? [],
+            'updated_at'          => $this->updated_at,
+            'created_at'          => $this->created_at,
         ];
     }
 }

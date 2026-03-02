@@ -74,7 +74,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('warehouse_uuid')->references('uuid')->on('places')->onDelete('cascade');
+            $table->foreign('warehouse_uuid')->references('uuid')->on('pallet_warehouses')->onDelete('cascade');
         });
 
         // Bin Locations
@@ -102,7 +102,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('warehouse_uuid')->references('uuid')->on('places')->onDelete('cascade');
+            $table->foreign('warehouse_uuid')->references('uuid')->on('pallet_warehouses')->onDelete('cascade');
             $table->foreign('zone_uuid')->references('uuid')->on('pallet_warehouse_zones')->onDelete('set null');
             $table->index(['warehouse_uuid', 'bin_number']);
         });
@@ -126,7 +126,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('warehouse_uuid')->references('uuid')->on('places')->onDelete('cascade');
+            $table->foreign('warehouse_uuid')->references('uuid')->on('pallet_warehouses')->onDelete('cascade');
             $table->index(['status', 'scheduled_at']);
         });
 
@@ -151,7 +151,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('warehouse_uuid')->references('uuid')->on('places')->onDelete('cascade');
+            $table->foreign('warehouse_uuid')->references('uuid')->on('pallet_warehouses')->onDelete('cascade');
             $table->foreign('wave_uuid')->references('uuid')->on('pallet_waves')->onDelete('set null');
             $table->index(['status', 'priority']);
         });
@@ -204,7 +204,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('warehouse_uuid')->references('uuid')->on('places')->onDelete('cascade');
+            $table->foreign('warehouse_uuid')->references('uuid')->on('pallet_warehouses')->onDelete('cascade');
             $table->foreign('zone_uuid')->references('uuid')->on('pallet_warehouse_zones')->onDelete('set null');
             $table->index(['status', 'scheduled_at']);
         });
@@ -256,8 +256,8 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('from_warehouse_uuid')->references('uuid')->on('places')->onDelete('cascade');
-            $table->foreign('to_warehouse_uuid')->references('uuid')->on('places')->onDelete('cascade');
+            $table->foreign('from_warehouse_uuid')->references('uuid')->on('pallet_warehouses')->onDelete('cascade');
+            $table->foreign('to_warehouse_uuid')->references('uuid')->on('pallet_warehouses')->onDelete('cascade');
             $table->index(['status', 'created_at']);
         });
 

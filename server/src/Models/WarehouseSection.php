@@ -82,7 +82,7 @@ class WarehouseSection extends Model
      */
     public function warehouse()
     {
-        return $this->belongsTo(Place::class, 'warehouse_uuid', 'uuid');
+        return $this->belongsTo(Warehouse::class, 'warehouse_uuid', 'uuid');
     }
 
     /**

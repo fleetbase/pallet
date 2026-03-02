@@ -190,7 +190,7 @@ export default class WarehouseFormPanelComponent extends Component {
      * @param {number} coordinates.longitude - Longitude value.
      * @memberof WarehouseFormPanelComponent
      */
-    @action updatePlaceCoordinates({ latitude, longitude }) {
+    @action updateWarehouseCoordinates({ latitude, longitude }) {
         const location = new Point(longitude, latitude);
 
         this.warehouse.setProperties({ location });

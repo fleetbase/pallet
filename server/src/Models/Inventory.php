@@ -168,7 +168,7 @@ class Inventory extends Model
      */
     public function warehouse()
     {
-        return $this->belongsTo(\Fleetbase\FleetOps\Models\Place::class, 'warehouse_uuid');
+        return $this->belongsTo(Warehouse::class, 'warehouse_uuid');
     }
 
     /**

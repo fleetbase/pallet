@@ -39,9 +39,29 @@
                 <div class="field-value">{{format-number @resource.current_utilization}}%</div>
             </div>
             <div class="field-info-container">
-                <div class="field-name">{{t "warehouse.fields.is-3pl"}}</div>
+                <div class="field-name">{{t "warehouse.fields.code"}}</div>
+                <div class="field-value">{{n-a @resource.code}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "warehouse.fields.type"}}</div>
+                <div class="field-value">{{n-a @resource.type}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "warehouse.fields.status"}}</div>
                 <div class="field-value">
-                    {{#if @resource.is_3pl}}
+                    {{#if (eq @resource.status "active")}}
+                        <Badge @status="success">{{t "common.active"}}</Badge>
+                    {{else if (eq @resource.status "inactive")}}
+                        <Badge @status="error">{{t "common.inactive"}}</Badge>
+                    {{else}}
+                        <Badge @status="warning">{{n-a @resource.status}}</Badge>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "warehouse.fields.is-active"}}</div>
+                <div class="field-value">
+                    {{#if @resource.is_active}}
                         <Badge @status="success">{{t "common.yes"}}</Badge>
                     {{else}}
                         <Badge @status="default">{{t "common.no"}}</Badge>

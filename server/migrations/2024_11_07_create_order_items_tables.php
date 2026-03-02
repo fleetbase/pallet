@@ -44,7 +44,7 @@ return new class extends Migration
             $table->foreignUuid('product_uuid')->nullable()->index()->references('uuid')->on('entities');
 
             // Warehouse destination — warehouses extend fleetbase places, so the backing table is 'places'
-            $table->foreignUuid('warehouse_uuid')->nullable()->index()->references('uuid')->on('places');
+            $table->foreignUuid('warehouse_uuid')->nullable()->index()->references('uuid')->on('pallet_warehouses');
 
             // Quantities
             $table->unsignedInteger('quantity')->default(0)->comment('Ordered quantity');
@@ -98,7 +98,7 @@ return new class extends Migration
             $table->foreignUuid('product_uuid')->nullable()->index()->references('uuid')->on('entities');
 
             // Source warehouse — warehouses extend fleetbase places, so the backing table is 'places'
-            $table->foreignUuid('warehouse_uuid')->nullable()->index()->references('uuid')->on('places');
+            $table->foreignUuid('warehouse_uuid')->nullable()->index()->references('uuid')->on('pallet_warehouses');
             $table->foreignUuid('inventory_uuid')->nullable()->index()->references('uuid')->on('pallet_inventories');
 
             // Quantities

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('public_id')->nullable()->unique();
             $table->foreignUuid('company_uuid')->nullable()->index()->references('uuid')->on('companies');
             $table->foreignUuid('created_by_uuid')->nullable()->index()->references('uuid')->on('users');
-            $table->foreignUuid('warehouse_uuid')->nullable()->index()->references('uuid')->on('places');
+            $table->foreignUuid('warehouse_uuid')->nullable()->index()->references('uuid')->on('pallet_warehouses');
             $table->string('dock_number')->nullable();
             $table->string('direction')->nullable();
             $table->string('capacity')->nullable();

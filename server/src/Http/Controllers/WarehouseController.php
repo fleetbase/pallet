@@ -3,6 +3,7 @@
 namespace Fleetbase\Pallet\Http\Controllers;
 
 use Fleetbase\Exceptions\FleetbaseRequestValidationException;
+use Fleetbase\Models\Place;
 use Fleetbase\Pallet\Models\WarehouseAisle;
 use Fleetbase\Pallet\Models\WarehouseBin;
 use Fleetbase\Pallet\Models\WarehouseDock;
@@ -25,11 +26,37 @@ class WarehouseController extends PalletResourceController
     {
         try {
             $this->validateRequest($request);
-            $record = $this->model->createRecordFromRequest($request, null, function ($request, $warehouse) {
+            $record = $this->model->createRecordFromRequest($request, function ($request, &$input) {
+                // Build place data from address fields and create a linked Place
+                $placeData = $request->input('warehouse.place', []);
+                if (empty($placeData)) {
+                    $placeData = array_filter([
+                        'name'         => $request->input('warehouse.name'),
+                        'street1'      => $request->input('warehouse.street1'),
+                        'street2'      => $request->input('warehouse.street2'),
+                        'city'         => $request->input('warehouse.city'),
+                        'province'     => $request->input('warehouse.province'),
+                        'postal_code'  => $request->input('warehouse.postal_code'),
+                        'country'      => $request->input('warehouse.country'),
+                        'neighborhood' => $request->input('warehouse.neighborhood'),
+                        'district'     => $request->input('warehouse.district'),
+                        'building'     => $request->input('warehouse.building'),
+                        'location'     => $request->input('warehouse.location'),
+                    ]);
+                }
+                if (!empty($placeData)) {
+                    $place = Place::create(array_merge($placeData, [
+                        'company_uuid'    => session('company'),
+                        'created_by_uuid' => session('user'),
+                        'type'            => 'pallet-warehouse',
+                    ]));
+                    $input['place_uuid'] = $place->uuid;
+                }
+            }, function ($request, $warehouse) {
                 $docks = $request->array('warehouse.docks', []);
                 foreach ($docks as $dock) {
                     WarehouseDock::create(array_merge($dock, [
-                        'warehouse_uuid'  => data_get($warehouse, 'uuid'),
+                        'warehouse_uuid'  => $warehouse->uuid,
                         'company_uuid'    => session('company'),
                         'created_by_uuid' => session('user'),
                     ]));
@@ -38,7 +65,7 @@ class WarehouseController extends PalletResourceController
                 $sections = $request->array('warehouse.sections', []);
                 foreach ($sections as $section) {
                     $createdSection = WarehouseSection::create(array_merge($section, [
-                        'warehouse_uuid'  => data_get($warehouse, 'uuid'),
+                        'warehouse_uuid'  => $warehouse->uuid,
                         'company_uuid'    => session('company'),
                         'created_by_uuid' => session('user'),
                     ]));
@@ -92,27 +119,72 @@ class WarehouseController extends PalletResourceController
     {
         try {
             $this->validateRequest($request);
-            $record = $this->model->updateRecordFromRequest($request, $id, null, function ($request, $warehouse) {
+            $record = $this->model->updateRecordFromRequest($request, $id, function ($request, &$input, $warehouse) {
+                // Update or create the linked Place
+                $placeData = $request->input('warehouse.place', []);
+                if (empty($placeData)) {
+                    $placeData = array_filter([
+                        'name'         => $request->input('warehouse.name'),
+                        'street1'      => $request->input('warehouse.street1'),
+                        'street2'      => $request->input('warehouse.street2'),
+                        'city'         => $request->input('warehouse.city'),
+                        'province'     => $request->input('warehouse.province'),
+                        'postal_code'  => $request->input('warehouse.postal_code'),
+                        'country'      => $request->input('warehouse.country'),
+                        'neighborhood' => $request->input('warehouse.neighborhood'),
+                        'district'     => $request->input('warehouse.district'),
+                        'building'     => $request->input('warehouse.building'),
+                        'location'     => $request->input('warehouse.location'),
+                    ]);
+                }
+                if (!empty($placeData)) {
+                    if ($warehouse->place_uuid) {
+                        Place::where('uuid', $warehouse->place_uuid)->update($placeData);
+                    } else {
+                        $place = Place::create(array_merge($placeData, [
+                            'company_uuid'    => session('company'),
+                            'created_by_uuid' => session('user'),
+                            'type'            => 'pallet-warehouse',
+                        ]));
+                        $input['place_uuid'] = $place->uuid;
+                    }
+                }
+            }, function ($request, $warehouse) {
                 $docks = $request->array('warehouse.docks', []);
                 foreach ($docks as $dock) {
-                    WarehouseDock::updateOrCreate(['uuid' => data_get($dock, 'uuid')], array_merge($dock, ['warehouse_uuid' => $warehouse->uuid, 'company_uuid' => session('company'), 'created_by_uuid' => session('user')]));
+                    WarehouseDock::updateOrCreate(
+                        ['uuid' => data_get($dock, 'uuid')],
+                        array_merge($dock, ['warehouse_uuid' => $warehouse->uuid, 'company_uuid' => session('company'), 'created_by_uuid' => session('user')])
+                    );
                 }
 
                 $sections = $request->array('warehouse.sections', []);
                 foreach ($sections as $section) {
-                    WarehouseSection::updateOrCreate(['uuid' => data_get($section, 'uuid')], array_merge($section, ['warehouse_uuid' => $warehouse->uuid, 'company_uuid' => session('company'), 'created_by_uuid' => session('user')]));
+                    WarehouseSection::updateOrCreate(
+                        ['uuid' => data_get($section, 'uuid')],
+                        array_merge($section, ['warehouse_uuid' => $warehouse->uuid, 'company_uuid' => session('company'), 'created_by_uuid' => session('user')])
+                    );
 
                     $aisles = data_get($section, 'aisles', []);
                     foreach ($aisles as $aisle) {
-                        WarehouseAisle::updateOrCreate(['uuid' => data_get($aisle, 'uuid')], array_merge($aisle, ['section_uuid' => data_get($section, 'uuid'), 'company_uuid' => session('company'), 'created_by_uuid' => session('user')]));
+                        WarehouseAisle::updateOrCreate(
+                            ['uuid' => data_get($aisle, 'uuid')],
+                            array_merge($aisle, ['section_uuid' => data_get($section, 'uuid'), 'company_uuid' => session('company'), 'created_by_uuid' => session('user')])
+                        );
 
                         $racks = data_get($aisle, 'racks', []);
                         foreach ($racks as $rack) {
-                            WarehouseRack::updateOrCreate(['uuid' => data_get($rack, 'uuid')], array_merge($rack, ['aisle_uuid' => data_get($aisle, 'uuid'), 'company_uuid' => session('company'), 'created_by_uuid' => session('user')]));
+                            WarehouseRack::updateOrCreate(
+                                ['uuid' => data_get($rack, 'uuid')],
+                                array_merge($rack, ['aisle_uuid' => data_get($aisle, 'uuid'), 'company_uuid' => session('company'), 'created_by_uuid' => session('user')])
+                            );
 
                             $bins = data_get($rack, 'bins', []);
                             foreach ($bins as $bin) {
-                                WarehouseBin::updateOrCreate(['uuid' => data_get($bin, 'uuid')], array_merge($bin, ['rack_uuid' => data_get($rack, 'uuid'), 'company_uuid' => session('company'), 'created_by_uuid' => session('user')]));
+                                WarehouseBin::updateOrCreate(
+                                    ['uuid' => data_get($bin, 'uuid')],
+                                    array_merge($bin, ['rack_uuid' => data_get($rack, 'uuid'), 'company_uuid' => session('company'), 'created_by_uuid' => session('user')])
+                                );
                             }
                         }
                     }

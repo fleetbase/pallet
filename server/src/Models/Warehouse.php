@@ -3,29 +3,80 @@
 namespace Fleetbase\Pallet\Models;
 
 use Fleetbase\Casts\Json;
-use Fleetbase\FleetOps\Models\Place;
-use Fleetbase\Traits\HasMetaAttributes;
-
+use Fleetbase\Models\Company;
+use Fleetbase\Models\Place;
+use Fleetbase\Models\User;
+use Fleetbase\Traits\HasApiModelBehavior;
+use Fleetbase\Traits\HasPublicId;
+use Fleetbase\Traits\HasUuid;
+use Fleetbase\Traits\SendsWebhooks;
+use Fleetbase\Traits\TracksApiCredential;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 
-class Warehouse extends Place
+class Warehouse extends Model
 {
-    use HasMetaAttributes;
+    use HasUuid,
+        HasPublicId,
+        HasApiModelBehavior,
+        SendsWebhooks,
+        TracksApiCredential,
+        SoftDeletes,
+        LogsActivity;
 
     /**
-     * Overwrite both place resource name with `payloadKey`.
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = 'pallet_warehouses';
+
+    /**
+     * The payload key for API requests.
      *
      * @var string
      */
     protected $payloadKey = 'warehouse';
 
     /**
-     * The type of public Id to generate.
+     * The public_id prefix for this model.
      *
      * @var string
      */
-    protected $publicIdType = 'warehouse';
+    protected $publicIdPrefix = 'warehouse';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'uuid',
+        'public_id',
+        'company_uuid',
+        'created_by_uuid',
+        'place_uuid',
+        'name',
+        'code',
+        'type',
+        'status',
+        'capacity',
+        'current_utilization',
+        'floor_area_sqm',
+        'operating_hours',
+        'timezone',
+        'phone',
+        'email',
+        'manager_uuid',
+        'total_docks',
+        'is_active',
+        'is_default',
+        'meta',
+    ];
 
     /**
      * The attributes that should be cast to native types.
@@ -33,11 +84,14 @@ class Warehouse extends Place
      * @var array
      */
     protected $casts = [
+        'operating_hours'     => 'array',
         'meta'                => Json::class,
-        'capacity'            => 'decimal:2',
-        'current_utilization' => 'decimal:2',
+        'capacity'            => 'integer',
+        'current_utilization' => 'integer',
+        'floor_area_sqm'      => 'float',
         'is_active'           => 'boolean',
-        'is_3pl'              => 'boolean',
+        'is_default'          => 'boolean',
+        'total_docks'         => 'integer',
     ];
 
     /**
@@ -45,14 +99,47 @@ class Warehouse extends Place
      *
      * @var array
      */
-    protected $appends = ['utilization_percentage', 'total_zones', 'total_bins'];
+    protected $appends = ['utilization_percentage', 'total_zones', 'total_bins', 'address'];
 
     /**
      * Relationships to eager load.
      *
      * @var array
      */
-    protected $with = ['sections', 'zones', 'docks'];
+    protected $with = ['place', 'sections', 'zones', 'docks'];
+
+    /**
+     * The company that owns this warehouse.
+     */
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class, 'company_uuid');
+    }
+
+    /**
+     * The user who created this warehouse.
+     */
+    public function createdBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by_uuid');
+    }
+
+    /**
+     * The geographic/address record for this warehouse.
+     * All address, coordinates, and geocoding data lives here.
+     */
+    public function place(): BelongsTo
+    {
+        return $this->belongsTo(Place::class, 'place_uuid');
+    }
+
+    /**
+     * The user assigned as warehouse manager.
+     */
+    public function manager(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'manager_uuid');
+    }
 
     /**
      * Get warehouse sections.
@@ -226,9 +313,19 @@ class Warehouse extends Place
     public function getTotalInventoryValue()
     {
         return $this->inventories()
-            ->join('pallet_products', 'pallet_inventories.product_uuid', '=', 'pallet_products.uuid')
-            ->selectRaw('SUM(pallet_inventories.quantity * pallet_products.unit_cost) as total_value')
+            ->join('entities', 'pallet_inventories.product_uuid', '=', 'entities.uuid')
+            ->selectRaw('SUM(pallet_inventories.quantity * entities.sale_price) as total_value')
             ->value('total_value') ?? 0;
+    }
+
+    /**
+     * Get the formatted address from the linked Place.
+     *
+     * @return string|null
+     */
+    public function getAddressAttribute(): ?string
+    {
+        return $this->place ? $this->place->address : null;
     }
 
     /**
@@ -271,11 +368,13 @@ class Warehouse extends Place
         return LogOptions::defaults()
             ->logOnly([
                 'name',
+                'code',
                 'type',
                 'status',
+                'is_active',
+                'capacity',
             ])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
     }
-
 }
