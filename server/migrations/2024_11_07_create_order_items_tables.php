@@ -40,8 +40,9 @@ return new class extends Migration
             $table->foreignUuid('purchase_order_uuid')->nullable()->index()->references('uuid')->on('pallet_purchase_orders');
             $table->foreignUuid('created_by_uuid')->nullable()->index()->references('uuid')->on('users');
 
-            // Product reference — products extend fleetops entities, so the backing table is 'entities'
-            $table->foreignUuid('product_uuid')->nullable()->index()->references('uuid')->on('entities');
+            // Product / variant reference
+            $table->foreignUuid('product_uuid')->nullable()->index()->references('uuid')->on('pallet_products');
+            $table->foreignUuid('variant_uuid')->nullable()->index()->references('uuid')->on('pallet_product_variants');
 
             // Warehouse destination — warehouses extend fleetbase places, so the backing table is 'places'
             $table->foreignUuid('warehouse_uuid')->nullable()->index()->references('uuid')->on('pallet_warehouses');
@@ -94,8 +95,9 @@ return new class extends Migration
             $table->foreignUuid('sales_order_uuid')->nullable()->index()->references('uuid')->on('pallet_sales_orders');
             $table->foreignUuid('created_by_uuid')->nullable()->index()->references('uuid')->on('users');
 
-            // Product reference — products extend fleetops entities, so the backing table is 'entities'
-            $table->foreignUuid('product_uuid')->nullable()->index()->references('uuid')->on('entities');
+            // Product / variant reference
+            $table->foreignUuid('product_uuid')->nullable()->index()->references('uuid')->on('pallet_products');
+            $table->foreignUuid('variant_uuid')->nullable()->index()->references('uuid')->on('pallet_product_variants');
 
             // Source warehouse — warehouses extend fleetbase places, so the backing table is 'places'
             $table->foreignUuid('warehouse_uuid')->nullable()->index()->references('uuid')->on('pallet_warehouses');

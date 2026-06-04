@@ -4,13 +4,12 @@ namespace Fleetbase\Pallet\Models;
 
 use Fleetbase\Casts\Json;
 use Fleetbase\Models\Model;
+use Fleetbase\Pallet\Traits\HasOperationalAuditTrail;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
-use Fleetbase\Pallet\Traits\HasOperationalAuditTrail;
-
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class SalesOrder extends Model
 {
@@ -175,8 +174,6 @@ class SalesOrder extends Model
 
     /**
      * Returns the total order value (sum of all item total_prices).
-     *
-     * @return float
      */
     public function getTotalValueAttribute(): float
     {
@@ -185,8 +182,6 @@ class SalesOrder extends Model
 
     /**
      * Returns the total number of line items.
-     *
-     * @return int
      */
     public function getItemCountAttribute(): int
     {
@@ -197,13 +192,12 @@ class SalesOrder extends Model
      * Mark the sales order as fulfilled and log an operational audit event.
      * This method is called by SalesOrderController::fulfill().
      *
-     * @param array $fulfilledItems  Array of fulfilled line items with quantities
-     * @return bool
+     * @param array $fulfilledItems Array of fulfilled line items with quantities
      */
     public function markAsFulfilled(array $fulfilledItems = []): bool
     {
         $this->status = 'fulfilled';
-        $result = $this->save();
+        $result       = $this->save();
 
         // Log operational audit event
         $this->logAuditEvent(
@@ -226,15 +220,14 @@ class SalesOrder extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->created_at = now();
+            $model->created_at    = now();
             $model->order_date_at = now();
         });
     }
+
     /**
      * Configure Spatie activity log options.
      * Logs only the specified attributes when they change (dirty only).
-     *
-     * @return LogOptions
      */
     public function getActivitylogOptions(): LogOptions
     {
@@ -249,5 +242,4 @@ class SalesOrder extends Model
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
     }
-
 }

@@ -1,0 +1,28 @@
+<Layout::Section::Header @title="Locations">
+    <div class="text-sm text-gray-500 dark:text-gray-300">Manage the internal warehouse structure for sections, aisles, racks, and bins from a dedicated facilities surface.</div>
+</Layout::Section::Header>
+
+<Layout::Section::Body class="overflow-y-scroll h-full p-4 space-y-4">
+    <ContentPanel @title="Implementation Status" @open={{true}} @wrapperClass="bordered-classic">
+        <p class="text-sm text-gray-700 dark:text-gray-200">This is a production navigation scaffold for the warehouse location domain. Backend models already support structural entities,
+            but the full management workflow is still being completed.</p>
+    </ContentPanel>
+
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+        <ContentPanel @title="Planned Workflows" @open={{true}} @wrapperClass="bordered-classic">
+            <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-200">
+                <li>Create and manage sections, aisles, racks, and bins.</li>
+                <li>Map warehouse storage structure for inventory placement.</li>
+                <li>Expose location-aware inventory and receiving workflows.</li>
+            </ul>
+        </ContentPanel>
+
+        <ContentPanel @title="What Ships Next" @open={{true}} @wrapperClass="bordered-classic">
+            <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-200">
+                <li>Dedicated location resource screens and detail panels.</li>
+                <li>Nested warehouse editors connected to the facilities surface.</li>
+                <li>Location-aware receiving, transfers, and cycle counts.</li>
+            </ul>
+        </ContentPanel>
+    </div>
+</Layout::Section::Body>

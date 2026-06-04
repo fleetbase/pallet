@@ -10,13 +10,11 @@ class ProductFilter extends Filter
     public function queryForInternal()
     {
         $this->builder->where('company_uuid', $this->session->get('company'));
-        $this->builder->where('type', 'pallet-product');
     }
 
     public function query(?string $query)
     {
         $this->builder->search($query);
-        $this->builder->where('type', 'pallet-product');
     }
 
     public function name(?string $name)
@@ -41,7 +39,7 @@ class ProductFilter extends Filter
 
     public function price(?string $price)
     {
-        $this->builder->searchWhere('price', $price);
+        $this->builder->searchWhere('unit_price', $price);
     }
 
     public function salePrice(?string $salePrice)

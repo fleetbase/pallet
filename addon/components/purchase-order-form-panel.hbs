@@ -18,8 +18,10 @@
                 @icon={{if this.purchaseOrder.id "save" "check"}}
                 @type="primary"
                 @text={{if this.purchaseOrder.id "Save Purchase Order" "Create Purchase Order"}}
-                @onClick={{this.save}}
+                @onClick={{perform this.saveTask}}
                 @wrapperClass="mr-2"
+                @isLoading={{this.saveTask.isRunning}}
+                @disabled={{this.saveTask.isRunning}}
             />
             {{#if this.purchaseOrder.id}}
                 <Button @type="default" @icon="file-invoice" @helpText="View purchase order details" @onClick={{this.onViewDetails}} @wrapperClass="mr-2" />

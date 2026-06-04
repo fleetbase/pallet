@@ -1,5 +1,5 @@
 <div class="flex flex-col h-full overflow-hidden">
-    {{#if this.isLoading}}
+    {{#if this.loadActivity.isRunning}}
         <div class="flex items-center justify-center h-full">
             <Spinner />
         </div>
@@ -13,17 +13,17 @@
             {{#each this.events as |event|}}
                 <div class="flex items-start gap-3 px-3 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50">
                     <div class="mt-0.5 flex-shrink-0">
-                        <FaIcon
-                            @icon={{this.eventIcon event.event_type}}
-                            class="text-sm {{this.eventColor event.event_type}}"
-                        />
+                        <FaIcon @icon={{this.eventIcon event.event_type}} class="text-sm {{this.eventColor event.event_type}}" />
                     </div>
                     <div class="flex-1 min-w-0">
                         <p class="text-xs font-medium text-gray-800 dark:text-gray-100 truncate">
-                            {{n-a event.description}}
+                            {{n-a event.action}}
+                            {{#if event.subjectLabel}}
+                                <span class="text-gray-500 dark:text-gray-400">· {{event.subjectLabel}}</span>
+                            {{/if}}
                         </p>
                         <p class="text-xs text-gray-400 mt-0.5">
-                            {{n-a event.performed_by_name}}
+                            {{n-a event.performedBy.name}}
                             &middot;
                             <TimeAgo @date={{event.created_at}} />
                         </p>

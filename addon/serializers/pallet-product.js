@@ -24,6 +24,7 @@ export default class PalletProductSerializer extends ApplicationSerializer.exten
     get attrs() {
         return {
             supplier: { embedded: 'always' },
+            variants: { embedded: 'always' },
         };
     }
 }

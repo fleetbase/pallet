@@ -2,14 +2,14 @@
 
 namespace Fleetbase\Pallet\Http\Controllers;
 
+use Fleetbase\Exceptions\FleetbaseRequestValidationException;
+use Fleetbase\Pallet\Http\Resources\PurchaseOrder as PurchaseOrderResource;
 use Fleetbase\Pallet\Models\Inventory;
 use Fleetbase\Pallet\Models\PurchaseOrder;
 use Fleetbase\Pallet\Models\PurchaseOrderItem;
-use Fleetbase\Pallet\Http\Resources\PurchaseOrder as PurchaseOrderResource;
-use Fleetbase\Exceptions\FleetbaseRequestValidationException;
 use Fleetbase\Support\Http;
-use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PurchaseOrderController extends PalletResourceController
@@ -24,7 +24,6 @@ class PurchaseOrderController extends PalletResourceController
     /**
      * Create a new Purchase Order.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function createRecord(Request $request)
@@ -90,8 +89,8 @@ class PurchaseOrderController extends PalletResourceController
      *   ]
      * }
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $id  The PO public_id or UUID
+     * @param string $id The PO public_id or UUID
+     *
      * @return \Illuminate\Http\Response
      */
     public function receive(Request $request, string $id)
@@ -157,6 +156,7 @@ class PurchaseOrderController extends PalletResourceController
 
                     $inventoryQuery = Inventory::where('company_uuid', $purchaseOrder->company_uuid)
                         ->where('product_uuid', $item->product_uuid)
+                        ->where('variant_uuid', $item->variant_uuid)
                         ->where('warehouse_uuid', $warehouseUuid);
 
                     if ($lotNumber) {
@@ -185,6 +185,7 @@ class PurchaseOrderController extends PalletResourceController
                             'created_by_uuid'    => session('user'),
                             'supplier_uuid'      => $purchaseOrder->supplier_uuid,
                             'product_uuid'       => $item->product_uuid,
+                            'variant_uuid'       => $item->variant_uuid,
                             'warehouse_uuid'     => $warehouseUuid,
                             'bin_location_uuid'  => $binLocationUuid,
                             'zone_uuid'          => $zoneUuid,
@@ -213,6 +214,7 @@ class PurchaseOrderController extends PalletResourceController
                     $receivedSummary[] = [
                         'item_uuid'         => $item->uuid,
                         'product_uuid'      => $item->product_uuid,
+                        'variant_uuid'      => $item->variant_uuid,
                         'quantity_received' => $qtyToReceive,
                         'inventory_uuid'    => $inventory->uuid,
                         'status'            => $item->status,

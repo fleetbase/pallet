@@ -8,7 +8,6 @@ export default class WidgetLowStockComponent extends Component {
     @service notifications;
 
     @tracked items = [];
-    @tracked isLoading = true;
 
     constructor() {
         super(...arguments);
@@ -17,14 +16,11 @@ export default class WidgetLowStockComponent extends Component {
 
     @task({ restartable: true })
     *loadLowStock() {
-        this.isLoading = true;
         try {
-            const data = yield this.fetch.get('pallet/metrics/low-stock', { limit: 10 });
+            const data = yield this.fetch.get('metrics/low-stock', { limit: 10 }, { namespace: 'pallet/int/v1' });
             this.items = data.items ?? [];
         } catch (error) {
             this.notifications.serverError(error);
-        } finally {
-            this.isLoading = false;
         }
     }
 }

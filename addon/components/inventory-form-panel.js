@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import { task } from 'ember-concurrency';
 import contextComponentCallback from '@fleetbase/ember-core/utils/context-component-callback';
 import applyContextComponentArguments from '@fleetbase/ember-core/utils/apply-context-component-arguments';
 
@@ -36,12 +37,6 @@ export default class InventoryFormPanelComponent extends Component {
      * @type {any}
      */
     @tracked context;
-
-    /**
-     * Indicates whether the component is in a loading state.
-     * @type {boolean}
-     */
-    @tracked isLoading = false;
 
     /**
      * Fuel Report status
@@ -82,33 +77,22 @@ export default class InventoryFormPanelComponent extends Component {
      * @action
      * @returns {Promise<any>}
      */
-    @action save() {
+    @task *saveTask() {
         const { inventory } = this;
 
         this.loader.showLoader('.next-content-overlay-panel-container', { loadingMessage: 'Saving inventory...', preserveTargetPosition: true });
-        this.isLoading = true;
-
         contextComponentCallback(this, 'onBeforeSave', inventory);
 
         try {
-            return inventory
-                .save()
-                .then((inventory) => {
-                    this.notifications.success(`Inventory saved successfully.`);
-                    contextComponentCallback(this, 'onAfterSave', inventory);
-                })
-                .catch((error) => {
-                    console.error(error);
-                    this.notifications.serverError(error);
-                })
-                .finally(() => {
-                    this.loader.removeLoader('.next-content-overlay-panel-container ');
-                    this.isLoading = false;
-                });
+            const savedInventory = yield inventory.save();
+            this.notifications.success(`Inventory saved successfully.`);
+            contextComponentCallback(this, 'onAfterSave', savedInventory);
+            return savedInventory;
         } catch (error) {
             console.error(error);
+            this.notifications.serverError(error);
+        } finally {
             this.loader.removeLoader('.next-content-overlay-panel-container ');
-            this.isLoading = false;
         }
     }
 
@@ -133,6 +117,11 @@ export default class InventoryFormPanelComponent extends Component {
      */
     @action onPressCancel() {
         return contextComponentCallback(this, 'onPressCancel', this.inventory);
+    }
+
+    @action setVariant(variant) {
+        this.inventory.variant = variant;
+        this.inventory.variant_uuid = variant?.uuid;
     }
 
     @action defaultProductSupplier(selectedProduct) {

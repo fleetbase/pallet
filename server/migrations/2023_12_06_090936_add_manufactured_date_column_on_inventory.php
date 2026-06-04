@@ -25,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pallet_inventories');
+        Schema::table('pallet_inventories', function (Blueprint $table) {
+            $table->dropColumn('manufactured_date_at');
+        });
     }
 };

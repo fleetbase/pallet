@@ -1,66 +1,13 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
 import { isBlank } from '@ember/utils';
 import { task, timeout } from 'ember-concurrency';
 
 export default class ProductsIndexController extends Controller {
-    /**
-     * Inject the `contextPanel` service
-     *
-     * @var {Service}
-     */
-    @service contextPanel;
-
-    /**
-     * Inject the `notifications` service
-     *
-     * @var {Service}
-     */
-    @service notifications;
-
-    /**
-     * Inject the `modals-manager` service
-     *
-     * @var {Service}
-     */
-    @service modalsManager;
-
-    /**
-     * Inject the `store` service
-     *
-     * @var {Service}
-     */
-    @service store;
-
-    /**
-     * Inject the `fetch` service
-     *
-     * @var {Service}
-     */
-    @service fetch;
-
-    /**
-     * Inject the `filters` service
-     *
-     * @var {Service}
-     */
-    @service filters;
-
-    /**
-     * Inject the `hostRouter` service
-     *
-     * @var {Service}
-     */
-    @service hostRouter;
-
-    /**
-     * Inject the `crud` service
-     *
-     * @var {Service}
-     */
-    @service crud;
+    @service productActions;
+    @service tableContext;
+    @service intl;
 
     /**
      * Queryable parameters for this controller's model
@@ -190,110 +137,152 @@ export default class ProductsIndexController extends Controller {
      *
      * @var {Array}
      */
-    @tracked columns = [
-        {
-            label: 'Product',
-            valuePath: 'name',
-            width: '170px',
-            cellComponent: 'cell/product-info',
-            action: this.viewProduct,
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterComponent: 'filter/string',
-        },
-        {
-            label: 'ID',
-            valuePath: 'public_id',
-            width: '120px',
-            cellComponent: 'click-to-copy',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterComponent: 'filter/string',
-        },
-        {
-            label: 'SKU',
-            valuePath: 'sku',
-            cellComponent: 'click-to-copy',
-            width: '120px',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterComponent: 'filter/string',
-        },
-        {
-            label: 'Internal ID',
-            valuePath: 'internal_id',
-            cellComponent: 'click-to-copy',
-            width: '120px',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterComponent: 'filter/string',
-        },
-        {
-            label: 'Value',
-            valuePath: 'price',
-            cellComponent: 'click-to-copy',
-            width: '120px',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterComponent: 'filter/string',
-        },
-        {
-            label: ' Date Added',
-            valuePath: 'createdAt',
-            sortParam: 'created_at',
-            width: '10%',
-            resizable: true,
-            sortable: true,
-            hidden: true,
-            filterable: true,
-            filterComponent: 'filter/date',
-        },
-        {
-            label: 'Last Updated',
-            valuePath: 'updatedAt',
-            sortParam: 'updated_at',
-            width: '10%',
-            resizable: true,
-            sortable: true,
-            hidden: true,
-            filterable: true,
-            filterComponent: 'filter/date',
-        },
-        {
-            label: '',
-            cellComponent: 'table/cell/dropdown',
-            ddButtonText: false,
-            ddButtonIcon: 'ellipsis-h',
-            ddButtonIconPrefix: 'fas',
-            ddMenuLabel: 'Product Actions',
-            cellClassNames: 'overflow-visible',
-            wrapperClass: 'flex items-center justify-end mx-2',
-            width: '10%',
-            actions: [
-                {
-                    label: 'View Product',
-                    fn: this.viewProduct,
-                },
-                {
-                    label: 'Edit Product',
-                    fn: this.editProduct,
-                },
-                {
-                    label: 'Delete Product',
-                    fn: this.deleteProduct,
-                },
-            ],
-            sortable: false,
-            filterable: false,
-            resizable: false,
-            searchable: false,
-        },
-    ];
+    @tracked table;
+
+    get actionButtons() {
+        return [
+            {
+                icon: 'refresh',
+                onClick: this.productActions.refresh,
+                helpText: this.intl.t('common.refresh'),
+            },
+            {
+                text: this.intl.t('common.new'),
+                type: 'primary',
+                icon: 'plus',
+                onClick: this.productActions.transition.create,
+            },
+            {
+                text: this.intl.t('common.export'),
+                icon: 'long-arrow-up',
+                iconClass: 'rotate-icon-45',
+                wrapperClass: 'hidden md:flex',
+                onClick: this.productActions.export,
+            },
+        ];
+    }
+
+    get bulkActions() {
+        const selected = this.tableContext.getSelectedRows();
+
+        return [
+            {
+                label: this.intl.t('common.delete-selected-count', { count: selected.length }),
+                class: 'text-red-500',
+                fn: this.productActions.bulkDelete,
+            },
+        ];
+    }
+
+    get columns() {
+        return [
+            {
+                label: 'Product',
+                valuePath: 'name',
+                width: '170px',
+                cellComponent: 'cell/product-info',
+                action: this.productActions.transition.view,
+                resizable: true,
+                sortable: true,
+                filterable: true,
+                filterComponent: 'filter/string',
+            },
+            {
+                label: 'ID',
+                valuePath: 'public_id',
+                width: '120px',
+                cellComponent: 'click-to-copy',
+                resizable: true,
+                sortable: true,
+                filterable: true,
+                filterComponent: 'filter/string',
+            },
+            {
+                label: 'SKU',
+                valuePath: 'sku',
+                cellComponent: 'click-to-copy',
+                width: '120px',
+                resizable: true,
+                sortable: true,
+                filterable: true,
+                filterComponent: 'filter/string',
+            },
+            {
+                label: 'Internal ID',
+                valuePath: 'internal_id',
+                cellComponent: 'click-to-copy',
+                width: '120px',
+                resizable: true,
+                sortable: true,
+                filterable: true,
+                filterComponent: 'filter/string',
+            },
+            {
+                label: 'Value',
+                valuePath: 'unit_price',
+                cellComponent: 'click-to-copy',
+                width: '120px',
+                resizable: true,
+                sortable: true,
+                filterable: true,
+                filterComponent: 'filter/string',
+            },
+            {
+                label: 'Date Added',
+                valuePath: 'createdAt',
+                sortParam: 'created_at',
+                width: '10%',
+                resizable: true,
+                sortable: true,
+                hidden: true,
+                filterable: true,
+                filterComponent: 'filter/date',
+            },
+            {
+                label: 'Last Updated',
+                valuePath: 'updatedAt',
+                sortParam: 'updated_at',
+                width: '10%',
+                resizable: true,
+                sortable: true,
+                hidden: true,
+                filterable: true,
+                filterComponent: 'filter/date',
+            },
+            {
+                label: '',
+                cellComponent: 'table/cell/dropdown',
+                ddButtonText: false,
+                ddButtonIcon: 'ellipsis-h',
+                ddButtonIconPrefix: 'fas',
+                ddMenuLabel: this.intl.t('common.resource-actions', { resource: 'Product' }),
+                cellClassNames: 'overflow-visible',
+                wrapperClass: 'flex items-center justify-end mx-2',
+                width: '10%',
+                actions: [
+                    {
+                        label: this.intl.t('common.view-resource', { resource: 'Product' }),
+                        fn: this.productActions.transition.view,
+                    },
+                    {
+                        label: this.intl.t('common.edit-resource', { resource: 'Product' }),
+                        fn: this.productActions.transition.edit,
+                    },
+                    {
+                        separator: true,
+                    },
+                    {
+                        label: this.intl.t('common.delete-resource', { resource: 'Product' }),
+                        fn: this.productActions.delete,
+                    },
+                ],
+                sortable: false,
+                filterable: false,
+                resizable: false,
+                searchable: false,
+            },
+        ];
+    }
 
     /**
      * The search task.
@@ -317,78 +306,5 @@ export default class ProductsIndexController extends Controller {
 
         // update the query param
         this.query = value;
-    }
-
-    /**
-     * Toggles dialog to export `product`
-     *
-     * @void
-     */
-    @action exportProcuts() {
-        this.crud.export('product');
-    }
-
-    /**
-     * View a `product` details in overlay
-     *
-     * @param {ProductModel} product
-     * @param {Object} options
-     * @void
-     */
-    @action viewProduct(product) {
-        return this.hostRouter.transitionTo('console.pallet.products.index.details', product);
-    }
-
-    /**
-     * Create a new `product` in modal
-     *
-     * @void
-     */
-    @action createProduct() {
-        return this.hostRouter.transitionTo('console.pallet.products.index.new');
-    }
-    /**
-     * Edit a `product` details
-     *
-     * @param {ProductModel} product
-     * @param {Object} options
-     * @void
-     */
-    @action async editProduct(product) {
-        return this.hostRouter.transitionTo('console.pallet.products.index.edit', product);
-    }
-
-    /**
-     * Delete a `product` via confirm prompt
-     *
-     * @param {ProductModel} product
-     * @param {Object} options
-     * @void
-     */
-    @action deleteProduct(product, options = {}) {
-        this.crud.delete(product, {
-            onConfirm: () => {
-                return this.hostRouter.refresh();
-            },
-            ...options,
-        });
-    }
-
-    /**
-     * Bulk deletes selected `product` via confirm prompt
-     *
-     * @param {Array} selected an array of selected models
-     * @void
-     */
-    @action bulkDeleteProducts() {
-        const selected = this.table.selectedRows;
-
-        this.crud.bulkDelete(selected, {
-            modelNamePath: `name`,
-            acceptButtonText: 'Delete Products',
-            onSuccess: () => {
-                return this.hostRouter.refresh();
-            },
-        });
     }
 }

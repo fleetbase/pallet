@@ -8,7 +8,6 @@ export default class WidgetTopProductsComponent extends Component {
     @service notifications;
 
     @tracked products = [];
-    @tracked isLoading = true;
 
     constructor() {
         super(...arguments);
@@ -17,14 +16,11 @@ export default class WidgetTopProductsComponent extends Component {
 
     @task({ restartable: true })
     *loadTopProducts() {
-        this.isLoading = true;
         try {
-            const data = yield this.fetch.get('pallet/metrics/top-products', { limit: 10 });
+            const data = yield this.fetch.get('metrics/top-products', { limit: 10 }, { namespace: 'pallet/int/v1' });
             this.products = data.products ?? [];
         } catch (error) {
             this.notifications.serverError(error);
-        } finally {
-            this.isLoading = false;
         }
     }
 

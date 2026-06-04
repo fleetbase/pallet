@@ -45,7 +45,7 @@
             </BasicDropdown>
 
             {{!-- Clear filters --}}
-            {{#if (or this.event_type this.subject_type this.query)}}
+            {{#if (or this.event_type this.auditable_type this.query)}}
                 <button
                     type="button"
                     class="inline-flex items-center px-3 py-1.5 text-sm text-red-600 dark:text-red-400 hover:underline"

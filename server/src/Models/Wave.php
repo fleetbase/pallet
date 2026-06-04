@@ -5,10 +5,10 @@ namespace Fleetbase\Pallet\Models;
 use Fleetbase\Casts\Json;
 use Fleetbase\Models\Model;
 use Fleetbase\Traits\HasApiModelBehavior;
+use Fleetbase\Traits\HasMetaAttributes;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 use Fleetbase\Traits\TracksApiCredential;
-use Fleetbase\Traits\HasMetaAttributes;
 
 class Wave extends Model
 {
@@ -132,7 +132,7 @@ class Wave extends Model
      */
     public function start()
     {
-        $this->status = 'in_progress';
+        $this->status     = 'in_progress';
         $this->started_at = now();
 
         return $this->save();
@@ -145,7 +145,7 @@ class Wave extends Model
      */
     public function complete()
     {
-        $this->status = 'completed';
+        $this->status       = 'completed';
         $this->completed_at = now();
 
         return $this->save();

@@ -15,4 +15,9 @@ export default class InventoryFormComponent extends Component {
             this.args.resource.batch.expiryDate = event.target.value;
         }
     }
+
+    @action setVariant(variant) {
+        this.args.resource.variant = variant;
+        this.args.resource.variant_uuid = variant?.uuid;
+    }
 }

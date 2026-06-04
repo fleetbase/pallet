@@ -1,0 +1,18 @@
+<Layout::Section::Header @title="Reservations">
+    <div class="text-sm text-gray-500 dark:text-gray-300">Reservations will control allocated inventory and expose stock commitments before fulfillment execution.</div>
+</Layout::Section::Header>
+
+<Layout::Section::Body class="overflow-y-scroll h-full p-4 space-y-4">
+    <ContentPanel @title="Implementation Status" @open={{true}} @wrapperClass="bordered-classic">
+        <p class="text-sm text-gray-700 dark:text-gray-200">Reservation models already exist in the Pallet backend. This scaffold preserves a complete production information architecture
+            while the reservation workflow is finalized.</p>
+    </ContentPanel>
+
+    <ContentPanel @title="Planned Workflows" @open={{true}} @wrapperClass="bordered-classic">
+        <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-200">
+            <li>Reserve inventory against open sales and warehouse operations.</li>
+            <li>Expose committed versus available stock.</li>
+            <li>Release or reallocate stock when order conditions change.</li>
+        </ul>
+    </ContentPanel>
+</Layout::Section::Body>

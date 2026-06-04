@@ -12,7 +12,6 @@ export default class WidgetInventorySummaryComponent extends Component {
     @tracked totalValue = 0;
     @tracked warehouseCount = 0;
     @tracked lowStockCount = 0;
-    @tracked isLoading = true;
 
     constructor() {
         super(...arguments);
@@ -21,9 +20,8 @@ export default class WidgetInventorySummaryComponent extends Component {
 
     @task({ restartable: true })
     *loadMetrics() {
-        this.isLoading = true;
         try {
-            const data = yield this.fetch.get('pallet/metrics/inventory-summary');
+            const data = yield this.fetch.get('metrics/inventory-summary', {}, { namespace: 'pallet/int/v1' });
             this.totalSkus = data.total_skus ?? 0;
             this.totalUnits = data.total_units ?? 0;
             this.totalValue = data.total_value ?? 0;
@@ -31,8 +29,6 @@ export default class WidgetInventorySummaryComponent extends Component {
             this.lowStockCount = data.low_stock_count ?? 0;
         } catch (error) {
             this.notifications.serverError(error);
-        } finally {
-            this.isLoading = false;
         }
     }
 }

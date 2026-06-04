@@ -9,7 +9,6 @@ export default class WidgetStockValueComponent extends Component {
 
     @tracked warehouses = [];
     @tracked totalValue = 0;
-    @tracked isLoading = true;
 
     constructor() {
         super(...arguments);
@@ -18,15 +17,12 @@ export default class WidgetStockValueComponent extends Component {
 
     @task({ restartable: true })
     *loadStockValue() {
-        this.isLoading = true;
         try {
-            const data = yield this.fetch.get('pallet/metrics/stock-value');
+            const data = yield this.fetch.get('metrics/stock-value', {}, { namespace: 'pallet/int/v1' });
             this.warehouses = data.warehouses ?? [];
             this.totalValue = data.total_value ?? 0;
         } catch (error) {
             this.notifications.serverError(error);
-        } finally {
-            this.isLoading = false;
         }
     }
 

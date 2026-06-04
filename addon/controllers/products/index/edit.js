@@ -2,110 +2,69 @@ import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { task } from 'ember-concurrency';
 
 export default class ProductsIndexEditController extends Controller {
-    /**
-     * Inject the `hostRouter` service
-     *
-     * @memberof ProductsIndexEditController
-     */
     @service hostRouter;
-
-    /**
-     * Inject the `hostRouter` service
-     *
-     * @memberof ProductsIndexEditController
-     */
+    @service intl;
+    @service notifications;
     @service modalsManager;
+    @service events;
 
-    /**
-     * The overlay component context.
-     *
-     * @memberof ProductsIndexEditController
-     */
     @tracked overlay;
 
-    /**
-     * When exiting the overlay.
-     *
-     * @return {Transition}
-     * @memberof productsIndexEditController
-     */
-    @action transitionBack(product) {
-        // check if product record has been edited and prompt for confirmation
-        if (product.hasDirtyAttributes) {
-            return this.confirmContinueWithUnsavedChanges(product, {
-                confirm: () => {
-                    product.rollbackAttributes();
-                    return this.hostRouter.transitionTo('console.pallet.products.index');
-                },
-            });
-        }
-
-        return this.hostRouter.transitionTo('console.pallet.products.index');
-    }
-
-    /**
-     * Set the overlay component context object.
-     *
-     * @param {OverlayContext} overlay
-     * @memberof ProductsIndexEditController
-     */
-    @action setOverlayContext(overlay) {
-        this.overlay = overlay;
-    }
-
-    /**
-     * When product details button is clicked in overlay.
-     *
-     * @param {ProductModel} product
-     * @return {Promise}
-     * @memberof ProductsIndexEditController
-     */
-    @action onViewDetails(product) {
-        // check if product record has been edited and prompt for confirmation
-        if (product.hasDirtyAttributes) {
-            return this.confirmContinueWithUnsavedChanges(product);
-        }
-
-        return this.hostRouter.transitionTo('console.pallet.products.index.details', product);
-    }
-
-    /**
-     * Trigger a route refresh and focus the new product created.
-     *
-     * @param {ProductModel} product
-     * @return {Promise}
-     * @memberof ProductsIndexEditController
-     */
-    @action onAfterSave(product) {
-        if (this.overlay) {
-            this.overlay.close();
-        }
-
-        this.hostRouter.refresh();
-        return this.hostRouter.transitionTo('console.pallet.products.index.details', product);
-    }
-
-    /**
-     * Prompts the user to confirm if they wish to continue with unsaved changes.
-     *
-     * @method
-     * @param {ProductModel} product - The product object with unsaved changes.
-     * @param {Object} [options={}] - Additional options for configuring the modal.
-     * @returns {Promise} A promise that resolves when the user confirms, and transitions to a new route.
-     * @memberof ProductsIndexEditController
-     */
-    confirmContinueWithUnsavedChanges(product, options = {}) {
-        return this.modalsManager.confirm({
-            title: 'Continue Without Saving?',
-            body: 'Unsaved changes to this product will be lost. Click continue to proceed.',
-            acceptButtonText: 'Continue without saving',
-            confirm: () => {
-                product.rollbackAttributes();
-                return this.hostRouter.transitionTo('console.pallet.products.index.details', product);
+    get actionButtons() {
+        return [
+            {
+                icon: 'eye',
+                fn: this.view,
             },
-            ...options,
+        ];
+    }
+
+    @task *save(product) {
+        try {
+            yield product.save();
+            this.events.trackResourceUpdated(product);
+            this.overlay?.close();
+
+            yield this.hostRouter.transitionTo('console.pallet.catalog.products.index.details', product);
+            this.notifications.success(
+                this.intl.t('common.resource-updated-success', {
+                    resource: 'Product',
+                    resourceName: product.name,
+                })
+            );
+        } catch (error) {
+            this.notifications.serverError(error);
+        }
+    }
+
+    @action cancel() {
+        if (this.model.hasDirtyAttributes) {
+            return this.confirmContinueWithUnsavedChanges(this.model, 'console.pallet.catalog.products.index');
+        }
+
+        return this.hostRouter.transitionTo('console.pallet.catalog.products.index');
+    }
+
+    @action view() {
+        if (this.model.hasDirtyAttributes) {
+            return this.confirmContinueWithUnsavedChanges(this.model, 'console.pallet.catalog.products.index.details');
+        }
+
+        return this.hostRouter.transitionTo('console.pallet.catalog.products.index.details', this.model);
+    }
+
+    confirmContinueWithUnsavedChanges(product, routeName) {
+        return this.modalsManager.confirm({
+            title: this.intl.t('common.continue-without-saving'),
+            body: this.intl.t('common.continue-without-saving-prompt', { resource: 'Product' }),
+            acceptButtonText: this.intl.t('common.continue'),
+            confirm: async () => {
+                product.rollbackAttributes();
+                await this.hostRouter.transitionTo(routeName, product);
+            },
         });
     }
 }

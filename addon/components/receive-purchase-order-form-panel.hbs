@@ -1,22 +1,6 @@
-<Overlay
-    @position="right"
-    @noBackdrop={{true}}
-    @fullHeight={{true}}
-    @isResizable={{true}}
-    @width="720px"
->
-    <Overlay::Header
-        @title="Receive Purchase Order"
-        @status={{this.purchaseOrder.public_id}}
-        @hideStatusDot={{true}}
-        @createdAt={{this.purchaseOrder.createdAt}}
-    >
-        <Button
-            @type="default"
-            @icon="times"
-            @helpText="Close"
-            @onClick={{this.onPressCancel}}
-        />
+<Overlay @position="right" @noBackdrop={{true}} @fullHeight={{true}} @isResizable={{true}} @width="720px">
+    <Overlay::Header @title="Receive Purchase Order" @status={{this.purchaseOrder.public_id}} @hideStatusDot={{true}} @createdAt={{this.purchaseOrder.createdAt}}>
+        <Button @type="default" @icon="times" @helpText="Close" @onClick={{this.onPressCancel}} />
     </Overlay::Header>
 
     <Overlay::Body @increaseInnerBodyHeightBy={{1000}}>
@@ -79,6 +63,9 @@
                                     <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                                         <td class="px-4 py-3 font-medium text-gray-800 dark:text-gray-100">
                                             {{n-a item.product.name}}
+                                            {{#if item.variant}}
+                                                <span class="block text-gray-500 font-normal">{{n-a item.variant.display_name item.variant.name}}</span>
+                                            {{/if}}
                                             {{#if item.sku}}
                                                 <span class="block text-gray-400 font-normal">{{item.sku}}</span>
                                             {{/if}}
@@ -96,8 +83,8 @@
                                             <Input
                                                 @type="number"
                                                 @value={{(get (this.getReceiptEntry item) "quantity_received")}}
-                                                @min="0"
-                                                @max={{item.outstanding_quantity}}
+                                                min="0"
+                                                max={{item.outstanding_quantity}}
                                                 class="form-input w-full text-xs text-right"
                                                 placeholder="0"
                                                 {{on "input" (fn this.updateReceiptField item "quantity_received")}}
@@ -140,18 +127,14 @@
 
     <Overlay::Footer>
         <div class="flex items-center justify-end gap-2 p-4">
-            <Button
-                @type="default"
-                @text="Cancel"
-                @onClick={{this.onPressCancel}}
-            />
+            <Button @type="default" @text="Cancel" @onClick={{this.onPressCancel}} />
             {{#unless this.hasNoReceivableItems}}
                 <Button
                     @type="primary"
                     @icon="truck-ramp-box"
                     @text="Receive Goods"
-                    @isLoading={{this.isReceiving}}
-                    @disabled={{this.isReceiving}}
+                    @isLoading={{this.receiveOrder.isRunning}}
+                    @disabled={{this.receiveOrder.isRunning}}
                     @onClick={{perform this.receiveOrder}}
                 />
             {{/unless}}

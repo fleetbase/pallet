@@ -55,15 +55,20 @@ export default class SalesOrderPanelItemsComponent extends Component {
         if (!salesOrder) return;
 
         try {
-            const item = await this.fetch.post(`sales-orders/${salesOrder.id}/items`, {
-                sales_order_item: {
-                    product_uuid: this.newItem.product_uuid ?? this.newItem.product?.id,
-                    sku: this.newItem.sku,
-                    quantity: this.newItem.quantity,
-                    unit_price: this.newItem.unit_price,
-                    notes: this.newItem.notes,
+            const item = await this.fetch.post(
+                `sales-orders/${salesOrder.id}/items`,
+                {
+                    sales_order_item: {
+                        product_uuid: this.newItem.product_uuid ?? this.newItem.product?.id,
+                        variant_uuid: this.newItem.variant_uuid ?? this.newItem.variant?.id,
+                        sku: this.newItem.sku,
+                        quantity: this.newItem.quantity,
+                        unit_price: this.newItem.unit_price,
+                        notes: this.newItem.notes,
+                    },
                 },
-            });
+                { namespace: 'pallet/int/v1' }
+            );
 
             const record = this.store.push(this.store.normalize('sales-order-item', item.sales_order_item ?? item));
             salesOrder.items.pushObject(record);
@@ -86,11 +91,29 @@ export default class SalesOrderPanelItemsComponent extends Component {
             id: item.id,
             product: item.product,
             product_uuid: item.product_uuid,
+            variant: item.variant,
+            variant_uuid: item.variant_uuid,
             sku: item.sku,
             quantity: item.quantity,
             unit_price: item.unit_price,
             notes: item.notes,
         };
+    }
+
+    @action setNewVariant(variant) {
+        this.newItem.variant = variant;
+        this.newItem.variant_uuid = variant?.uuid;
+        if (variant?.sku && !this.newItem.sku) {
+            this.newItem.sku = variant.sku;
+        }
+    }
+
+    @action setEditingVariant(variant) {
+        this.editingItem.variant = variant;
+        this.editingItem.variant_uuid = variant?.uuid;
+        if (variant?.sku && !this.editingItem.sku) {
+            this.editingItem.sku = variant.sku;
+        }
     }
 
     /**
@@ -108,15 +131,20 @@ export default class SalesOrderPanelItemsComponent extends Component {
         if (!this.editingItem || !salesOrder) return;
 
         try {
-            await this.fetch.put(`sales-orders/${salesOrder.id}/items/${this.editingItem.id}`, {
-                sales_order_item: {
-                    product_uuid: this.editingItem.product_uuid ?? this.editingItem.product?.id,
-                    sku: this.editingItem.sku,
-                    quantity: this.editingItem.quantity,
-                    unit_price: this.editingItem.unit_price,
-                    notes: this.editingItem.notes,
+            await this.fetch.put(
+                `sales-orders/${salesOrder.id}/items/${this.editingItem.id}`,
+                {
+                    sales_order_item: {
+                        product_uuid: this.editingItem.product_uuid ?? this.editingItem.product?.id,
+                        variant_uuid: this.editingItem.variant_uuid ?? this.editingItem.variant?.id,
+                        sku: this.editingItem.sku,
+                        quantity: this.editingItem.quantity,
+                        unit_price: this.editingItem.unit_price,
+                        notes: this.editingItem.notes,
+                    },
                 },
-            });
+                { namespace: 'pallet/int/v1' }
+            );
 
             const storeItem = this.store.peekRecord('sales-order-item', this.editingItem.id);
             if (storeItem) {
@@ -140,7 +168,7 @@ export default class SalesOrderPanelItemsComponent extends Component {
         if (!salesOrder) return;
 
         try {
-            await this.fetch.delete(`sales-orders/${salesOrder.id}/items/${item.id}`);
+            await this.fetch.delete(`sales-orders/${salesOrder.id}/items/${item.id}`, {}, { namespace: 'pallet/int/v1' });
             salesOrder.items.removeObject(item);
             this.notifications.success('Line item removed.');
         } catch (error) {

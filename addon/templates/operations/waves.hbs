@@ -1,0 +1,18 @@
+<Layout::Section::Header @title="Waves">
+    <div class="text-sm text-gray-500 dark:text-gray-300">Waves will coordinate grouped warehouse work for outbound fulfillment and operational batching.</div>
+</Layout::Section::Header>
+
+<Layout::Section::Body class="overflow-y-scroll h-full p-4 space-y-4">
+    <ContentPanel @title="Implementation Status" @open={{true}} @wrapperClass="bordered-classic">
+        <p class="text-sm text-gray-700 dark:text-gray-200">Wave entities are modeled in Pallet, but the execution UX is still planned. This section gives the broader WMS roadmap a real,
+            non-broken place in navigation.</p>
+    </ContentPanel>
+
+    <ContentPanel @title="Planned Workflows" @open={{true}} @wrapperClass="bordered-classic">
+        <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-200">
+            <li>Group outbound work into execution waves.</li>
+            <li>Assign pick activity and warehouse capacity by batch.</li>
+            <li>Coordinate wave progress across orders and pick lists.</li>
+        </ul>
+    </ContentPanel>
+</Layout::Section::Body>

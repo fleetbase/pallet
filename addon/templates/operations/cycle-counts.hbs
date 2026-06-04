@@ -1,0 +1,18 @@
+<Layout::Section::Header @title="Cycle Counts">
+    <div class="text-sm text-gray-500 dark:text-gray-300">Cycle counts will support recurring stock verification without relying on disruptive full physical counts.</div>
+</Layout::Section::Header>
+
+<Layout::Section::Body class="overflow-y-scroll h-full p-4 space-y-4">
+    <ContentPanel @title="Implementation Status" @open={{true}} @wrapperClass="bordered-classic">
+        <p class="text-sm text-gray-700 dark:text-gray-200">Cycle count models are already part of the Pallet backend roadmap. This section is now routable and intentionally reserved for
+            that operator workflow.</p>
+    </ContentPanel>
+
+    <ContentPanel @title="Planned Workflows" @open={{true}} @wrapperClass="bordered-classic">
+        <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-200">
+            <li>Schedule counts by warehouse, zone, or product range.</li>
+            <li>Record discrepancies and reconcile stock differences.</li>
+            <li>Feed adjustment and audit workflows from count outcomes.</li>
+        </ul>
+    </ContentPanel>
+</Layout::Section::Body>

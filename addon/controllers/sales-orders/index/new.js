@@ -63,7 +63,7 @@ export default class SalesOrdersIndexNewController extends Controller {
      * @memberof SalesOrdersIndexNewController
      */
     @action transitionBack() {
-        return this.hostRouter.transitionTo('console.pallet.sales-orders.index');
+        return this.hostRouter.transitionTo('console.pallet.orders.sales-orders.index');
     }
 
     /**
@@ -79,7 +79,7 @@ export default class SalesOrdersIndexNewController extends Controller {
         }
 
         this.hostRouter.refresh();
-        return this.hostRouter.transitionTo('console.pallet.sales-orders.index.details', salesOrder).then(() => {
+        return this.hostRouter.transitionTo('console.pallet.orders.sales-orders.index.details', salesOrder).then(() => {
             this.resetForm();
         });
     }

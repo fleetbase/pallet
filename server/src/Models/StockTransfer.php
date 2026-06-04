@@ -4,12 +4,12 @@ namespace Fleetbase\Pallet\Models;
 
 use Fleetbase\Casts\Json;
 use Fleetbase\Models\Model;
+use Fleetbase\Pallet\Traits\HasOperationalAuditTrail;
 use Fleetbase\Traits\HasApiModelBehavior;
+use Fleetbase\Traits\HasMetaAttributes;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 use Fleetbase\Traits\TracksApiCredential;
-use Fleetbase\Traits\HasMetaAttributes;
-use Fleetbase\Pallet\Traits\HasOperationalAuditTrail;
 
 class StockTransfer extends Model
 {
@@ -160,6 +160,7 @@ class StockTransfer extends Model
      * Approve the transfer.
      *
      * @param string|null $userUuid
+     *
      * @return bool
      */
     public function approve($userUuid = null)
@@ -182,6 +183,7 @@ class StockTransfer extends Model
         // Deduct inventory from source warehouse
         foreach ($this->items as $item) {
             $inventory = Inventory::where('product_uuid', $item->product_uuid)
+                ->where('variant_uuid', $item->variant_uuid)
                 ->where('warehouse_uuid', $this->from_warehouse_uuid)
                 ->first();
 
@@ -191,9 +193,9 @@ class StockTransfer extends Model
             }
         }
 
-        $this->status = 'in_transit';
+        $this->status     = 'in_transit';
         $this->shipped_at = now();
-        $result = $this->save();
+        $result           = $this->save();
 
         // Log operational audit event
         $this->logAuditEvent(
@@ -225,6 +227,7 @@ class StockTransfer extends Model
             $inventory = Inventory::firstOrCreate(
                 [
                     'product_uuid'   => $item->product_uuid,
+                    'variant_uuid'   => $item->variant_uuid,
                     'warehouse_uuid' => $this->to_warehouse_uuid,
                     'company_uuid'   => $this->company_uuid,
                 ],
@@ -237,9 +240,9 @@ class StockTransfer extends Model
             $inventory->save();
         }
 
-        $this->status = 'completed';
+        $this->status      = 'completed';
         $this->received_at = now();
-        $result = $this->save();
+        $result            = $this->save();
 
         // Log operational audit event
         $this->logAuditEvent(

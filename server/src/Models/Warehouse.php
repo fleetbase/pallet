@@ -4,6 +4,7 @@ namespace Fleetbase\Pallet\Models;
 
 use Fleetbase\Casts\Json;
 use Fleetbase\Models\Company;
+use Fleetbase\Models\Model;
 use Fleetbase\Models\Place;
 use Fleetbase\Models\User;
 use Fleetbase\Traits\HasApiModelBehavior;
@@ -11,22 +12,19 @@ use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 use Fleetbase\Traits\SendsWebhooks;
 use Fleetbase\Traits\TracksApiCredential;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Warehouse extends Model
 {
-    use HasUuid,
-        HasPublicId,
-        HasApiModelBehavior,
-        SendsWebhooks,
-        TracksApiCredential,
-        SoftDeletes,
-        LogsActivity;
+    use HasUuid;
+    use HasPublicId;
+    use HasApiModelBehavior;
+    use SendsWebhooks;
+    use TracksApiCredential;
+    use LogsActivity;
 
     /**
      * The database table used by the model.
@@ -144,7 +142,7 @@ class Warehouse extends Model
     /**
      * Get warehouse sections.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function sections()
     {
@@ -154,7 +152,7 @@ class Warehouse extends Model
     /**
      * Get warehouse docks.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function docks()
     {
@@ -164,7 +162,7 @@ class Warehouse extends Model
     /**
      * Get warehouse zones.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function zones()
     {
@@ -174,7 +172,7 @@ class Warehouse extends Model
     /**
      * Get warehouse aisles.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function aisles()
     {
@@ -184,7 +182,7 @@ class Warehouse extends Model
     /**
      * Get warehouse racks.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function racks()
     {
@@ -194,7 +192,7 @@ class Warehouse extends Model
     /**
      * Get bin locations.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function binLocations()
     {
@@ -204,7 +202,7 @@ class Warehouse extends Model
     /**
      * Get inventory items in this warehouse.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function inventories()
     {
@@ -214,7 +212,7 @@ class Warehouse extends Model
     /**
      * Get purchase orders for this warehouse.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function purchaseOrders()
     {
@@ -224,7 +222,7 @@ class Warehouse extends Model
     /**
      * Get sales orders for this warehouse.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function salesOrders()
     {
@@ -234,7 +232,7 @@ class Warehouse extends Model
     /**
      * Get pick lists for this warehouse.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function pickLists()
     {
@@ -244,7 +242,7 @@ class Warehouse extends Model
     /**
      * Get cycle counts for this warehouse.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function cycleCounts()
     {
@@ -254,7 +252,7 @@ class Warehouse extends Model
     /**
      * Get stock transfers from this warehouse.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function outboundTransfers()
     {
@@ -264,7 +262,7 @@ class Warehouse extends Model
     /**
      * Get stock transfers to this warehouse.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function inboundTransfers()
     {
@@ -313,15 +311,14 @@ class Warehouse extends Model
     public function getTotalInventoryValue()
     {
         return $this->inventories()
-            ->join('entities', 'pallet_inventories.product_uuid', '=', 'entities.uuid')
-            ->selectRaw('SUM(pallet_inventories.quantity * entities.sale_price) as total_value')
+            ->join('pallet_products', 'pallet_inventories.product_uuid', '=', 'pallet_products.uuid')
+            ->leftJoin('pallet_product_variants', 'pallet_inventories.variant_uuid', '=', 'pallet_product_variants.uuid')
+            ->selectRaw('SUM(pallet_inventories.quantity * COALESCE(pallet_product_variants.sale_price, pallet_products.sale_price, pallet_inventories.unit_cost, 0)) as total_value')
             ->value('total_value') ?? 0;
     }
 
     /**
      * Get the formatted address from the linked Place.
-     *
-     * @return string|null
      */
     public function getAddressAttribute(): ?string
     {
@@ -345,7 +342,8 @@ class Warehouse extends Model
      * Find optimal bin for product.
      *
      * @param Product $product
-     * @param float $volume
+     * @param float   $volume
+     *
      * @return BinLocation|null
      */
     public function findOptimalBin($product, $volume = 0)
@@ -357,11 +355,10 @@ class Warehouse extends Model
             ->orderBy('priority', 'desc')
             ->first();
     }
+
     /**
      * Configure Spatie activity log options.
      * Logs only the specified attributes when they change (dirty only).
-     *
-     * @return LogOptions
      */
     public function getActivitylogOptions(): LogOptions
     {

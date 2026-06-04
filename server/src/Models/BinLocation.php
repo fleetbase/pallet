@@ -5,9 +5,9 @@ namespace Fleetbase\Pallet\Models;
 use Fleetbase\Casts\Json;
 use Fleetbase\Models\Model;
 use Fleetbase\Traits\HasApiModelBehavior;
+use Fleetbase\Traits\HasMetaAttributes;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
-use Fleetbase\Traits\HasMetaAttributes;
 
 class BinLocation extends Model
 {
@@ -179,6 +179,7 @@ class BinLocation extends Model
      * Check if bin has available capacity.
      *
      * @param float $requiredVolume
+     *
      * @return bool
      */
     public function hasCapacity($requiredVolume = 0)
@@ -190,6 +191,7 @@ class BinLocation extends Model
      * Add volume to bin.
      *
      * @param float $volume
+     *
      * @return bool
      */
     public function addVolume($volume)
@@ -203,6 +205,7 @@ class BinLocation extends Model
      * Remove volume from bin.
      *
      * @param float $volume
+     *
      * @return bool
      */
     public function removeVolume($volume)

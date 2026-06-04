@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import { task } from 'ember-concurrency';
 import getWithDefault from '@fleetbase/ember-core/utils/get-with-default';
 import contextComponentCallback from '@fleetbase/ember-core/utils/context-component-callback';
 import applyContextComponentArguments from '@fleetbase/ember-core/utils/apply-context-component-arguments';
@@ -49,12 +50,6 @@ export default class ProductFormPanelComponent extends Component {
     @tracked context;
 
     /**
-     * Indicates whether the component is in a loading state.
-     * @type {boolean}
-     */
-    @tracked isLoading = false;
-
-    /**
      * All possible product types.
      *
      * @var {String}
@@ -99,31 +94,21 @@ export default class ProductFormPanelComponent extends Component {
      * @action
      * @returns {Promise<any>}
      */
-    @action save() {
+    @task *saveTask() {
         const { product } = this;
 
         this.loader.showLoader('.next-content-overlay-panel-container', { loadingMessage: 'Saving product...', preserveTargetPosition: true });
-        this.isLoading = true;
-
         contextComponentCallback(this, 'onBeforeSave', product);
 
         try {
-            return product
-                .save()
-                .then((product) => {
-                    this.notifications.success(`product (${product.name}) saved successfully.`);
-                    contextComponentCallback(this, 'onAfterSave', product);
-                })
-                .catch((error) => {
-                    this.notifications.serverError(error);
-                })
-                .finally(() => {
-                    this.loader.removeLoader('.next-content-overlay-panel-container ');
-                    this.isLoading = false;
-                });
+            const savedProduct = yield product.save();
+            this.notifications.success(`product (${savedProduct.name}) saved successfully.`);
+            contextComponentCallback(this, 'onAfterSave', savedProduct);
+            return savedProduct;
         } catch (error) {
+            this.notifications.serverError(error);
+        } finally {
             this.loader.removeLoader('.next-content-overlay-panel-container ');
-            this.isLoading = false;
         }
     }
 

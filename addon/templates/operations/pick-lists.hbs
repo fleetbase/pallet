@@ -1,0 +1,18 @@
+<Layout::Section::Header @title="Pick Lists">
+    <div class="text-sm text-gray-500 dark:text-gray-300">Pick lists will become the execution surface for outbound warehouse work and order preparation.</div>
+</Layout::Section::Header>
+
+<Layout::Section::Body class="overflow-y-scroll h-full p-4 space-y-4">
+    <ContentPanel @title="Implementation Status" @open={{true}} @wrapperClass="bordered-classic">
+        <p class="text-sm text-gray-700 dark:text-gray-200">Pick list entities exist in the domain model. This route is a production-safe scaffold until the picker-facing workflows and
+            operational detail views are ready.</p>
+    </ContentPanel>
+
+    <ContentPanel @title="Planned Workflows" @open={{true}} @wrapperClass="bordered-classic">
+        <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-200">
+            <li>Generate pick lists from sales orders and waves.</li>
+            <li>Track pick progress and exceptions by operator.</li>
+            <li>Support location-aware picking and fulfillment confirmation.</li>
+        </ul>
+    </ContentPanel>
+</Layout::Section::Body>

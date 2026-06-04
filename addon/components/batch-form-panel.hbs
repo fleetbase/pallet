@@ -18,8 +18,10 @@
                 @icon={{if this.batch.id "save" "check"}}
                 @type="primary"
                 @text={{if this.batch.id "Save Batch" "Add Batch"}}
-                @onClick={{this.save}}
+                @onClick={{perform this.saveTask}}
                 @wrapperClass="mr-2"
+                @isLoading={{this.saveTask.isRunning}}
+                @disabled={{this.saveTask.isRunning}}
             />
             {{#if this.batch.id}}
                 <Button @type="default" @icon="batch" @helpText="View batch details" @onClick={{this.onViewDetails}} @wrapperClass="mr-2" />

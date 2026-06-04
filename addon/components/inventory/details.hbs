@@ -7,7 +7,11 @@
             </div>
             <div class="field-info-container">
                 <div class="field-name">{{t "inventory.fields.product"}}</div>
-                <div class="field-value">{{n-a @resource.product_name}}</div>
+                <div class="field-value">{{n-a @resource.product.name @resource.product_name}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">Variant</div>
+                <div class="field-value">{{n-a @resource.variant.display_name @resource.variant.name}}</div>
             </div>
             <div class="field-info-container">
                 <div class="field-name">{{t "inventory.fields.warehouse"}}</div>

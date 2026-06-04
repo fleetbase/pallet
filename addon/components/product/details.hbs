@@ -53,6 +53,10 @@
                 <div class="field-value">{{format-number @resource.available_stock}}</div>
             </div>
             <div class="field-info-container">
+                <div class="field-name">Variants</div>
+                <div class="field-value">{{format-number @resource.variant_count}}</div>
+            </div>
+            <div class="field-info-container">
                 <div class="field-name">{{t "product.fields.reorder-point"}}</div>
                 <div class="field-value">{{format-number @resource.reorder_point}}</div>
             </div>
@@ -80,6 +84,31 @@
             </div>
         </div>
     </ContentPanel>
+
+    {{#if @resource.has_variants}}
+        <ContentPanel @title="Variant Stock" @open={{true}} @wrapperClass="bordered-top">
+            <table class="w-full text-xs">
+                <thead>
+                    <tr class="border-b border-gray-100 dark:border-gray-700 text-gray-500 dark:text-gray-400">
+                        <th class="text-left py-2 pr-2 font-medium">Variant</th>
+                        <th class="text-left py-2 px-2 font-medium">SKU</th>
+                        <th class="text-right py-2 px-2 font-medium">Total</th>
+                        <th class="text-right py-2 pl-2 font-medium">Available</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each @resource.variants as |variant|}}
+                        <tr class="border-b border-gray-100 dark:border-gray-800">
+                            <td class="py-2 pr-2 font-medium">{{n-a variant.display_name variant.name}}</td>
+                            <td class="py-2 px-2 text-gray-500">{{n-a variant.sku}}</td>
+                            <td class="py-2 px-2 text-right">{{format-number variant.total_stock}}</td>
+                            <td class="py-2 pl-2 text-right">{{format-number variant.available_stock}}</td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </ContentPanel>
+    {{/if}}
 
     <ContentPanel @title={{t "product.sections.pricing"}} @open={{true}} @wrapperClass="bordered-top">
         <div class="grid grid-cols-2 gap-2 text-xs dark:text-gray-100">

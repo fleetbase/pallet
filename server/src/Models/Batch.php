@@ -7,9 +7,8 @@ use Fleetbase\Models\Model;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
-
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Batch extends Model
 {
@@ -56,6 +55,7 @@ class Batch extends Model
         'uuid',
         'batch_number',
         'product_uuid',
+        'variant_uuid',
         'manufacture_date_at',
         'expiry_date_at',
         'quantity',
@@ -92,10 +92,8 @@ class Batch extends Model
 
     protected $with = [];
 
-    /**
-     * @return null|int
-     */
-    public function getIncrementingIdAttribute(): ?int {
+    public function getIncrementingIdAttribute(): ?int
+    {
         return static::select('id')->where('uuid', $this->uuid)->value('id');
     }
 
@@ -126,7 +124,12 @@ class Batch extends Model
      */
     public function product()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class, 'product_uuid', 'uuid');
+    }
+
+    public function variant()
+    {
+        return $this->belongsTo(ProductVariant::class, 'variant_uuid', 'uuid');
     }
 
     protected static function boot()
@@ -134,15 +137,14 @@ class Batch extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->created_at = now();
+            $model->created_at          = now();
             $model->manufacture_date_at = now();
         });
     }
+
     /**
      * Configure Spatie activity log options.
      * Logs only the specified attributes when they change (dirty only).
-     *
-     * @return LogOptions
      */
     public function getActivitylogOptions(): LogOptions
     {
@@ -153,9 +155,9 @@ class Batch extends Model
                 'status',
                 'expiry_date_at',
                 'product_uuid',
+                'variant_uuid',
             ])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
     }
-
 }

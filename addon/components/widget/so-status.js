@@ -12,7 +12,6 @@ export default class WidgetSoStatusComponent extends Component {
     @tracked fulfilled = 0;
     @tracked cancelled = 0;
     @tracked recentOrders = [];
-    @tracked isLoading = true;
 
     get total() {
         return this.pending + this.partiallyFulfilled + this.fulfilled + this.cancelled;
@@ -25,9 +24,8 @@ export default class WidgetSoStatusComponent extends Component {
 
     @task({ restartable: true })
     *loadStatus() {
-        this.isLoading = true;
         try {
-            const data = yield this.fetch.get('pallet/metrics/so-status');
+            const data = yield this.fetch.get('metrics/so-status', {}, { namespace: 'pallet/int/v1' });
             this.pending = data.pending ?? 0;
             this.partiallyFulfilled = data.partially_fulfilled ?? 0;
             this.fulfilled = data.fulfilled ?? 0;
@@ -35,8 +33,6 @@ export default class WidgetSoStatusComponent extends Component {
             this.recentOrders = data.recent ?? [];
         } catch (error) {
             this.notifications.serverError(error);
-        } finally {
-            this.isLoading = false;
         }
     }
 }

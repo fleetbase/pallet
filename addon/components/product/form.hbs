@@ -109,7 +109,77 @@
                     {{t "product.fields.requires-qc"}}
                 </Checkbox>
             </InputGroup>
+
+            <InputGroup @name="Variants">
+                <Checkbox @checked={{@resource.has_variants}} @onChange={{fn (mut @resource.has_variants)}} @disabled={{cannot-write @resource}}>
+                    Track stock by product variants
+                </Checkbox>
+            </InputGroup>
         </div>
+    </ContentPanel>
+
+    <ContentPanel @title="Variants" @open={{@resource.has_variants}} @wrapperClass="bordered-top">
+        {{#if this.canManageVariants}}
+            <div class="space-y-3 text-xs">
+                {{#if this.variants.length}}
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-gray-100 dark:border-gray-700 text-gray-500 dark:text-gray-400">
+                                <th class="text-left py-2 pr-2 font-medium">Variant</th>
+                                <th class="text-left py-2 px-2 font-medium">SKU</th>
+                                <th class="text-right py-2 px-2 font-medium">Available</th>
+                                <th class="py-2 pl-2"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each this.variants as |variant|}}
+                                <tr class="border-b border-gray-100 dark:border-gray-800">
+                                    <td class="py-2 pr-2 font-medium">{{n-a variant.display_name variant.name}}</td>
+                                    <td class="py-2 px-2 text-gray-500">{{n-a variant.sku}}</td>
+                                    <td class="py-2 px-2 text-right">{{format-number variant.available_stock}}</td>
+                                    <td class="py-2 pl-2">
+                                        <div class="flex justify-end gap-1">
+                                            <Button @icon="pen" @type="default" @size="xs" @onClick={{fn this.startEditingVariant variant}} @helpText="Edit variant" />
+                                            <Button @icon="trash" @type="danger" @size="xs" @onClick={{fn this.removeVariant variant}} @helpText="Remove variant" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                {{/if}}
+
+                {{#if this.editingVariant}}
+                    <div class="grid grid-cols-1 lg:grid-cols-6 gap-2 p-3 bg-blue-50 dark:bg-blue-900/20">
+                        <Input @value={{this.editingVariant.name}} class="form-input" placeholder="Variant name" />
+                        <Input @value={{this.editingVariant.sku}} class="form-input" placeholder="SKU" />
+                        <Input @value={{this.editingVariant.barcode}} class="form-input" placeholder="Barcode" />
+                        <Input @value={{this.editingVariant.option_values_text}} class="form-input lg:col-span-2" placeholder="Color=Black, Storage=256GB" />
+                        <div class="flex gap-1">
+                            <Button @icon="check" @type="primary" @size="sm" @onClick={{this.saveVariant}} />
+                            <Button @icon="times" @type="default" @size="sm" @onClick={{this.cancelEditingVariant}} />
+                        </div>
+                    </div>
+                {{/if}}
+
+                {{#if this.isAddingVariant}}
+                    <div class="grid grid-cols-1 lg:grid-cols-6 gap-2 p-3 bg-green-50 dark:bg-green-900/20">
+                        <Input @value={{this.newVariant.name}} class="form-input" placeholder="Variant name" />
+                        <Input @value={{this.newVariant.sku}} class="form-input" placeholder="SKU" />
+                        <Input @value={{this.newVariant.barcode}} class="form-input" placeholder="Barcode" />
+                        <Input @value={{this.newVariant.option_values_text}} class="form-input lg:col-span-2" placeholder="Color=Black, Storage=256GB" />
+                        <div class="flex gap-1">
+                            <Button @icon="plus" @type="primary" @size="sm" @onClick={{this.addVariant}} />
+                            <Button @icon="times" @type="default" @size="sm" @onClick={{this.cancelAddingVariant}} />
+                        </div>
+                    </div>
+                {{else}}
+                    <Button @icon="plus" @type="default" @size="sm" @text="Add Variant" @onClick={{this.startAddingVariant}} @disabled={{cannot-write @resource}} />
+                {{/if}}
+            </div>
+        {{else}}
+            <div class="text-xs text-gray-500 dark:text-gray-400">Save the product before adding variants.</div>
+        {{/if}}
     </ContentPanel>
 
     <ContentPanel @title={{t "product.sections.pricing"}} @open={{false}} @wrapperClass="bordered-top">

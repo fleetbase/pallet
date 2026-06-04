@@ -4,13 +4,12 @@ namespace Fleetbase\Pallet\Models;
 
 use Fleetbase\Casts\Json;
 use Fleetbase\Models\Model;
+use Fleetbase\Pallet\Traits\HasOperationalAuditTrail;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
-use Fleetbase\Pallet\Traits\HasOperationalAuditTrail;
-
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class PurchaseOrder extends Model
 {
@@ -84,7 +83,7 @@ class PurchaseOrder extends Model
      * @var array
      */
     protected $casts = [
-        'meta' => JSON::class,
+        'meta' => Json::class,
     ];
 
     /**
@@ -144,8 +143,6 @@ class PurchaseOrder extends Model
 
     /**
      * Returns the total order value (sum of all item total_prices).
-     *
-     * @return float
      */
     public function getTotalValueAttribute(): float
     {
@@ -154,8 +151,6 @@ class PurchaseOrder extends Model
 
     /**
      * Returns the total number of line items.
-     *
-     * @return int
      */
     public function getItemCountAttribute(): int
     {
@@ -196,13 +191,12 @@ class PurchaseOrder extends Model
      * Mark the purchase order as received and log an operational audit event.
      * This method is called by PurchaseOrderController::receive().
      *
-     * @param array $receivedItems  Array of received line items with quantities
-     * @return bool
+     * @param array $receivedItems Array of received line items with quantities
      */
     public function markAsReceived(array $receivedItems = []): bool
     {
         $this->status = 'received';
-        $result = $this->save();
+        $result       = $this->save();
 
         // Log operational audit event
         $this->logAuditEvent(
@@ -225,15 +219,14 @@ class PurchaseOrder extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->created_at = now();
+            $model->created_at       = now();
             $model->order_created_at = now();
         });
     }
+
     /**
      * Configure Spatie activity log options.
      * Logs only the specified attributes when they change (dirty only).
-     *
-     * @return LogOptions
      */
     public function getActivitylogOptions(): LogOptions
     {
@@ -248,5 +241,4 @@ class PurchaseOrder extends Model
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
     }
-
 }

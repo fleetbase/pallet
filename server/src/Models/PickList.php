@@ -5,10 +5,10 @@ namespace Fleetbase\Pallet\Models;
 use Fleetbase\Casts\Json;
 use Fleetbase\Models\Model;
 use Fleetbase\Traits\HasApiModelBehavior;
+use Fleetbase\Traits\HasMetaAttributes;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 use Fleetbase\Traits\TracksApiCredential;
-use Fleetbase\Traits\HasMetaAttributes;
 
 class PickList extends Model
 {
@@ -177,7 +177,7 @@ class PickList extends Model
      */
     public function start()
     {
-        $this->status = 'in_progress';
+        $this->status     = 'in_progress';
         $this->started_at = now();
 
         return $this->save();
@@ -190,7 +190,7 @@ class PickList extends Model
      */
     public function complete()
     {
-        $this->status = 'completed';
+        $this->status       = 'completed';
         $this->completed_at = now();
 
         return $this->save();
@@ -200,12 +200,13 @@ class PickList extends Model
      * Assign to user.
      *
      * @param string $userUuid
+     *
      * @return bool
      */
     public function assignTo($userUuid)
     {
         $this->assigned_to_uuid = $userUuid;
-        $this->status = 'assigned';
+        $this->status           = 'assigned';
 
         return $this->save();
     }
@@ -214,6 +215,7 @@ class PickList extends Model
      * Scope to get pending pick lists.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopePending($query)
@@ -225,6 +227,7 @@ class PickList extends Model
      * Scope to get in progress pick lists.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeInProgress($query)

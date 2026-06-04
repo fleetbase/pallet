@@ -1,0 +1,28 @@
+<Layout::Section::Header @title="Batches">
+    <div class="text-sm text-gray-500 dark:text-gray-300">Track lot and batch-level inventory context, including traceability, shelf life, and downstream warehouse operations.</div>
+</Layout::Section::Header>
+
+<Layout::Section::Body class="overflow-y-scroll h-full p-4 space-y-4">
+    <ContentPanel @title="Implementation Status" @open={{true}} @wrapperClass="bordered-classic">
+        <p class="text-sm text-gray-700 dark:text-gray-200">Batch data models and form components already exist in Pallet. This section gives batches a permanent production navigation entry
+            while the dedicated list and detail workflow is completed.</p>
+    </ContentPanel>
+
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+        <ContentPanel @title="Planned Workflows" @open={{true}} @wrapperClass="bordered-classic">
+            <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-200">
+                <li>View and search batch inventory by product and warehouse.</li>
+                <li>Track lot identifiers, expiry windows, and manufactured dates.</li>
+                <li>Support batch-aware receiving and fulfillment decisions.</li>
+            </ul>
+        </ContentPanel>
+
+        <ContentPanel @title="What Ships Next" @open={{true}} @wrapperClass="bordered-classic">
+            <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-200">
+                <li>Dedicated batch list and drill-down experience.</li>
+                <li>Inventory-to-batch traceability panels.</li>
+                <li>Filters for expiry risk and warehouse availability.</li>
+            </ul>
+        </ContentPanel>
+    </div>
+</Layout::Section::Body>

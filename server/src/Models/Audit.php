@@ -34,21 +34,21 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * The API exposes only read-only endpoints (index, show) for this resource.
  *
- * @property string $uuid
- * @property string $public_id
- * @property string $company_uuid
- * @property string $created_by_uuid
- * @property string $performed_by_uuid
- * @property string $auditable_uuid
- * @property string $auditable_type
- * @property string $event_type
- * @property string $action
- * @property string $type
- * @property string $reason
- * @property string $comments
- * @property array  $old_values
- * @property array  $new_values
- * @property array  $meta
+ * @property string         $uuid
+ * @property string         $public_id
+ * @property string         $company_uuid
+ * @property string         $created_by_uuid
+ * @property string         $performed_by_uuid
+ * @property string         $auditable_uuid
+ * @property string         $auditable_type
+ * @property string         $event_type
+ * @property string         $action
+ * @property string         $type
+ * @property string         $reason
+ * @property string         $comments
+ * @property array          $old_values
+ * @property array          $new_values
+ * @property array          $meta
  * @property \Carbon\Carbon $scheduled_at
  * @property \Carbon\Carbon $completed_at
  * @property \Carbon\Carbon $created_at
@@ -181,8 +181,6 @@ class Audit extends Model
 
     /**
      * Get the user who performed the audited action.
-     *
-     * @return BelongsTo
      */
     public function performedBy(): BelongsTo
     {
@@ -191,8 +189,6 @@ class Audit extends Model
 
     /**
      * Get the user who created the audit record (system user or API caller).
-     *
-     * @return BelongsTo
      */
     public function createdBy(): BelongsTo
     {
@@ -201,8 +197,6 @@ class Audit extends Model
 
     /**
      * Get the polymorphic subject model that this audit event relates to.
-     *
-     * @return MorphTo
      */
     public function auditable(): MorphTo
     {
@@ -216,8 +210,6 @@ class Audit extends Model
     /**
      * Get a human-readable label for the auditable subject type.
      * Extracts the short class name from the fully-qualified auditable_type.
-     *
-     * @return string|null
      */
     public function getSubjectLabelAttribute(): ?string
     {
@@ -236,10 +228,6 @@ class Audit extends Model
 
     /**
      * Scope to filter by event type.
-     *
-     * @param Builder $query
-     * @param string  $eventType
-     * @return Builder
      */
     public function scopeOfEventType(Builder $query, string $eventType): Builder
     {
@@ -248,11 +236,6 @@ class Audit extends Model
 
     /**
      * Scope to filter by the auditable subject model.
-     *
-     * @param Builder $query
-     * @param string  $uuid
-     * @param string  $type
-     * @return Builder
      */
     public function scopeForSubject(Builder $query, string $uuid, string $type): Builder
     {
@@ -262,10 +245,6 @@ class Audit extends Model
 
     /**
      * Scope to filter by the user who performed the action.
-     *
-     * @param Builder $query
-     * @param string  $userUuid
-     * @return Builder
      */
     public function scopePerformedByUser(Builder $query, string $userUuid): Builder
     {
@@ -274,9 +253,6 @@ class Audit extends Model
 
     /**
      * Scope to filter stock adjustment events.
-     *
-     * @param Builder $query
-     * @return Builder
      */
     public function scopeStockAdjustments(Builder $query): Builder
     {
@@ -285,9 +261,6 @@ class Audit extends Model
 
     /**
      * Scope to filter cycle count events.
-     *
-     * @param Builder $query
-     * @return Builder
      */
     public function scopeCycleCounts(Builder $query): Builder
     {
@@ -296,9 +269,6 @@ class Audit extends Model
 
     /**
      * Scope to filter purchase order received events.
-     *
-     * @param Builder $query
-     * @return Builder
      */
     public function scopePurchaseOrders(Builder $query): Builder
     {
@@ -307,9 +277,6 @@ class Audit extends Model
 
     /**
      * Scope to filter sales order fulfilled events.
-     *
-     * @param Builder $query
-     * @return Builder
      */
     public function scopeSalesOrders(Builder $query): Builder
     {
@@ -318,9 +285,6 @@ class Audit extends Model
 
     /**
      * Scope to filter stock transfer events.
-     *
-     * @param Builder $query
-     * @return Builder
      */
     public function scopeStockTransfers(Builder $query): Builder
     {

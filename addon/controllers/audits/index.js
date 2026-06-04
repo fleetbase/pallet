@@ -42,12 +42,9 @@ export default class AuditsIndexController extends Controller {
 
     /**
      * Queryable parameters for this controller's model.
-     * Note: `auditable_type` has been replaced by `subject_type` and `event_type`
-     * to match the refactored backend schema.
-     *
      * @var {Array}
      */
-    queryParams = ['page', 'limit', 'sort', 'query', 'event_type', 'subject_type'];
+    queryParams = ['page', 'limit', 'sort', 'query', 'event_type', 'auditable_type'];
 
     /** @tracked page = 1 */
     @tracked page = 1;
@@ -71,7 +68,7 @@ export default class AuditsIndexController extends Controller {
      * Filter by the subject model class (e.g. 'Inventory', 'PurchaseOrder').
      * @var {String}
      */
-    @tracked subject_type;
+    @tracked auditable_type;
 
     /**
      * Reference to the rendered table component.
@@ -90,10 +87,8 @@ export default class AuditsIndexController extends Controller {
         { label: 'PO Received', value: 'po_received' },
         { label: 'SO Fulfilled', value: 'so_fulfilled' },
         { label: 'Stock Transfer', value: 'stock_transfer' },
-        { label: 'Inventory Received', value: 'inventory_receive' },
+        { label: 'Inventory Received', value: 'inventory_created' },
         { label: 'Batch Created', value: 'batch_created' },
-        { label: 'Product Created', value: 'product_created' },
-        { label: 'Warehouse Created', value: 'warehouse_created' },
     ];
 
     /**
@@ -118,7 +113,7 @@ export default class AuditsIndexController extends Controller {
                 { label: 'PO Received', value: 'po_received' },
                 { label: 'SO Fulfilled', value: 'so_fulfilled' },
                 { label: 'Stock Transfer', value: 'stock_transfer' },
-                { label: 'Inventory Received', value: 'inventory_receive' },
+                { label: 'Inventory Received', value: 'inventory_created' },
             ],
             filterParam: 'event_type',
         },
@@ -138,7 +133,7 @@ export default class AuditsIndexController extends Controller {
         },
         {
             label: 'Subject ID',
-            valuePath: 'subject_uuid',
+            valuePath: 'auditable_uuid',
             width: '200px',
             resizable: true,
             sortable: false,
@@ -198,7 +193,7 @@ export default class AuditsIndexController extends Controller {
      */
     @action clearFilters() {
         this.event_type = null;
-        this.subject_type = null;
+        this.auditable_type = null;
         this.query = null;
         this.page = 1;
     }

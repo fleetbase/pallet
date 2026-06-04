@@ -1,59 +1,13 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
 import { isBlank } from '@ember/utils';
 import { task, timeout } from 'ember-concurrency';
 
 export default class WarehousesIndexController extends Controller {
-    /**
-     * Inject the `notifications` service
-     *
-     * @var {Service}
-     */
-    @service notifications;
-
-    /**
-     * Inject the `modals-manager` service
-     *
-     * @var {Service}
-     */
-    @service modalsManager;
-
-    /**
-     * Inject the `store` service
-     *
-     * @var {Service}
-     */
-    @service store;
-
-    /**
-     * Inject the `fetch` service
-     *
-     * @var {Service}
-     */
-    @service fetch;
-
-    /**
-     * Inject the `filters` service
-     *
-     * @var {Service}
-     */
-    @service filters;
-
-    /**
-     * Inject the `hostRouter` service
-     *
-     * @var {Service}
-     */
-    @service hostRouter;
-
-    /**
-     * Inject the `crud` service
-     *
-     * @var {Service}
-     */
-    @service crud;
+    @service warehouseActions;
+    @service tableContext;
+    @service intl;
 
     /**
      * Queryable parameters for this controller's model
@@ -132,164 +86,195 @@ export default class WarehousesIndexController extends Controller {
      */
     @tracked neighborhood;
 
-    @tracked warehouse;
+    @tracked table;
 
-    /**
-     * All columns applicable for orders
-     *
-     * @var {Array}
-     */
-    @tracked columns = [
-        {
-            label: 'Name',
-            valuePath: 'name',
-            width: '200px',
-            cellComponent: 'table/cell/anchor',
-            action: this.viewWarehouse,
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterParam: 'name',
-            filterComponent: 'filter/string',
-        },
-        {
-            label: 'Description',
-            valuePath: 'meta.description',
-            width: '200px',
-            cellComponent: 'table/cell/anchor',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterParam: 'description',
-            filterComponent: 'filter/string',
-        },
-        {
-            label: 'Address',
-            valuePath: 'address',
-            cellComponent: 'table/cell/anchor',
-            action: this.viewWarehouse,
-            width: '320px',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterParam: 'address',
-            filterComponent: 'filter/string',
-        },
-        {
-            label: 'Stock Items',
-            valuePath: 'stockItems',
-            width: '120px',
-            cellComponent: 'table/cell/anchor',
-            resizable: true,
-            sortable: true,
-            filterable: false,
-        },
-        {
-            label: 'ID',
-            valuePath: 'public_id',
-            width: '120px',
-            cellComponent: 'click-to-copy',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterComponent: 'filter/string',
-        },
-        {
-            label: 'Country',
-            valuePath: 'country_name',
-            cellComponent: 'table/cell/base',
-            cellClassNames: 'uppercase',
-            width: '120px',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterComponent: 'filter/country',
-            filterParam: 'country',
-        },
-        {
-            label: 'Structural',
-            valuePath: 'meta.structural',
-            width: '120px',
-            cellComponent: 'table/cell/base',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterParam: 'structural',
-            filterComponent: 'filter/string',
-        },
-        {
-            label: 'External',
-            valuePath: 'meta.external',
-            width: '120px',
-            cellComponent: 'table/cell/base',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterParam: 'external',
-            filterComponent: 'filter/string',
-        },
-        {
-            label: 'Created At',
-            valuePath: 'createdAt',
-            sortParam: 'created_at',
-            width: '10%',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterComponent: 'filter/date',
-        },
-        {
-            label: 'Updated At',
-            valuePath: 'updatedAt',
-            sortParam: 'updated_at',
-            width: '10%',
-            resizable: true,
-            sortable: true,
-            hidden: true,
-            filterable: true,
-            filterComponent: 'filter/date',
-        },
+    get actionButtons() {
+        return [
+            {
+                icon: 'refresh',
+                onClick: this.warehouseActions.refresh,
+                helpText: this.intl.t('common.refresh'),
+            },
+            {
+                text: this.intl.t('common.new'),
+                type: 'primary',
+                icon: 'plus',
+                onClick: this.warehouseActions.transition.create,
+            },
+            {
+                text: this.intl.t('common.export'),
+                icon: 'long-arrow-up',
+                iconClass: 'rotate-icon-45',
+                wrapperClass: 'hidden md:flex',
+                onClick: this.warehouseActions.export,
+            },
+        ];
+    }
 
-        {
-            label: '',
-            cellComponent: 'table/cell/dropdown',
-            ddButtonText: false,
-            ddButtonIcon: 'ellipsis-h',
-            ddButtonIconPrefix: 'fas',
-            ddMenuLabel: 'Warehouse Actions',
-            cellClassNames: 'overflow-visible',
-            wrapperClass: 'flex items-center justify-end mx-2',
-            width: '10%',
-            actions: [
-                {
-                    label: 'View Warehouse Details',
-                    fn: this.viewWarehouse,
-                },
-                {
-                    label: 'Edit Warehouse',
-                    fn: this.viewWarehouse,
-                },
-                {
-                    separator: true,
-                },
-                {
-                    label: 'View Warehouse on Map',
-                    fn: this.viewWarehouse,
-                },
-                {
-                    separator: true,
-                },
-                {
-                    label: 'Delete Warehouse',
-                    fn: this.deleteWarehouse,
-                },
-            ],
-            sortable: false,
-            filterable: false,
-            resizable: false,
-            searchable: false,
-        },
-    ];
+    get bulkActions() {
+        const selected = this.tableContext.getSelectedRows();
+
+        return [
+            {
+                label: this.intl.t('common.delete-selected-count', { count: selected.length }),
+                class: 'text-red-500',
+                fn: this.warehouseActions.bulkDelete,
+            },
+        ];
+    }
+
+    get columns() {
+        return [
+            {
+                label: 'Name',
+                valuePath: 'name',
+                width: '200px',
+                cellComponent: 'table/cell/anchor',
+                action: this.warehouseActions.transition.view,
+                resizable: true,
+                sortable: true,
+                filterable: true,
+                filterParam: 'name',
+                filterComponent: 'filter/string',
+            },
+            {
+                label: 'Description',
+                valuePath: 'meta.description',
+                width: '200px',
+                cellComponent: 'table/cell/anchor',
+                resizable: true,
+                sortable: true,
+                filterable: true,
+                filterParam: 'description',
+                filterComponent: 'filter/string',
+            },
+            {
+                label: 'Address',
+                valuePath: 'address',
+                cellComponent: 'table/cell/anchor',
+                action: this.warehouseActions.transition.view,
+                width: '320px',
+                resizable: true,
+                sortable: true,
+                filterable: true,
+                filterParam: 'address',
+                filterComponent: 'filter/string',
+            },
+            {
+                label: 'Stock Items',
+                valuePath: 'stockItems',
+                width: '120px',
+                cellComponent: 'table/cell/anchor',
+                resizable: true,
+                sortable: true,
+                filterable: false,
+            },
+            {
+                label: 'ID',
+                valuePath: 'public_id',
+                width: '120px',
+                cellComponent: 'click-to-copy',
+                resizable: true,
+                sortable: true,
+                filterable: true,
+                filterComponent: 'filter/string',
+            },
+            {
+                label: 'Country',
+                valuePath: 'country_name',
+                cellComponent: 'table/cell/base',
+                cellClassNames: 'uppercase',
+                width: '120px',
+                resizable: true,
+                sortable: true,
+                filterable: true,
+                filterComponent: 'filter/country',
+                filterParam: 'country',
+            },
+            {
+                label: 'Structural',
+                valuePath: 'meta.structural',
+                width: '120px',
+                cellComponent: 'table/cell/base',
+                resizable: true,
+                sortable: true,
+                filterable: true,
+                filterParam: 'structural',
+                filterComponent: 'filter/string',
+            },
+            {
+                label: 'External',
+                valuePath: 'meta.external',
+                width: '120px',
+                cellComponent: 'table/cell/base',
+                resizable: true,
+                sortable: true,
+                filterable: true,
+                filterParam: 'external',
+                filterComponent: 'filter/string',
+            },
+            {
+                label: 'Created At',
+                valuePath: 'createdAt',
+                sortParam: 'created_at',
+                width: '10%',
+                resizable: true,
+                sortable: true,
+                filterable: true,
+                filterComponent: 'filter/date',
+            },
+            {
+                label: 'Updated At',
+                valuePath: 'updatedAt',
+                sortParam: 'updated_at',
+                width: '10%',
+                resizable: true,
+                sortable: true,
+                hidden: true,
+                filterable: true,
+                filterComponent: 'filter/date',
+            },
+            {
+                label: '',
+                cellComponent: 'table/cell/dropdown',
+                ddButtonText: false,
+                ddButtonIcon: 'ellipsis-h',
+                ddButtonIconPrefix: 'fas',
+                ddMenuLabel: this.intl.t('common.resource-actions', { resource: 'Warehouse' }),
+                cellClassNames: 'overflow-visible',
+                wrapperClass: 'flex items-center justify-end mx-2',
+                width: '10%',
+                actions: [
+                    {
+                        label: this.intl.t('common.view-resource', { resource: 'Warehouse' }),
+                        fn: this.warehouseActions.transition.view,
+                    },
+                    {
+                        label: this.intl.t('common.edit-resource', { resource: 'Warehouse' }),
+                        fn: this.warehouseActions.transition.edit,
+                    },
+                    {
+                        separator: true,
+                    },
+                    {
+                        label: 'View Warehouse on Map',
+                        fn: this.warehouseActions.locate,
+                    },
+                    {
+                        separator: true,
+                    },
+                    {
+                        label: this.intl.t('common.delete-resource', { resource: 'Warehouse' }),
+                        fn: this.warehouseActions.delete,
+                    },
+                ],
+                sortable: false,
+                filterable: false,
+                resizable: false,
+                searchable: false,
+            },
+        ];
+    }
 
     /**
      * The search task.
@@ -313,109 +298,5 @@ export default class WarehousesIndexController extends Controller {
 
         // update the query param
         this.query = value;
-    }
-
-    /**
-     * Toggles dialog to export `warehouse`
-     *
-     * @void
-     */
-    @action exportProcuts() {
-        this.crud.export('warehouse');
-    }
-
-    /**
-     * View a `warehouse` details in overlay
-     *
-     * @param {WarehouseModel} warehouse
-     * @param {Object} options
-     * @void
-     */
-    @action viewWarehouse(warehouse) {
-        this.hostRouter.transitionTo('console.pallet.warehouses.index.details', warehouse);
-    }
-
-    /**
-     * Create a new `warehouse` in modal
-     *
-     * @param {Object} options
-     * @void
-     */
-    @action createWarehouse() {
-        this.hostRouter.transitionTo('console.pallet.warehouses.index.new');
-    }
-
-    /**
-     * Edit a `warehouse` details
-     *
-     * @param {WarehouseModel} warehouse
-     * @param {Object} options
-     * @void
-     */
-    @action async editWarehouse(warehouse) {
-        this.hostRouter.transitionTo('console.pallet.warehouses.index.edit', warehouse);
-    }
-
-    /**
-     * Delete a `warehouse` via confirm prompt
-     *
-     * @param {WarehouseModel} warehouse
-     * @param {Object} options
-     * @void
-     */
-    @action deleteWarehouse(warehouse, options = {}) {
-        this.crud.delete(warehouse, {
-            onConfirm: () => {
-                return this.hostRouter.refresh();
-            },
-            ...options,
-        });
-    }
-
-    /**
-     * Bulk deletes selected `warehouse` via confirm prompt
-     *
-     * @param {Array} selected an array of selected models
-     * @void
-     */
-    @action bulkDeleteWarehouses() {
-        const selected = this.table.selectedRows;
-
-        this.crud.bulkDelete(selected, {
-            modelNamePath: `address`,
-            acceptButtonText: 'Delete Warehouse',
-            onSuccess: () => {
-                return this.hostRouter.refresh();
-            },
-        });
-    }
-
-    /**
-     * Prompt user to assign a `vendor` to a `place`
-     *
-     * @param {PlaceModel} place
-     * @param {Object} options
-     * @void
-     */
-
-    /**
-     * View a place location on map
-     *
-     * @param {WarehouseModel} place
-     * @param {Object} options
-     * @void
-     */
-    @action viewOnMap(warehouse, options = {}) {
-        const { latitude, longitude } = warehouse;
-
-        this.modalsManager.show('modals/point-map', {
-            title: `Location of ${warehouse.name}`,
-            acceptButtonText: 'Done',
-            hideDeclineButton: true,
-            latitude,
-            longitude,
-            location: [latitude, longitude],
-            ...options,
-        });
     }
 }

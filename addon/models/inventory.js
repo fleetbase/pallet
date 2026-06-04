@@ -9,6 +9,7 @@ export default class InventoryModel extends Model {
     @attr('string') company_uuid;
     @attr('string') created_by_uuid;
     @attr('string') product_uuid;
+    @attr('string') variant_uuid;
     @attr('string') warehouse_uuid;
     @attr('string') supplier_uuid;
     @attr('string') batch_uuid;
@@ -19,6 +20,7 @@ export default class InventoryModel extends Model {
     @belongsTo('company') company;
     @belongsTo('user') createdBy;
     @belongsTo('pallet-product') product;
+    @belongsTo('pallet-product-variant') variant;
     @belongsTo('warehouse') warehouse;
     @belongsTo('supplier') supplier;
     @belongsTo('batch') batch;

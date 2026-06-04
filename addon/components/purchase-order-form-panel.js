@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import { task } from 'ember-concurrency';
 import contextComponentCallback from '@fleetbase/ember-core/utils/context-component-callback';
 import applyContextComponentArguments from '@fleetbase/ember-core/utils/apply-context-component-arguments';
 
@@ -48,12 +49,6 @@ export default class PurchaseOrderFormPanelComponent extends Component {
     @tracked context;
 
     /**
-     * Indicates whether the component is in a loading state.
-     * @type {boolean}
-     */
-    @tracked isLoading = false;
-
-    /**
      * All possible purchaseOrder status options.
      *
      * @var {String}
@@ -86,31 +81,21 @@ export default class PurchaseOrderFormPanelComponent extends Component {
      * @action
      * @returns {Promise<any>}
      */
-    @action save() {
+    @task *saveTask() {
         const { purchaseOrder } = this;
 
         this.loader.showLoader('.next-content-overlay-panel-container', { loadingMessage: 'Saving purchase order...', preserveTargetPosition: true });
-        this.isLoading = true;
-
         contextComponentCallback(this, 'onBeforeSave', purchaseOrder);
 
         try {
-            return purchaseOrder
-                .save()
-                .then((purchaseOrder) => {
-                    this.notifications.success(`Sales order (${purchaseOrder.id}) saved successfully.`);
-                    contextComponentCallback(this, 'onAfterSave', purchaseOrder);
-                })
-                .catch((error) => {
-                    this.notifications.serverError(error);
-                })
-                .finally(() => {
-                    this.loader.removeLoader('.next-content-overlay-panel-container ');
-                    this.isLoading = false;
-                });
+            const savedPurchaseOrder = yield purchaseOrder.save();
+            this.notifications.success(`Sales order (${savedPurchaseOrder.id}) saved successfully.`);
+            contextComponentCallback(this, 'onAfterSave', savedPurchaseOrder);
+            return savedPurchaseOrder;
         } catch (error) {
+            this.notifications.serverError(error);
+        } finally {
             this.loader.removeLoader('.next-content-overlay-panel-container ');
-            this.isLoading = false;
         }
     }
 

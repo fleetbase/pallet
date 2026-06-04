@@ -7,7 +7,7 @@ use Fleetbase\Pallet\Models\AuditEventType;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * HasOperationalAuditTrail
+ * HasOperationalAuditTrail.
  *
  * A trait that any Pallet model can use to programmatically write entries to
  * the pallet_audits operational audit trail.
@@ -31,15 +31,14 @@ trait HasOperationalAuditTrail
     /**
      * Log an operational audit event for this model instance.
      *
-     * @param string      $eventType  Machine-readable event category (use AuditEventType constants)
-     * @param string      $action     Human-readable label for the event (e.g. "Stock Adjusted")
-     * @param string|null $type       Secondary classification within the event type (e.g. "damage")
-     * @param string|null $reason     Reason code or user-supplied explanation
-     * @param array       $meta       Arbitrary structured context data
-     * @param array       $oldValues  Snapshot of relevant values before the event
-     * @param array       $newValues  Snapshot of relevant values after the event
-     * @param string|null $comments   Free-form notes
-     * @return Audit
+     * @param string      $eventType Machine-readable event category (use AuditEventType constants)
+     * @param string      $action    Human-readable label for the event (e.g. "Stock Adjusted")
+     * @param string|null $type      Secondary classification within the event type (e.g. "damage")
+     * @param string|null $reason    Reason code or user-supplied explanation
+     * @param array       $meta      Arbitrary structured context data
+     * @param array       $oldValues Snapshot of relevant values before the event
+     * @param array       $newValues Snapshot of relevant values after the event
+     * @param string|null $comments  Free-form notes
      */
     public function logAuditEvent(
         string $eventType,
@@ -49,7 +48,7 @@ trait HasOperationalAuditTrail
         array $meta = [],
         array $oldValues = [],
         array $newValues = [],
-        ?string $comments = null
+        ?string $comments = null,
     ): Audit {
         $performedByUuid = Auth::id() ?? null;
 
@@ -75,13 +74,12 @@ trait HasOperationalAuditTrail
      * Log a scheduled operational audit event for this model instance.
      * Used for events that have a planned execution time (e.g. cycle counts).
      *
-     * @param string      $eventType   Machine-readable event category
-     * @param string      $action      Human-readable label for the event
+     * @param string         $eventType   Machine-readable event category
+     * @param string         $action      Human-readable label for the event
      * @param \Carbon\Carbon $scheduledAt When the event is scheduled to occur
-     * @param string|null $type        Secondary classification
-     * @param string|null $reason      Reason code or explanation
-     * @param array       $meta        Arbitrary structured context data
-     * @return Audit
+     * @param string|null    $type        Secondary classification
+     * @param string|null    $reason      Reason code or explanation
+     * @param array          $meta        Arbitrary structured context data
      */
     public function logScheduledAuditEvent(
         string $eventType,
@@ -89,7 +87,7 @@ trait HasOperationalAuditTrail
         \Carbon\Carbon $scheduledAt,
         ?string $type = null,
         ?string $reason = null,
-        array $meta = []
+        array $meta = [],
     ): Audit {
         $performedByUuid = Auth::id() ?? null;
 

@@ -6,10 +6,12 @@ export default class PurchaseOrderItemModel extends Model {
     @attr('string') public_id;
     @attr('string') purchase_order_uuid;
     @attr('string') product_uuid;
+    @attr('string') variant_uuid;
     @attr('string') warehouse_uuid;
 
     /** @relationships */
     @belongsTo('pallet-product', { async: false }) product;
+    @belongsTo('pallet-product-variant', { async: false }) variant;
     @belongsTo('pallet-warehouse', { async: false }) warehouse;
 
     /** @quantities */
@@ -48,9 +50,9 @@ export default class PurchaseOrderItemModel extends Model {
      *
      * @type {String}
      */
-    @computed('product.name', 'sku', 'public_id')
+    @computed('product.name', 'variant.display_name', 'sku', 'public_id')
     get displayName() {
-        return this.product?.name ?? this.sku ?? this.public_id;
+        return this.variant?.display_name ?? this.product?.name ?? this.sku ?? this.public_id;
     }
 
     /**

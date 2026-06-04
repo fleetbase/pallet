@@ -2,17 +2,17 @@
 
 namespace Fleetbase\Pallet\Models;
 
-use Fleetbase\Models\Model;
-use Fleetbase\Traits\HasUuid;
-use Fleetbase\Traits\HasPublicId;
-use Fleetbase\Traits\TracksApiCredential;
 use Fleetbase\Casts\Json;
+use Fleetbase\Models\Model;
+use Fleetbase\Traits\HasPublicId;
+use Fleetbase\Traits\HasUuid;
+use Fleetbase\Traits\TracksApiCredential;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
- * PurchaseOrderItem
+ * PurchaseOrderItem.
  *
  * Represents a single product line on a Purchase Order.
  * On PO receipt, each item creates or increments an Inventory record in the
@@ -69,6 +69,7 @@ class PurchaseOrderItem extends Model
         'purchase_order_uuid',
         'created_by_uuid',
         'product_uuid',
+        'variant_uuid',
         'warehouse_uuid',
         'quantity',
         'quantity_received',
@@ -93,14 +94,14 @@ class PurchaseOrderItem extends Model
      * @var array
      */
     protected $casts = [
-        'meta'        => Json::class,
-        'expiry_date' => 'date',
-        'received_at' => 'datetime',
-        'quantity'    => 'integer',
+        'meta'              => Json::class,
+        'expiry_date'       => 'date',
+        'received_at'       => 'datetime',
+        'quantity'          => 'integer',
         'quantity_received' => 'integer',
-        'unit_price'  => 'decimal:4',
-        'unit_cost'   => 'decimal:4',
-        'total_price' => 'decimal:4',
+        'unit_price'        => 'decimal:4',
+        'unit_cost'         => 'decimal:4',
+        'total_price'       => 'decimal:4',
     ];
 
     /**
@@ -121,6 +122,11 @@ class PurchaseOrderItem extends Model
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_uuid', 'uuid');
+    }
+
+    public function variant()
+    {
+        return $this->belongsTo(ProductVariant::class, 'variant_uuid', 'uuid');
     }
 
     /**
@@ -151,8 +157,6 @@ class PurchaseOrderItem extends Model
 
     /**
      * Returns true if this item has been fully received.
-     *
-     * @return bool
      */
     public function isFullyReceived(): bool
     {
@@ -161,8 +165,6 @@ class PurchaseOrderItem extends Model
 
     /**
      * Returns the outstanding (unreceived) quantity.
-     *
-     * @return int
      */
     public function getOutstandingQuantityAttribute(): int
     {
@@ -171,8 +173,6 @@ class PurchaseOrderItem extends Model
 
     /**
      * Recalculate and persist the total_price based on unit_price × quantity.
-     *
-     * @return void
      */
     public function recalculateTotalPrice(): void
     {
@@ -183,8 +183,6 @@ class PurchaseOrderItem extends Model
 
     /**
      * Configure Spatie activity log options.
-     *
-     * @return LogOptions
      */
     public function getActivitylogOptions(): LogOptions
     {

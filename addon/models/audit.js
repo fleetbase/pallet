@@ -22,8 +22,11 @@ export default class AuditModel extends Model {
     @attr('string') public_id;
     @attr('string') company_uuid;
     @attr('string') performed_by_uuid;
+    @attr('string') auditable_uuid;
+    @attr('string') auditable_type;
     @attr('string') subject_uuid;
     @attr('string') subject_type;
+    @attr('string') subject_label;
 
     /** @relationships */
     @belongsTo('user') performedBy;
@@ -50,15 +53,13 @@ export default class AuditModel extends Model {
      */
     @computed('event_type') get eventTypeLabel() {
         const labels = {
-            stock_adjustment:  'Stock Adjustment',
-            cycle_count:       'Cycle Count',
-            po_received:       'PO Received',
-            so_fulfilled:      'SO Fulfilled',
-            stock_transfer:    'Stock Transfer',
-            inventory_receive: 'Inventory Received',
-            batch_created:     'Batch Created',
-            product_created:   'Product Created',
-            warehouse_created: 'Warehouse Created',
+            stock_adjustment: 'Stock Adjustment',
+            cycle_count: 'Cycle Count',
+            po_received: 'PO Received',
+            so_fulfilled: 'SO Fulfilled',
+            stock_transfer: 'Stock Transfer',
+            inventory_created: 'Inventory Received',
+            batch_created: 'Batch Created',
         };
         return labels[this.event_type] || (this.event_type ? this.event_type.replace(/_/g, ' ') : '—');
     }
@@ -67,11 +68,16 @@ export default class AuditModel extends Model {
      * Returns the short class name of the subject model.
      * e.g. "Fleetbase\Pallet\Models\Inventory" → "Inventory"
      */
-    @computed('subject_type') get subjectLabel() {
-        if (!this.subject_type) {
+    @computed('subject_label', 'auditable_type', 'subject_type') get subjectLabel() {
+        if (this.subject_label) {
+            return this.subject_label;
+        }
+
+        const type = this.auditable_type || this.subject_type;
+        if (!type) {
             return null;
         }
-        const parts = this.subject_type.split('\\');
+        const parts = type.split('\\');
         return parts[parts.length - 1];
     }
 
@@ -80,12 +86,12 @@ export default class AuditModel extends Model {
      */
     @computed('event_type') get eventTypeBadgeClass() {
         const colours = {
-            stock_adjustment:  'bg-yellow-100 text-yellow-800',
-            cycle_count:       'bg-blue-100 text-blue-800',
-            po_received:       'bg-green-100 text-green-800',
-            so_fulfilled:      'bg-purple-100 text-purple-800',
-            stock_transfer:    'bg-indigo-100 text-indigo-800',
-            inventory_receive: 'bg-teal-100 text-teal-800',
+            stock_adjustment: 'bg-yellow-100 text-yellow-800',
+            cycle_count: 'bg-blue-100 text-blue-800',
+            po_received: 'bg-green-100 text-green-800',
+            so_fulfilled: 'bg-purple-100 text-purple-800',
+            stock_transfer: 'bg-indigo-100 text-indigo-800',
+            inventory_created: 'bg-teal-100 text-teal-800',
         };
         return colours[this.event_type] || 'bg-gray-100 text-gray-800';
     }

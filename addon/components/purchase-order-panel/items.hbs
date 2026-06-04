@@ -15,6 +15,7 @@
             <thead>
                 <tr class="border-b border-gray-100 dark:border-gray-700 text-gray-500 dark:text-gray-400">
                     <th class="text-left px-4 py-2 font-medium">Product</th>
+                    <th class="text-left px-4 py-2 font-medium">Variant</th>
                     <th class="text-left px-4 py-2 font-medium">SKU</th>
                     <th class="text-right px-4 py-2 font-medium">Qty</th>
                     <th class="text-right px-4 py-2 font-medium">Unit Price</th>
@@ -44,6 +45,22 @@
                                 </ModelSelect>
                             </td>
                             <td class="px-4 py-2">
+                                {{#if this.editingItem.product.has_variants}}
+                                    <PowerSelect
+                                        @options={{this.editingItem.product.variants}}
+                                        @selected={{find-by "uuid" this.editingItem.variant_uuid this.editingItem.product.variants}}
+                                        @onChange={{this.setEditingVariant}}
+                                        @placeholder="Select variant"
+                                        @triggerClass="form-select form-input text-xs"
+                                        as |variant|
+                                    >
+                                        {{n-a variant.display_name variant.name}}
+                                    </PowerSelect>
+                                {{else}}
+                                    <span class="text-gray-400">—</span>
+                                {{/if}}
+                            </td>
+                            <td class="px-4 py-2">
                                 <Input @value={{this.editingItem.sku}} class="form-input w-full text-xs" placeholder="SKU" />
                             </td>
                             <td class="px-4 py-2">
@@ -67,6 +84,7 @@
                             <td class="px-4 py-2 font-medium text-gray-800 dark:text-gray-100">
                                 {{n-a item.product.name}}
                             </td>
+                            <td class="px-4 py-2 text-gray-500 dark:text-gray-400">{{n-a item.variant.display_name item.variant.name}}</td>
                             <td class="px-4 py-2 text-gray-500 dark:text-gray-400">{{n-a item.sku}}</td>
                             <td class="px-4 py-2 text-right">
                                 {{item.quantity}}
@@ -94,7 +112,7 @@
         {{! New item row }}
         {{#if this.isAddingItem}}
             <div class="border-t border-gray-100 dark:border-gray-700 px-4 py-3 bg-green-50 dark:bg-green-900/20">
-                <div class="grid grid-cols-5 gap-2 items-end">
+                <div class="grid grid-cols-6 gap-2 items-end">
                     <div>
                         <label class="block text-xs text-gray-500 mb-1">Product</label>
                         <ModelSelect
@@ -110,6 +128,23 @@
                         >
                             {{model.name}}
                         </ModelSelect>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-500 mb-1">Variant</label>
+                        {{#if this.newItem.product.has_variants}}
+                            <PowerSelect
+                                @options={{this.newItem.product.variants}}
+                                @selected={{find-by "uuid" this.newItem.variant_uuid this.newItem.product.variants}}
+                                @onChange={{this.setNewVariant}}
+                                @placeholder="Select variant"
+                                @triggerClass="form-select form-input text-xs"
+                                as |variant|
+                            >
+                                {{n-a variant.display_name variant.name}}
+                            </PowerSelect>
+                        {{else}}
+                            <Input class="form-input w-full text-xs" disabled={{true}} placeholder="No variants" />
+                        {{/if}}
                     </div>
                     <div>
                         <label class="block text-xs text-gray-500 mb-1">SKU</label>

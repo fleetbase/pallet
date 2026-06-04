@@ -5,11 +5,9 @@ namespace Fleetbase\Pallet\Models;
 use Fleetbase\Casts\Json;
 use Fleetbase\Models\Model;
 use Fleetbase\Traits\HasApiModelBehavior;
+use Fleetbase\Traits\HasMetaAttributes;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
-use Fleetbase\Traits\HasMetaAttributes;
-
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 
 class Inventory extends Model
@@ -45,7 +43,7 @@ class Inventory extends Model
      *
      * @var array
      */
-    protected $searchableColumns = ['product.name', 'warehouse.address', 'comments', 'lot_number', 'serial_number', 'sku'];
+    protected $searchableColumns = ['product.name', 'variant.name', 'variant.sku', 'warehouse.address', 'comments', 'lot_number', 'serial_number'];
 
     /**
      * The attributes that are mass assignable.
@@ -58,6 +56,7 @@ class Inventory extends Model
         'company_uuid',
         'created_by_uuid',
         'product_uuid',
+        'variant_uuid',
         'warehouse_uuid',
         'batch_uuid',
         'bin_location_uuid',
@@ -125,7 +124,7 @@ class Inventory extends Model
      */
     protected $hidden = [];
 
-    protected $with = ['product', 'batch', 'warehouse', 'supplier', 'binLocation'];
+    protected $with = ['product', 'variant', 'batch', 'warehouse', 'supplier', 'binLocation'];
 
     protected $filterParams = [
         'comments',
@@ -137,11 +136,9 @@ class Inventory extends Model
         'serial_number',
         'warehouse',
         'product',
+        'variant',
     ];
 
-    /**
-     * @return null|int
-     */
     public function getIncrementingIdAttribute(): ?int
     {
         return static::select('id')->where('uuid', $this->uuid)->value('id');
@@ -152,7 +149,12 @@ class Inventory extends Model
      */
     public function product()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class, 'product_uuid', 'uuid');
+    }
+
+    public function variant()
+    {
+        return $this->belongsTo(ProductVariant::class, 'variant_uuid', 'uuid');
     }
 
     /**
@@ -291,6 +293,7 @@ class Inventory extends Model
      * Reserve quantity.
      *
      * @param int $quantity
+     *
      * @return bool
      */
     public function reserve($quantity)
@@ -309,11 +312,12 @@ class Inventory extends Model
      * Release reservation.
      *
      * @param int $quantity
+     *
      * @return bool
      */
     public function releaseReservation($quantity)
     {
-        $this->reserved_quantity = max(0, $this->reserved_quantity - $quantity);
+        $this->reserved_quantity  = max(0, $this->reserved_quantity - $quantity);
         $this->available_quantity = $this->quantity - $this->reserved_quantity;
 
         return $this->save();
@@ -323,6 +327,7 @@ class Inventory extends Model
      * Deduct quantity (for picks/shipments).
      *
      * @param int $quantity
+     *
      * @return bool
      */
     public function deduct($quantity)
@@ -337,6 +342,7 @@ class Inventory extends Model
      * Add quantity (for receiving/adjustments).
      *
      * @param int $quantity
+     *
      * @return bool
      */
     public function add($quantity)
@@ -359,6 +365,7 @@ class Inventory extends Model
         return $query
             ->selectRaw('
                 pallet_inventories.product_uuid,
+                pallet_inventories.variant_uuid,
                 pallet_inventories.batch_uuid,
                 pallet_inventories.supplier_uuid,
                 pallet_inventories.warehouse_uuid,
@@ -375,13 +382,14 @@ class Inventory extends Model
                 MAX(pallet_inventories.expiry_date_at) as latest_expiry_date_at
             ')
             ->leftJoin('pallet_batches', 'pallet_inventories.batch_uuid', '=', 'pallet_batches.uuid')
-            ->groupBy('pallet_inventories.product_uuid', 'pallet_inventories.batch_uuid', 'pallet_inventories.supplier_uuid', 'pallet_inventories.warehouse_uuid');
+            ->groupBy('pallet_inventories.product_uuid', 'pallet_inventories.variant_uuid', 'pallet_inventories.batch_uuid', 'pallet_inventories.supplier_uuid', 'pallet_inventories.warehouse_uuid');
     }
 
     /**
      * Scope to get low stock items.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeLowStock($query)
@@ -393,6 +401,7 @@ class Inventory extends Model
      * Scope to get expired items.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeExpired($query)
@@ -405,7 +414,8 @@ class Inventory extends Model
      * Scope to get expiring soon items.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param int $days
+     * @param int                                   $days
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeExpiringSoon($query, $days = 30)
@@ -439,11 +449,10 @@ class Inventory extends Model
             }
         });
     }
+
     /**
      * Configure Spatie activity log options.
      * Logs only the specified attributes when they change (dirty only).
-     *
-     * @return LogOptions
      */
     public function getActivitylogOptions(): LogOptions
     {
@@ -454,10 +463,10 @@ class Inventory extends Model
                 'status',
                 'warehouse_uuid',
                 'product_uuid',
+                'variant_uuid',
                 'batch_uuid',
             ])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
     }
-
 }

@@ -1,0 +1,28 @@
+<Layout::Section::Header @title="Stock Adjustments">
+    <div class="text-sm text-gray-500 dark:text-gray-300">Track inventory corrections, discrepancies, and manual quantity changes from a dedicated inventory control surface.</div>
+</Layout::Section::Header>
+
+<Layout::Section::Body class="overflow-y-scroll h-full p-4 space-y-4">
+    <ContentPanel @title="Implementation Status" @open={{true}} @wrapperClass="bordered-classic">
+        <p class="text-sm text-gray-700 dark:text-gray-200">Pallet already supports creating stock adjustments from the inventory workflow. This route gives adjustments a durable navigation
+            destination while the dedicated record history view is completed.</p>
+    </ContentPanel>
+
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+        <ContentPanel @title="Planned Workflows" @open={{true}} @wrapperClass="bordered-classic">
+            <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-200">
+                <li>Review adjustment history and reasons by warehouse.</li>
+                <li>Filter by product, operator, date, and adjustment type.</li>
+                <li>Support inventory correction auditability and approvals.</li>
+            </ul>
+        </ContentPanel>
+
+        <ContentPanel @title="Current Entry Point" @open={{true}} @wrapperClass="bordered-classic">
+            <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-200">
+                <li>Create a new adjustment from the main Inventory resource view.</li>
+                <li>Existing adjustment creation flow remains available today.</li>
+                <li>This page reserves the permanent production home for adjustment records.</li>
+            </ul>
+        </ContentPanel>
+    </div>
+</Layout::Section::Body>

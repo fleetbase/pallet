@@ -38,6 +38,7 @@ class InventoryReservation extends Model
     protected $fillable = [
         'company_uuid',
         'product_uuid',
+        'variant_uuid',
         'inventory_uuid',
         'warehouse_uuid',
         'order_uuid',
@@ -77,7 +78,7 @@ class InventoryReservation extends Model
      *
      * @var array
      */
-    protected $with = ['product', 'warehouse', 'salesOrder'];
+    protected $with = ['product', 'variant', 'warehouse', 'salesOrder'];
 
     /**
      * Searchable columns.
@@ -93,7 +94,12 @@ class InventoryReservation extends Model
      */
     public function product()
     {
-        return $this->belongsTo(Product::class, 'product_uuid');
+        return $this->belongsTo(Product::class, 'product_uuid', 'uuid');
+    }
+
+    public function variant()
+    {
+        return $this->belongsTo(ProductVariant::class, 'variant_uuid', 'uuid');
     }
 
     /**
@@ -163,7 +169,7 @@ class InventoryReservation extends Model
      */
     public function release()
     {
-        $this->status = 'released';
+        $this->status      = 'released';
         $this->released_at = now();
 
         return $this->save();
@@ -185,6 +191,7 @@ class InventoryReservation extends Model
      * Scope to get active reservations.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeActive($query)

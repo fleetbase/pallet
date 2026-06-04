@@ -37,6 +37,7 @@ class PickListItem extends Model
         'company_uuid',
         'pick_list_uuid',
         'product_uuid',
+        'variant_uuid',
         'inventory_uuid',
         'bin_location_uuid',
         'sales_order_item_uuid',
@@ -70,7 +71,7 @@ class PickListItem extends Model
      *
      * @var array
      */
-    protected $with = ['product', 'binLocation'];
+    protected $with = ['product', 'variant', 'binLocation'];
 
     /**
      * Get the pick list.
@@ -89,7 +90,12 @@ class PickListItem extends Model
      */
     public function product()
     {
-        return $this->belongsTo(Product::class, 'product_uuid');
+        return $this->belongsTo(Product::class, 'product_uuid', 'uuid');
+    }
+
+    public function variant()
+    {
+        return $this->belongsTo(ProductVariant::class, 'variant_uuid', 'uuid');
     }
 
     /**
@@ -125,15 +131,16 @@ class PickListItem extends Model
     /**
      * Mark as picked.
      *
-     * @param int $quantity
+     * @param int         $quantity
      * @param string|null $userUuid
+     *
      * @return bool
      */
     public function markPicked($quantity, $userUuid = null)
     {
         $this->quantity_picked = $quantity;
-        $this->status = 'picked';
-        $this->picked_at = now();
+        $this->status          = 'picked';
+        $this->picked_at       = now();
         if ($userUuid) {
             $this->picked_by_uuid = $userUuid;
         }

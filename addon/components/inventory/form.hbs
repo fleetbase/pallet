@@ -18,6 +18,27 @@
                 </ModelSelect>
             </InputGroup>
 
+            {{#if @resource.product.has_variants}}
+                <InputGroup @name="Variant" @wrapperClass="col-span-2">
+                    <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                        <PowerSelect
+                            @options={{@resource.product.variants}}
+                            @selected={{find-by "uuid" @resource.variant_uuid @resource.product.variants}}
+                            @onChange={{this.setVariant}}
+                            @placeholder="Select variant"
+                            @triggerClass="form-select form-input"
+                            @disabled={{cannot-write @resource}}
+                            as |variant|
+                        >
+                            {{n-a variant.display_name variant.name}}
+                            {{#if variant.sku}}
+                                <span class="text-gray-400">({{variant.sku}})</span>
+                            {{/if}}
+                        </PowerSelect>
+                    </div>
+                </InputGroup>
+            {{/if}}
+
             <InputGroup @name={{t "inventory.fields.warehouse"}}>
                 <ModelSelect
                     @modelName="warehouse"

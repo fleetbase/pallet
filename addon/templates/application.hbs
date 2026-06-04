@@ -1,22 +1,41 @@
 <EmberWormhole @to="sidebar-menu-items">
-    <Layout::Sidebar::Panel @open={{true}} @title="Pallet">
-        <Layout::Sidebar::Item @route="console.pallet.home" @icon="home">Dashboard</Layout::Sidebar::Item>
-        <Layout::Sidebar::Item @route="console.pallet.products" @icon="boxes-stacked">Products</Layout::Sidebar::Item>
-        <Layout::Sidebar::Item @route="console.pallet.warehouses" @icon="warehouse">Warehouses</Layout::Sidebar::Item>
-        <Layout::Sidebar::Item @route="console.pallet.suppliers" @icon="user-tie">Suppliers</Layout::Sidebar::Item>
+    <Layout::Sidebar::Item @route="console.pallet.home" @icon="home">Dashboard</Layout::Sidebar::Item>
+
+    <Layout::Sidebar::Panel @open={{true}} @title="Catalog">
+        <Layout::Sidebar::Item @route="console.pallet.catalog.products" @icon="boxes-stacked">Products</Layout::Sidebar::Item>
+        <Layout::Sidebar::Item @route="console.pallet.catalog.suppliers" @icon="user-tie">Suppliers</Layout::Sidebar::Item>
     </Layout::Sidebar::Panel>
+
+    <Layout::Sidebar::Panel @open={{true}} @title="Facilities">
+        <Layout::Sidebar::Item @route="console.pallet.facilities.warehouses" @icon="warehouse">Warehouses</Layout::Sidebar::Item>
+        <Layout::Sidebar::Item @route="console.pallet.facilities.locations" @icon="sitemap">Locations</Layout::Sidebar::Item>
+        <Layout::Sidebar::Item @route="console.pallet.facilities.zones" @icon="border-all">Zones</Layout::Sidebar::Item>
+    </Layout::Sidebar::Panel>
+
     <Layout::Sidebar::Panel @open={{true}} @title="Inventory">
-        <Layout::Sidebar::Item @route="console.pallet.inventory" @icon="barcode">All</Layout::Sidebar::Item>
+        <Layout::Sidebar::Item @route="console.pallet.inventory.index" @icon="barcode">Inventory</Layout::Sidebar::Item>
+        <Layout::Sidebar::Item @route="console.pallet.inventory.batches" @icon="layer-group">Batches</Layout::Sidebar::Item>
+        <Layout::Sidebar::Item @route="console.pallet.inventory.adjustments" @icon="sliders-h">Stock Adjustments</Layout::Sidebar::Item>
         <Layout::Sidebar::Item @route="console.pallet.inventory.low-stock" @icon="exclamation-triangle">Low Stock</Layout::Sidebar::Item>
         <Layout::Sidebar::Item @route="console.pallet.inventory.expired-stock" @icon="calendar-times">Expired Stock</Layout::Sidebar::Item>
     </Layout::Sidebar::Panel>
-    <Layout::Sidebar::Panel @open={{true}} @title="Transact">
-        <Layout::Sidebar::Item @route="console.pallet.sales-orders" @icon="cash-register">Sales</Layout::Sidebar::Item>
-        <Layout::Sidebar::Item @route="console.pallet.purchase-orders" @icon="file-invoice-dollar">Purchases</Layout::Sidebar::Item>
+
+    <Layout::Sidebar::Panel @open={{true}} @title="Orders">
+        <Layout::Sidebar::Item @route="console.pallet.orders.purchase-orders" @icon="file-invoice-dollar">Purchase Orders</Layout::Sidebar::Item>
+        <Layout::Sidebar::Item @route="console.pallet.orders.sales-orders" @icon="cash-register">Sales Orders</Layout::Sidebar::Item>
     </Layout::Sidebar::Panel>
-    <Layout::Sidebar::Panel @open={{true}} @title="Research">
-        <Layout::Sidebar::Item @route="console.pallet.audits" @icon="magnifying-glass">Audits</Layout::Sidebar::Item>
-        <Layout::Sidebar::Item @route="console.pallet.reports" @icon="chart-line">Reports</Layout::Sidebar::Item>
+
+    <Layout::Sidebar::Panel @open={{true}} @title="Operations">
+        <Layout::Sidebar::Item @route="console.pallet.operations.transfers" @icon="exchange-alt">Transfers</Layout::Sidebar::Item>
+        <Layout::Sidebar::Item @route="console.pallet.operations.cycle-counts" @icon="clipboard-list">Cycle Counts</Layout::Sidebar::Item>
+        <Layout::Sidebar::Item @route="console.pallet.operations.pick-lists" @icon="list">Pick Lists</Layout::Sidebar::Item>
+        <Layout::Sidebar::Item @route="console.pallet.operations.waves" @icon="water">Waves</Layout::Sidebar::Item>
+        <Layout::Sidebar::Item @route="console.pallet.operations.reservations" @icon="lock">Reservations</Layout::Sidebar::Item>
+    </Layout::Sidebar::Panel>
+
+    <Layout::Sidebar::Panel @open={{true}} @title="Analytics">
+        <Layout::Sidebar::Item @route="console.pallet.analytics.reports" @icon="chart-line">Reports</Layout::Sidebar::Item>
+        <Layout::Sidebar::Item @route="console.pallet.analytics.audits" @icon="magnifying-glass">Audits</Layout::Sidebar::Item>
     </Layout::Sidebar::Panel>
 </EmberWormhole>
 

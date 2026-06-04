@@ -2,95 +2,40 @@ import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import { task } from 'ember-concurrency';
 
 export default class WarehousesIndexNewController extends Controller {
-    /**
-     * Inject the `store` service
-     *
-     * @memberof WarehousesIndexNewController
-     */
-    @service store;
-
-    /**
-     * Inject the `hostRouter` service
-     *
-     * @memberof WarehousesIndexNewController
-     */
+    @service warehouseActions;
     @service hostRouter;
+    @service intl;
+    @service notifications;
+    @service events;
 
-    /**
-     * Inject the `hostRouter` service
-     *
-     * @memberof WarehousesIndexNewController
-     */
-    @service modalsManager;
-
-    /**
-     * The overlay component context.
-     *
-     * @memberof WarehousesIndexNewController
-     */
     @tracked overlay;
+    @tracked warehouse = this.warehouseActions.createNewInstance();
 
-    /**
-     * The warehouse being created.
-     *
-     * @var {PlaceModel}
-     */
-    @tracked warehouse = this.store.createRecord('warehouse', {
-        type: 'pallet-warehouse',
-        status: 'active',
-        meta: {},
-    });
+    @task *save(warehouse) {
+        try {
+            yield warehouse.save();
+            this.events.trackResourceCreated(warehouse);
+            this.overlay?.close();
 
-    /**
-     * Set the overlay component context object.
-     *
-     * @param {OverlayContext} overlay
-     * @memberof WarehousesIndexNewController
-     */
-    @action setOverlayContext(overlay) {
-        this.overlay = overlay;
-    }
-
-    /**
-     * When exiting the overlay.
-     *
-     * @return {Transition}
-     * @memberof WarehousesIndexNewController
-     */
-    @action transitionBack() {
-        return this.hostRouter.transitionTo('console.pallet.warehouses.index');
-    }
-
-    /**
-     * Trigger a route refresh and focus the new warehouse created.
-     *
-     * @param {warehouseModel} warehouse
-     * @return {Promise}
-     * @memberof WarehousesIndexNewController
-     */
-    @action onAfterSave(warehouse) {
-        if (this.overlay) {
-            this.overlay.close();
-        }
-
-        this.hostRouter.refresh();
-        return this.hostRouter.transitionTo('console.pallet.warehouses.index.details', warehouse).then(() => {
+            yield this.hostRouter.refresh();
+            yield this.hostRouter.transitionTo('console.pallet.facilities.warehouses.index.details', warehouse);
+            this.notifications.success(
+                this.intl.t('common.resource-created-success-name', {
+                    resource: 'Warehouse',
+                    resourceName: warehouse.name,
+                })
+            );
             this.resetForm();
-        });
+        } catch (error) {
+            this.notifications.serverError(error);
+        }
     }
 
-    /**
-     * Resets the form with a new warehouse record
-     *
-     * @memberof WarehousesIndexNewController
-     */
+    @action
     resetForm() {
-        this.warehouse = this.store.createRecord('warehouse', {
-            type: 'pallet-warehouse',
-            status: 'active',
-            meta: {},
-        });
+        this.warehouse = this.warehouseActions.createNewInstance();
     }
 }

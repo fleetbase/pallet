@@ -1,0 +1,18 @@
+<Layout::Section::Header @title="Transfers">
+    <div class="text-sm text-gray-500 dark:text-gray-300">Transfers will manage stock movement between warehouses, facilities, and future internal storage locations.</div>
+</Layout::Section::Header>
+
+<Layout::Section::Body class="overflow-y-scroll h-full p-4 space-y-4">
+    <ContentPanel @title="Implementation Status" @open={{true}} @wrapperClass="bordered-classic">
+        <p class="text-sm text-gray-700 dark:text-gray-200">Stock transfer models already exist on the backend. This scaffold gives the operations domain a stable navigation destination
+            without shipping a blank route.</p>
+    </ContentPanel>
+
+    <ContentPanel @title="Planned Workflows" @open={{true}} @wrapperClass="bordered-classic">
+        <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-200">
+            <li>Create inter-warehouse transfer orders.</li>
+            <li>Track transfer status from requested to received.</li>
+            <li>Reconcile inventory movement across facilities and locations.</li>
+        </ul>
+    </ContentPanel>
+</Layout::Section::Body>

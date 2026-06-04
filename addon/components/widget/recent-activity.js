@@ -8,7 +8,6 @@ export default class WidgetRecentActivityComponent extends Component {
     @service notifications;
 
     @tracked events = [];
-    @tracked isLoading = true;
 
     constructor() {
         super(...arguments);
@@ -17,14 +16,11 @@ export default class WidgetRecentActivityComponent extends Component {
 
     @task({ restartable: true })
     *loadActivity() {
-        this.isLoading = true;
         try {
-            const data = yield this.fetch.get('pallet/audits', { limit: 15, sort: '-created_at' });
+            const data = yield this.fetch.get('audits', { limit: 15, sort: '-created_at' }, { namespace: 'pallet/int/v1' });
             this.events = data.audits ?? data ?? [];
         } catch (error) {
             this.notifications.serverError(error);
-        } finally {
-            this.isLoading = false;
         }
     }
 

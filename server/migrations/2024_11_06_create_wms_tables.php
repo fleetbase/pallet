@@ -26,8 +26,8 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('kit_product_uuid')->references('uuid')->on('entities')->onDelete('cascade');
-            $table->foreign('component_product_uuid')->references('uuid')->on('entities')->onDelete('cascade');
+            $table->foreign('kit_product_uuid')->references('uuid')->on('pallet_products')->onDelete('cascade');
+            $table->foreign('component_product_uuid')->references('uuid')->on('pallet_products')->onDelete('cascade');
         });
 
         // Inventory Reservations
@@ -37,6 +37,7 @@ return new class extends Migration
             $table->string('public_id', 191)->nullable()->unique();
             $table->string('company_uuid', 191)->nullable()->index();
             $table->string('product_uuid', 191)->nullable()->index();
+            $table->string('variant_uuid', 191)->nullable()->index();
             $table->string('inventory_uuid', 191)->nullable()->index();
             $table->string('warehouse_uuid', 191)->nullable()->index();
             $table->string('order_uuid', 191)->nullable()->index();
@@ -164,6 +165,7 @@ return new class extends Migration
             $table->string('company_uuid', 191)->nullable()->index();
             $table->string('pick_list_uuid', 191)->nullable()->index();
             $table->string('product_uuid', 191)->nullable()->index();
+            $table->string('variant_uuid', 191)->nullable()->index();
             $table->string('inventory_uuid', 191)->nullable()->index();
             $table->string('bin_location_uuid', 191)->nullable()->index();
             $table->string('sales_order_item_uuid', 191)->nullable()->index();
@@ -217,6 +219,7 @@ return new class extends Migration
             $table->string('company_uuid', 191)->nullable()->index();
             $table->string('cycle_count_uuid', 191)->nullable()->index();
             $table->string('product_uuid', 191)->nullable()->index();
+            $table->string('variant_uuid', 191)->nullable()->index();
             $table->string('inventory_uuid', 191)->nullable()->index();
             $table->string('bin_location_uuid', 191)->nullable()->index();
             $table->integer('expected_quantity')->default(0);
@@ -269,6 +272,7 @@ return new class extends Migration
             $table->string('company_uuid', 191)->nullable()->index();
             $table->string('stock_transfer_uuid', 191)->nullable()->index();
             $table->string('product_uuid', 191)->nullable()->index();
+            $table->string('variant_uuid', 191)->nullable()->index();
             $table->integer('quantity')->default(0);
             $table->integer('quantity_received')->nullable();
             $table->string('lot_number', 100)->nullable();
@@ -279,40 +283,6 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->foreign('stock_transfer_uuid')->references('uuid')->on('pallet_stock_transfers')->onDelete('cascade');
-        });
-
-        // Add new columns to existing pallet_products table (entities)
-        Schema::table('entities', function (Blueprint $table) {
-            if (!Schema::hasColumn('entities', 'is_serialized')) {
-                $table->boolean('is_serialized')->default(false)->after('type');
-            }
-            if (!Schema::hasColumn('entities', 'is_lot_tracked')) {
-                $table->boolean('is_lot_tracked')->default(false)->after('is_serialized');
-            }
-            if (!Schema::hasColumn('entities', 'is_kit')) {
-                $table->boolean('is_kit')->default(false)->after('is_lot_tracked');
-            }
-            if (!Schema::hasColumn('entities', 'is_perishable')) {
-                $table->boolean('is_perishable')->default(false)->after('is_kit');
-            }
-            if (!Schema::hasColumn('entities', 'requires_quality_check')) {
-                $table->boolean('requires_quality_check')->default(false)->after('is_perishable');
-            }
-            if (!Schema::hasColumn('entities', 'reorder_point')) {
-                $table->integer('reorder_point')->nullable()->after('requires_quality_check');
-            }
-            if (!Schema::hasColumn('entities', 'reorder_quantity')) {
-                $table->integer('reorder_quantity')->nullable()->after('reorder_point');
-            }
-            if (!Schema::hasColumn('entities', 'shelf_life_days')) {
-                $table->integer('shelf_life_days')->nullable()->after('reorder_quantity');
-            }
-            if (!Schema::hasColumn('entities', 'unit_cost')) {
-                $table->decimal('unit_cost', 10, 2)->nullable()->after('shelf_life_days');
-            }
-            if (!Schema::hasColumn('entities', 'unit_price')) {
-                $table->decimal('unit_price', 10, 2)->nullable()->after('unit_cost');
-            }
         });
 
         // Add new columns to existing pallet_inventories table
@@ -387,22 +357,6 @@ return new class extends Migration
         Schema::dropIfExists('pallet_warehouse_zones');
         Schema::dropIfExists('pallet_inventory_reservations');
         Schema::dropIfExists('pallet_product_kit_components');
-
-        // Remove added columns from entities
-        Schema::table('entities', function (Blueprint $table) {
-            $table->dropColumn([
-                'is_serialized',
-                'is_lot_tracked',
-                'is_kit',
-                'is_perishable',
-                'requires_quality_check',
-                'reorder_point',
-                'reorder_quantity',
-                'shelf_life_days',
-                'unit_cost',
-                'unit_price',
-            ]);
-        });
 
         // Remove added columns from pallet_inventories
         Schema::table('pallet_inventories', function (Blueprint $table) {

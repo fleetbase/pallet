@@ -11,6 +11,7 @@ class Audit extends FleetbaseResource
      * Transform the resource into an array.
      *
      * @param \Illuminate\Http\Request $request
+     *
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
@@ -40,7 +41,10 @@ class Audit extends FleetbaseResource
             // Polymorphic subject
             'auditable_uuid'    => $this->auditable_uuid,
             'auditable_type'    => $this->auditable_type,
+            'subject_uuid'      => $this->auditable_uuid,
+            'subject_type'      => $this->auditable_type,
             'subject_label'     => $this->subject_label,
+            'description'       => $this->action,
 
             // Event classification
             'event_type'        => $this->event_type,
@@ -59,6 +63,7 @@ class Audit extends FleetbaseResource
             'completed_at'      => $this->completed_at,
             'updated_at'        => $this->updated_at,
             'created_at'        => $this->created_at,
+            'performed_by_name' => $this->performedBy?->name,
         ];
     }
 }

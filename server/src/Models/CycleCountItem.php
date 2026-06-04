@@ -37,6 +37,7 @@ class CycleCountItem extends Model
         'company_uuid',
         'cycle_count_uuid',
         'product_uuid',
+        'variant_uuid',
         'inventory_uuid',
         'bin_location_uuid',
         'expected_quantity',
@@ -76,7 +77,7 @@ class CycleCountItem extends Model
      *
      * @var array
      */
-    protected $with = ['product', 'binLocation'];
+    protected $with = ['product', 'variant', 'binLocation'];
 
     /**
      * Get the cycle count.
@@ -95,7 +96,12 @@ class CycleCountItem extends Model
      */
     public function product()
     {
-        return $this->belongsTo(Product::class, 'product_uuid');
+        return $this->belongsTo(Product::class, 'product_uuid', 'uuid');
+    }
+
+    public function variant()
+    {
+        return $this->belongsTo(ProductVariant::class, 'variant_uuid', 'uuid');
     }
 
     /**
@@ -141,16 +147,17 @@ class CycleCountItem extends Model
     /**
      * Record count.
      *
-     * @param int $quantity
+     * @param int         $quantity
      * @param string|null $userUuid
+     *
      * @return bool
      */
     public function recordCount($quantity, $userUuid = null)
     {
         $this->counted_quantity = $quantity;
-        $this->variance = $quantity - $this->expected_quantity;
-        $this->status = 'counted';
-        $this->counted_at = now();
+        $this->variance         = $quantity - $this->expected_quantity;
+        $this->status           = 'counted';
+        $this->counted_at       = now();
         if ($userUuid) {
             $this->counted_by_uuid = $userUuid;
         }
@@ -172,6 +179,7 @@ class CycleCountItem extends Model
         return StockAdjustment::create([
             'company_uuid'    => $this->company_uuid,
             'product_uuid'    => $this->product_uuid,
+            'variant_uuid'    => $this->variant_uuid,
             'inventory_uuid'  => $this->inventory_uuid,
             'warehouse_uuid'  => $this->inventory->warehouse_uuid ?? null,
             'quantity'        => $this->variance,

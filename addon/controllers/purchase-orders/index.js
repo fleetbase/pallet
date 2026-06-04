@@ -290,7 +290,7 @@ export default class PurchaseOrdersIndexController extends Controller {
      * @void
      */
     @action viewPurchaseOrder(purchaseOrder) {
-        this.hostRouter.transitionTo('console.pallet.purchase-orders.index.details', purchaseOrder);
+        this.hostRouter.transitionTo('console.pallet.orders.purchase-orders.index.details', purchaseOrder);
     }
 
     /**
@@ -299,7 +299,7 @@ export default class PurchaseOrdersIndexController extends Controller {
      * @void
      */
     @action createPurchaseOrder() {
-        this.hostRouter.transitionTo('console.pallet.purchase-orders.index.new');
+        this.hostRouter.transitionTo('console.pallet.orders.purchase-orders.index.new');
     }
 
     /**
@@ -309,7 +309,7 @@ export default class PurchaseOrdersIndexController extends Controller {
      * @void
      */
     @action editPurchaseOrder(purchaseOrder) {
-        this.hostRouter.transitionTo('console.pallet.purchase-orders.index.edit', purchaseOrder);
+        this.hostRouter.transitionTo('console.pallet.orders.purchase-orders.index.edit', purchaseOrder);
     }
 
     /**

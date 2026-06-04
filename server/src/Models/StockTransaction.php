@@ -30,7 +30,7 @@ class StockTransaction extends Model
      *
      * @var array
      */
-    protected $searchableColumns = ['uuid', 'product_uuid', 'transaction_type', 'quantity', 'transaction_date'];
+    protected $searchableColumns = ['uuid', 'product_uuid', 'variant_uuid', 'transaction_type', 'quantity', 'transaction_date'];
 
     /**
      * The attributes that are mass assignable.
@@ -39,7 +39,10 @@ class StockTransaction extends Model
      */
     protected $fillable = [
         'uuid',
+        'company_uuid',
+        'created_by_uuid',
         'product_uuid',
+        'variant_uuid',
         'transaction_type',
         'quantity',
         'transaction_date_at',

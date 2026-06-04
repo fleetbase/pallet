@@ -5,13 +5,12 @@ namespace Fleetbase\Pallet\Models;
 use Fleetbase\Casts\Json;
 use Fleetbase\Models\Model;
 use Fleetbase\Models\User;
+use Fleetbase\Pallet\Traits\HasOperationalAuditTrail;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
-use Fleetbase\Pallet\Traits\HasOperationalAuditTrail;
-
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class StockAdjustment extends Model
 {
@@ -67,6 +66,7 @@ class StockAdjustment extends Model
         'company_uuid',
         'created_by_uuid',
         'product_uuid',
+        'variant_uuid',
         'assignee_uuid',
         'type',
         'reason',
@@ -119,7 +119,7 @@ class StockAdjustment extends Model
      */
     public function createdBy()
     {
-        return $this->belongsTo(\Fleetbase\Models\User::class, 'created_by_uuid', 'uuid');
+        return $this->belongsTo(User::class, 'created_by_uuid', 'uuid');
     }
 
     /**
@@ -132,9 +132,14 @@ class StockAdjustment extends Model
         return $this->belongsTo(Product::class, 'product_uuid', 'uuid');
     }
 
+    public function variant()
+    {
+        return $this->belongsTo(ProductVariant::class, 'variant_uuid', 'uuid');
+    }
+
     public function user()
     {
-        return $this->belongsTo(\Fleetbase\Models\User::class, 'assignee_uuid');
+        return $this->belongsTo(User::class, 'assignee_uuid');
     }
 
     /**
@@ -153,6 +158,7 @@ class StockAdjustment extends Model
                 $adjustment->reason,
                 [
                     'product_uuid'    => $adjustment->product_uuid,
+                    'variant_uuid'    => $adjustment->variant_uuid,
                     'before_quantity' => $adjustment->before_quantity,
                     'after_quantity'  => $adjustment->after_quantity,
                     'quantity_delta'  => $adjustment->quantity,
@@ -160,11 +166,10 @@ class StockAdjustment extends Model
             );
         });
     }
+
     /**
      * Configure Spatie activity log options.
      * Logs only the specified attributes when they change (dirty only).
-     *
-     * @return LogOptions
      */
     public function getActivitylogOptions(): LogOptions
     {
@@ -179,5 +184,4 @@ class StockAdjustment extends Model
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
     }
-
 }

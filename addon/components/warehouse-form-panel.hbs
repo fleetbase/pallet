@@ -1,7 +1,28 @@
-<Overlay @onLoad={{this.setOverlayContext}} @position="right" @noBackdrop={{true}} @fullHeight={{true}} @isResizable={{or this.isResizable @isResizable}} @width={{or this.width @width "600px"}}>
-    <Overlay::Header @title={{if this.warehouse.public_id this.warehouse.name "New Warehouse"}} @status={{this.warehouse.public_id}} @hideStatusDot={{true}} @createdAt={{this.warehouse.createdAt}} @titleWrapperClass="leading-5">
+<Overlay
+    @onLoad={{this.setOverlayContext}}
+    @position="right"
+    @noBackdrop={{true}}
+    @fullHeight={{true}}
+    @isResizable={{or this.isResizable @isResizable}}
+    @width={{or this.width @width "600px"}}
+>
+    <Overlay::Header
+        @title={{if this.warehouse.public_id this.warehouse.name "New Warehouse"}}
+        @status={{this.warehouse.public_id}}
+        @hideStatusDot={{true}}
+        @createdAt={{this.warehouse.createdAt}}
+        @titleWrapperClass="leading-5"
+    >
         <div class="flex flex-1 justify-end">
-            <Button @icon={{if this.warehouse.id "save" "check"}} @type="primary" @text={{if this.warehouse.id "Save Warehouse" "Create Warehouse"}} @onClick={{this.save}} @wrapperClass="mr-2" />
+            <Button
+                @icon={{if this.warehouse.id "save" "check"}}
+                @type="primary"
+                @text={{if this.warehouse.id "Save Warehouse" "Create Warehouse"}}
+                @onClick={{perform this.saveTask}}
+                @wrapperClass="mr-2"
+                @isLoading={{this.saveTask.isRunning}}
+                @disabled={{this.saveTask.isRunning}}
+            />
             <Button @type="default" @icon="times" @helpText={{if this.warehouse.id "Cancel edit warehouse" "Cancel new warehouse"}} @onClick={{this.onPressCancel}} />
         </div>
     </Overlay::Header>
@@ -67,10 +88,21 @@
                 <InputGroup @name="City" @autocomplete="nope" @value={{this.warehouse.city}} />
                 <InputGroup @name="State" @autocomplete="nope" @value={{this.warehouse.province}} />
                 <InputGroup @name="Country" @wrapperClass="col-span-2">
-                    <CountrySelect class="w-full form-input form-select form-datalist" @value={{this.warehouse.country}} @onChange={{fn (mut this.warehouse.country)}} placeholder="Country" />
+                    <CountrySelect
+                        class="w-full form-input form-select form-datalist"
+                        @value={{this.warehouse.country}}
+                        @onChange={{fn (mut this.warehouse.country)}}
+                        placeholder="Country"
+                    />
                 </InputGroup>
                 <InputGroup @name="Coordinates" @wrapperClass="col-span-2">
-                    <CoordinatesInput @value={{this.warehouse.location}} @onChange={{this.updateWarehouseCoordinates}} @onGeocode={{this.onAutocomplete}} @onUpdatedFromMap={{this.onReverseGeocode}} @onInit={{this.setCoordinatesInput}} />
+                    <CoordinatesInput
+                        @value={{this.warehouse.location}}
+                        @onChange={{this.updateWarehouseCoordinates}}
+                        @onGeocode={{this.onAutocomplete}}
+                        @onUpdatedFromMap={{this.onReverseGeocode}}
+                        @onInit={{this.setCoordinatesInput}}
+                    />
                 </InputGroup>
             </ContentPanel>
 

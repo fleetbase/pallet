@@ -2,109 +2,69 @@ import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import { task } from 'ember-concurrency';
+
 export default class SuppliersIndexEditController extends Controller {
-    /**
-     * Inject the `hostRouter` service
-     *
-     * @memberof ManagementSuppliersIndexEditController
-     */
     @service hostRouter;
-
-    /**
-     * Inject the `hostRouter` service
-     *
-     * @memberof ManagementSuppliersIndexEditController
-     */
+    @service intl;
+    @service notifications;
     @service modalsManager;
+    @service events;
 
-    /**
-     * The overlay component context.
-     *
-     * @memberof ManagementSuppliersIndexEditController
-     */
     @tracked overlay;
 
-    /**
-     * When exiting the overlay.
-     *
-     * @return {Transition}
-     * @memberof ManagementSuppliersIndexEditController
-     */
-    @action transitionBack(supplier) {
-        // check if supplier record has been edited and prompt for confirmation
-        if (supplier.hasDirtyAttributes) {
-            return this.confirmContinueWithUnsavedChanges(supplier, {
-                confirm: () => {
-                    supplier.rollbackAttributes();
-                    return this.hostRouter.transitionTo('console.pallet.supplier.index');
-                },
-            });
-        }
-
-        return this.hostRouter.transitionTo('console.pallet.supplier.index');
-    }
-
-    /**
-     * Set the overlay component context object.
-     *
-     * @param {OverlayContext} overlay
-     * @memberof ManagementSuppliersIndexEditController
-     */
-    @action setOverlayContext(overlay) {
-        this.overlay = overlay;
-    }
-
-    /**
-     * When supplier details button is clicked in overlay.
-     *
-     * @param {SupplierModel} supplier
-     * @return {Promise}
-     * @memberof ManagementSuppliersIndexEditController
-     */
-    @action onViewDetails(supplier) {
-        // check if supplier record has been edited and prompt for confirmation
-        if (supplier.hasDirtyAttributes) {
-            return this.confirmContinueWithUnsavedChanges(supplier);
-        }
-
-        return this.hostRouter.transitionTo('console.pallet.suppliers.index.details', supplier);
-    }
-
-    /**
-     * Trigger a route refresh and focus the new supplier created.
-     *
-     * @param {SupplierModel} supplier
-     * @return {Promise}
-     * @memberof ManagementSuppliersIndexEditController
-     */
-    @action onAfterSave(supplier) {
-        if (this.overlay) {
-            this.overlay.close();
-        }
-
-        this.hostRouter.refresh();
-        return this.hostRouter.transitionTo('console.pallet.suppliers.index.details', supplier);
-    }
-
-    /**
-     * Prompts the user to confirm if they wish to continue with unsaved changes.
-     *
-     * @method
-     * @param {SupplierModel} supplier - The supplier object with unsaved changes.
-     * @param {Object} [options={}] - Additional options for configuring the modal.
-     * @returns {Promise} A promise that resolves when the user confirms, and transitions to a new route.
-     * @memberof ManagementSuppliersIndexEditController
-     */
-    confirmContinueWithUnsavedChanges(supplier, options = {}) {
-        return this.modalsManager.confirm({
-            title: 'Continue Without Saving?',
-            body: 'Unsaved changes to this supplier will be lost. Click continue to proceed.',
-            acceptButtonText: 'Continue without saving',
-            confirm: () => {
-                supplier.rollbackAttributes();
-                return this.hostRouter.transitionTo('console.pallet.supplier.index.details', supplier);
+    get actionButtons() {
+        return [
+            {
+                icon: 'eye',
+                fn: this.view,
             },
-            ...options,
+        ];
+    }
+
+    @task *save(supplier) {
+        try {
+            yield supplier.save();
+            this.events.trackResourceUpdated(supplier);
+            this.overlay?.close();
+
+            yield this.hostRouter.transitionTo('console.pallet.catalog.suppliers.index.details', supplier);
+            this.notifications.success(
+                this.intl.t('common.resource-updated-success', {
+                    resource: 'Supplier',
+                    resourceName: supplier.name,
+                })
+            );
+        } catch (error) {
+            this.notifications.serverError(error);
+        }
+    }
+
+    @action cancel() {
+        if (this.model.hasDirtyAttributes) {
+            return this.confirmContinueWithUnsavedChanges(this.model, 'console.pallet.catalog.suppliers.index');
+        }
+
+        return this.hostRouter.transitionTo('console.pallet.catalog.suppliers.index');
+    }
+
+    @action view() {
+        if (this.model.hasDirtyAttributes) {
+            return this.confirmContinueWithUnsavedChanges(this.model, 'console.pallet.catalog.suppliers.index.details');
+        }
+
+        return this.hostRouter.transitionTo('console.pallet.catalog.suppliers.index.details', this.model);
+    }
+
+    confirmContinueWithUnsavedChanges(supplier, routeName) {
+        return this.modalsManager.confirm({
+            title: this.intl.t('common.continue-without-saving'),
+            body: this.intl.t('common.continue-without-saving-prompt', { resource: 'Supplier' }),
+            acceptButtonText: this.intl.t('common.continue'),
+            confirm: async () => {
+                supplier.rollbackAttributes();
+                await this.hostRouter.transitionTo(routeName, supplier);
+            },
         });
     }
 }

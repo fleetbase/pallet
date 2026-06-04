@@ -14,7 +14,15 @@
         @titleWrapperClass="leading-5"
     >
         <div class="flex flex-1 justify-end">
-            <Button @icon={{if this.product.id "save" "check"}} @type="primary" @text={{if this.product.id "Save Product" "Add Product"}} @onClick={{this.save}} @wrapperClass="mr-2" />
+            <Button
+                @icon={{if this.product.id "save" "check"}}
+                @type="primary"
+                @text={{if this.product.id "Save Product" "Add Product"}}
+                @onClick={{perform this.saveTask}}
+                @wrapperClass="mr-2"
+                @isLoading={{this.saveTask.isRunning}}
+                @disabled={{this.saveTask.isRunning}}
+            />
             {{#if this.product.id}}
                 <Button @type="default" @icon="box-archive" @helpText="View product details" @onClick={{this.onViewDetails}} @wrapperClass="mr-2" />
             {{/if}}
@@ -72,10 +80,10 @@
 
             <ContentPanel @title="Pricing & Value" @open={{false}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
                 <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-2">
-                    <InputGroup @name="Price" @helpText="Price of entity." @wrapperClass="mb-2">
+                    <InputGroup @name="Unit Price" @helpText="Default product sale price." @wrapperClass="mb-2">
                         <MoneyInput
                             class="w-full"
-                            @value={{this.product.price}}
+                            @value={{this.product.unit_price}}
                             @currency={{this.product.currency}}
                             @canSelectCurrency={{true}}
                             @onCurrencyChange={{this.product.currency}}

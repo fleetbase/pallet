@@ -2,14 +2,14 @@
 
 namespace Fleetbase\Pallet\Http\Controllers;
 
+use Fleetbase\Exceptions\FleetbaseRequestValidationException;
+use Fleetbase\Pallet\Http\Resources\SalesOrder as SalesOrderResource;
 use Fleetbase\Pallet\Models\Inventory;
 use Fleetbase\Pallet\Models\SalesOrder;
 use Fleetbase\Pallet\Models\SalesOrderItem;
-use Fleetbase\Pallet\Http\Resources\SalesOrder as SalesOrderResource;
-use Fleetbase\Exceptions\FleetbaseRequestValidationException;
 use Fleetbase\Support\Http;
-use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class SalesOrderController extends PalletResourceController
@@ -24,7 +24,6 @@ class SalesOrderController extends PalletResourceController
     /**
      * Create a new Sales Order.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function createRecord(Request $request)
@@ -87,8 +86,8 @@ class SalesOrderController extends PalletResourceController
      *   ]
      * }
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $id  The SO public_id or UUID
+     * @param string $id The SO public_id or UUID
+     *
      * @return \Illuminate\Http\Response
      */
     public function fulfill(Request $request, string $id)
@@ -113,7 +112,7 @@ class SalesOrderController extends PalletResourceController
                 return response()->error('No items provided for fulfillment.', 422);
             }
 
-            $fulfilledSummary = [];
+            $fulfilledSummary  = [];
             $insufficientStock = [];
 
             // ------------------------------------------------------------------
@@ -146,6 +145,7 @@ class SalesOrderController extends PalletResourceController
                 } else {
                     $inventory = Inventory::where('company_uuid', $salesOrder->company_uuid)
                         ->where('product_uuid', $item->product_uuid)
+                        ->where('variant_uuid', $item->variant_uuid)
                         ->where('warehouse_uuid', $warehouseUuid)
                         ->where('status', 'available')
                         ->orderBy('expiry_date_at', 'asc') // FEFO: First Expired, First Out
@@ -156,6 +156,7 @@ class SalesOrderController extends PalletResourceController
                     $insufficientStock[] = [
                         'item_uuid'          => $itemUuid,
                         'product_uuid'       => $item->product_uuid,
+                        'variant_uuid'       => $item->variant_uuid,
                         'requested'          => $qtyFulfill,
                         'available'          => $inventory ? $inventory->available_quantity : 0,
                     ];
@@ -164,7 +165,7 @@ class SalesOrderController extends PalletResourceController
 
             if (!empty($insufficientStock)) {
                 return response()->json([
-                    'error'             => 'Insufficient stock for one or more items.',
+                    'error'              => 'Insufficient stock for one or more items.',
                     'insufficient_stock' => $insufficientStock,
                 ], 422);
             }
@@ -209,6 +210,7 @@ class SalesOrderController extends PalletResourceController
                     } else {
                         $inventory = Inventory::where('company_uuid', $salesOrder->company_uuid)
                             ->where('product_uuid', $item->product_uuid)
+                            ->where('variant_uuid', $item->variant_uuid)
                             ->where('warehouse_uuid', $warehouseUuid)
                             ->where('status', 'available')
                             ->orderBy('expiry_date_at', 'asc') // FEFO
@@ -242,6 +244,7 @@ class SalesOrderController extends PalletResourceController
                     $fulfilledSummary[] = [
                         'item_uuid'          => $item->uuid,
                         'product_uuid'       => $item->product_uuid,
+                        'variant_uuid'       => $item->variant_uuid,
                         'quantity_fulfilled' => $qtyToFulfill,
                         'inventory_uuid'     => $inventory->uuid,
                         'status'             => $item->status,

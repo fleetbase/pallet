@@ -2,110 +2,69 @@ import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { task } from 'ember-concurrency';
 
 export default class WarehousesIndexEditController extends Controller {
-    /**
-     * Inject the `hostRouter` service
-     *
-     * @memberof WarehousesIndexEditController
-     */
     @service hostRouter;
-
-    /**
-     * Inject the `hostRouter` service
-     *
-     * @memberof WarehousesIndexEditController
-     */
+    @service intl;
+    @service notifications;
     @service modalsManager;
+    @service events;
 
-    /**
-     * The overlay component context.
-     *
-     * @memberof WarehousesIndexEditController
-     */
     @tracked overlay;
 
-    /**
-     * When exiting the overlay.
-     *
-     * @return {Transition}
-     * @memberof warehousesIndexEditController
-     */
-    @action transitionBack(warehouse) {
-        // check if warehouse record has been edited and prompt for confirmation
-        if (warehouse.hasDirtyAttributes) {
-            return this.confirmContinueWithUnsavedChanges(warehouse, {
-                confirm: () => {
-                    warehouse.rollbackAttributes();
-                    return this.hostRouter.transitionTo('console.pallet.management.warehouses.index');
-                },
-            });
-        }
-
-        return this.hostRouter.transitionTo('console.pallet.warehouses.index');
-    }
-
-    /**
-     * Set the overlay component context object.
-     *
-     * @param {OverlayContext} overlay
-     * @memberof WarehousesIndexEditController
-     */
-    @action setOverlayContext(overlay) {
-        this.overlay = overlay;
-    }
-
-    /**
-     * When warehouse details button is clicked in overlay.
-     *
-     * @param {WarehouseModel} warehouse
-     * @return {Promise}
-     * @memberof WarehousesIndexEditController
-     */
-    @action onViewDetails(warehouse) {
-        // check if warehouse record has been edited and prompt for confirmation
-        if (warehouse.hasDirtyAttributes) {
-            return this.confirmContinueWithUnsavedChanges(warehouse);
-        }
-
-        return this.hostRouter.transitionTo('console.pallet.warehouses.index.details', warehouse);
-    }
-
-    /**
-     * Trigger a route refresh and focus the new warehouse created.
-     *
-     * @param {WarehouseModel} warehouse
-     * @return {Promise}
-     * @memberof WarehousesIndexEditController
-     */
-    @action onAfterSave(warehouse) {
-        if (this.overlay) {
-            this.overlay.close();
-        }
-
-        this.hostRouter.refresh();
-        return this.hostRouter.transitionTo('console.pallet.warehouses.index.details', warehouse);
-    }
-
-    /**
-     * Prompts the user to confirm if they wish to continue with unsaved changes.
-     *
-     * @method
-     * @param {WarehouseModel} warehouse - The warehouse object with unsaved changes.
-     * @param {Object} [options={}] - Additional options for configuring the modal.
-     * @returns {Promise} A promise that resolves when the user confirms, and transitions to a new route.
-     * @memberof WarehousesIndexEditController
-     */
-    confirmContinueWithUnsavedChanges(warehouse, options = {}) {
-        return this.modalsManager.confirm({
-            title: 'Continue Without Saving?',
-            body: 'Unsaved changes to this warehouse will be lost. Click continue to proceed.',
-            acceptButtonText: 'Continue without saving',
-            confirm: () => {
-                warehouse.rollbackAttributes();
-                return this.hostRouter.transitionTo('console.pallet.warehouses.index.details', warehouse);
+    get actionButtons() {
+        return [
+            {
+                icon: 'eye',
+                fn: this.view,
             },
-            ...options,
+        ];
+    }
+
+    @task *save(warehouse) {
+        try {
+            yield warehouse.save();
+            this.events.trackResourceUpdated(warehouse);
+            this.overlay?.close();
+
+            yield this.hostRouter.transitionTo('console.pallet.facilities.warehouses.index.details', warehouse);
+            this.notifications.success(
+                this.intl.t('common.resource-updated-success', {
+                    resource: 'Warehouse',
+                    resourceName: warehouse.name,
+                })
+            );
+        } catch (error) {
+            this.notifications.serverError(error);
+        }
+    }
+
+    @action cancel() {
+        if (this.model.hasDirtyAttributes) {
+            return this.confirmContinueWithUnsavedChanges(this.model, 'console.pallet.facilities.warehouses.index');
+        }
+
+        return this.hostRouter.transitionTo('console.pallet.facilities.warehouses.index');
+    }
+
+    @action view() {
+        if (this.model.hasDirtyAttributes) {
+            return this.confirmContinueWithUnsavedChanges(this.model, 'console.pallet.facilities.warehouses.index.details');
+        }
+
+        return this.hostRouter.transitionTo('console.pallet.facilities.warehouses.index.details', this.model);
+    }
+
+    confirmContinueWithUnsavedChanges(warehouse, routeName) {
+        return this.modalsManager.confirm({
+            title: this.intl.t('common.continue-without-saving'),
+            body: this.intl.t('common.continue-without-saving-prompt', { resource: 'Warehouse' }),
+            acceptButtonText: this.intl.t('common.continue'),
+            confirm: async () => {
+                warehouse.rollbackAttributes();
+                await this.hostRouter.transitionTo(routeName, warehouse);
+            },
         });
     }
 }

@@ -291,7 +291,7 @@ export default class SalesOrdersIndexController extends Controller {
      * @void
      */
     @action viewSalesOrder(salesOrder) {
-        this.hostRouter.transitionTo('console.pallet.sales-orders.index.details', salesOrder);
+        this.hostRouter.transitionTo('console.pallet.orders.sales-orders.index.details', salesOrder);
     }
 
     /**
@@ -300,7 +300,7 @@ export default class SalesOrdersIndexController extends Controller {
      * @void
      */
     @action createSalesOrder() {
-        this.hostRouter.transitionTo('console.pallet.sales-orders.index.new');
+        this.hostRouter.transitionTo('console.pallet.orders.sales-orders.index.new');
     }
 
     /**
@@ -310,7 +310,7 @@ export default class SalesOrdersIndexController extends Controller {
      * @void
      */
     @action editSalesOrder(salesOrder) {
-        this.hostRouter.transitionTo('console.pallet.sales-orders.index.edit', salesOrder);
+        this.hostRouter.transitionTo('console.pallet.orders.sales-orders.index.edit', salesOrder);
     }
 
     /**

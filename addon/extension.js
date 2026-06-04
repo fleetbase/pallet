@@ -20,7 +20,7 @@ export default {
                 description: 'Overview of total SKUs, total stock units, and inventory value across all warehouses',
                 icon: 'boxes-stacked',
                 component: new ExtensionComponent('@fleetbase/pallet-engine', 'widget/inventory-summary'),
-                grid_options: { w: 12, h: 4, minW: 8, minH: 3 },
+                grid_options: { w: 12, h: 6, minW: 8, minH: 5 },
                 options: { title: 'Inventory Summary' },
                 default: true,
             }),

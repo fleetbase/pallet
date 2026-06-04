@@ -2,87 +2,40 @@ import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import { task } from 'ember-concurrency';
 
 export default class ProductsIndexNewController extends Controller {
-    /**
-     * Inject the `store` service
-     *
-     * @memberof ProductsIndexNewController
-     */
-    @service store;
-
-    /**
-     * Inject the `hostRouter` service
-     *
-     * @memberof ProductsIndexNewController
-     */
+    @service productActions;
     @service hostRouter;
+    @service intl;
+    @service notifications;
+    @service events;
 
-    /**
-     * Inject the `hostRouter` service
-     *
-     * @memberof ProductsIndexNewController
-     */
-    @service modalsManager;
-
-    /**
-     * The overlay component context.
-     *
-     * @memberof ProductsIndexNewController
-     */
     @tracked overlay;
+    @tracked product = this.productActions.createNewInstance();
 
-    /**
-     * The product being created.
-     *
-     * @var {EntityModel}
-     */
-    @tracked product = this.store.createRecord('pallet-product', { type: 'pallet-product' });
+    @task *save(product) {
+        try {
+            yield product.save();
+            this.events.trackResourceCreated(product);
+            this.overlay?.close();
 
-    /**
-     * Set the overlay component context object.
-     *
-     * @param {OverlayContext} overlay
-     * @memberof ProductsIndexNewController
-     */
-    @action setOverlayContext(overlay) {
-        this.overlay = overlay;
-    }
-
-    /**
-     * When exiting the overlay.
-     *
-     * @return {Transition}
-     * @memberof ProductsIndexNewController
-     */
-    @action transitionBack() {
-        return this.hostRouter.transitionTo('console.pallet.products.index');
-    }
-
-    /**
-     * Trigger a route refresh and focus the new product created.
-     *
-     * @param {productModel} product
-     * @return {Promise}
-     * @memberof ProductsIndexNewController
-     */
-    @action onAfterSave(product) {
-        if (this.overlay) {
-            this.overlay.close();
-        }
-
-        this.hostRouter.refresh();
-        return this.hostRouter.transitionTo('console.pallet.products.index.details', product).then(() => {
+            yield this.hostRouter.refresh();
+            yield this.hostRouter.transitionTo('console.pallet.catalog.products.index.details', product);
+            this.notifications.success(
+                this.intl.t('common.resource-created-success-name', {
+                    resource: 'Product',
+                    resourceName: product.name,
+                })
+            );
             this.resetForm();
-        });
+        } catch (error) {
+            this.notifications.serverError(error);
+        }
     }
 
-    /**
-     * Resets the form with a new product record
-     *
-     * @memberof ProductsIndexNewController
-     */
+    @action
     resetForm() {
-        this.product = this.store.createRecord('pallet-product', { type: 'pallet-product', status: 'active' });
+        this.product = this.productActions.createNewInstance();
     }
 }

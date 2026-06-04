@@ -14,54 +14,11 @@ export default class SuppliersIndexController extends Controller {
      */
     @controller('warehouses.index') warehouses;
 
-    /**
-     * Inject the `notifications` service
-     *
-     * @var {Service}
-     */
-    @service notifications;
-
-    /**
-     * Inject the `modals-manager` service
-     *
-     * @var {Service}
-     */
-    @service modalsManager;
-
-    /**
-     * Inject the `crud` service
-     *
-     * @var {Service}
-     */
-    @service crud;
-
-    /**
-     * Inject the `store` service
-     *
-     * @var {Service}
-     */
+    @service supplierActions;
+    @service warehouseActions;
+    @service tableContext;
+    @service intl;
     @service store;
-
-    /**
-     * Inject the `filters` service
-     *
-     * @var {Service}
-     */
-    @service filters;
-
-    /**
-     * Inject the `hostRouter` service
-     *
-     * @var {Service}
-     */
-    @service hostRouter;
-
-    /**
-     * Inject the `fetch` service
-     *
-     * @var {Service}
-     */
-    @service fetch;
 
     /**
      * Queryable parameters for this controller's model
@@ -159,180 +116,210 @@ export default class SuppliersIndexController extends Controller {
      *
      * @var {Array}
      */
-    @tracked rows = [];
+    @tracked table;
 
-    /**
-     * All columns for the table
-     *
-     * @var {Array}
-     */
-    @tracked columns = [
-        {
-            label: 'Name',
-            valuePath: 'name',
-            width: '180px',
-            cellComponent: 'table/cell/media-name',
-            mediaPath: 'logo_url',
-            action: this.viewSupplier,
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterComponent: 'filter/string',
-        },
-        {
-            label: 'ID',
-            valuePath: 'public_id',
-            cellComponent: 'click-to-copy',
-            width: '110px',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterComponent: 'filter/string',
-        },
-        {
-            label: 'Internal ID',
-            valuePath: 'internal_id',
-            cellComponent: 'click-to-copy',
-            width: '100px',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterComponent: 'filter/string',
-        },
-        {
-            label: 'Email',
-            valuePath: 'email',
-            cellComponent: 'click-to-copy',
-            width: '80px',
-            resizable: true,
-            sortable: true,
-            hidden: true,
-            filterable: true,
-            filterComponent: 'filter/string',
-        },
-        {
-            label: 'Website URL',
-            valuePath: 'website_url',
-            cellComponent: 'click-to-copy',
-            width: '80px',
-            resizable: true,
-            sortable: true,
-            hidden: true,
-            filterable: true,
-            filterComponent: 'filter/string',
-        },
-        {
-            label: 'Phone',
-            valuePath: 'phone',
-            cellComponent: 'click-to-copy',
-            width: '80px',
-            resizable: true,
-            sortable: true,
-            hidden: true,
-            filterable: true,
-            filterComponent: 'filter/string',
-        },
-        {
-            label: 'Address',
-            valuePath: 'address',
-            cellComponent: 'table/cell/anchor',
-            action: this.viewSupplierPlace,
-            width: '150px',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterParam: 'address',
-            filterComponent: 'filter/string',
-        },
-        {
-            label: 'Type',
-            valuePath: 'type',
-            cellComponent: 'table/cell/anchor',
-            action: this.viewSupplierPlace,
-            width: '150px',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterParam: 'type',
-            filterComponent: 'filter/string',
-        },
-        {
-            label: 'Country',
-            valuePath: 'country',
-            cellComponent: 'table/cell/base',
-            cellClassNames: 'uppercase',
-            width: '120px',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterComponent: 'filter/country',
-            filterParam: 'country',
-        },
-        {
-            label: 'Created At',
-            valuePath: 'createdAt',
-            sortParam: 'created_at',
-            width: '150px',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterComponent: 'filter/date',
-        },
-        {
-            label: 'Updated At',
-            valuePath: 'updatedAt',
-            sortParam: 'updated_at',
-            width: '130px',
-            resizable: true,
-            sortable: true,
-            hidden: true,
-            filterable: true,
-            filterComponent: 'filter/date',
-        },
-        {
-            label: 'Status',
-            valuePath: 'status',
-            cellComponent: 'table/cell/status',
-            width: '130px',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterComponent: 'filter/multi-option',
-            filterOptions: getSupplierStatusOptions(),
-        },
-        {
-            label: '',
-            cellComponent: 'table/cell/dropdown',
-            ddButtonText: false,
-            ddButtonIcon: 'ellipsis-h',
-            ddButtonIconPrefix: 'fas',
-            ddMenuLabel: 'Supplier Actions',
-            cellClassNames: 'overflow-visible',
-            wrapperClass: 'flex items-center justify-end mx-2',
-            width: '7%',
-            actions: [
-                {
-                    label: 'View Supplier Details',
-                    fn: this.viewSupplier,
-                },
-                {
-                    label: 'Edit Supplier',
-                    fn: this.editSupplier,
-                },
-                {
-                    separator: true,
-                },
-                {
-                    label: 'Delete Supplier',
-                    fn: this.deleteSupplier,
-                },
-            ],
-            sortable: false,
-            filterable: false,
-            resizable: false,
-            searchable: false,
-        },
-    ];
+    get actionButtons() {
+        return [
+            {
+                icon: 'refresh',
+                onClick: this.supplierActions.refresh,
+                helpText: this.intl.t('common.refresh'),
+            },
+            {
+                text: this.intl.t('common.new'),
+                type: 'primary',
+                icon: 'plus',
+                onClick: this.supplierActions.transition.create,
+            },
+            {
+                text: this.intl.t('common.export'),
+                icon: 'long-arrow-up',
+                iconClass: 'rotate-icon-45',
+                wrapperClass: 'hidden md:flex',
+                onClick: this.supplierActions.export,
+            },
+        ];
+    }
+
+    get bulkActions() {
+        const selected = this.tableContext.getSelectedRows();
+
+        return [
+            {
+                label: this.intl.t('common.delete-selected-count', { count: selected.length }),
+                class: 'text-red-500',
+                fn: this.supplierActions.bulkDelete,
+            },
+        ];
+    }
+
+    get columns() {
+        return [
+            {
+                label: 'Name',
+                valuePath: 'name',
+                width: '180px',
+                cellComponent: 'table/cell/media-name',
+                mediaPath: 'logo_url',
+                action: this.supplierActions.transition.view,
+                resizable: true,
+                sortable: true,
+                filterable: true,
+                filterComponent: 'filter/string',
+            },
+            {
+                label: 'ID',
+                valuePath: 'public_id',
+                cellComponent: 'click-to-copy',
+                width: '110px',
+                resizable: true,
+                sortable: true,
+                filterable: true,
+                filterComponent: 'filter/string',
+            },
+            {
+                label: 'Internal ID',
+                valuePath: 'internal_id',
+                cellComponent: 'click-to-copy',
+                width: '100px',
+                resizable: true,
+                sortable: true,
+                filterable: true,
+                filterComponent: 'filter/string',
+            },
+            {
+                label: 'Email',
+                valuePath: 'email',
+                cellComponent: 'click-to-copy',
+                width: '80px',
+                resizable: true,
+                sortable: true,
+                hidden: true,
+                filterable: true,
+                filterComponent: 'filter/string',
+            },
+            {
+                label: 'Website URL',
+                valuePath: 'website_url',
+                cellComponent: 'click-to-copy',
+                width: '80px',
+                resizable: true,
+                sortable: true,
+                hidden: true,
+                filterable: true,
+                filterComponent: 'filter/string',
+            },
+            {
+                label: 'Phone',
+                valuePath: 'phone',
+                cellComponent: 'click-to-copy',
+                width: '80px',
+                resizable: true,
+                sortable: true,
+                hidden: true,
+                filterable: true,
+                filterComponent: 'filter/string',
+            },
+            {
+                label: 'Address',
+                valuePath: 'address',
+                cellComponent: 'table/cell/anchor',
+                action: this.viewSupplierWarehouse,
+                width: '150px',
+                resizable: true,
+                sortable: true,
+                filterable: true,
+                filterParam: 'address',
+                filterComponent: 'filter/string',
+            },
+            {
+                label: 'Type',
+                valuePath: 'type',
+                width: '150px',
+                resizable: true,
+                sortable: true,
+                filterable: true,
+                filterParam: 'type',
+                filterComponent: 'filter/string',
+            },
+            {
+                label: 'Country',
+                valuePath: 'country',
+                cellComponent: 'table/cell/base',
+                cellClassNames: 'uppercase',
+                width: '120px',
+                resizable: true,
+                sortable: true,
+                filterable: true,
+                filterComponent: 'filter/country',
+                filterParam: 'country',
+            },
+            {
+                label: 'Created At',
+                valuePath: 'createdAt',
+                sortParam: 'created_at',
+                width: '150px',
+                resizable: true,
+                sortable: true,
+                filterable: true,
+                filterComponent: 'filter/date',
+            },
+            {
+                label: 'Updated At',
+                valuePath: 'updatedAt',
+                sortParam: 'updated_at',
+                width: '130px',
+                resizable: true,
+                sortable: true,
+                hidden: true,
+                filterable: true,
+                filterComponent: 'filter/date',
+            },
+            {
+                label: 'Status',
+                valuePath: 'status',
+                cellComponent: 'table/cell/status',
+                width: '130px',
+                resizable: true,
+                sortable: true,
+                filterable: true,
+                filterComponent: 'filter/multi-option',
+                filterOptions: getSupplierStatusOptions(),
+            },
+            {
+                label: '',
+                cellComponent: 'table/cell/dropdown',
+                ddButtonText: false,
+                ddButtonIcon: 'ellipsis-h',
+                ddButtonIconPrefix: 'fas',
+                ddMenuLabel: this.intl.t('common.resource-actions', { resource: 'Supplier' }),
+                cellClassNames: 'overflow-visible',
+                wrapperClass: 'flex items-center justify-end mx-2',
+                width: '7%',
+                actions: [
+                    {
+                        label: this.intl.t('common.view-resource', { resource: 'Supplier' }),
+                        fn: this.supplierActions.transition.view,
+                    },
+                    {
+                        label: this.intl.t('common.edit-resource', { resource: 'Supplier' }),
+                        fn: this.supplierActions.transition.edit,
+                    },
+                    {
+                        separator: true,
+                    },
+                    {
+                        label: this.intl.t('common.delete-resource', { resource: 'Supplier' }),
+                        fn: this.supplierActions.delete,
+                    },
+                ],
+                sortable: false,
+                filterable: false,
+                resizable: false,
+                searchable: false,
+            },
+        ];
+    }
 
     /**
      * The search task.
@@ -358,121 +345,14 @@ export default class SuppliersIndexController extends Controller {
         this.query = value;
     }
 
-    /**
-     * Toggles dialog to export `supplier`
-     *
-     * @void
-     */
-    @action exportSuppliers() {
-        this.crud.export('supplier');
-    }
-
-    /**
-     * View a `supplier` details in modal
-     *
-     * @param {SupplierModel} supplier
-     * @void
-     */
-    @action viewSupplier(supplier) {
-        return this.hostRouter.transitionTo('console.pallet.suppliers.index.details', supplier);
-    }
-
-    /**
-     * Create a new `supplier` in modal
-     *
-     * @void
-     */
-    @action async createSupplier() {
-        return this.hostRouter.transitionTo('console.pallet.suppliers.index.new');
-    }
-
-    /**
-     * Edit a `supplier` details
-     *
-     * @param {SupplierModel} supplier
-     * @void
-     */
-    @action editSupplier(supplier) {
-        return this.hostRouter.transitionTo('console.pallet.suppliers.index.edit', supplier);
-    }
-
-    /**
-     * Delete a `supplier` via confirm prompt
-     *
-     * @param {SupplierModel} supplier
-     * @param {Object} options
-     * @void
-     */
-    @action deleteSupplier(supplier, options = {}) {
-        this.crud.delete(supplier, {
-            acceptButtonIcon: 'trash',
-            onSuccess: () => {
-                return this.hostRouter.refresh();
-            },
-            ...options,
-        });
-    }
-
-    /**
-     * Bulk deletes selected `supplier` via confirm prompt
-     *
-     * @param {Array} selected an array of selected models
-     * @void
-     */
-    @action bulkDeleteSuppliers() {
-        const selected = this.table.selectedRows;
-
-        this.crud.bulkDelete(selected, {
-            modelNamePath: `name`,
-            acceptButtonText: 'Delete Suppliers',
-            onSuccess: () => {
-                return this.hostRouter.refresh();
-            },
-        });
-    }
-
-    /**
-     * View information about the suppliers warehouse
-     *
-     * @param {SupplierModel} supplier
-     * @void
-     */
-    @action async viewSupplierPlace(supplier) {
-        const warehouse = await this.store.findRecord('warehouse', supplier.warehouse_uuid);
-
-        if (warehouse) {
-            this.contextPanel.focus(warehouse);
+    @action async viewSupplierWarehouse(supplier) {
+        if (!supplier?.warehouse_uuid) {
+            return;
         }
-    }
 
-    /**
-     * Edit a supplier's current warehouse
-     *
-     * @param {SupplierModel} supplier
-     * @void
-     */
-    @action async editSupplierPlace(supplier) {
         const warehouse = await this.store.findRecord('warehouse', supplier.warehouse_uuid);
-
         if (warehouse) {
-            this.contextPanel.focus(warehouse, 'editing');
+            return this.warehouseActions.transition.view(warehouse);
         }
-    }
-
-    /**
-     * Create a new warehouse for a supplier.
-     *
-     * @param {SupplierModel} supplier
-     * @void
-     */
-    @action async createSupplierPlace(supplier) {
-        const warehouse = this.store.createRecord('warehouse');
-
-        this.contextPanel.focus(warehouse, 'editing', {
-            onAfterSave: (warehouse) => {
-                supplier.set('warehouse_uuid', warehouse.id);
-                supplier.save();
-            },
-        });
     }
 }

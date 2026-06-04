@@ -2,17 +2,17 @@
 
 namespace Fleetbase\Pallet\Models;
 
-use Fleetbase\Models\Model;
-use Fleetbase\Traits\HasUuid;
-use Fleetbase\Traits\HasPublicId;
-use Fleetbase\Traits\TracksApiCredential;
 use Fleetbase\Casts\Json;
+use Fleetbase\Models\Model;
+use Fleetbase\Traits\HasPublicId;
+use Fleetbase\Traits\HasUuid;
+use Fleetbase\Traits\TracksApiCredential;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
- * SalesOrderItem
+ * SalesOrderItem.
  *
  * Represents a single product line on a Sales Order.
  * On SO fulfilment, each item decrements the matching Inventory record in the
@@ -69,6 +69,7 @@ class SalesOrderItem extends Model
         'sales_order_uuid',
         'created_by_uuid',
         'product_uuid',
+        'variant_uuid',
         'warehouse_uuid',
         'inventory_uuid',
         'quantity',
@@ -120,6 +121,11 @@ class SalesOrderItem extends Model
         return $this->belongsTo(Product::class, 'product_uuid', 'uuid');
     }
 
+    public function variant()
+    {
+        return $this->belongsTo(ProductVariant::class, 'variant_uuid', 'uuid');
+    }
+
     /**
      * Relationship: the source Warehouse.
      *
@@ -158,8 +164,6 @@ class SalesOrderItem extends Model
 
     /**
      * Returns true if this item has been fully fulfilled.
-     *
-     * @return bool
      */
     public function isFullyFulfilled(): bool
     {
@@ -168,8 +172,6 @@ class SalesOrderItem extends Model
 
     /**
      * Returns the outstanding (unfulfilled) quantity.
-     *
-     * @return int
      */
     public function getOutstandingQuantityAttribute(): int
     {
@@ -178,8 +180,6 @@ class SalesOrderItem extends Model
 
     /**
      * Recalculate and persist the total_price based on unit_price × quantity.
-     *
-     * @return void
      */
     public function recalculateTotalPrice(): void
     {
@@ -190,8 +190,6 @@ class SalesOrderItem extends Model
 
     /**
      * Configure Spatie activity log options.
-     *
-     * @return LogOptions
      */
     public function getActivitylogOptions(): LogOptions
     {

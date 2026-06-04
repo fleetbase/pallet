@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * AuditService
+ * AuditService.
  *
  * Centralised service for writing entries to the pallet_audits operational
  * audit trail. This service is the single point of entry for all programmatic
@@ -34,16 +34,15 @@ class AuditService
     /**
      * Log a general operational audit event.
      *
-     * @param Model       $subject    The primary model this event relates to
-     * @param string      $eventType  Machine-readable event category (AuditEventType constant)
-     * @param string      $action     Human-readable label for the event
-     * @param string|null $type       Secondary classification within the event type
-     * @param string|null $reason     Reason code or user-supplied explanation
-     * @param array       $meta       Arbitrary structured context data
-     * @param array       $oldValues  State snapshot before the event
-     * @param array       $newValues  State snapshot after the event
-     * @param string|null $comments   Free-form notes
-     * @return Audit
+     * @param Model       $subject   The primary model this event relates to
+     * @param string      $eventType Machine-readable event category (AuditEventType constant)
+     * @param string      $action    Human-readable label for the event
+     * @param string|null $type      Secondary classification within the event type
+     * @param string|null $reason    Reason code or user-supplied explanation
+     * @param array       $meta      Arbitrary structured context data
+     * @param array       $oldValues State snapshot before the event
+     * @param array       $newValues State snapshot after the event
+     * @param string|null $comments  Free-form notes
      */
     public function log(
         Model $subject,
@@ -54,7 +53,7 @@ class AuditService
         array $meta = [],
         array $oldValues = [],
         array $newValues = [],
-        ?string $comments = null
+        ?string $comments = null,
     ): Audit {
         $performedByUuid = Auth::id() ?? null;
         $companyUuid     = $subject->company_uuid ?? null;
@@ -79,9 +78,6 @@ class AuditService
 
     /**
      * Log a stock adjustment event.
-     *
-     * @param \Fleetbase\Pallet\Models\StockAdjustment $adjustment
-     * @return Audit
      */
     public function logStockAdjustment(\Fleetbase\Pallet\Models\StockAdjustment $adjustment): Audit
     {
@@ -102,9 +98,6 @@ class AuditService
 
     /**
      * Log a cycle count completion event.
-     *
-     * @param \Fleetbase\Pallet\Models\CycleCount $cycleCount
-     * @return Audit
      */
     public function logCycleCountCompleted(\Fleetbase\Pallet\Models\CycleCount $cycleCount): Audit
     {
@@ -126,9 +119,6 @@ class AuditService
 
     /**
      * Log a cycle count approval event (discrepancies applied to inventory).
-     *
-     * @param \Fleetbase\Pallet\Models\CycleCount $cycleCount
-     * @return Audit
      */
     public function logCycleCountApproved(\Fleetbase\Pallet\Models\CycleCount $cycleCount): Audit
     {
@@ -150,9 +140,7 @@ class AuditService
     /**
      * Log a purchase order received event.
      *
-     * @param \Fleetbase\Pallet\Models\PurchaseOrder $purchaseOrder
-     * @param array $receivedItems  Array of received line items with quantities
-     * @return Audit
+     * @param array $receivedItems Array of received line items with quantities
      */
     public function logPurchaseOrderReceived(\Fleetbase\Pallet\Models\PurchaseOrder $purchaseOrder, array $receivedItems = []): Audit
     {
@@ -173,9 +161,7 @@ class AuditService
     /**
      * Log a sales order fulfilled event.
      *
-     * @param \Fleetbase\Pallet\Models\SalesOrder $salesOrder
-     * @param array $fulfilledItems  Array of fulfilled line items with quantities
-     * @return Audit
+     * @param array $fulfilledItems Array of fulfilled line items with quantities
      */
     public function logSalesOrderFulfilled(\Fleetbase\Pallet\Models\SalesOrder $salesOrder, array $fulfilledItems = []): Audit
     {
@@ -195,9 +181,6 @@ class AuditService
 
     /**
      * Log a stock transfer initiated event.
-     *
-     * @param \Fleetbase\Pallet\Models\StockTransfer $transfer
-     * @return Audit
      */
     public function logStockTransferInitiated(\Fleetbase\Pallet\Models\StockTransfer $transfer): Audit
     {
@@ -217,9 +200,6 @@ class AuditService
 
     /**
      * Log a stock transfer completed event.
-     *
-     * @param \Fleetbase\Pallet\Models\StockTransfer $transfer
-     * @return Audit
      */
     public function logStockTransferCompleted(\Fleetbase\Pallet\Models\StockTransfer $transfer): Audit
     {
@@ -238,9 +218,6 @@ class AuditService
 
     /**
      * Log an inventory creation event.
-     *
-     * @param \Fleetbase\Pallet\Models\Inventory $inventory
-     * @return Audit
      */
     public function logInventoryCreated(\Fleetbase\Pallet\Models\Inventory $inventory): Audit
     {
@@ -261,9 +238,6 @@ class AuditService
 
     /**
      * Log a batch creation event.
-     *
-     * @param \Fleetbase\Pallet\Models\Batch $batch
-     * @return Audit
      */
     public function logBatchCreated(\Fleetbase\Pallet\Models\Batch $batch): Audit
     {

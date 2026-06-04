@@ -18,8 +18,10 @@
                 @icon={{if this.inventory.id "save" "check"}}
                 @type="primary"
                 @text={{if this.inventory.id "Save Inventory" "Add Inventory"}}
-                @onClick={{this.save}}
+                @onClick={{perform this.saveTask}}
                 @wrapperClass="mr-2"
+                @isLoading={{this.saveTask.isRunning}}
+                @disabled={{this.saveTask.isRunning}}
             />
             {{#if this.inventory.id}}
                 <Button @type="default" @icon="inventory" @helpText="View inventory details" @onClick={{this.onViewDetails}} @wrapperClass="mr-2" />
@@ -46,6 +48,20 @@
                         {{model.name}}
                     </ModelSelect>
                 </InputGroup>
+                {{#if this.inventory.product.has_variants}}
+                    <InputGroup @name="Variant">
+                        <PowerSelect
+                            @options={{this.inventory.product.variants}}
+                            @selected={{find-by "uuid" this.inventory.variant_uuid this.inventory.product.variants}}
+                            @onChange={{this.setVariant}}
+                            @placeholder="Select Variant"
+                            @triggerClass="form-select form-input"
+                            as |variant|
+                        >
+                            {{n-a variant.display_name variant.name}}
+                        </PowerSelect>
+                    </InputGroup>
+                {{/if}}
                 <InputGroup @name="Supplier">
                     <ModelSelect
                         @modelName="supplier"

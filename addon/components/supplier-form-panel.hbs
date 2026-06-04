@@ -14,7 +14,15 @@
         @titleWrapperClass="leading-5"
     >
         <div class="flex flex-1 justify-end">
-            <Button @icon={{if this.supplier.id "save" "check"}} @type="primary" @text={{if this.supplier.id "Save Supplier" "Add Supplier"}} @onClick={{this.save}} @wrapperClass="mr-2" />
+            <Button
+                @icon={{if this.supplier.id "save" "check"}}
+                @type="primary"
+                @text={{if this.supplier.id "Save Supplier" "Add Supplier"}}
+                @onClick={{perform this.saveTask}}
+                @wrapperClass="mr-2"
+                @isLoading={{this.saveTask.isRunning}}
+                @disabled={{this.saveTask.isRunning}}
+            />
             {{#if this.supplier.id}}
                 <Button @type="default" @icon="supplier" @helpText="View supplier details" @onClick={{this.onViewDetails}} @wrapperClass="mr-2" />
             {{/if}}

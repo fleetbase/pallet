@@ -65,6 +65,10 @@ Route::prefix(config('pallet.api.routing.prefix', 'pallet'))->namespace('Fleetba
                         $router->fleetbaseRoutes('products', function ($router, $controller) {
                             $router->delete('bulk-delete', $controller('bulkDelete'));
                         });
+                        $router->get('products/{product}/variants', 'ProductVariantController@index');
+                        $router->post('products/{product}/variants', 'ProductVariantController@store');
+                        $router->put('products/{product}/variants/{variant}', 'ProductVariantController@update');
+                        $router->delete('products/{product}/variants/{variant}', 'ProductVariantController@destroy');
 
                         /*
                         |--------------------------------------------------------------

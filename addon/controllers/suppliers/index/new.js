@@ -2,87 +2,40 @@ import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import { task } from 'ember-concurrency';
 
 export default class SuppliersIndexNewController extends Controller {
-    /**
-     * Inject the `store` service
-     *
-     * @memberof ManagementSupplierIndexNewController
-     */
-    @service store;
-
-    /**
-     * Inject the `hostRouter` service
-     *
-     * @memberof ManagementSupplierIndexNewController
-     */
+    @service supplierActions;
     @service hostRouter;
+    @service intl;
+    @service notifications;
+    @service events;
 
-    /**
-     * Inject the `hostRouter` service
-     *
-     * @memberof ManagementSupplierIndexNewController
-     */
-    @service modalsManager;
-
-    /**
-     * The overlay component context.
-     *
-     * @memberof ManagementSupplierIndexNewController
-     */
     @tracked overlay;
+    @tracked supplier = this.supplierActions.createNewInstance();
 
-    /**
-     * The supplier being created.
-     *
-     * @var {SupplierModel}
-     */
-    @tracked supplier = this.store.createRecord('supplier', { status: 'active' });
+    @task *save(supplier) {
+        try {
+            yield supplier.save();
+            this.events.trackResourceCreated(supplier);
+            this.overlay?.close();
 
-    /**
-     * Set the overlay component context object.
-     *
-     * @param {OverlayContext} overlay
-     * @memberof ManagementSuppliersIndexNewController
-     */
-    @action setOverlayContext(overlay) {
-        this.overlay = overlay;
-    }
-
-    /**
-     * When exiting the overlay.
-     *
-     * @return {Transition}
-     * @memberof ManagementSupplierIndexNewController
-     */
-    @action transitionBack() {
-        return this.hostRouter.transitionTo('console.pallet.suppliers.index');
-    }
-
-    /**
-     * Trigger a route refresh and focus the new supplier created.
-     *
-     * @param {SupplierModel} supplier
-     * @return {Promise}
-     * @memberof ManagementSuppliersIndexNewController
-     */
-    @action onAfterSave(supplier) {
-        if (this.overlay) {
-            this.overlay.close();
-        }
-
-        this.hostRouter.refresh();
-        return this.hostRouter.transitionTo('console.pallet.suppliers.index.details', supplier).then(() => {
+            yield this.hostRouter.refresh();
+            yield this.hostRouter.transitionTo('console.pallet.catalog.suppliers.index.details', supplier);
+            this.notifications.success(
+                this.intl.t('common.resource-created-success-name', {
+                    resource: 'Supplier',
+                    resourceName: supplier.name,
+                })
+            );
             this.resetForm();
-        });
+        } catch (error) {
+            this.notifications.serverError(error);
+        }
     }
 
-    /**
-     * Resets the form with a new supplier record
-     *
-     * @memberof ManagementSupplierIndexNewController
-     */
+    @action
     resetForm() {
-        this.supplier = this.store.createRecord('supplier', { status: 'active' });
+        this.supplier = this.supplierActions.createNewInstance();
     }
 }

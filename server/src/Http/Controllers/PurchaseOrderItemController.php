@@ -2,14 +2,15 @@
 
 namespace Fleetbase\Pallet\Http\Controllers;
 
-use Fleetbase\Pallet\Http\Resources\PurchaseOrderItem as PurchaseOrderItemResource;
-use Fleetbase\Pallet\Models\PurchaseOrderItem;
 use Fleetbase\Http\Controllers\Controller;
+use Fleetbase\Pallet\Http\Resources\PurchaseOrderItem as PurchaseOrderItemResource;
+use Fleetbase\Pallet\Models\Product;
+use Fleetbase\Pallet\Models\PurchaseOrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 /**
- * PurchaseOrderItemController
+ * PurchaseOrderItemController.
  *
  * Manages CRUD operations for individual line items on a Purchase Order.
  * Items can be created, updated, and deleted independently of the parent order,
@@ -25,13 +26,12 @@ class PurchaseOrderItemController extends Controller
      *
      * GET /pallet/v1/purchase-orders/{purchaseOrder}/items
      *
-     * @param  string  $purchaseOrderUuid
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(string $purchaseOrderUuid)
     {
         $items = PurchaseOrderItem::where('purchase_order_uuid', $purchaseOrderUuid)
-            ->with(['product', 'warehouse'])
+            ->with(['product', 'variant', 'warehouse'])
             ->orderBy('created_at', 'asc')
             ->get();
 
@@ -43,13 +43,15 @@ class PurchaseOrderItemController extends Controller
      *
      * POST /pallet/v1/purchase-orders/{purchaseOrder}/items
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $purchaseOrderUuid
-     * @return \Fleetbase\Pallet\Http\Resources\PurchaseOrderItem
+     * @return PurchaseOrderItemResource
      */
     public function store(Request $request, string $purchaseOrderUuid)
     {
-        $input = $request->input('purchase_order_item', $request->all());
+        $input   = $request->input('purchase_order_item', $request->all());
+        $product = Product::where('uuid', data_get($input, 'product_uuid'))->where('company_uuid', session('company'))->first();
+        if ($product?->has_variants && !data_get($input, 'variant_uuid')) {
+            return response()->error('Variant is required for line items on products with variants.', 422);
+        }
 
         $item = PurchaseOrderItem::create(array_merge($input, [
             'uuid'                => Str::uuid(),
@@ -63,7 +65,7 @@ class PurchaseOrderItemController extends Controller
         $item->recalculateTotalPrice();
         $item->save();
 
-        $item->load(['product', 'warehouse']);
+        $item->load(['product', 'variant', 'warehouse']);
 
         return new PurchaseOrderItemResource($item);
     }
@@ -73,10 +75,7 @@ class PurchaseOrderItemController extends Controller
      *
      * PUT /pallet/v1/purchase-orders/{purchaseOrder}/items/{item}
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $purchaseOrderUuid
-     * @param  string  $itemUuid
-     * @return \Fleetbase\Pallet\Http\Resources\PurchaseOrderItem
+     * @return PurchaseOrderItemResource
      */
     public function update(Request $request, string $purchaseOrderUuid, string $itemUuid)
     {
@@ -84,7 +83,12 @@ class PurchaseOrderItemController extends Controller
             ->where('purchase_order_uuid', $purchaseOrderUuid)
             ->firstOrFail();
 
-        $input = $request->input('purchase_order_item', $request->all());
+        $input   = $request->input('purchase_order_item', $request->all());
+        $product = Product::where('uuid', data_get($input, 'product_uuid', $item->product_uuid))->where('company_uuid', session('company'))->first();
+        if ($product?->has_variants && !data_get($input, 'variant_uuid', $item->variant_uuid)) {
+            return response()->error('Variant is required for line items on products with variants.', 422);
+        }
+
         $item->fill($input);
 
         // Recalculate total_price if pricing fields changed
@@ -93,7 +97,7 @@ class PurchaseOrderItemController extends Controller
         }
 
         $item->save();
-        $item->load(['product', 'warehouse']);
+        $item->load(['product', 'variant', 'warehouse']);
 
         return new PurchaseOrderItemResource($item);
     }
@@ -103,8 +107,6 @@ class PurchaseOrderItemController extends Controller
      *
      * DELETE /pallet/v1/purchase-orders/{purchaseOrder}/items/{item}
      *
-     * @param  string  $purchaseOrderUuid
-     * @param  string  $itemUuid
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(string $purchaseOrderUuid, string $itemUuid)

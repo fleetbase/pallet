@@ -55,15 +55,20 @@ export default class PurchaseOrderPanelItemsComponent extends Component {
         if (!purchaseOrder) return;
 
         try {
-            const item = await this.fetch.post(`purchase-orders/${purchaseOrder.id}/items`, {
-                purchase_order_item: {
-                    product_uuid: this.newItem.product_uuid ?? this.newItem.product?.id,
-                    sku: this.newItem.sku,
-                    quantity: this.newItem.quantity,
-                    unit_price: this.newItem.unit_price,
-                    notes: this.newItem.notes,
+            const item = await this.fetch.post(
+                `purchase-orders/${purchaseOrder.id}/items`,
+                {
+                    purchase_order_item: {
+                        product_uuid: this.newItem.product_uuid ?? this.newItem.product?.id,
+                        variant_uuid: this.newItem.variant_uuid ?? this.newItem.variant?.id,
+                        sku: this.newItem.sku,
+                        quantity: this.newItem.quantity,
+                        unit_price: this.newItem.unit_price,
+                        notes: this.newItem.notes,
+                    },
                 },
-            });
+                { namespace: 'pallet/int/v1' }
+            );
 
             // Push into the store and update the PO's items
             const record = this.store.push(this.store.normalize('purchase-order-item', item.purchase_order_item ?? item));
@@ -88,11 +93,29 @@ export default class PurchaseOrderPanelItemsComponent extends Component {
             id: item.id,
             product: item.product,
             product_uuid: item.product_uuid,
+            variant: item.variant,
+            variant_uuid: item.variant_uuid,
             sku: item.sku,
             quantity: item.quantity,
             unit_price: item.unit_price,
             notes: item.notes,
         };
+    }
+
+    @action setNewVariant(variant) {
+        this.newItem.variant = variant;
+        this.newItem.variant_uuid = variant?.uuid;
+        if (variant?.sku && !this.newItem.sku) {
+            this.newItem.sku = variant.sku;
+        }
+    }
+
+    @action setEditingVariant(variant) {
+        this.editingItem.variant = variant;
+        this.editingItem.variant_uuid = variant?.uuid;
+        if (variant?.sku && !this.editingItem.sku) {
+            this.editingItem.sku = variant.sku;
+        }
     }
 
     /**
@@ -110,15 +133,20 @@ export default class PurchaseOrderPanelItemsComponent extends Component {
         if (!this.editingItem || !purchaseOrder) return;
 
         try {
-            await this.fetch.put(`purchase-orders/${purchaseOrder.id}/items/${this.editingItem.id}`, {
-                purchase_order_item: {
-                    product_uuid: this.editingItem.product_uuid ?? this.editingItem.product?.id,
-                    sku: this.editingItem.sku,
-                    quantity: this.editingItem.quantity,
-                    unit_price: this.editingItem.unit_price,
-                    notes: this.editingItem.notes,
+            await this.fetch.put(
+                `purchase-orders/${purchaseOrder.id}/items/${this.editingItem.id}`,
+                {
+                    purchase_order_item: {
+                        product_uuid: this.editingItem.product_uuid ?? this.editingItem.product?.id,
+                        variant_uuid: this.editingItem.variant_uuid ?? this.editingItem.variant?.id,
+                        sku: this.editingItem.sku,
+                        quantity: this.editingItem.quantity,
+                        unit_price: this.editingItem.unit_price,
+                        notes: this.editingItem.notes,
+                    },
                 },
-            });
+                { namespace: 'pallet/int/v1' }
+            );
 
             // Reload the item from the store to reflect server-calculated fields
             const storeItem = this.store.peekRecord('purchase-order-item', this.editingItem.id);
@@ -143,7 +171,7 @@ export default class PurchaseOrderPanelItemsComponent extends Component {
         if (!purchaseOrder) return;
 
         try {
-            await this.fetch.delete(`purchase-orders/${purchaseOrder.id}/items/${item.id}`);
+            await this.fetch.delete(`purchase-orders/${purchaseOrder.id}/items/${item.id}`, {}, { namespace: 'pallet/int/v1' });
             purchaseOrder.items.removeObject(item);
             this.notifications.success('Line item removed.');
         } catch (error) {

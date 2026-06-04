@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import { task } from 'ember-concurrency';
 import contextComponentCallback from '@fleetbase/ember-core/utils/context-component-callback';
 import applyContextComponentArguments from '@fleetbase/ember-core/utils/apply-context-component-arguments';
 
@@ -38,12 +39,6 @@ export default class StockAdjustmentFormPanelComponent extends Component {
     @tracked context;
 
     /**
-     * Indicates whether the component is in a loading state.
-     * @type {boolean}
-     */
-    @tracked isLoading = false;
-
-    /**
      * Fuel Report status
      * @type {Array}
      */
@@ -75,31 +70,21 @@ export default class StockAdjustmentFormPanelComponent extends Component {
      * @action
      * @returns {Promise<any>}
      */
-    @action save() {
+    @task *saveTask() {
         const { stockAdjustment } = this;
 
         this.loader.showLoader('.next-content-overlay-panel-container', { loadingMessage: 'Saving stockAdjustment...', preserveTargetPosition: true });
-        this.isLoading = true;
-
         contextComponentCallback(this, 'onBeforeSave', stockAdjustment);
 
         try {
-            return stockAdjustment
-                .save()
-                .then((stockAdjustment) => {
-                    this.notifications.success(`Stock Adjustment saved successfully.`);
-                    contextComponentCallback(this, 'onAfterSave', stockAdjustment);
-                })
-                .catch((error) => {
-                    this.notifications.serverError(error);
-                })
-                .finally(() => {
-                    this.loader.removeLoader('.next-content-overlay-panel-container ');
-                    this.isLoading = false;
-                });
+            const savedStockAdjustment = yield stockAdjustment.save();
+            this.notifications.success(`Stock Adjustment saved successfully.`);
+            contextComponentCallback(this, 'onAfterSave', savedStockAdjustment);
+            return savedStockAdjustment;
         } catch (error) {
+            this.notifications.serverError(error);
+        } finally {
             this.loader.removeLoader('.next-content-overlay-panel-container ');
-            this.isLoading = false;
         }
     }
 

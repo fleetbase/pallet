@@ -1,3 +1,1 @@
-import Controller from '@ember/controller';
-
-export default class ReportsIndexController extends Controller {}
+export { default } from '../analytics/reports/index';

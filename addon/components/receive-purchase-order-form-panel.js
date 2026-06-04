@@ -42,14 +42,6 @@ export default class ReceivePurchaseOrderFormPanelComponent extends Component {
      */
     @tracked receiptData = {};
 
-    /**
-     * Whether the receive operation is in progress.
-     *
-     * @type {Boolean}
-     * @tracked
-     */
-    @tracked isReceiving = false;
-
     constructor() {
         super(...arguments);
         this._initReceiptData();
@@ -151,10 +143,8 @@ export default class ReceivePurchaseOrderFormPanelComponent extends Component {
             return;
         }
 
-        this.isReceiving = true;
-
         try {
-            const response = yield this.fetch.post(`purchase-orders/${purchaseOrder.public_id}/receive`, { items });
+            const response = yield this.fetch.post(`purchase-orders/${purchaseOrder.public_id}/receive`, { items }, { namespace: 'pallet/int/v1' });
 
             // Reload the PO record from the store to reflect updated status and items
             yield purchaseOrder.reload();
@@ -171,8 +161,6 @@ export default class ReceivePurchaseOrderFormPanelComponent extends Component {
         } catch (error) {
             const message = error?.payload?.error || error?.message || 'Failed to receive purchase order.';
             this.notifications.serverError({ payload: { errors: [message] } });
-        } finally {
-            this.isReceiving = false;
         }
     }
 

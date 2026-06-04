@@ -37,6 +37,7 @@ class StockTransferItem extends Model
         'company_uuid',
         'stock_transfer_uuid',
         'product_uuid',
+        'variant_uuid',
         'quantity',
         'quantity_received',
         'lot_number',
@@ -61,7 +62,7 @@ class StockTransferItem extends Model
      *
      * @var array
      */
-    protected $with = ['product'];
+    protected $with = ['product', 'variant'];
 
     /**
      * Get the stock transfer.
@@ -80,13 +81,19 @@ class StockTransferItem extends Model
      */
     public function product()
     {
-        return $this->belongsTo(Product::class, 'product_uuid');
+        return $this->belongsTo(Product::class, 'product_uuid', 'uuid');
+    }
+
+    public function variant()
+    {
+        return $this->belongsTo(ProductVariant::class, 'variant_uuid', 'uuid');
     }
 
     /**
      * Record received quantity.
      *
      * @param int $quantity
+     *
      * @return bool
      */
     public function recordReceived($quantity)

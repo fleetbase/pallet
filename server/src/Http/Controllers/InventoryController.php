@@ -2,15 +2,16 @@
 
 namespace Fleetbase\Pallet\Http\Controllers;
 
-use Fleetbase\Pallet\Http\Resources\IndexInventory;
 use Fleetbase\Exceptions\FleetbaseRequestValidationException;
+use Fleetbase\Pallet\Http\Resources\IndexInventory;
 use Fleetbase\Pallet\Models\Batch;
 use Fleetbase\Pallet\Models\Inventory;
+use Fleetbase\Pallet\Models\Product;
 use Fleetbase\Support\Http;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Illuminate\Database\QueryException;
 
 class InventoryController extends PalletResourceController
 {
@@ -40,6 +41,7 @@ class InventoryController extends PalletResourceController
 
             if (Http::isInternalRequest($request)) {
                 IndexInventory::wrap($this->resourceSingularlName);
+
                 return new IndexInventory($data);
             }
 
@@ -48,6 +50,7 @@ class InventoryController extends PalletResourceController
 
         if (Http::isInternalRequest($request)) {
             IndexInventory::wrap($this->resourcePluralName);
+
             return IndexInventory::collection($data);
         }
 
@@ -58,16 +61,22 @@ class InventoryController extends PalletResourceController
     {
         try {
             $this->validateRequest($request);
-            $data = $request->input('inventory');
+            $data    = $request->input('inventory');
+            $product = Product::where('uuid', data_get($data, 'product_uuid'))->where('company_uuid', session('company'))->first();
+
+            if ($product?->has_variants && !data_get($data, 'variant_uuid')) {
+                return response()->error('Variant is required for inventory on products with variants.', 422);
+            }
 
             // Create the batch record first
             $batch = new Batch([
-                'company_uuid'       => session('company'),
-                'created_by_uuid'    => session('user'),
-                'product_uuid'       => data_get($data, 'product_uuid'),
-                'batch_number'       => data_get($data, 'batch_number', now()->format('Y-m-d-') . strtoupper(Str::random(6))),
-                'quantity'           => data_get($data, 'quantity', 0),
-                'expiry_date_at'     => data_get($data, 'expiry_date_at'),
+                'company_uuid'        => session('company'),
+                'created_by_uuid'     => session('user'),
+                'product_uuid'        => data_get($data, 'product_uuid'),
+                'variant_uuid'        => data_get($data, 'variant_uuid'),
+                'batch_number'        => data_get($data, 'batch_number', now()->format('Y-m-d-') . strtoupper(Str::random(6))),
+                'quantity'            => data_get($data, 'quantity', 0),
+                'expiry_date_at'      => data_get($data, 'expiry_date_at'),
                 'manufacture_date_at' => data_get($data, 'manufacture_date_at'),
             ]);
             $batch->save();
@@ -77,6 +86,7 @@ class InventoryController extends PalletResourceController
                 'company_uuid'      => session('company'),
                 'created_by_uuid'   => session('user'),
                 'product_uuid'      => data_get($data, 'product_uuid'),
+                'variant_uuid'      => data_get($data, 'variant_uuid'),
                 'supplier_uuid'     => data_get($data, 'supplier_uuid'),
                 'warehouse_uuid'    => data_get($data, 'warehouse_uuid'),
                 'batch_uuid'        => $batch->uuid,

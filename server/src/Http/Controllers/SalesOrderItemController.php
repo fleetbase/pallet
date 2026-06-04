@@ -2,14 +2,15 @@
 
 namespace Fleetbase\Pallet\Http\Controllers;
 
-use Fleetbase\Pallet\Http\Resources\SalesOrderItem as SalesOrderItemResource;
-use Fleetbase\Pallet\Models\SalesOrderItem;
 use Fleetbase\Http\Controllers\Controller;
+use Fleetbase\Pallet\Http\Resources\SalesOrderItem as SalesOrderItemResource;
+use Fleetbase\Pallet\Models\Product;
+use Fleetbase\Pallet\Models\SalesOrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 /**
- * SalesOrderItemController
+ * SalesOrderItemController.
  *
  * Manages CRUD operations for individual line items on a Sales Order.
  * Items can be created, updated, and deleted independently of the parent order,
@@ -25,13 +26,12 @@ class SalesOrderItemController extends Controller
      *
      * GET /pallet/v1/sales-orders/{salesOrder}/items
      *
-     * @param  string  $salesOrderUuid
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(string $salesOrderUuid)
     {
         $items = SalesOrderItem::where('sales_order_uuid', $salesOrderUuid)
-            ->with(['product', 'warehouse', 'inventory'])
+            ->with(['product', 'variant', 'warehouse', 'inventory'])
             ->orderBy('created_at', 'asc')
             ->get();
 
@@ -43,13 +43,15 @@ class SalesOrderItemController extends Controller
      *
      * POST /pallet/v1/sales-orders/{salesOrder}/items
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $salesOrderUuid
-     * @return \Fleetbase\Pallet\Http\Resources\SalesOrderItem
+     * @return SalesOrderItemResource
      */
     public function store(Request $request, string $salesOrderUuid)
     {
-        $input = $request->input('sales_order_item', $request->all());
+        $input   = $request->input('sales_order_item', $request->all());
+        $product = Product::where('uuid', data_get($input, 'product_uuid'))->where('company_uuid', session('company'))->first();
+        if ($product?->has_variants && !data_get($input, 'variant_uuid')) {
+            return response()->error('Variant is required for line items on products with variants.', 422);
+        }
 
         $item = SalesOrderItem::create(array_merge($input, [
             'uuid'             => Str::uuid(),
@@ -63,7 +65,7 @@ class SalesOrderItemController extends Controller
         $item->recalculateTotalPrice();
         $item->save();
 
-        $item->load(['product', 'warehouse', 'inventory']);
+        $item->load(['product', 'variant', 'warehouse', 'inventory']);
 
         return new SalesOrderItemResource($item);
     }
@@ -73,10 +75,7 @@ class SalesOrderItemController extends Controller
      *
      * PUT /pallet/v1/sales-orders/{salesOrder}/items/{item}
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $salesOrderUuid
-     * @param  string  $itemUuid
-     * @return \Fleetbase\Pallet\Http\Resources\SalesOrderItem
+     * @return SalesOrderItemResource
      */
     public function update(Request $request, string $salesOrderUuid, string $itemUuid)
     {
@@ -84,7 +83,12 @@ class SalesOrderItemController extends Controller
             ->where('sales_order_uuid', $salesOrderUuid)
             ->firstOrFail();
 
-        $input = $request->input('sales_order_item', $request->all());
+        $input   = $request->input('sales_order_item', $request->all());
+        $product = Product::where('uuid', data_get($input, 'product_uuid', $item->product_uuid))->where('company_uuid', session('company'))->first();
+        if ($product?->has_variants && !data_get($input, 'variant_uuid', $item->variant_uuid)) {
+            return response()->error('Variant is required for line items on products with variants.', 422);
+        }
+
         $item->fill($input);
 
         // Recalculate total_price if pricing fields changed
@@ -93,7 +97,7 @@ class SalesOrderItemController extends Controller
         }
 
         $item->save();
-        $item->load(['product', 'warehouse', 'inventory']);
+        $item->load(['product', 'variant', 'warehouse', 'inventory']);
 
         return new SalesOrderItemResource($item);
     }
@@ -103,8 +107,6 @@ class SalesOrderItemController extends Controller
      *
      * DELETE /pallet/v1/sales-orders/{salesOrder}/items/{item}
      *
-     * @param  string  $salesOrderUuid
-     * @param  string  $itemUuid
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(string $salesOrderUuid, string $itemUuid)

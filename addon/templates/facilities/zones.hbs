@@ -1,0 +1,28 @@
+<Layout::Section::Header @title="Zones">
+    <div class="text-sm text-gray-500 dark:text-gray-300">Zones give Pallet a facility-level segmentation layer for storage strategy, operational rules, and inventory planning.</div>
+</Layout::Section::Header>
+
+<Layout::Section::Body class="overflow-y-scroll h-full p-4 space-y-4">
+    <ContentPanel @title="Implementation Status" @open={{true}} @wrapperClass="bordered-classic">
+        <p class="text-sm text-gray-700 dark:text-gray-200">This section is now routable and visible in production navigation. The zoning model exists in the backend, while the
+            operator-facing management workflow is still planned.</p>
+    </ContentPanel>
+
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+        <ContentPanel @title="Planned Workflows" @open={{true}} @wrapperClass="bordered-classic">
+            <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-200">
+                <li>Create storage, quarantine, staging, and outbound zones.</li>
+                <li>Assign rules to zones for stock placement and movement.</li>
+                <li>Use zones in future picking, waves, and replenishment flows.</li>
+            </ul>
+        </ContentPanel>
+
+        <ContentPanel @title="What Ships Next" @open={{true}} @wrapperClass="bordered-classic">
+            <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-200">
+                <li>Zone CRUD and assignment management.</li>
+                <li>Location-to-zone mapping inside facilities tooling.</li>
+                <li>Zone-aware filters in inventory and operations views.</li>
+            </ul>
+        </ContentPanel>
+    </div>
+</Layout::Section::Body>

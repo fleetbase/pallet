@@ -6,11 +6,13 @@ export default class SalesOrderItemModel extends Model {
     @attr('string') public_id;
     @attr('string') sales_order_uuid;
     @attr('string') product_uuid;
+    @attr('string') variant_uuid;
     @attr('string') warehouse_uuid;
     @attr('string') inventory_uuid;
 
     /** @relationships */
     @belongsTo('pallet-product', { async: false }) product;
+    @belongsTo('pallet-product-variant', { async: false }) variant;
     @belongsTo('pallet-warehouse', { async: false }) warehouse;
     @belongsTo('inventory', { async: false }) inventory;
 
@@ -48,9 +50,9 @@ export default class SalesOrderItemModel extends Model {
      *
      * @type {String}
      */
-    @computed('product.name', 'sku', 'public_id')
+    @computed('product.name', 'variant.display_name', 'sku', 'public_id')
     get displayName() {
-        return this.product?.name ?? this.sku ?? this.public_id;
+        return this.variant?.display_name ?? this.product?.name ?? this.sku ?? this.public_id;
     }
 
     /**

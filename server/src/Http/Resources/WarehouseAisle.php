@@ -3,7 +3,7 @@
 namespace Fleetbase\Pallet\Http\Resources;
 
 use Fleetbase\Http\Resources\FleetbaseResource;
-use Fleetbase\Pallet\Models\WarehouseRack;
+use Fleetbase\Pallet\Http\Resources\WarehouseRack as WarehouseRackResource;
 use Fleetbase\Support\Http;
 
 class WarehouseAisle extends FleetbaseResource
@@ -22,7 +22,7 @@ class WarehouseAisle extends FleetbaseResource
             'uuid'                 => $this->when(Http::isInternalRequest(), $this->uuid),
             'public_id'            => $this->when(Http::isInternalRequest(), $this->public_id),
             'aisle_number'         => $this->aisle_number,
-            'racks'                => WarehouseRack::collection($this->racks),
+            'racks'                => WarehouseRackResource::collection($this->racks),
             'updated_at'           => $this->updated_at,
             'created_at'           => $this->created_at,
         ];

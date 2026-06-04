@@ -2,8 +2,6 @@
 
 namespace Fleetbase\Pallet\Http\Controllers;
 
-use Fleetbase\Http\Controllers\FleetbaseController;
-use Fleetbase\Pallet\Http\Filter\AuditFilter;
 use Fleetbase\Pallet\Http\Resources\Audit as AuditResource;
 use Fleetbase\Pallet\Models\Audit;
 use Fleetbase\Pallet\Models\AuditEventType;
@@ -17,14 +15,19 @@ use Illuminate\Http\Request;
  * when significant warehouse operational events occur. No create, update, or
  * delete operations are permitted via the API.
  */
-class AuditController extends FleetbaseController
+class AuditController extends PalletResourceController
 {
     /**
      * The package namespace used to resolve from.
+     */
+    public string $namespace = '\\Fleetbase\\Pallet';
+
+    /**
+     * The resource to query.
      *
      * @var string
      */
-    public string $namespace = '\\Fleetbase\\Pallet';
+    public $resource = 'audit';
 
     /**
      * List all audit trail entries for the authenticated company.
@@ -41,7 +44,6 @@ class AuditController extends FleetbaseController
      *   - limit         : Number of results per page (default: 30)
      *   - page          : Page number
      *
-     * @param Request $request
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
@@ -66,8 +68,9 @@ class AuditController extends FleetbaseController
         }
 
         // Filter by auditable subject type
-        if ($request->filled('auditable_type')) {
-            $query->where('auditable_type', $request->input('auditable_type'));
+        $auditableType = $request->input('auditable_type', $request->input('subject_type'));
+        if (filled($auditableType)) {
+            $query->where('auditable_type', $auditableType);
         }
 
         // Filter by the user who performed the action
@@ -76,8 +79,8 @@ class AuditController extends FleetbaseController
         }
 
         // Full-text search
-        if ($request->filled('search')) {
-            $search = $request->input('search');
+        $search = $request->input('search', $request->input('query'));
+        if (filled($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('action', 'like', "%{$search}%")
                   ->orWhere('reason', 'like', "%{$search}%")
@@ -87,8 +90,8 @@ class AuditController extends FleetbaseController
         }
 
         // Sorting
-        $sortField = $request->input('sort', 'created_at');
-        $sortOrder = $request->input('order', 'desc');
+        $sortField    = $request->input('sort', 'created_at');
+        $sortOrder    = $request->input('order', 'desc');
         $allowedSorts = ['created_at', 'event_type', 'action', 'type', 'completed_at'];
         if (in_array($sortField, $allowedSorts)) {
             $query->orderBy($sortField, $sortOrder === 'asc' ? 'asc' : 'desc');
@@ -105,7 +108,6 @@ class AuditController extends FleetbaseController
     /**
      * Show a single audit trail entry by its public_id or UUID.
      *
-     * @param string $id
      * @return AuditResource|\Illuminate\Http\JsonResponse
      */
     public function show(string $id)

@@ -18,8 +18,10 @@
                 @icon={{if this.stockAdjustment.id "save" "check"}}
                 @type="primary"
                 @text={{if this.stockAdjustment.id "Save Stock Adjustment" "Make Stock Adjustment"}}
-                @onClick={{this.save}}
+                @onClick={{perform this.saveTask}}
                 @wrapperClass="mr-2"
+                @isLoading={{this.saveTask.isRunning}}
+                @disabled={{this.saveTask.isRunning}}
             />
             {{#if this.stockAdjustment.id}}
                 <Button @type="default" @icon="inventory" @helpText="View inventory details" @onClick={{this.onViewDetails}} @wrapperClass="mr-2" />

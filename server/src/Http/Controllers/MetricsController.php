@@ -6,21 +6,27 @@ use Fleetbase\Http\Controllers\Controller;
 use Fleetbase\Pallet\Models\Inventory;
 use Fleetbase\Pallet\Models\PurchaseOrder;
 use Fleetbase\Pallet\Models\SalesOrder;
-use Fleetbase\Pallet\Models\StockTransaction;
 use Fleetbase\Pallet\Models\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 /**
- * MetricsController
+ * MetricsController.
  *
  * Provides aggregated data endpoints for the Pallet dashboard widgets.
  * All endpoints are scoped to the authenticated company.
  */
 class MetricsController extends Controller
 {
+    protected function lowStockQuery(string $companyUuid)
+    {
+        return Inventory::where('company_uuid', $companyUuid)
+            ->where('min_quantity', '>', 0)
+            ->whereColumn('quantity', '<=', 'min_quantity');
+    }
+
     /**
-     * GET pallet/metrics/inventory-summary
+     * GET pallet/metrics/inventory-summary.
      *
      * Returns top-level KPIs: total SKUs, total units, total stock value,
      * warehouse count, and low-stock count.
@@ -29,7 +35,9 @@ class MetricsController extends Controller
     {
         $companyUuid = session('company');
 
-        $totalSkus = Inventory::where('company_uuid', $companyUuid)->distinct('product_uuid')->count('product_uuid');
+        $totalSkus = Inventory::where('company_uuid', $companyUuid)
+            ->selectRaw('COUNT(DISTINCT COALESCE(variant_uuid, product_uuid)) as aggregate_count')
+            ->value('aggregate_count');
 
         $totals = Inventory::where('company_uuid', $companyUuid)
             ->selectRaw('SUM(quantity) as total_units, SUM(quantity * unit_cost) as total_value')
@@ -37,9 +45,7 @@ class MetricsController extends Controller
 
         $warehouseCount = Warehouse::where('company_uuid', $companyUuid)->count();
 
-        $lowStockCount = Inventory::where('company_uuid', $companyUuid)
-            ->whereRaw('quantity <= min_stock_level AND min_stock_level > 0')
-            ->count();
+        $lowStockCount = $this->lowStockQuery($companyUuid)->count();
 
         return response()->json([
             'total_skus'      => $totalSkus,
@@ -51,7 +57,7 @@ class MetricsController extends Controller
     }
 
     /**
-     * GET pallet/metrics/low-stock
+     * GET pallet/metrics/low-stock.
      *
      * Returns products at or below their minimum stock level.
      */
@@ -60,19 +66,18 @@ class MetricsController extends Controller
         $companyUuid = session('company');
         $limit       = (int) $request->input('limit', 10);
 
-        $items = Inventory::where('company_uuid', $companyUuid)
-            ->whereRaw('quantity <= min_stock_level AND min_stock_level > 0')
-            ->with('product:uuid,name,sku')
+        $items = $this->lowStockQuery($companyUuid)
+            ->with(['product:uuid,name,sku', 'variant:uuid,name,sku'])
             ->orderBy('quantity', 'asc')
             ->limit($limit)
             ->get()
             ->map(function ($inv) {
                 return [
                     'uuid'      => $inv->uuid,
-                    'name'      => $inv->product->name ?? null,
-                    'sku'       => $inv->product->sku ?? $inv->sku,
+                    'name'      => $inv->variant->display_name ?? $inv->product->name ?? null,
+                    'sku'       => $inv->variant->sku ?? $inv->product->sku ?? null,
                     'quantity'  => $inv->quantity,
-                    'min_stock' => $inv->min_stock_level,
+                    'min_stock' => $inv->min_quantity,
                 ];
             });
 
@@ -80,7 +85,7 @@ class MetricsController extends Controller
     }
 
     /**
-     * GET pallet/metrics/po-status
+     * GET pallet/metrics/po-status.
      *
      * Returns purchase order counts by status and the 5 most recent orders.
      */
@@ -110,7 +115,7 @@ class MetricsController extends Controller
 
         return response()->json([
             'pending'            => (int) ($counts['pending'] ?? 0),
-            'partially_received' => (int) ($counts['partially_received'] ?? 0),
+            'partially_received' => (int) (($counts['partially_received'] ?? 0) + ($counts['partial'] ?? 0)),
             'received'           => (int) ($counts['received'] ?? 0),
             'cancelled'          => (int) ($counts['cancelled'] ?? 0),
             'recent'             => $recent,
@@ -118,7 +123,7 @@ class MetricsController extends Controller
     }
 
     /**
-     * GET pallet/metrics/so-status
+     * GET pallet/metrics/so-status.
      *
      * Returns sales order counts by status and the 5 most recent orders.
      */
@@ -141,13 +146,13 @@ class MetricsController extends Controller
                     'uuid'          => $so->uuid,
                     'public_id'     => $so->public_id,
                     'status'        => $so->status,
-                    'customer_name' => $so->customer_name ?? null,
+                    'supplier_name' => $so->supplier?->name,
                 ];
             });
 
         return response()->json([
             'pending'              => (int) ($counts['pending'] ?? 0),
-            'partially_fulfilled'  => (int) ($counts['partially_fulfilled'] ?? 0),
+            'partially_fulfilled'  => (int) (($counts['partially_fulfilled'] ?? 0) + ($counts['partial'] ?? 0)),
             'fulfilled'            => (int) ($counts['fulfilled'] ?? 0),
             'cancelled'            => (int) ($counts['cancelled'] ?? 0),
             'recent'               => $recent,
@@ -155,7 +160,7 @@ class MetricsController extends Controller
     }
 
     /**
-     * GET pallet/metrics/stock-value
+     * GET pallet/metrics/stock-value.
      *
      * Returns total stock value broken down by warehouse.
      */
@@ -185,7 +190,7 @@ class MetricsController extends Controller
     }
 
     /**
-     * GET pallet/metrics/expiring-stock
+     * GET pallet/metrics/expiring-stock.
      *
      * Returns inventory batches expiring within the given number of days.
      */
@@ -196,21 +201,21 @@ class MetricsController extends Controller
         $limit       = (int) $request->input('limit', 10);
 
         $items = Inventory::where('company_uuid', $companyUuid)
-            ->whereNotNull('expiry_date')
-            ->whereDate('expiry_date', '<=', now()->addDays($days))
-            ->whereDate('expiry_date', '>=', now())
+            ->whereNotNull('expiry_date_at')
+            ->whereDate('expiry_date_at', '<=', now()->addDays($days))
+            ->whereDate('expiry_date_at', '>=', now())
             ->where('quantity', '>', 0)
-            ->with('product:uuid,name')
-            ->orderBy('expiry_date', 'asc')
+            ->with(['product:uuid,name', 'variant:uuid,name,sku,option_values'])
+            ->orderBy('expiry_date_at', 'asc')
             ->limit($limit)
             ->get()
             ->map(function ($inv) {
                 return [
                     'uuid'         => $inv->uuid,
-                    'product_name' => $inv->product->name ?? null,
+                    'product_name' => $inv->variant->display_name ?? $inv->product->name ?? null,
                     'lot_number'   => $inv->lot_number,
                     'quantity'     => $inv->quantity,
-                    'expiry_date'  => $inv->expiry_date,
+                    'expiry_date'  => $inv->expiry_date_at,
                 ];
             });
 
@@ -218,7 +223,7 @@ class MetricsController extends Controller
     }
 
     /**
-     * GET pallet/metrics/top-products
+     * GET pallet/metrics/top-products.
      *
      * Returns the most frequently moved products based on stock transactions.
      */
@@ -229,9 +234,10 @@ class MetricsController extends Controller
 
         $products = DB::table('pallet_stock_transactions')
             ->join('pallet_products', 'pallet_stock_transactions.product_uuid', '=', 'pallet_products.uuid')
+            ->leftJoin('pallet_product_variants', 'pallet_stock_transactions.variant_uuid', '=', 'pallet_product_variants.uuid')
             ->where('pallet_stock_transactions.company_uuid', $companyUuid)
-            ->selectRaw('pallet_products.name, pallet_products.sku, COUNT(*) as movement_count')
-            ->groupBy('pallet_products.uuid', 'pallet_products.name', 'pallet_products.sku')
+            ->selectRaw('COALESCE(pallet_product_variants.name, pallet_products.name) as name, COALESCE(pallet_product_variants.sku, pallet_products.sku) as sku, COUNT(*) as movement_count')
+            ->groupBy('pallet_products.uuid', 'pallet_products.name', 'pallet_products.sku', 'pallet_product_variants.uuid', 'pallet_product_variants.name', 'pallet_product_variants.sku')
             ->orderByDesc('movement_count')
             ->limit($limit)
             ->get()

@@ -3,217 +3,220 @@
 namespace Fleetbase\Pallet\Models;
 
 use Fleetbase\Casts\Json;
-use Fleetbase\FleetOps\Models\Entity;
+use Fleetbase\Models\Model;
+use Fleetbase\Traits\HasApiModelBehavior;
+use Fleetbase\Traits\HasInternalId;
 use Fleetbase\Traits\HasMetaAttributes;
-
-use Spatie\Activitylog\Traits\LogsActivity;
+use Fleetbase\Traits\HasPublicId;
+use Fleetbase\Traits\HasUuid;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
-class Product extends Entity
+class Product extends Model
 {
+    use HasUuid;
+    use HasPublicId;
+    use HasInternalId;
+    use HasApiModelBehavior;
     use HasMetaAttributes;
+    use LogsActivity;
 
-    /**
-     * Overwrite both entity resource name with `payloadKey`.
-     *
-     * @var string
-     */
+    protected $table = 'pallet_products';
+
     protected $payloadKey = 'product';
 
-    /**
-     * The type of public Id to generate.
-     *
-     * @var string
-     */
     public $publicIdType = 'product';
 
-    /**
-     * Filterable parameters.
-     *
-     * @var array
-     */
+    protected $fillable = [
+        'company_uuid',
+        'created_by_uuid',
+        'category_uuid',
+        'supplier_uuid',
+        'photo_uuid',
+        'internal_id',
+        'name',
+        'description',
+        'sku',
+        'barcode',
+        'currency',
+        'unit_cost',
+        'unit_price',
+        'sale_price',
+        'declared_value',
+        'weight',
+        'weight_unit',
+        'length',
+        'width',
+        'height',
+        'dimensions_unit',
+        'dimensions',
+        'has_variants',
+        'is_serialized',
+        'is_lot_tracked',
+        'is_kit',
+        'is_perishable',
+        'requires_quality_check',
+        'reorder_point',
+        'reorder_quantity',
+        'shelf_life_days',
+        'status',
+        'slug',
+        'meta',
+    ];
+
     protected $filterParams = [
-        'facilitator',
-        'facilitator_type',
         'category',
         'supplier',
         'status',
+        'has_variants',
         'is_serialized',
         'is_lot_tracked',
         'is_kit',
     ];
 
-    /**
-     * Searchable columns.
-     *
-     * @var array
-     */
     protected $searchableColumns = ['name', 'description', 'sku', 'barcode', 'internal_id'];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
     protected $casts = [
-        'meta'                => Json::class,
-        'dimensions'          => Json::class,
-        'variants'            => Json::class,
-        'kit_components'      => Json::class,
-        'is_serialized'       => 'boolean',
-        'is_lot_tracked'      => 'boolean',
-        'is_kit'              => 'boolean',
-        'is_perishable'       => 'boolean',
+        'meta'                   => Json::class,
+        'dimensions'             => Json::class,
+        'has_variants'           => 'boolean',
+        'is_serialized'          => 'boolean',
+        'is_lot_tracked'         => 'boolean',
+        'is_kit'                 => 'boolean',
+        'is_perishable'          => 'boolean',
         'requires_quality_check' => 'boolean',
-        'weight'              => 'decimal:2',
-        'unit_cost'           => 'decimal:2',
-        'unit_price'          => 'decimal:2',
-        'reorder_point'       => 'integer',
-        'reorder_quantity'    => 'integer',
-        'shelf_life_days'     => 'integer',
+        'weight'                 => 'decimal:4',
+        'length'                 => 'decimal:4',
+        'width'                  => 'decimal:4',
+        'height'                 => 'decimal:4',
+        'unit_cost'              => 'decimal:4',
+        'unit_price'             => 'decimal:4',
+        'sale_price'             => 'decimal:4',
+        'declared_value'         => 'decimal:4',
+        'reorder_point'          => 'integer',
+        'reorder_quantity'       => 'integer',
+        'shelf_life_days'        => 'integer',
     ];
 
-    /**
-     * Dynamic attributes that are appended to object.
-     *
-     * @var array
-     */
-    protected $appends = ['total_stock', 'available_stock'];
+    protected $appends = ['incrementing_id', 'total_stock', 'available_stock', 'variant_count'];
 
-    /**
-     * Relationships to eager load.
-     *
-     * @var array
-     */
-    protected $with = ['category', 'supplier'];
+    protected $with = ['category', 'supplier', 'variants'];
 
-    /**
-     * Get the product category.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function category()
+    public function getIncrementingIdAttribute(): ?int
+    {
+        return static::select('id')->where('uuid', $this->uuid)->value('id');
+    }
+
+    public function category(): BelongsTo
     {
         return $this->belongsTo(\Fleetbase\FleetOps\Models\Category::class, 'category_uuid');
     }
 
-    /**
-     * Get the primary supplier.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function supplier()
+    public function supplier(): BelongsTo
     {
         return $this->belongsTo(Supplier::class, 'supplier_uuid');
     }
 
-    /**
-     * Get all inventory records for this product.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function inventories()
+    public function variants(): HasMany
+    {
+        return $this->hasMany(ProductVariant::class, 'product_uuid');
+    }
+
+    public function files(): HasMany
+    {
+        return $this->hasMany(\Fleetbase\Models\File::class, 'subject_uuid', 'uuid');
+    }
+
+    public function inventories(): HasMany
     {
         return $this->hasMany(Inventory::class, 'product_uuid');
     }
 
-    /**
-     * Get all batches for this product.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function batches()
+    public function batches(): HasMany
     {
         return $this->hasMany(Batch::class, 'product_uuid');
     }
 
-    /**
-     * Get kit components if this is a kit product.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function kitComponents()
+    public function kitComponents(): HasMany
     {
         return $this->hasMany(ProductKitComponent::class, 'kit_product_uuid');
     }
 
-    /**
-     * Get total stock across all warehouses.
-     *
-     * @return int
-     */
-    public function getTotalStockAttribute()
+    public function getVariantCountAttribute(): int
     {
-        return $this->inventories()->sum('quantity');
+        return $this->variants()->count();
     }
 
-    /**
-     * Get available stock (total - reserved).
-     *
-     * @return int
-     */
-    public function getAvailableStockAttribute()
+    public function getTotalStockAttribute(): int
     {
-        $total = $this->total_stock;
-        $reserved = InventoryReservation::where('product_uuid', $this->uuid)
-            ->where('status', 'active')
-            ->sum('quantity');
+        $query = $this->inventories();
 
-        return max(0, $total - $reserved);
+        if (!$this->has_variants) {
+            $query->whereNull('variant_uuid');
+        }
+
+        return (int) $query->sum('quantity');
     }
 
-    /**
-     * Check if product needs reordering.
-     *
-     * @return bool
-     */
-    public function needsReorder()
+    public function getAvailableStockAttribute(): int
     {
-        return $this->available_stock <= $this->reorder_point;
+        $query = $this->inventories();
+
+        if (!$this->has_variants) {
+            $query->whereNull('variant_uuid');
+        }
+
+        return (int) $query->sum('available_quantity');
     }
 
-    /**
-     * Get stock level by warehouse.
-     *
-     * @param string $warehouseUuid
-     * @return int
-     */
-    public function getStockByWarehouse($warehouseUuid)
+    public function needsReorder(): bool
     {
-        return $this->inventories()
+        return $this->reorder_point !== null && $this->available_stock <= $this->reorder_point;
+    }
+
+    public function getStockByWarehouse($warehouseUuid, ?string $variantUuid = null): int
+    {
+        return (int) $this->inventories()
             ->where('warehouse_uuid', $warehouseUuid)
+            ->when($variantUuid, fn ($query) => $query->where('variant_uuid', $variantUuid))
+            ->when(!$variantUuid && !$this->has_variants, fn ($query) => $query->whereNull('variant_uuid'))
             ->sum('quantity');
     }
 
-    /**
-     * Reserve inventory for an order.
-     *
-     * @param int $quantity
-     * @param string $orderUuid
-     * @param string|null $warehouseUuid
-     * @return InventoryReservation|null
-     */
-    public function reserveInventory($quantity, $orderUuid, $warehouseUuid = null)
+    public function reserveInventory($quantity, $orderUuid, $warehouseUuid = null, ?string $variantUuid = null): ?InventoryReservation
     {
-        if ($this->available_stock < $quantity) {
+        $availableStock = $variantUuid
+            ? (ProductVariant::where('uuid', $variantUuid)->first()?->available_stock ?? 0)
+            : $this->available_stock;
+
+        if ($availableStock < $quantity) {
             return null;
         }
 
         return InventoryReservation::create([
             'company_uuid'   => session('company'),
             'product_uuid'   => $this->uuid,
+            'variant_uuid'   => $variantUuid,
             'order_uuid'     => $orderUuid,
             'warehouse_uuid' => $warehouseUuid,
             'quantity'       => $quantity,
             'status'         => 'active',
         ]);
     }
-    /**
-     * Configure Spatie activity log options.
-     * Logs only the specified attributes when they change (dirty only).
-     *
-     * @return LogOptions
-     */
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->company_uuid ??= session('company');
+            $model->created_by_uuid ??= session('user');
+            $model->status ??= 'active';
+        });
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -221,15 +224,13 @@ class Product extends Entity
                 'name',
                 'sku',
                 'description',
-                'price',
-                'cost',
-                'weight',
-                'category',
+                'unit_price',
+                'unit_cost',
                 'status',
                 'barcode',
+                'has_variants',
             ])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
     }
-
 }

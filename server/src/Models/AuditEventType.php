@@ -27,60 +27,60 @@ class AuditEventType
      * A stock quantity was manually adjusted (positive or negative).
      * Typically triggered by StockAdjustment creation.
      */
-    const STOCK_ADJUSTMENT = 'stock_adjustment';
+    public const STOCK_ADJUSTMENT = 'stock_adjustment';
 
     /**
      * A cycle count was completed and approved.
      * Triggered by CycleCount::approve().
      */
-    const CYCLE_COUNT = 'cycle_count';
+    public const CYCLE_COUNT = 'cycle_count';
 
     /**
      * A purchase order was received into inventory.
      * Triggered by PurchaseOrderController::receive().
      */
-    const PO_RECEIVED = 'po_received';
+    public const PO_RECEIVED = 'po_received';
 
     /**
      * A sales order was fulfilled and dispatched.
      * Triggered by SalesOrderController::fulfill().
      */
-    const SO_FULFILLED = 'so_fulfilled';
+    public const SO_FULFILLED = 'so_fulfilled';
 
     /**
      * A stock transfer between warehouse locations was completed.
      * Triggered by StockTransfer completion.
      */
-    const STOCK_TRANSFER = 'stock_transfer';
+    public const STOCK_TRANSFER = 'stock_transfer';
 
     /**
      * A new inventory record was created (initial stock intake).
      * Triggered by InventoryController::store().
      */
-    const INVENTORY_CREATED = 'inventory_created';
+    public const INVENTORY_CREATED = 'inventory_created';
 
     /**
      * An inventory record was updated (e.g. expiry date, location change).
      * Triggered by InventoryController::update().
      */
-    const INVENTORY_UPDATED = 'inventory_updated';
+    public const INVENTORY_UPDATED = 'inventory_updated';
 
     /**
      * A new batch was created and linked to inventory.
      * Triggered by BatchController::store().
      */
-    const BATCH_CREATED = 'batch_created';
+    public const BATCH_CREATED = 'batch_created';
 
     /**
      * A batch was marked as expired.
      * Triggered by Batch expiry detection.
      */
-    const BATCH_EXPIRED = 'batch_expired';
+    public const BATCH_EXPIRED = 'batch_expired';
 
     /**
      * A manually created audit note with no specific system trigger.
      */
-    const MANUAL = 'manual';
+    public const MANUAL = 'manual';
 
     /**
      * Returns all defined event type constants as an associative array.

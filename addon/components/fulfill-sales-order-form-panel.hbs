@@ -1,22 +1,6 @@
-<Overlay
-    @position="right"
-    @noBackdrop={{true}}
-    @fullHeight={{true}}
-    @isResizable={{true}}
-    @width="720px"
->
-    <Overlay::Header
-        @title="Fulfill Sales Order"
-        @status={{this.salesOrder.public_id}}
-        @hideStatusDot={{true}}
-        @createdAt={{this.salesOrder.createdAt}}
-    >
-        <Button
-            @type="default"
-            @icon="times"
-            @helpText="Close"
-            @onClick={{this.onPressCancel}}
-        />
+<Overlay @position="right" @noBackdrop={{true}} @fullHeight={{true}} @isResizable={{true}} @width="720px">
+    <Overlay::Header @title="Fulfill Sales Order" @status={{this.salesOrder.public_id}} @hideStatusDot={{true}} @createdAt={{this.salesOrder.createdAt}}>
+        <Button @type="default" @icon="times" @helpText="Close" @onClick={{this.onPressCancel}} />
     </Overlay::Header>
 
     <Overlay::Body @increaseInnerBodyHeightBy={{1000}}>
@@ -52,7 +36,9 @@
                 </div>
                 <div class="mt-3 p-2 bg-blue-50 dark:bg-blue-900/20 rounded text-xs text-blue-700 dark:text-blue-300">
                     <FaIcon @icon="info-circle" class="mr-1" />
-                    Inventory will be deducted using <strong>FEFO</strong> (First Expired, First Out) unless a specific inventory record is selected.
+                    Inventory will be deducted using
+                    <strong>FEFO</strong>
+                    (First Expired, First Out) unless a specific inventory record is selected.
                 </div>
             </ContentPanel>
 
@@ -82,6 +68,9 @@
                                     <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                                         <td class="px-4 py-3 font-medium text-gray-800 dark:text-gray-100">
                                             {{n-a item.product.name}}
+                                            {{#if item.variant}}
+                                                <span class="block text-gray-500 font-normal">{{n-a item.variant.display_name item.variant.name}}</span>
+                                            {{/if}}
                                             {{#if item.sku}}
                                                 <span class="block text-gray-400 font-normal">{{item.sku}}</span>
                                             {{/if}}
@@ -99,8 +88,8 @@
                                             <Input
                                                 @type="number"
                                                 @value={{(get (this.getFulfillmentEntry item) "quantity_fulfilled")}}
-                                                @min="0"
-                                                @max={{item.outstanding_quantity}}
+                                                min="0"
+                                                max={{item.outstanding_quantity}}
                                                 class="form-input w-full text-xs text-right"
                                                 placeholder="0"
                                                 {{on "input" (fn this.updateFulfillmentField item "quantity_fulfilled")}}
@@ -130,18 +119,14 @@
 
     <Overlay::Footer>
         <div class="flex items-center justify-end gap-2 p-4">
-            <Button
-                @type="default"
-                @text="Cancel"
-                @onClick={{this.onPressCancel}}
-            />
+            <Button @type="default" @text="Cancel" @onClick={{this.onPressCancel}} />
             {{#unless this.hasNoFulfillableItems}}
                 <Button
                     @type="primary"
                     @icon="box-open"
                     @text="Fulfill Order"
-                    @isLoading={{this.isFulfilling}}
-                    @disabled={{this.isFulfilling}}
+                    @isLoading={{this.fulfillOrder.isRunning}}
+                    @disabled={{this.fulfillOrder.isRunning}}
                     @onClick={{perform this.fulfillOrder}}
                 />
             {{/unless}}

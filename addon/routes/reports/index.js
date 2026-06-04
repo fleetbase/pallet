@@ -1,3 +1,1 @@
-import Route from '@ember/routing/route';
-
-export default class ReportsIndexRoute extends Route {}
+export { default } from '../analytics/reports/index';

@@ -13,7 +13,6 @@ export default class AdminProductCategoryComponent extends Component {
     @service hostRouter;
     @tracked categories = [];
     @tracked selectedCategory;
-    @tracked isLoading = false;
     @tracked buttonTitle = null;
 
     constructor() {
