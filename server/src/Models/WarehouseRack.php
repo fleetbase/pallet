@@ -106,6 +106,6 @@ class WarehouseRack extends Model
      */
     public function bins()
     {
-        return $this->hasMany(WarehouseBin::class, 'rack_uuid');
+        return $this->hasMany(WarehouseBin::class, 'rack_uuid', 'uuid');
     }
 }

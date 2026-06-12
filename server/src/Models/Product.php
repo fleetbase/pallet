@@ -34,6 +34,7 @@ class Product extends Model
         'created_by_uuid',
         'category_uuid',
         'supplier_uuid',
+        'storefront_product_uuid',
         'photo_uuid',
         'internal_id',
         'name',
@@ -69,6 +70,7 @@ class Product extends Model
     protected $filterParams = [
         'category',
         'supplier',
+        'storefront_product_uuid',
         'status',
         'has_variants',
         'is_serialized',
@@ -111,17 +113,17 @@ class Product extends Model
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo(\Fleetbase\FleetOps\Models\Category::class, 'category_uuid');
+        return $this->belongsTo(\Fleetbase\FleetOps\Models\Category::class, 'category_uuid', 'uuid');
     }
 
     public function supplier(): BelongsTo
     {
-        return $this->belongsTo(Supplier::class, 'supplier_uuid');
+        return $this->belongsTo(Supplier::class, 'supplier_uuid', 'uuid');
     }
 
     public function variants(): HasMany
     {
-        return $this->hasMany(ProductVariant::class, 'product_uuid');
+        return $this->hasMany(ProductVariant::class, 'product_uuid', 'uuid');
     }
 
     public function files(): HasMany
@@ -131,17 +133,17 @@ class Product extends Model
 
     public function inventories(): HasMany
     {
-        return $this->hasMany(Inventory::class, 'product_uuid');
+        return $this->hasMany(Inventory::class, 'product_uuid', 'uuid');
     }
 
     public function batches(): HasMany
     {
-        return $this->hasMany(Batch::class, 'product_uuid');
+        return $this->hasMany(Batch::class, 'product_uuid', 'uuid');
     }
 
     public function kitComponents(): HasMany
     {
-        return $this->hasMany(ProductKitComponent::class, 'kit_product_uuid');
+        return $this->hasMany(ProductKitComponent::class, 'kit_product_uuid', 'uuid');
     }
 
     public function getVariantCountAttribute(): int

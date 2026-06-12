@@ -18,6 +18,11 @@
             </div>
 
             <div class="field-info-container">
+                <div class="field-name">Storefront Product UUID</div>
+                <div class="field-value">{{n-a @product.storefront_product_uuid}}</div>
+            </div>
+
+            <div class="field-info-container">
                 <div class="field-name">Product Supplier</div>
                 <div class="field-value">{{n-a @product.supplier.name}}</div>
             </div>
@@ -28,7 +33,7 @@
             </div>
         </div>
     </ContentPanel>
-    <ContentPanel @title="Dimensions" @open={{false}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-900">
+    <ContentPanel @title="Dimensions" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-900">
         <div class="grid grid-cols-1 gap-2 lg:grid-cols-2 lg:gap-4 text-xs dark:text-gray-100">
 
             <div class="field-info-container">
@@ -53,7 +58,7 @@
 
         </div>
     </ContentPanel>
-    <ContentPanel @title="Uploaded images" @open={{false}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-900">
+    <ContentPanel @title="Uploaded images" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-900">
         <div class="w-14 flex items-center justify-start">
             <div class="grid grid-cols-1 gap-2 lg:grid-cols-2 lg:gap-4 text-xs dark:text-gray-100">
                 <div class="w-14 flex items-center justify-start">

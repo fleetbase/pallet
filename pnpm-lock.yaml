@@ -93,9 +93,6 @@ importers:
       ember-cli:
         specifier: ~5.4.1
         version: 5.4.2(@babel/core@7.29.7)(@types/node@25.9.1)(handlebars@4.7.9)(underscore@1.13.8)
-      ember-cli-clean-css:
-        specifier: ^3.0.0
-        version: 3.0.0
       ember-cli-dependency-checker:
         specifier: ^3.3.2
         version: 3.3.3(ember-cli@5.4.2(@babel/core@7.29.7)(@types/node@25.9.1)(handlebars@4.7.9)(underscore@1.13.8))
@@ -2993,10 +2990,6 @@ packages:
     engines: {node: '>=0.10.0'}
     hasBin: true
 
-  clean-css@5.3.3:
-    resolution: {integrity: sha512-D5J+kHaVb/wKSFcyyV75uCn8fiY4sV38XJoe4CUyGQ+mOU/fMVYUdH1hJC+CJQ5uY3EnW27SbJYS4X8BiLrAFg==}
-    engines: {node: '>= 10.0'}
-
   clean-stack@2.2.0:
     resolution: {integrity: sha512-4diC9HaTE+KRAMWhDhrGOECgWZxoevMc5TlkObMqNSsVU62PYzXZ/SMTjzyGAFF1YusgxGcSWTEXBhp0CPwQ1A==}
     engines: {node: '>=6'}
@@ -3759,10 +3752,6 @@ packages:
     engines: {node: 16.* || 18.* || >= 20}
     peerDependencies:
       '@babel/core': ^7.12.0
-
-  ember-cli-clean-css@3.0.0:
-    resolution: {integrity: sha512-BbveJCyRvzzkaTH1llLW+MpHe/yzA5zpHOpMIg2vp/3JD9mban9zUm7lphaB0TSpPuMuby9rAhTI8pgXq0ifIA==}
-    engines: {node: 16.* || >= 18}
 
   ember-cli-dependency-checker@3.3.3:
     resolution: {integrity: sha512-mvp+HrE0M5Zhc2oW8cqs8wdhtqq0CfQXAYzaIstOzHJJn/U01NZEGu3hz7J7zl/+jxZkyygylzcS57QqmPXMuQ==}
@@ -12645,10 +12634,6 @@ snapshots:
       commander: 2.8.1
       source-map: 0.4.4
 
-  clean-css@5.3.3:
-    dependencies:
-      source-map: 0.6.1
-
   clean-stack@2.2.0: {}
 
   clean-up-path@1.0.0: {}
@@ -13442,14 +13427,6 @@ snapshots:
       ensure-posix-path: 1.1.1
       resolve-package-path: 4.0.3
       semver: 7.8.1
-    transitivePeerDependencies:
-      - supports-color
-
-  ember-cli-clean-css@3.0.0:
-    dependencies:
-      broccoli-persistent-filter: 3.1.3
-      clean-css: 5.3.3
-      json-stable-stringify: 1.3.0
     transitivePeerDependencies:
       - supports-color
 

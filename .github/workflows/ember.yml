@@ -15,20 +15,26 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Setup Node.js ${{ env.NODE_VERSION }}
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
 
     - name: Setup pnpm
-      uses: pnpm/action-setup@v2.0.1
+      uses: pnpm/action-setup@v4
       with:
         version: latest
 
     - name: Install Dependencies
-      run: pnpm install
+      run: pnpm install --frozen-lockfile
+
+    - name: Lint
+      run: pnpm run lint
+
+    - name: Test
+      run: pnpm run test:ember
 
     - name: Build
       run: pnpm run build
@@ -38,20 +44,20 @@ jobs:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Setup Node.js ${{ env.NODE_VERSION }}
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
 
     - name: Setup pnpm
-      uses: pnpm/action-setup@v2.0.1
+      uses: pnpm/action-setup@v4
       with:
         version: latest
 
     - name: Install Dependencies
-      run: pnpm install
+      run: pnpm install --frozen-lockfile
 
     - name: Build
       run: pnpm run build
@@ -67,20 +73,20 @@ jobs:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v2.0.1
+        uses: pnpm/action-setup@v4
         with:
           version: latest
 
       - name: Install Dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Build
         run: pnpm run build

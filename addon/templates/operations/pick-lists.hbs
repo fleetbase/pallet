@@ -1,18 +1,44 @@
 <Layout::Section::Header @title="Pick Lists">
-    <div class="text-sm text-gray-500 dark:text-gray-300">Pick lists will become the execution surface for outbound warehouse work and order preparation.</div>
+    <div class="text-sm text-gray-500 dark:text-gray-300">Execute outbound warehouse work and track picking progress.</div>
 </Layout::Section::Header>
 
-<Layout::Section::Body class="overflow-y-scroll h-full p-4 space-y-4">
-    <ContentPanel @title="Implementation Status" @open={{true}} @wrapperClass="bordered-classic">
-        <p class="text-sm text-gray-700 dark:text-gray-200">Pick list entities exist in the domain model. This route is a production-safe scaffold until the picker-facing workflows and
-            operational detail views are ready.</p>
-    </ContentPanel>
-
-    <ContentPanel @title="Planned Workflows" @open={{true}} @wrapperClass="bordered-classic">
-        <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-200">
-            <li>Generate pick lists from sales orders and waves.</li>
-            <li>Track pick progress and exceptions by operator.</li>
-            <li>Support location-aware picking and fulfillment confirmation.</li>
-        </ul>
+<Layout::Section::Body class="overflow-y-scroll h-full p-4">
+    <ContentPanel @title="Pick Lists" @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
+        <table class="w-full text-sm">
+            <thead>
+                <tr class="border-b border-gray-200 dark:border-gray-700 text-left text-xs uppercase text-gray-500">
+                    <th class="px-4 py-3">Pick List</th>
+                    <th class="px-4 py-3">Warehouse</th>
+                    <th class="px-4 py-3">Type</th>
+                    <th class="px-4 py-3">Status</th>
+                    <th class="px-4 py-3 text-right">Progress</th>
+                    <th class="px-4 py-3 text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each @model as |pickList|}}
+                    <tr class="border-b border-gray-100 dark:border-gray-800">
+                        <td class="px-4 py-3 font-medium">{{n-a pickList.pick_list_number}}</td>
+                        <td class="px-4 py-3">{{n-a pickList.warehouse.name}}</td>
+                        <td class="px-4 py-3">{{n-a pickList.type}}</td>
+                        <td class="px-4 py-3"><Badge @status="info">{{n-a pickList.status}}</Badge></td>
+                        <td class="px-4 py-3 text-right">{{n-a pickList.completion_percentage}}</td>
+                        <td class="px-4 py-3">
+                            <div class="flex items-center justify-end gap-2">
+                                {{#if (or (eq pickList.status "pending") (eq pickList.status "assigned"))}}
+                                    <Button @icon="play" @type="primary" @size="xs" @text="Start" @onClick={{fn this.startPickList pickList}} />
+                                {{else if (eq pickList.status "in_progress")}}
+                                    <Button @icon="check" @type="success" @size="xs" @text="Complete" @onClick={{fn this.completePickList pickList}} />
+                                {{else}}
+                                    <span class="text-xs text-gray-400">No actions</span>
+                                {{/if}}
+                            </div>
+                        </td>
+                    </tr>
+                {{else}}
+                    <tr><td colspan="6" class="px-4 py-8 text-center text-gray-500">No pick lists yet.</td></tr>
+                {{/each}}
+            </tbody>
+        </table>
     </ContentPanel>
 </Layout::Section::Body>

@@ -10,6 +10,8 @@ use Fleetbase\Traits\HasMetaAttributes;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 use Fleetbase\Traits\TracksApiCredential;
+use Illuminate\Support\Facades\DB;
+use RuntimeException;
 
 class StockTransfer extends Model
 {
@@ -93,7 +95,7 @@ class StockTransfer extends Model
      */
     public function fromWarehouse()
     {
-        return $this->belongsTo(Warehouse::class, 'from_warehouse_uuid');
+        return $this->belongsTo(Warehouse::class, 'from_warehouse_uuid', 'uuid');
     }
 
     /**
@@ -103,7 +105,7 @@ class StockTransfer extends Model
      */
     public function toWarehouse()
     {
-        return $this->belongsTo(Warehouse::class, 'to_warehouse_uuid');
+        return $this->belongsTo(Warehouse::class, 'to_warehouse_uuid', 'uuid');
     }
 
     /**
@@ -113,7 +115,7 @@ class StockTransfer extends Model
      */
     public function requestedBy()
     {
-        return $this->belongsTo(\Fleetbase\Models\User::class, 'requested_by_uuid');
+        return $this->belongsTo(\Fleetbase\Models\User::class, 'requested_by_uuid', 'uuid');
     }
 
     /**
@@ -123,7 +125,7 @@ class StockTransfer extends Model
      */
     public function approvedBy()
     {
-        return $this->belongsTo(\Fleetbase\Models\User::class, 'approved_by_uuid');
+        return $this->belongsTo(\Fleetbase\Models\User::class, 'approved_by_uuid', 'uuid');
     }
 
     /**
@@ -133,7 +135,7 @@ class StockTransfer extends Model
      */
     public function items()
     {
-        return $this->hasMany(StockTransferItem::class, 'stock_transfer_uuid');
+        return $this->hasMany(StockTransferItem::class, 'stock_transfer_uuid', 'uuid');
     }
 
     /**
@@ -180,22 +182,27 @@ class StockTransfer extends Model
      */
     public function ship()
     {
-        // Deduct inventory from source warehouse
-        foreach ($this->items as $item) {
-            $inventory = Inventory::where('product_uuid', $item->product_uuid)
-                ->where('variant_uuid', $item->variant_uuid)
-                ->where('warehouse_uuid', $this->from_warehouse_uuid)
-                ->first();
+        $result = DB::transaction(function () {
+            foreach ($this->items as $item) {
+                $inventory = Inventory::where('company_uuid', $this->company_uuid)
+                    ->where('product_uuid', $item->product_uuid)
+                    ->where('variant_uuid', $item->variant_uuid)
+                    ->where('warehouse_uuid', $this->from_warehouse_uuid)
+                    ->lockForUpdate()
+                    ->first();
 
-            if ($inventory) {
-                $inventory->quantity -= $item->quantity;
-                $inventory->save();
+                if (!$inventory || $inventory->available_quantity < $item->quantity) {
+                    throw new RuntimeException('Insufficient source inventory for stock transfer item.');
+                }
+
+                $inventory->deduct($item->quantity);
             }
-        }
 
-        $this->status     = 'in_transit';
-        $this->shipped_at = now();
-        $result           = $this->save();
+            $this->status     = 'in_transit';
+            $this->shipped_at = now();
+
+            return $this->save();
+        });
 
         // Log operational audit event
         $this->logAuditEvent(
@@ -222,27 +229,30 @@ class StockTransfer extends Model
      */
     public function receive()
     {
-        // Add inventory to destination warehouse
-        foreach ($this->items as $item) {
-            $inventory = Inventory::firstOrCreate(
-                [
-                    'product_uuid'   => $item->product_uuid,
-                    'variant_uuid'   => $item->variant_uuid,
-                    'warehouse_uuid' => $this->to_warehouse_uuid,
-                    'company_uuid'   => $this->company_uuid,
-                ],
-                [
-                    'quantity' => 0,
-                ]
-            );
+        $result = DB::transaction(function () {
+            foreach ($this->items as $item) {
+                $inventory = Inventory::firstOrCreate(
+                    [
+                        'product_uuid'   => $item->product_uuid,
+                        'variant_uuid'   => $item->variant_uuid,
+                        'warehouse_uuid' => $this->to_warehouse_uuid,
+                        'company_uuid'   => $this->company_uuid,
+                    ],
+                    [
+                        'quantity'           => 0,
+                        'available_quantity' => 0,
+                        'reserved_quantity'  => 0,
+                    ]
+                );
 
-            $inventory->quantity += $item->quantity_received ?? $item->quantity;
-            $inventory->save();
-        }
+                $inventory->add($item->quantity_received ?? $item->quantity);
+            }
 
-        $this->status      = 'completed';
-        $this->received_at = now();
-        $result            = $this->save();
+            $this->status      = 'completed';
+            $this->received_at = now();
+
+            return $this->save();
+        });
 
         // Log operational audit event
         $this->logAuditEvent(

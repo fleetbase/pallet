@@ -93,7 +93,7 @@ class PickList extends Model
      */
     public function warehouse()
     {
-        return $this->belongsTo(Warehouse::class, 'warehouse_uuid');
+        return $this->belongsTo(Warehouse::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
@@ -103,7 +103,7 @@ class PickList extends Model
      */
     public function salesOrder()
     {
-        return $this->belongsTo(SalesOrder::class, 'sales_order_uuid');
+        return $this->belongsTo(SalesOrder::class, 'sales_order_uuid', 'uuid');
     }
 
     /**
@@ -113,7 +113,7 @@ class PickList extends Model
      */
     public function wave()
     {
-        return $this->belongsTo(Wave::class, 'wave_uuid');
+        return $this->belongsTo(Wave::class, 'wave_uuid', 'uuid');
     }
 
     /**
@@ -123,7 +123,7 @@ class PickList extends Model
      */
     public function assignedTo()
     {
-        return $this->belongsTo(\Fleetbase\Models\User::class, 'assigned_to_uuid');
+        return $this->belongsTo(\Fleetbase\Models\User::class, 'assigned_to_uuid', 'uuid');
     }
 
     /**
@@ -133,7 +133,7 @@ class PickList extends Model
      */
     public function items()
     {
-        return $this->hasMany(PickListItem::class, 'pick_list_uuid');
+        return $this->hasMany(PickListItem::class, 'pick_list_uuid', 'uuid');
     }
 
     /**

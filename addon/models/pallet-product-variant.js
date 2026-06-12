@@ -7,6 +7,7 @@ export default class PalletProductVariantModel extends Model {
     @attr('string') company_uuid;
     @attr('string') created_by_uuid;
     @attr('string') product_uuid;
+    @attr('string') storefront_variant_uuid;
 
     /** @relationships */
     @belongsTo('pallet-product', { async: false }) product;

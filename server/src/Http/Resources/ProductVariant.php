@@ -16,6 +16,7 @@ class ProductVariant extends FleetbaseResource
             'company_uuid'    => $this->company_uuid,
             'created_by_uuid' => $this->created_by_uuid,
             'product_uuid'    => $this->product_uuid,
+            'storefront_variant_uuid' => $this->storefront_variant_uuid,
             'product'         => $this->whenLoaded('product', fn () => new Product($this->product)),
             'name'            => $this->name,
             'display_name'    => $this->display_name,

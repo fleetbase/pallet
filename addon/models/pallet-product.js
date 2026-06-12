@@ -10,6 +10,7 @@ export default class PalletProductModel extends Model {
     @attr('string') created_by_uuid;
     @attr('string') category_uuid;
     @attr('string') supplier_uuid;
+    @attr('string') storefront_product_uuid;
     @attr('string') photo_uuid;
 
     /** @relationships */

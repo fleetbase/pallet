@@ -17,6 +17,7 @@ class Product extends FleetbaseResource
             'created_by_uuid'        => $this->created_by_uuid,
             'category_uuid'          => $this->category_uuid,
             'supplier_uuid'          => $this->supplier_uuid,
+            'storefront_product_uuid' => $this->storefront_product_uuid,
             'photo_uuid'             => $this->photo_uuid,
             'photo_url'              => $this->photo_url,
             'supplier'               => $this->whenLoaded('supplier', $this->supplier),

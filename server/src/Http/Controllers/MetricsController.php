@@ -3,9 +3,16 @@
 namespace Fleetbase\Pallet\Http\Controllers;
 
 use Fleetbase\Http\Controllers\Controller;
+use Fleetbase\Pallet\Models\CycleCount;
+use Fleetbase\Pallet\Models\InventoryReservation;
 use Fleetbase\Pallet\Models\Inventory;
+use Fleetbase\Pallet\Models\PickList;
+use Fleetbase\Pallet\Models\Product;
+use Fleetbase\Pallet\Models\ProductVariant;
 use Fleetbase\Pallet\Models\PurchaseOrder;
 use Fleetbase\Pallet\Models\SalesOrder;
+use Fleetbase\Pallet\Models\StockTransfer;
+use Fleetbase\Pallet\Models\Wave;
 use Fleetbase\Pallet\Models\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +29,187 @@ class MetricsController extends Controller
     {
         return Inventory::where('company_uuid', $companyUuid)
             ->where('min_quantity', '>', 0)
-            ->whereColumn('quantity', '<=', 'min_quantity');
+            ->whereColumn('available_quantity', '<=', 'min_quantity');
+    }
+
+    protected function openStatuses(): array
+    {
+        return ['pending', 'partial', 'partially_received', 'partially_fulfilled', 'active', 'assigned', 'released', 'approved', 'in_progress', 'in_transit'];
+    }
+
+    protected function metric(string $label, $value, string $format = 'number', ?string $footnote = null): array
+    {
+        return [
+            'label'    => $label,
+            'value'    => $value,
+            'format'   => $format,
+            'footnote' => $footnote,
+        ];
+    }
+
+    /**
+     * GET pallet/metrics/kpis.
+     *
+     * Returns the individual KPI metrics consumed by Pallet dashboard tiles.
+     */
+    public function kpis(Request $request)
+    {
+        $companyUuid = session('company');
+
+        $totals = Inventory::where('company_uuid', $companyUuid)
+            ->selectRaw('
+                SUM(quantity) as total_units,
+                SUM(available_quantity) as available_units,
+                SUM(reserved_quantity) as reserved_units,
+                SUM(quantity * COALESCE(unit_cost, 0)) as stock_value
+            ')
+            ->first();
+
+        $productCount       = Product::where('company_uuid', $companyUuid)->count();
+        $variantCount       = ProductVariant::where('company_uuid', $companyUuid)->count();
+        $lowStockCount      = $this->lowStockQuery($companyUuid)->count();
+        $expiringSoonCount  = Inventory::where('company_uuid', $companyUuid)->expiringSoon(30)->count();
+        $openPurchaseOrders = PurchaseOrder::where('company_uuid', $companyUuid)->whereIn('status', ['pending', 'partial', 'partially_received'])->count();
+        $openFulfillment    = InventoryReservation::where('company_uuid', $companyUuid)->active()->count()
+            + PickList::where('company_uuid', $companyUuid)->whereIn('status', ['pending', 'assigned', 'in_progress'])->count()
+            + Wave::where('company_uuid', $companyUuid)->whereIn('status', ['pending', 'released', 'in_progress'])->count();
+
+        return response()->json([
+            'total_skus'       => $this->metric('Total SKUs', $productCount + $variantCount, 'number', "{$productCount} products, {$variantCount} variants"),
+            'available_units'  => $this->metric('Available Units', (int) ($totals->available_units ?? 0), 'number', 'Ready to promise'),
+            'reserved_units'   => $this->metric('Reserved Units', (int) ($totals->reserved_units ?? 0), 'number', 'Committed to orders'),
+            'stock_value'      => $this->metric('Stock Value', round((float) ($totals->stock_value ?? 0), 2), 'currency', 'On-hand inventory value'),
+            'low_stock'        => $this->metric('Low Stock', $lowStockCount, 'number', 'At or below minimum'),
+            'expiring_soon'    => $this->metric('Expiring Soon', $expiringSoonCount, 'number', 'Next 30 days'),
+            'open_pos'         => $this->metric('Open POs', $openPurchaseOrders, 'number', 'Awaiting receipt'),
+            'open_fulfillment' => $this->metric('Open Fulfillment', $openFulfillment, 'number', 'Reservations, waves, and picks'),
+        ]);
+    }
+
+    /**
+     * GET pallet/metrics/inventory-health.
+     */
+    public function inventoryHealth(Request $request)
+    {
+        $companyUuid = session('company');
+        $base        = Inventory::where('company_uuid', $companyUuid);
+
+        return response()->json([
+            'total'         => (clone $base)->count(),
+            'in_stock'      => (clone $base)->where('available_quantity', '>', 0)->where(function ($query) {
+                $query->whereNull('min_quantity')->orWhereColumn('available_quantity', '>', 'min_quantity');
+            })->count(),
+            'low_stock'     => $this->lowStockQuery($companyUuid)->count(),
+            'out_of_stock'  => (clone $base)->where('available_quantity', '<=', 0)->count(),
+            'expired'       => (clone $base)->expired()->count(),
+            'expiring_soon' => (clone $base)->expiringSoon(30)->count(),
+        ]);
+    }
+
+    /**
+     * GET pallet/metrics/warehouse-utilization.
+     */
+    public function warehouseUtilization(Request $request)
+    {
+        $companyUuid = session('company');
+        $limit       = (int) $request->input('limit', 8);
+
+        $warehouses = Warehouse::where('pallet_warehouses.company_uuid', $companyUuid)
+            ->leftJoin('pallet_inventories', 'pallet_inventories.warehouse_uuid', '=', 'pallet_warehouses.uuid')
+            ->selectRaw('
+                pallet_warehouses.uuid,
+                pallet_warehouses.name,
+                COUNT(DISTINCT pallet_inventories.product_uuid) as sku_count,
+                COALESCE(SUM(pallet_inventories.quantity), 0) as units,
+                COALESCE(SUM(pallet_inventories.available_quantity), 0) as available_units,
+                COALESCE(SUM(pallet_inventories.reserved_quantity), 0) as reserved_units,
+                COALESCE(SUM(pallet_inventories.quantity * COALESCE(pallet_inventories.unit_cost, 0)), 0) as stock_value
+            ')
+            ->groupBy('pallet_warehouses.uuid', 'pallet_warehouses.name')
+            ->orderByDesc('units')
+            ->limit($limit)
+            ->get()
+            ->map(function ($warehouse) {
+                return [
+                    'uuid'            => $warehouse->uuid,
+                    'name'            => $warehouse->name,
+                    'sku_count'       => (int) $warehouse->sku_count,
+                    'units'           => (int) $warehouse->units,
+                    'available_units' => (int) $warehouse->available_units,
+                    'reserved_units'  => (int) $warehouse->reserved_units,
+                    'stock_value'     => round((float) $warehouse->stock_value, 2),
+                ];
+            });
+
+        return response()->json(['warehouses' => $warehouses]);
+    }
+
+    /**
+     * GET pallet/metrics/stock-movement.
+     */
+    public function stockMovement(Request $request)
+    {
+        $companyUuid = session('company');
+        $days        = (int) $request->input('days', 14);
+
+        $rows = DB::table('pallet_stock_transactions')
+            ->where('company_uuid', $companyUuid)
+            ->where('created_at', '>=', now()->subDays($days))
+            ->selectRaw("DATE(COALESCE(transaction_created_at, created_at)) as date, COALESCE(transaction_type, 'movement') as type, SUM(quantity) as quantity")
+            ->groupBy('date', 'type')
+            ->orderBy('date')
+            ->get();
+
+        return response()->json(['series' => $rows]);
+    }
+
+    /**
+     * GET pallet/metrics/fulfillment-workload.
+     */
+    public function fulfillmentWorkload(Request $request)
+    {
+        $companyUuid = session('company');
+
+        return response()->json([
+            'reservations' => InventoryReservation::where('company_uuid', $companyUuid)->selectRaw('status, COUNT(*) as count')->groupBy('status')->pluck('count', 'status'),
+            'waves'        => Wave::where('company_uuid', $companyUuid)->selectRaw('status, COUNT(*) as count')->groupBy('status')->pluck('count', 'status'),
+            'pick_lists'   => PickList::where('company_uuid', $companyUuid)->selectRaw('status, COUNT(*) as count')->groupBy('status')->pluck('count', 'status'),
+            'cycle_counts' => CycleCount::where('company_uuid', $companyUuid)->selectRaw('status, COUNT(*) as count')->groupBy('status')->pluck('count', 'status'),
+            'transfers'    => StockTransfer::where('company_uuid', $companyUuid)->selectRaw('status, COUNT(*) as count')->groupBy('status')->pluck('count', 'status'),
+        ]);
+    }
+
+    /**
+     * GET pallet/metrics/reorder-risk.
+     */
+    public function reorderRisk(Request $request)
+    {
+        $companyUuid = session('company');
+        $limit       = (int) $request->input('limit', 10);
+
+        $products = Product::where('company_uuid', $companyUuid)
+            ->whereNotNull('reorder_point')
+            ->where('reorder_point', '>', 0)
+            ->with('supplier:uuid,name')
+            ->get()
+            ->filter(fn ($product) => $product->available_stock <= $product->reorder_point)
+            ->sortBy('available_stock')
+            ->take($limit)
+            ->values()
+            ->map(function ($product) {
+                return [
+                    'uuid'             => $product->uuid,
+                    'public_id'        => $product->public_id,
+                    'name'             => $product->name,
+                    'sku'              => $product->sku,
+                    'available_stock'  => (int) $product->available_stock,
+                    'reorder_point'    => (int) $product->reorder_point,
+                    'reorder_quantity' => (int) $product->reorder_quantity,
+                    'supplier_name'    => $product->supplier->name ?? null,
+                ];
+            });
+
+        return response()->json(['products' => $products]);
     }
 
     /**
@@ -40,7 +227,7 @@ class MetricsController extends Controller
             ->value('aggregate_count');
 
         $totals = Inventory::where('company_uuid', $companyUuid)
-            ->selectRaw('SUM(quantity) as total_units, SUM(quantity * unit_cost) as total_value')
+            ->selectRaw('SUM(quantity) as total_units, SUM(quantity * COALESCE(unit_cost, 0)) as total_value')
             ->first();
 
         $warehouseCount = Warehouse::where('company_uuid', $companyUuid)->count();
@@ -76,7 +263,7 @@ class MetricsController extends Controller
                     'uuid'      => $inv->uuid,
                     'name'      => $inv->variant->display_name ?? $inv->product->name ?? null,
                     'sku'       => $inv->variant->sku ?? $inv->product->sku ?? null,
-                    'quantity'  => $inv->quantity,
+                    'quantity'  => $inv->available_quantity,
                     'min_stock' => $inv->min_quantity,
                 ];
             });
@@ -146,7 +333,7 @@ class MetricsController extends Controller
                     'uuid'          => $so->uuid,
                     'public_id'     => $so->public_id,
                     'status'        => $so->status,
-                    'supplier_name' => $so->supplier?->name,
+                    'customer_name' => $so->customer_reference_code ?? $so->supplier?->name,
                 ];
             });
 
@@ -170,7 +357,7 @@ class MetricsController extends Controller
 
         $warehouses = Inventory::where('pallet_inventories.company_uuid', $companyUuid)
             ->join('pallet_warehouses', 'pallet_inventories.warehouse_uuid', '=', 'pallet_warehouses.uuid')
-            ->selectRaw('pallet_warehouses.name, SUM(pallet_inventories.quantity * pallet_inventories.unit_cost) as value')
+            ->selectRaw('pallet_warehouses.name, SUM(pallet_inventories.quantity * COALESCE(pallet_inventories.unit_cost, 0)) as value')
             ->groupBy('pallet_warehouses.uuid', 'pallet_warehouses.name')
             ->orderByDesc('value')
             ->get()

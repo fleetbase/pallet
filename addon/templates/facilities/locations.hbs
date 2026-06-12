@@ -1,28 +1,34 @@
 <Layout::Section::Header @title="Locations">
-    <div class="text-sm text-gray-500 dark:text-gray-300">Manage the internal warehouse structure for sections, aisles, racks, and bins from a dedicated facilities surface.</div>
+    <div class="text-sm text-gray-500 dark:text-gray-300">Manage warehouse bin locations used for receiving, storage, picking, transfers, and cycle counts.</div>
 </Layout::Section::Header>
 
-<Layout::Section::Body class="overflow-y-scroll h-full p-4 space-y-4">
-    <ContentPanel @title="Implementation Status" @open={{true}} @wrapperClass="bordered-classic">
-        <p class="text-sm text-gray-700 dark:text-gray-200">This is a production navigation scaffold for the warehouse location domain. Backend models already support structural entities,
-            but the full management workflow is still being completed.</p>
+<Layout::Section::Body class="overflow-y-scroll h-full p-4">
+    <ContentPanel @title="Bin Locations" @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
+        <table class="w-full text-sm">
+            <thead>
+                <tr class="border-b border-gray-200 dark:border-gray-700 text-left text-xs uppercase text-gray-500">
+                    <th class="px-4 py-3">Bin</th>
+                    <th class="px-4 py-3">Warehouse</th>
+                    <th class="px-4 py-3">Zone</th>
+                    <th class="px-4 py-3">Type</th>
+                    <th class="px-4 py-3">Status</th>
+                    <th class="px-4 py-3 text-right">Available</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each @model as |location|}}
+                    <tr class="border-b border-gray-100 dark:border-gray-800">
+                        <td class="px-4 py-3 font-medium">{{n-a location.bin_number}}</td>
+                        <td class="px-4 py-3">{{n-a location.warehouse.name}}</td>
+                        <td class="px-4 py-3">{{n-a location.zone.name}}</td>
+                        <td class="px-4 py-3">{{n-a location.type}}</td>
+                        <td class="px-4 py-3"><Badge @status={{if (eq location.status "active") "success" "default"}}>{{n-a location.status}}</Badge></td>
+                        <td class="px-4 py-3 text-right">{{n-a location.available_capacity}}</td>
+                    </tr>
+                {{else}}
+                    <tr><td colspan="6" class="px-4 py-8 text-center text-gray-500">No bin locations yet.</td></tr>
+                {{/each}}
+            </tbody>
+        </table>
     </ContentPanel>
-
-    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
-        <ContentPanel @title="Planned Workflows" @open={{true}} @wrapperClass="bordered-classic">
-            <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-200">
-                <li>Create and manage sections, aisles, racks, and bins.</li>
-                <li>Map warehouse storage structure for inventory placement.</li>
-                <li>Expose location-aware inventory and receiving workflows.</li>
-            </ul>
-        </ContentPanel>
-
-        <ContentPanel @title="What Ships Next" @open={{true}} @wrapperClass="bordered-classic">
-            <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-200">
-                <li>Dedicated location resource screens and detail panels.</li>
-                <li>Nested warehouse editors connected to the facilities surface.</li>
-                <li>Location-aware receiving, transfers, and cycle counts.</li>
-            </ul>
-        </ContentPanel>
-    </div>
 </Layout::Section::Body>

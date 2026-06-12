@@ -1,18 +1,43 @@
 <Layout::Section::Header @title="Reservations">
-    <div class="text-sm text-gray-500 dark:text-gray-300">Reservations will control allocated inventory and expose stock commitments before fulfillment execution.</div>
+    <div class="text-sm text-gray-500 dark:text-gray-300">View committed stock before fulfillment execution.</div>
 </Layout::Section::Header>
 
-<Layout::Section::Body class="overflow-y-scroll h-full p-4 space-y-4">
-    <ContentPanel @title="Implementation Status" @open={{true}} @wrapperClass="bordered-classic">
-        <p class="text-sm text-gray-700 dark:text-gray-200">Reservation models already exist in the Pallet backend. This scaffold preserves a complete production information architecture
-            while the reservation workflow is finalized.</p>
-    </ContentPanel>
-
-    <ContentPanel @title="Planned Workflows" @open={{true}} @wrapperClass="bordered-classic">
-        <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-200">
-            <li>Reserve inventory against open sales and warehouse operations.</li>
-            <li>Expose committed versus available stock.</li>
-            <li>Release or reallocate stock when order conditions change.</li>
-        </ul>
+<Layout::Section::Body class="overflow-y-scroll h-full p-4">
+    <ContentPanel @title="Inventory Reservations" @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
+        <table class="w-full text-sm">
+            <thead>
+                <tr class="border-b border-gray-200 dark:border-gray-700 text-left text-xs uppercase text-gray-500">
+                    <th class="px-4 py-3">Product</th>
+                    <th class="px-4 py-3">Variant</th>
+                    <th class="px-4 py-3">Warehouse</th>
+                    <th class="px-4 py-3">Status</th>
+                    <th class="px-4 py-3 text-right">Quantity</th>
+                    <th class="px-4 py-3 text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each @model as |reservation|}}
+                    <tr class="border-b border-gray-100 dark:border-gray-800">
+                        <td class="px-4 py-3 font-medium">{{n-a reservation.product.name}}</td>
+                        <td class="px-4 py-3">{{n-a reservation.variant.display_name}}</td>
+                        <td class="px-4 py-3">{{n-a reservation.warehouse.name}}</td>
+                        <td class="px-4 py-3"><Badge @status={{if reservation.is_active "success" "default"}}>{{n-a reservation.status}}</Badge></td>
+                        <td class="px-4 py-3 text-right">{{n-a reservation.quantity}}</td>
+                        <td class="px-4 py-3">
+                            <div class="flex items-center justify-end gap-2">
+                                {{#if reservation.is_active}}
+                                    <Button @icon="unlock" @type="default" @size="xs" @text="Release" @onClick={{fn this.releaseReservation reservation}} />
+                                    <Button @icon="check" @type="primary" @size="xs" @text="Fulfill" @onClick={{fn this.fulfillReservation reservation}} />
+                                {{else}}
+                                    <span class="text-xs text-gray-400">No actions</span>
+                                {{/if}}
+                            </div>
+                        </td>
+                    </tr>
+                {{else}}
+                    <tr><td colspan="6" class="px-4 py-8 text-center text-gray-500">No reservations yet.</td></tr>
+                {{/each}}
+            </tbody>
+        </table>
     </ContentPanel>
 </Layout::Section::Body>

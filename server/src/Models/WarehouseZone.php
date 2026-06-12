@@ -90,7 +90,7 @@ class WarehouseZone extends Model
      */
     public function warehouse()
     {
-        return $this->belongsTo(Warehouse::class, 'warehouse_uuid');
+        return $this->belongsTo(Warehouse::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
@@ -100,7 +100,7 @@ class WarehouseZone extends Model
      */
     public function binLocations()
     {
-        return $this->hasMany(BinLocation::class, 'zone_uuid');
+        return $this->hasMany(BinLocation::class, 'zone_uuid', 'uuid');
     }
 
     /**
@@ -110,7 +110,7 @@ class WarehouseZone extends Model
      */
     public function aisles()
     {
-        return $this->hasMany(WarehouseAisle::class, 'zone_uuid');
+        return $this->hasMany(WarehouseAisle::class, 'zone_uuid', 'uuid');
     }
 
     /**

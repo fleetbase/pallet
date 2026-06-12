@@ -8,6 +8,7 @@ export default class WidgetRecentActivityComponent extends Component {
     @service notifications;
 
     @tracked events = [];
+    @tracked error = null;
 
     constructor() {
         super(...arguments);
@@ -19,7 +20,9 @@ export default class WidgetRecentActivityComponent extends Component {
         try {
             const data = yield this.fetch.get('audits', { limit: 15, sort: '-created_at' }, { namespace: 'pallet/int/v1' });
             this.events = data.audits ?? data ?? [];
+            this.error = null;
         } catch (error) {
+            this.error = error?.message ?? 'Unable to load recent activity';
             this.notifications.serverError(error);
         }
     }

@@ -80,7 +80,7 @@ class PickListItem extends Model
      */
     public function pickList()
     {
-        return $this->belongsTo(PickList::class, 'pick_list_uuid');
+        return $this->belongsTo(PickList::class, 'pick_list_uuid', 'uuid');
     }
 
     /**
@@ -105,7 +105,7 @@ class PickListItem extends Model
      */
     public function inventory()
     {
-        return $this->belongsTo(Inventory::class, 'inventory_uuid');
+        return $this->belongsTo(Inventory::class, 'inventory_uuid', 'uuid');
     }
 
     /**
@@ -115,7 +115,7 @@ class PickListItem extends Model
      */
     public function binLocation()
     {
-        return $this->belongsTo(BinLocation::class, 'bin_location_uuid');
+        return $this->belongsTo(BinLocation::class, 'bin_location_uuid', 'uuid');
     }
 
     /**
@@ -125,7 +125,7 @@ class PickListItem extends Model
      */
     public function pickedBy()
     {
-        return $this->belongsTo(\Fleetbase\Models\User::class, 'picked_by_uuid');
+        return $this->belongsTo(\Fleetbase\Models\User::class, 'picked_by_uuid', 'uuid');
     }
 
     /**

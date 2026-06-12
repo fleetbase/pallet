@@ -3,7 +3,11 @@
         @defaultDashboardId="pallet"
         @defaultDashboardName="Pallet Dashboard"
         @extension="pallet"
-        class="flex items-center justify-between p-2"
+        @leftHeaderWrapperClass="pallet-dashboard-title"
+        @rightHeaderWrapperClass="pallet-dashboard-actions"
+        @createWrapperClass="pallet-dashboard-create-wrapper"
+        @stickyHeader={{true}}
+        class="pallet-dashboard-page"
     />
     <Spacer @height="300px" />
     {{outlet}}

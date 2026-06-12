@@ -1,28 +1,32 @@
 <Layout::Section::Header @title="Zones">
-    <div class="text-sm text-gray-500 dark:text-gray-300">Zones give Pallet a facility-level segmentation layer for storage strategy, operational rules, and inventory planning.</div>
+    <div class="text-sm text-gray-500 dark:text-gray-300">Manage storage, receiving, staging, quarantine, and outbound zones across warehouses.</div>
 </Layout::Section::Header>
 
-<Layout::Section::Body class="overflow-y-scroll h-full p-4 space-y-4">
-    <ContentPanel @title="Implementation Status" @open={{true}} @wrapperClass="bordered-classic">
-        <p class="text-sm text-gray-700 dark:text-gray-200">This section is now routable and visible in production navigation. The zoning model exists in the backend, while the
-            operator-facing management workflow is still planned.</p>
+<Layout::Section::Body class="overflow-y-scroll h-full p-4">
+    <ContentPanel @title="Warehouse Zones" @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
+        <table class="w-full text-sm">
+            <thead>
+                <tr class="border-b border-gray-200 dark:border-gray-700 text-left text-xs uppercase text-gray-500">
+                    <th class="px-4 py-3">Zone</th>
+                    <th class="px-4 py-3">Warehouse</th>
+                    <th class="px-4 py-3">Type</th>
+                    <th class="px-4 py-3">Status</th>
+                    <th class="px-4 py-3 text-right">Utilization</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each @model as |zone|}}
+                    <tr class="border-b border-gray-100 dark:border-gray-800">
+                        <td class="px-4 py-3 font-medium">{{n-a zone.name}}</td>
+                        <td class="px-4 py-3">{{n-a zone.warehouse.name}}</td>
+                        <td class="px-4 py-3">{{n-a zone.type}}</td>
+                        <td class="px-4 py-3"><Badge @status={{if (eq zone.status "active") "success" "default"}}>{{n-a zone.status}}</Badge></td>
+                        <td class="px-4 py-3 text-right">{{n-a zone.utilization_percentage}}</td>
+                    </tr>
+                {{else}}
+                    <tr><td colspan="5" class="px-4 py-8 text-center text-gray-500">No zones yet.</td></tr>
+                {{/each}}
+            </tbody>
+        </table>
     </ContentPanel>
-
-    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
-        <ContentPanel @title="Planned Workflows" @open={{true}} @wrapperClass="bordered-classic">
-            <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-200">
-                <li>Create storage, quarantine, staging, and outbound zones.</li>
-                <li>Assign rules to zones for stock placement and movement.</li>
-                <li>Use zones in future picking, waves, and replenishment flows.</li>
-            </ul>
-        </ContentPanel>
-
-        <ContentPanel @title="What Ships Next" @open={{true}} @wrapperClass="bordered-classic">
-            <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-200">
-                <li>Zone CRUD and assignment management.</li>
-                <li>Location-to-zone mapping inside facilities tooling.</li>
-                <li>Zone-aware filters in inventory and operations views.</li>
-            </ul>
-        </ContentPanel>
-    </div>
 </Layout::Section::Body>

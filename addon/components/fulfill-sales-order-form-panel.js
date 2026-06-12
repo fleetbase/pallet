@@ -155,7 +155,9 @@ export default class FulfillSalesOrderFormPanelComponent extends Component {
             const payload = error?.payload;
             if (payload?.insufficient_stock) {
                 // Show a detailed insufficient stock error
-                const lines = payload.insufficient_stock.map((s) => `Product ${s.product_uuid}${s.variant_uuid ? ` / Variant ${s.variant_uuid}` : ''}: requested ${s.requested}, available ${s.available}`);
+                const lines = payload.insufficient_stock.map(
+                    (s) => `Product ${s.product_uuid}${s.variant_uuid ? ` / Variant ${s.variant_uuid}` : ''}: requested ${s.requested}, available ${s.available}`
+                );
                 this.notifications.serverError({ payload: { errors: [payload.error, ...lines] } });
             } else {
                 const message = payload?.error || error?.message || 'Failed to fulfill sales order.';

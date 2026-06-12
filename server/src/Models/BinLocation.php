@@ -98,7 +98,7 @@ class BinLocation extends Model
      */
     public function warehouse()
     {
-        return $this->belongsTo(Warehouse::class, 'warehouse_uuid');
+        return $this->belongsTo(Warehouse::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
@@ -108,7 +108,7 @@ class BinLocation extends Model
      */
     public function zone()
     {
-        return $this->belongsTo(WarehouseZone::class, 'zone_uuid');
+        return $this->belongsTo(WarehouseZone::class, 'zone_uuid', 'uuid');
     }
 
     /**
@@ -118,7 +118,7 @@ class BinLocation extends Model
      */
     public function aisle()
     {
-        return $this->belongsTo(WarehouseAisle::class, 'aisle_uuid');
+        return $this->belongsTo(WarehouseAisle::class, 'aisle_uuid', 'uuid');
     }
 
     /**
@@ -128,7 +128,7 @@ class BinLocation extends Model
      */
     public function rack()
     {
-        return $this->belongsTo(WarehouseRack::class, 'rack_uuid');
+        return $this->belongsTo(WarehouseRack::class, 'rack_uuid', 'uuid');
     }
 
     /**
@@ -138,7 +138,7 @@ class BinLocation extends Model
      */
     public function section()
     {
-        return $this->belongsTo(WarehouseSection::class, 'section_uuid');
+        return $this->belongsTo(WarehouseSection::class, 'section_uuid', 'uuid');
     }
 
     /**
@@ -148,7 +148,7 @@ class BinLocation extends Model
      */
     public function inventoryItems()
     {
-        return $this->hasMany(Inventory::class, 'bin_location_uuid');
+        return $this->hasMany(Inventory::class, 'bin_location_uuid', 'uuid');
     }
 
     /**

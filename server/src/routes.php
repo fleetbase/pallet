@@ -126,6 +126,78 @@ Route::prefix(config('pallet.api.routing.prefix', 'pallet'))->namespace('Fleetba
                         $router->fleetbaseRoutes('warehouses', function ($router, $controller) {
                             $router->delete('bulk-delete', $controller('bulkDelete'));
                         });
+                        $router->fleetbaseRoutes('warehouse-zones', function ($router, $controller) {
+                            $router->delete('bulk-delete', $controller('bulkDelete'));
+                        });
+                        $router->fleetbaseRoutes('bin-locations', function ($router, $controller) {
+                            $router->delete('bulk-delete', $controller('bulkDelete'));
+                        });
+
+                        /*
+                        |--------------------------------------------------------------
+                        | WMS Operations
+                        |--------------------------------------------------------------
+                        */
+                        $router->fleetbaseRoutes('inventory-reservations', function ($router, $controller) {
+                            $router->delete('bulk-delete', $controller('bulkDelete'));
+                        });
+                        $router->post('inventory-reservations/{id}/release', 'InventoryReservationController@release');
+                        $router->post('inventory-reservations/{id}/fulfill', 'InventoryReservationController@fulfill');
+
+                        $router->fleetbaseRoutes('waves', function ($router, $controller) {
+                            $router->delete('bulk-delete', $controller('bulkDelete'));
+                        });
+                        $router->post('waves/{id}/start', 'WaveController@start');
+                        $router->post('waves/{id}/release', 'WaveController@release');
+                        $router->post('waves/{id}/complete', 'WaveController@complete');
+
+                        $router->fleetbaseRoutes('pick-lists', function ($router, $controller) {
+                            $router->delete('bulk-delete', $controller('bulkDelete'));
+                        });
+                        $router->post('pick-lists/{id}/start', 'PickListController@start');
+                        $router->post('pick-lists/{id}/assign', 'PickListController@assign');
+                        $router->post('pick-lists/{id}/complete', 'PickListController@complete');
+                        $router->fleetbaseRoutes('pick-list-items', function ($router, $controller) {
+                            $router->delete('bulk-delete', $controller('bulkDelete'));
+                        });
+                        $router->post('pick-list-items/{id}/picked', 'PickListItemController@markPicked');
+
+                        $router->fleetbaseRoutes('cycle-counts', function ($router, $controller) {
+                            $router->delete('bulk-delete', $controller('bulkDelete'));
+                        });
+                        $router->post('cycle-counts/{id}/start', 'CycleCountController@start');
+                        $router->post('cycle-counts/{id}/complete', 'CycleCountController@complete');
+                        $router->post('cycle-counts/{id}/approve', 'CycleCountController@approve');
+                        $router->fleetbaseRoutes('cycle-count-items', function ($router, $controller) {
+                            $router->delete('bulk-delete', $controller('bulkDelete'));
+                        });
+                        $router->post('cycle-count-items/{id}/record-count', 'CycleCountItemController@recordCount');
+
+                        $router->fleetbaseRoutes('stock-transfers', function ($router, $controller) {
+                            $router->delete('bulk-delete', $controller('bulkDelete'));
+                        });
+                        $router->post('stock-transfers/{id}/approve', 'StockTransferController@approve');
+                        $router->post('stock-transfers/{id}/ship', 'StockTransferController@ship');
+                        $router->post('stock-transfers/{id}/receive', 'StockTransferController@receive');
+                        $router->post('stock-transfers/{id}/cancel', 'StockTransferController@cancel');
+                        $router->fleetbaseRoutes('stock-transfer-items', function ($router, $controller) {
+                            $router->delete('bulk-delete', $controller('bulkDelete'));
+                        });
+
+                        /*
+                        |--------------------------------------------------------------
+                        | Storefront Inventory Integration
+                        |--------------------------------------------------------------
+                        */
+                        $router->prefix('storefront')->group(function ($router) {
+                            $router->get('inventory/resolve', 'StorefrontInventoryController@resolve');
+                            $router->get('inventory/availability', 'StorefrontInventoryController@availability');
+                            $router->post('inventory/link', 'StorefrontInventoryController@link');
+                            $router->post('inventory/unlink', 'StorefrontInventoryController@unlink');
+                            $router->post('inventory/reserve', 'StorefrontInventoryController@reserve');
+                            $router->post('inventory/reservations/{id}/release', 'StorefrontInventoryController@release');
+                            $router->post('inventory/reservations/{id}/commit', 'StorefrontInventoryController@commit');
+                        });
 
                         /*
                         |--------------------------------------------------------------
@@ -135,6 +207,12 @@ Route::prefix(config('pallet.api.routing.prefix', 'pallet'))->namespace('Fleetba
                         | dashboard widgets. All are scoped to the authenticated company.
                         */
                         $router->prefix('metrics')->group(function ($router) {
+                            $router->get('kpis', 'MetricsController@kpis');
+                            $router->get('inventory-health', 'MetricsController@inventoryHealth');
+                            $router->get('warehouse-utilization', 'MetricsController@warehouseUtilization');
+                            $router->get('stock-movement', 'MetricsController@stockMovement');
+                            $router->get('fulfillment-workload', 'MetricsController@fulfillmentWorkload');
+                            $router->get('reorder-risk', 'MetricsController@reorderRisk');
                             $router->get('inventory-summary', 'MetricsController@inventorySummary');
                             $router->get('low-stock', 'MetricsController@lowStock');
                             $router->get('po-status', 'MetricsController@poStatus');

@@ -38,7 +38,7 @@
                 </InputGroup>
                 <InputGroup @name="Type" @wrapperClass="col-span-1">
                     <div class="relative">
-                        <select class="w-full form-input form-select" value={{this.warehouse.type}} onchange={{action (mut this.warehouse.type) value="target.value"}}>
+                        <select class="w-full form-input form-select" value={{this.warehouse.type}} {{on "change" this.setWarehouseType}}>
                             <option value="">Select type...</option>
                             <option value="standard" selected={{eq this.warehouse.type "standard"}}>Standard</option>
                             <option value="cold-storage" selected={{eq this.warehouse.type "cold-storage"}}>Cold Storage</option>
@@ -51,7 +51,7 @@
                 </InputGroup>
                 <InputGroup @name="Status" @wrapperClass="col-span-1">
                     <div class="relative">
-                        <select class="w-full form-input form-select" value={{this.warehouse.status}} onchange={{action (mut this.warehouse.status) value="target.value"}}>
+                        <select class="w-full form-input form-select" value={{this.warehouse.status}} {{on "change" this.setWarehouseStatus}}>
                             <option value="active" selected={{eq this.warehouse.status "active"}}>Active</option>
                             <option value="inactive" selected={{eq this.warehouse.status "inactive"}}>Inactive</option>
                             <option value="maintenance" selected={{eq this.warehouse.status "maintenance"}}>Maintenance</option>
@@ -106,7 +106,7 @@
                 </InputGroup>
             </ContentPanel>
 
-            <ContentPanel @title="Additional Info" @open={{false}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
+            <ContentPanel @title="Additional Info" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
                 <InputGroup @name="Description" @helpText="Additional description text." @wrapperClass="col-span-2 mb-2">
                     <Textarea @value={{this.warehouse.meta.description}} type="text" class="w-full form-input" placeholder="Description" />
                 </InputGroup>

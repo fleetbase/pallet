@@ -94,7 +94,7 @@ class CycleCount extends Model
      */
     public function warehouse()
     {
-        return $this->belongsTo(Warehouse::class, 'warehouse_uuid');
+        return $this->belongsTo(Warehouse::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
@@ -104,7 +104,7 @@ class CycleCount extends Model
      */
     public function zone()
     {
-        return $this->belongsTo(WarehouseZone::class, 'zone_uuid');
+        return $this->belongsTo(WarehouseZone::class, 'zone_uuid', 'uuid');
     }
 
     /**
@@ -114,7 +114,7 @@ class CycleCount extends Model
      */
     public function assignedTo()
     {
-        return $this->belongsTo(\Fleetbase\Models\User::class, 'assigned_to_uuid');
+        return $this->belongsTo(\Fleetbase\Models\User::class, 'assigned_to_uuid', 'uuid');
     }
 
     /**
@@ -124,7 +124,7 @@ class CycleCount extends Model
      */
     public function items()
     {
-        return $this->hasMany(CycleCountItem::class, 'cycle_count_uuid');
+        return $this->hasMany(CycleCountItem::class, 'cycle_count_uuid', 'uuid');
     }
 
     /**

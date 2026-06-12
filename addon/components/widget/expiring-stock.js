@@ -8,6 +8,7 @@ export default class WidgetExpiringStockComponent extends Component {
     @service notifications;
 
     @tracked items = [];
+    @tracked error = null;
 
     constructor() {
         super(...arguments);
@@ -19,7 +20,9 @@ export default class WidgetExpiringStockComponent extends Component {
         try {
             const data = yield this.fetch.get('metrics/expiring-stock', { days: 30, limit: 10 }, { namespace: 'pallet/int/v1' });
             this.items = data.items ?? [];
+            this.error = null;
         } catch (error) {
+            this.error = error?.message ?? 'Unable to load expiring stock';
             this.notifications.serverError(error);
         }
     }

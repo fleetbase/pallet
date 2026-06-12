@@ -31,8 +31,21 @@ export default class WidgetStockValueComponent extends Component {
         return Math.max(...this.warehouses.map((w) => w.value ?? 0));
     }
 
-    barWidth(value) {
-        if (!this.maxValue) return '0%';
-        return `${Math.round((value / this.maxValue) * 100)}%`;
+    get warehouseBars() {
+        return this.warehouses.map((warehouse) => {
+            const filledCount = this.segmentCount(warehouse.value ?? 0);
+
+            return {
+                ...warehouse,
+                filledSegments: Array.from({ length: filledCount }),
+                emptySegments: Array.from({ length: 10 - filledCount }),
+            };
+        });
+    }
+
+    segmentCount(value) {
+        if (!this.maxValue) return 0;
+
+        return Math.max(0, Math.min(10, Math.round((value / this.maxValue) * 10)));
     }
 }

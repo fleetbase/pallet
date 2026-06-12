@@ -170,7 +170,7 @@ class Inventory extends Model
      */
     public function warehouse()
     {
-        return $this->belongsTo(Warehouse::class, 'warehouse_uuid');
+        return $this->belongsTo(Warehouse::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
@@ -178,7 +178,7 @@ class Inventory extends Model
      */
     public function batch()
     {
-        return $this->belongsTo(Batch::class);
+        return $this->belongsTo(Batch::class, 'batch_uuid', 'uuid');
     }
 
     /**
@@ -186,7 +186,7 @@ class Inventory extends Model
      */
     public function binLocation()
     {
-        return $this->belongsTo(BinLocation::class, 'bin_location_uuid');
+        return $this->belongsTo(BinLocation::class, 'bin_location_uuid', 'uuid');
     }
 
     /**
@@ -194,7 +194,7 @@ class Inventory extends Model
      */
     public function zone()
     {
-        return $this->belongsTo(WarehouseZone::class, 'zone_uuid');
+        return $this->belongsTo(WarehouseZone::class, 'zone_uuid', 'uuid');
     }
 
     /**
@@ -204,7 +204,7 @@ class Inventory extends Model
      */
     public function reservations()
     {
-        return $this->hasMany(InventoryReservation::class, 'inventory_uuid');
+        return $this->hasMany(InventoryReservation::class, 'inventory_uuid', 'uuid');
     }
 
     /**
@@ -214,7 +214,7 @@ class Inventory extends Model
      */
     public function transactions()
     {
-        return $this->hasMany(StockTransaction::class, 'inventory_uuid');
+        return $this->hasMany(StockTransaction::class, 'inventory_uuid', 'uuid');
     }
 
     /**

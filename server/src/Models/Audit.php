@@ -184,7 +184,7 @@ class Audit extends Model
      */
     public function performedBy(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'performed_by_uuid');
+        return $this->belongsTo(User::class, 'performed_by_uuid', 'uuid');
     }
 
     /**
@@ -192,7 +192,7 @@ class Audit extends Model
      */
     public function createdBy(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'created_by_uuid');
+        return $this->belongsTo(User::class, 'created_by_uuid', 'uuid');
     }
 
     /**

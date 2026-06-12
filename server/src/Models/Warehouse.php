@@ -111,7 +111,7 @@ class Warehouse extends Model
      */
     public function company(): BelongsTo
     {
-        return $this->belongsTo(Company::class, 'company_uuid');
+        return $this->belongsTo(Company::class, 'company_uuid', 'uuid');
     }
 
     /**
@@ -119,7 +119,7 @@ class Warehouse extends Model
      */
     public function createdBy(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'created_by_uuid');
+        return $this->belongsTo(User::class, 'created_by_uuid', 'uuid');
     }
 
     /**
@@ -128,7 +128,7 @@ class Warehouse extends Model
      */
     public function place(): BelongsTo
     {
-        return $this->belongsTo(Place::class, 'place_uuid');
+        return $this->belongsTo(Place::class, 'place_uuid', 'uuid');
     }
 
     /**
@@ -136,7 +136,7 @@ class Warehouse extends Model
      */
     public function manager(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'manager_uuid');
+        return $this->belongsTo(User::class, 'manager_uuid', 'uuid');
     }
 
     /**
@@ -146,7 +146,7 @@ class Warehouse extends Model
      */
     public function sections()
     {
-        return $this->hasMany(WarehouseSection::class, 'warehouse_uuid');
+        return $this->hasMany(WarehouseSection::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
@@ -156,7 +156,7 @@ class Warehouse extends Model
      */
     public function docks()
     {
-        return $this->hasMany(WarehouseDock::class, 'warehouse_uuid');
+        return $this->hasMany(WarehouseDock::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
@@ -166,7 +166,7 @@ class Warehouse extends Model
      */
     public function zones()
     {
-        return $this->hasMany(WarehouseZone::class, 'warehouse_uuid');
+        return $this->hasMany(WarehouseZone::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
@@ -176,7 +176,7 @@ class Warehouse extends Model
      */
     public function aisles()
     {
-        return $this->hasMany(WarehouseAisle::class, 'warehouse_uuid');
+        return $this->hasMany(WarehouseAisle::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
@@ -186,7 +186,7 @@ class Warehouse extends Model
      */
     public function racks()
     {
-        return $this->hasMany(WarehouseRack::class, 'warehouse_uuid');
+        return $this->hasMany(WarehouseRack::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
@@ -196,7 +196,7 @@ class Warehouse extends Model
      */
     public function binLocations()
     {
-        return $this->hasMany(BinLocation::class, 'warehouse_uuid');
+        return $this->hasMany(BinLocation::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
@@ -206,7 +206,7 @@ class Warehouse extends Model
      */
     public function inventories()
     {
-        return $this->hasMany(Inventory::class, 'warehouse_uuid');
+        return $this->hasMany(Inventory::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
@@ -216,7 +216,7 @@ class Warehouse extends Model
      */
     public function purchaseOrders()
     {
-        return $this->hasMany(PurchaseOrder::class, 'warehouse_uuid');
+        return $this->hasMany(PurchaseOrder::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
@@ -226,7 +226,7 @@ class Warehouse extends Model
      */
     public function salesOrders()
     {
-        return $this->hasMany(SalesOrder::class, 'warehouse_uuid');
+        return $this->hasMany(SalesOrder::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
@@ -236,7 +236,7 @@ class Warehouse extends Model
      */
     public function pickLists()
     {
-        return $this->hasMany(PickList::class, 'warehouse_uuid');
+        return $this->hasMany(PickList::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
@@ -246,7 +246,7 @@ class Warehouse extends Model
      */
     public function cycleCounts()
     {
-        return $this->hasMany(CycleCount::class, 'warehouse_uuid');
+        return $this->hasMany(CycleCount::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
@@ -256,7 +256,7 @@ class Warehouse extends Model
      */
     public function outboundTransfers()
     {
-        return $this->hasMany(StockTransfer::class, 'from_warehouse_uuid');
+        return $this->hasMany(StockTransfer::class, 'from_warehouse_uuid', 'uuid');
     }
 
     /**
@@ -266,7 +266,7 @@ class Warehouse extends Model
      */
     public function inboundTransfers()
     {
-        return $this->hasMany(StockTransfer::class, 'to_warehouse_uuid');
+        return $this->hasMany(StockTransfer::class, 'to_warehouse_uuid', 'uuid');
     }
 
     /**

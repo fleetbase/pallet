@@ -70,10 +70,11 @@
         }
     },
     "scripts": {
-        "lint": "php-cs-fixer fix -v",
-        "test:lint": "php-cs-fixer fix -v --dry-run",
-        "test:types": "phpstan analyse --ansi --memory-limit=0",
-        "test:unit": "pest --colors=always",
+        "lint": "php-cs-fixer fix -v --dry-run",
+        "lint:fix": "php-cs-fixer fix -v",
+        "test:lint": "@lint",
+        "test:types": "server_vendor/bin/phpstan analyse --ansi --memory-limit=0",
+        "test:unit": "server_vendor/bin/pest --colors=always",
         "test": [
             "@test:lint",
             "@test:types",

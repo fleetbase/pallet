@@ -109,7 +109,7 @@ class InventoryReservation extends Model
      */
     public function inventory()
     {
-        return $this->belongsTo(Inventory::class, 'inventory_uuid');
+        return $this->belongsTo(Inventory::class, 'inventory_uuid', 'uuid');
     }
 
     /**
@@ -119,7 +119,7 @@ class InventoryReservation extends Model
      */
     public function warehouse()
     {
-        return $this->belongsTo(Warehouse::class, 'warehouse_uuid');
+        return $this->belongsTo(Warehouse::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
@@ -129,7 +129,7 @@ class InventoryReservation extends Model
      */
     public function salesOrder()
     {
-        return $this->belongsTo(SalesOrder::class, 'sales_order_uuid');
+        return $this->belongsTo(SalesOrder::class, 'sales_order_uuid', 'uuid');
     }
 
     /**
@@ -139,7 +139,7 @@ class InventoryReservation extends Model
      */
     public function pickList()
     {
-        return $this->belongsTo(PickList::class, 'pick_list_uuid');
+        return $this->belongsTo(PickList::class, 'pick_list_uuid', 'uuid');
     }
 
     /**
@@ -169,6 +169,10 @@ class InventoryReservation extends Model
      */
     public function release()
     {
+        if ($this->status === 'active' && $this->inventory) {
+            $this->inventory->releaseReservation($this->quantity);
+        }
+
         $this->status      = 'released';
         $this->released_at = now();
 
@@ -182,6 +186,14 @@ class InventoryReservation extends Model
      */
     public function fulfill()
     {
+        if ($this->status === 'active' && $this->inventory) {
+            $inventory = $this->inventory;
+            $inventory->reserved_quantity  = max(0, $inventory->reserved_quantity - $this->quantity);
+            $inventory->quantity           = max(0, $inventory->quantity - $this->quantity);
+            $inventory->available_quantity = max(0, $inventory->quantity - $inventory->reserved_quantity);
+            $inventory->save();
+        }
+
         $this->status = 'fulfilled';
 
         return $this->save();

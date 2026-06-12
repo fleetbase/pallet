@@ -90,6 +90,6 @@ class WarehouseSection extends Model
      */
     public function aisles()
     {
-        return $this->hasMany(WarehouseAisle::class, 'section_uuid');
+        return $this->hasMany(WarehouseAisle::class, 'section_uuid', 'uuid');
     }
 }

@@ -30,6 +30,7 @@ class ProductVariant extends Model
         'company_uuid',
         'created_by_uuid',
         'product_uuid',
+        'storefront_variant_uuid',
         'name',
         'sku',
         'barcode',
@@ -45,7 +46,7 @@ class ProductVariant extends Model
         'meta',
     ];
 
-    protected $searchableColumns = ['name', 'sku', 'barcode'];
+    protected $searchableColumns = ['name', 'sku', 'barcode', 'storefront_variant_uuid'];
 
     protected $casts = [
         'meta'           => Json::class,
@@ -68,12 +69,12 @@ class ProductVariant extends Model
 
     public function product(): BelongsTo
     {
-        return $this->belongsTo(Product::class, 'product_uuid');
+        return $this->belongsTo(Product::class, 'product_uuid', 'uuid');
     }
 
     public function inventories(): HasMany
     {
-        return $this->hasMany(Inventory::class, 'variant_uuid');
+        return $this->hasMany(Inventory::class, 'variant_uuid', 'uuid');
     }
 
     public function getDisplayNameAttribute(): string

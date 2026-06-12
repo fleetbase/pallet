@@ -1,18 +1,47 @@
 <Layout::Section::Header @title="Waves">
-    <div class="text-sm text-gray-500 dark:text-gray-300">Waves will coordinate grouped warehouse work for outbound fulfillment and operational batching.</div>
+    <div class="text-sm text-gray-500 dark:text-gray-300">Coordinate grouped warehouse execution for outbound work.</div>
 </Layout::Section::Header>
 
-<Layout::Section::Body class="overflow-y-scroll h-full p-4 space-y-4">
-    <ContentPanel @title="Implementation Status" @open={{true}} @wrapperClass="bordered-classic">
-        <p class="text-sm text-gray-700 dark:text-gray-200">Wave entities are modeled in Pallet, but the execution UX is still planned. This section gives the broader WMS roadmap a real,
-            non-broken place in navigation.</p>
-    </ContentPanel>
-
-    <ContentPanel @title="Planned Workflows" @open={{true}} @wrapperClass="bordered-classic">
-        <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-200">
-            <li>Group outbound work into execution waves.</li>
-            <li>Assign pick activity and warehouse capacity by batch.</li>
-            <li>Coordinate wave progress across orders and pick lists.</li>
-        </ul>
+<Layout::Section::Body class="overflow-y-scroll h-full p-4">
+    <ContentPanel @title="Waves" @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
+        <table class="w-full text-sm">
+            <thead>
+                <tr class="border-b border-gray-200 dark:border-gray-700 text-left text-xs uppercase text-gray-500">
+                    <th class="px-4 py-3">Wave</th>
+                    <th class="px-4 py-3">Warehouse</th>
+                    <th class="px-4 py-3">Type</th>
+                    <th class="px-4 py-3">Status</th>
+                    <th class="px-4 py-3 text-right">Pick Lists</th>
+                    <th class="px-4 py-3 text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each @model as |wave|}}
+                    <tr class="border-b border-gray-100 dark:border-gray-800">
+                        <td class="px-4 py-3 font-medium">{{n-a wave.wave_number}}</td>
+                        <td class="px-4 py-3">{{n-a wave.warehouse.name}}</td>
+                        <td class="px-4 py-3">{{n-a wave.type}}</td>
+                        <td class="px-4 py-3"><Badge @status="info">{{n-a wave.status}}</Badge></td>
+                        <td class="px-4 py-3 text-right">{{wave.completed_pick_lists}} / {{wave.total_pick_lists}}</td>
+                        <td class="px-4 py-3">
+                            <div class="flex items-center justify-end gap-2">
+                                {{#if (eq wave.status "pending")}}
+                                    <Button @icon="play" @type="primary" @size="xs" @text="Start" @onClick={{fn this.startWave wave}} />
+                                    <Button @icon="paper-plane" @type="default" @size="xs" @text="Release" @onClick={{fn this.releaseWave wave}} />
+                                {{else if (eq wave.status "released")}}
+                                    <Button @icon="play" @type="primary" @size="xs" @text="Start" @onClick={{fn this.startWave wave}} />
+                                {{else if (eq wave.status "in_progress")}}
+                                    <Button @icon="check" @type="success" @size="xs" @text="Complete" @onClick={{fn this.completeWave wave}} />
+                                {{else}}
+                                    <span class="text-xs text-gray-400">No actions</span>
+                                {{/if}}
+                            </div>
+                        </td>
+                    </tr>
+                {{else}}
+                    <tr><td colspan="6" class="px-4 py-8 text-center text-gray-500">No waves yet.</td></tr>
+                {{/each}}
+            </tbody>
+        </table>
     </ContentPanel>
 </Layout::Section::Body>

@@ -1,28 +1,41 @@
 <Layout::Section::Header @title="Stock Adjustments">
-    <div class="text-sm text-gray-500 dark:text-gray-300">Track inventory corrections, discrepancies, and manual quantity changes from a dedicated inventory control surface.</div>
+    <div class="flex flex-1 items-center justify-between gap-3">
+        <div class="text-sm text-gray-500 dark:text-gray-300">Track inventory corrections, discrepancies, and manual quantity changes from a dedicated inventory control surface.</div>
+        <Button @icon="plus" @type="primary" @size="sm" @text="New Adjustment" @onClick={{this.createAdjustment}} />
+    </div>
 </Layout::Section::Header>
 
-<Layout::Section::Body class="overflow-y-scroll h-full p-4 space-y-4">
-    <ContentPanel @title="Implementation Status" @open={{true}} @wrapperClass="bordered-classic">
-        <p class="text-sm text-gray-700 dark:text-gray-200">Pallet already supports creating stock adjustments from the inventory workflow. This route gives adjustments a durable navigation
-            destination while the dedicated record history view is completed.</p>
+<Layout::Section::Body class="overflow-y-scroll h-full p-4">
+    <ContentPanel @title="Adjustment History" @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
+        <table class="w-full text-sm">
+            <thead>
+                <tr class="border-b border-gray-200 dark:border-gray-700 text-left text-xs uppercase text-gray-500">
+                    <th class="px-4 py-3">Product</th>
+                    <th class="px-4 py-3">Variant</th>
+                    <th class="px-4 py-3">Type</th>
+                    <th class="px-4 py-3">Reason</th>
+                    <th class="px-4 py-3 text-right">Before</th>
+                    <th class="px-4 py-3 text-right">After</th>
+                    <th class="px-4 py-3 text-right">Delta</th>
+                    <th class="px-4 py-3">Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each @model as |adjustment|}}
+                    <tr class="border-b border-gray-100 dark:border-gray-800">
+                        <td class="px-4 py-3 font-medium">{{n-a adjustment.product.name}}</td>
+                        <td class="px-4 py-3">{{n-a adjustment.variant.display_name}}</td>
+                        <td class="px-4 py-3"><Badge @status="info">{{n-a adjustment.type}}</Badge></td>
+                        <td class="px-4 py-3">{{n-a adjustment.reason}}</td>
+                        <td class="px-4 py-3 text-right">{{n-a adjustment.before_quantity}}</td>
+                        <td class="px-4 py-3 text-right">{{n-a adjustment.after_quantity}}</td>
+                        <td class="px-4 py-3 text-right font-semibold">{{n-a adjustment.quantity}}</td>
+                        <td class="px-4 py-3">{{n-a adjustment.createdAt}}</td>
+                    </tr>
+                {{else}}
+                    <tr><td colspan="8" class="px-4 py-8 text-center text-gray-500">No stock adjustments yet.</td></tr>
+                {{/each}}
+            </tbody>
+        </table>
     </ContentPanel>
-
-    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
-        <ContentPanel @title="Planned Workflows" @open={{true}} @wrapperClass="bordered-classic">
-            <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-200">
-                <li>Review adjustment history and reasons by warehouse.</li>
-                <li>Filter by product, operator, date, and adjustment type.</li>
-                <li>Support inventory correction auditability and approvals.</li>
-            </ul>
-        </ContentPanel>
-
-        <ContentPanel @title="Current Entry Point" @open={{true}} @wrapperClass="bordered-classic">
-            <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-200">
-                <li>Create a new adjustment from the main Inventory resource view.</li>
-                <li>Existing adjustment creation flow remains available today.</li>
-                <li>This page reserves the permanent production home for adjustment records.</li>
-            </ul>
-        </ContentPanel>
-    </div>
 </Layout::Section::Body>

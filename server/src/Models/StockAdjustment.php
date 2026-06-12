@@ -139,7 +139,7 @@ class StockAdjustment extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'assignee_uuid');
+        return $this->belongsTo(User::class, 'assignee_uuid', 'uuid');
     }
 
     /**

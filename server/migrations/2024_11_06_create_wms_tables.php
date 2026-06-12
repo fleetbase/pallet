@@ -16,33 +16,31 @@ return new class extends Migration
         // Product Kit Components
         Schema::create('pallet_product_kit_components', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('uuid', 191)->nullable()->index();
+            $table->uuid('uuid')->nullable()->unique();
             $table->string('public_id', 191)->nullable()->unique();
-            $table->string('company_uuid', 191)->nullable()->index();
-            $table->string('kit_product_uuid', 191)->nullable()->index();
-            $table->string('component_product_uuid', 191)->nullable()->index();
+            $table->foreignUuid('company_uuid')->nullable()->index()->references('uuid')->on('companies');
+            $table->foreignUuid('kit_product_uuid')->nullable()->index()->references('uuid')->on('pallet_products')->onDelete('cascade');
+            $table->foreignUuid('component_product_uuid')->nullable()->index()->references('uuid')->on('pallet_products')->onDelete('cascade');
             $table->integer('quantity')->default(1);
             $table->integer('sort_order')->default(0);
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('kit_product_uuid')->references('uuid')->on('pallet_products')->onDelete('cascade');
-            $table->foreign('component_product_uuid')->references('uuid')->on('pallet_products')->onDelete('cascade');
         });
 
         // Inventory Reservations
         Schema::create('pallet_inventory_reservations', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('uuid', 191)->nullable()->index();
+            $table->uuid('uuid')->nullable()->unique();
             $table->string('public_id', 191)->nullable()->unique();
-            $table->string('company_uuid', 191)->nullable()->index();
-            $table->string('product_uuid', 191)->nullable()->index();
-            $table->string('variant_uuid', 191)->nullable()->index();
-            $table->string('inventory_uuid', 191)->nullable()->index();
-            $table->string('warehouse_uuid', 191)->nullable()->index();
+            $table->foreignUuid('company_uuid')->nullable()->index()->references('uuid')->on('companies');
+            $table->foreignUuid('product_uuid')->nullable()->index()->references('uuid')->on('pallet_products');
+            $table->foreignUuid('variant_uuid')->nullable()->index()->references('uuid')->on('pallet_product_variants');
+            $table->foreignUuid('inventory_uuid')->nullable()->index()->references('uuid')->on('pallet_inventories');
+            $table->foreignUuid('warehouse_uuid')->nullable()->index()->references('uuid')->on('pallet_warehouses');
             $table->string('order_uuid', 191)->nullable()->index();
-            $table->string('sales_order_uuid', 191)->nullable()->index();
-            $table->string('pick_list_uuid', 191)->nullable()->index();
+            $table->foreignUuid('sales_order_uuid')->nullable()->index()->references('uuid')->on('pallet_sales_orders');
+            $table->foreignUuid('pick_list_uuid')->nullable()->index();
             $table->integer('quantity')->default(0);
             $table->timestamp('reserved_at')->nullable();
             $table->timestamp('expires_at')->nullable();
@@ -59,10 +57,10 @@ return new class extends Migration
         // Warehouse Zones
         Schema::create('pallet_warehouse_zones', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('uuid', 191)->nullable()->index();
+            $table->uuid('uuid')->nullable()->unique();
             $table->string('public_id', 191)->nullable()->unique();
-            $table->string('company_uuid', 191)->nullable()->index();
-            $table->string('warehouse_uuid', 191)->nullable()->index();
+            $table->foreignUuid('company_uuid')->nullable()->index()->references('uuid')->on('companies');
+            $table->foreignUuid('warehouse_uuid')->nullable()->index()->references('uuid')->on('pallet_warehouses')->onDelete('cascade');
             $table->string('name', 191);
             $table->string('code', 50)->nullable();
             $table->string('type', 50)->default('general');
@@ -75,20 +73,19 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('warehouse_uuid')->references('uuid')->on('pallet_warehouses')->onDelete('cascade');
         });
 
         // Bin Locations
         Schema::create('pallet_bin_locations', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('uuid', 191)->nullable()->index();
+            $table->uuid('uuid')->nullable()->unique();
             $table->string('public_id', 191)->nullable()->unique();
-            $table->string('company_uuid', 191)->nullable()->index();
-            $table->string('warehouse_uuid', 191)->nullable()->index();
-            $table->string('zone_uuid', 191)->nullable()->index();
-            $table->string('aisle_uuid', 191)->nullable()->index();
-            $table->string('rack_uuid', 191)->nullable()->index();
-            $table->string('section_uuid', 191)->nullable()->index();
+            $table->foreignUuid('company_uuid')->nullable()->index()->references('uuid')->on('companies');
+            $table->foreignUuid('warehouse_uuid')->nullable()->index()->references('uuid')->on('pallet_warehouses')->onDelete('cascade');
+            $table->foreignUuid('zone_uuid')->nullable()->index()->references('uuid')->on('pallet_warehouse_zones')->onDelete('set null');
+            $table->foreignUuid('aisle_uuid')->nullable()->index()->references('uuid')->on('pallet_warehouse_aisles')->onDelete('set null');
+            $table->foreignUuid('rack_uuid')->nullable()->index()->references('uuid')->on('pallet_warehouse_racks')->onDelete('set null');
+            $table->foreignUuid('section_uuid')->nullable()->index()->references('uuid')->on('pallet_warehouse_sections')->onDelete('set null');
             $table->string('bin_number', 100);
             $table->string('barcode', 100)->nullable();
             $table->string('type', 50)->default('standard');
@@ -103,18 +100,16 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('warehouse_uuid')->references('uuid')->on('pallet_warehouses')->onDelete('cascade');
-            $table->foreign('zone_uuid')->references('uuid')->on('pallet_warehouse_zones')->onDelete('set null');
             $table->index(['warehouse_uuid', 'bin_number']);
         });
 
         // Waves
         Schema::create('pallet_waves', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('uuid', 191)->nullable()->index();
+            $table->uuid('uuid')->nullable()->unique();
             $table->string('public_id', 191)->nullable()->unique();
-            $table->string('company_uuid', 191)->nullable()->index();
-            $table->string('warehouse_uuid', 191)->nullable()->index();
+            $table->foreignUuid('company_uuid')->nullable()->index()->references('uuid')->on('companies');
+            $table->foreignUuid('warehouse_uuid')->nullable()->index()->references('uuid')->on('pallet_warehouses')->onDelete('cascade');
             $table->string('wave_number', 100)->unique();
             $table->string('type', 50)->default('standard');
             $table->string('status', 50)->default('pending');
@@ -127,20 +122,19 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('warehouse_uuid')->references('uuid')->on('pallet_warehouses')->onDelete('cascade');
             $table->index(['status', 'scheduled_at']);
         });
 
         // Pick Lists
         Schema::create('pallet_pick_lists', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('uuid', 191)->nullable()->index();
+            $table->uuid('uuid')->nullable()->unique();
             $table->string('public_id', 191)->nullable()->unique();
-            $table->string('company_uuid', 191)->nullable()->index();
-            $table->string('warehouse_uuid', 191)->nullable()->index();
-            $table->string('sales_order_uuid', 191)->nullable()->index();
-            $table->string('wave_uuid', 191)->nullable()->index();
-            $table->string('assigned_to_uuid', 191)->nullable()->index();
+            $table->foreignUuid('company_uuid')->nullable()->index()->references('uuid')->on('companies');
+            $table->foreignUuid('warehouse_uuid')->nullable()->index()->references('uuid')->on('pallet_warehouses')->onDelete('cascade');
+            $table->foreignUuid('sales_order_uuid')->nullable()->index()->references('uuid')->on('pallet_sales_orders')->onDelete('set null');
+            $table->foreignUuid('wave_uuid')->nullable()->index()->references('uuid')->on('pallet_waves')->onDelete('set null');
+            $table->foreignUuid('assigned_to_uuid')->nullable()->index()->references('uuid')->on('users')->onDelete('set null');
             $table->string('pick_list_number', 100)->unique();
             $table->string('type', 50)->default('discrete');
             $table->integer('priority')->default(5);
@@ -152,29 +146,27 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('warehouse_uuid')->references('uuid')->on('pallet_warehouses')->onDelete('cascade');
-            $table->foreign('wave_uuid')->references('uuid')->on('pallet_waves')->onDelete('set null');
             $table->index(['status', 'priority']);
         });
 
         // Pick List Items
         Schema::create('pallet_pick_list_items', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('uuid', 191)->nullable()->index();
+            $table->uuid('uuid')->nullable()->unique();
             $table->string('public_id', 191)->nullable()->unique();
-            $table->string('company_uuid', 191)->nullable()->index();
-            $table->string('pick_list_uuid', 191)->nullable()->index();
-            $table->string('product_uuid', 191)->nullable()->index();
-            $table->string('variant_uuid', 191)->nullable()->index();
-            $table->string('inventory_uuid', 191)->nullable()->index();
-            $table->string('bin_location_uuid', 191)->nullable()->index();
-            $table->string('sales_order_item_uuid', 191)->nullable()->index();
+            $table->foreignUuid('company_uuid')->nullable()->index()->references('uuid')->on('companies');
+            $table->foreignUuid('pick_list_uuid')->nullable()->index()->references('uuid')->on('pallet_pick_lists')->onDelete('cascade');
+            $table->foreignUuid('product_uuid')->nullable()->index()->references('uuid')->on('pallet_products');
+            $table->foreignUuid('variant_uuid')->nullable()->index()->references('uuid')->on('pallet_product_variants');
+            $table->foreignUuid('inventory_uuid')->nullable()->index()->references('uuid')->on('pallet_inventories');
+            $table->foreignUuid('bin_location_uuid')->nullable()->index()->references('uuid')->on('pallet_bin_locations')->onDelete('set null');
+            $table->foreignUuid('sales_order_item_uuid')->nullable()->index();
             $table->integer('quantity_requested')->default(0);
             $table->integer('quantity_picked')->default(0);
             $table->integer('sequence_number')->default(0);
             $table->string('status', 50)->default('pending');
             $table->timestamp('picked_at')->nullable();
-            $table->string('picked_by_uuid', 191)->nullable()->index();
+            $table->foreignUuid('picked_by_uuid')->nullable()->index()->references('uuid')->on('users')->onDelete('set null');
             $table->string('lot_number', 100)->nullable();
             $table->string('serial_number', 100)->nullable();
             $table->text('notes')->nullable();
@@ -182,19 +174,17 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('pick_list_uuid')->references('uuid')->on('pallet_pick_lists')->onDelete('cascade');
-            $table->foreign('bin_location_uuid')->references('uuid')->on('pallet_bin_locations')->onDelete('set null');
         });
 
         // Cycle Counts
         Schema::create('pallet_cycle_counts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('uuid', 191)->nullable()->index();
+            $table->uuid('uuid')->nullable()->unique();
             $table->string('public_id', 191)->nullable()->unique();
-            $table->string('company_uuid', 191)->nullable()->index();
-            $table->string('warehouse_uuid', 191)->nullable()->index();
-            $table->string('zone_uuid', 191)->nullable()->index();
-            $table->string('assigned_to_uuid', 191)->nullable()->index();
+            $table->foreignUuid('company_uuid')->nullable()->index()->references('uuid')->on('companies');
+            $table->foreignUuid('warehouse_uuid')->nullable()->index()->references('uuid')->on('pallet_warehouses')->onDelete('cascade');
+            $table->foreignUuid('zone_uuid')->nullable()->index()->references('uuid')->on('pallet_warehouse_zones')->onDelete('set null');
+            $table->foreignUuid('assigned_to_uuid')->nullable()->index()->references('uuid')->on('users')->onDelete('set null');
             $table->string('count_number', 100)->unique();
             $table->string('type', 50)->default('standard');
             $table->string('status', 50)->default('pending');
@@ -206,28 +196,26 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('warehouse_uuid')->references('uuid')->on('pallet_warehouses')->onDelete('cascade');
-            $table->foreign('zone_uuid')->references('uuid')->on('pallet_warehouse_zones')->onDelete('set null');
             $table->index(['status', 'scheduled_at']);
         });
 
         // Cycle Count Items
         Schema::create('pallet_cycle_count_items', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('uuid', 191)->nullable()->index();
+            $table->uuid('uuid')->nullable()->unique();
             $table->string('public_id', 191)->nullable()->unique();
-            $table->string('company_uuid', 191)->nullable()->index();
-            $table->string('cycle_count_uuid', 191)->nullable()->index();
-            $table->string('product_uuid', 191)->nullable()->index();
-            $table->string('variant_uuid', 191)->nullable()->index();
-            $table->string('inventory_uuid', 191)->nullable()->index();
-            $table->string('bin_location_uuid', 191)->nullable()->index();
+            $table->foreignUuid('company_uuid')->nullable()->index()->references('uuid')->on('companies');
+            $table->foreignUuid('cycle_count_uuid')->nullable()->index()->references('uuid')->on('pallet_cycle_counts')->onDelete('cascade');
+            $table->foreignUuid('product_uuid')->nullable()->index()->references('uuid')->on('pallet_products');
+            $table->foreignUuid('variant_uuid')->nullable()->index()->references('uuid')->on('pallet_product_variants');
+            $table->foreignUuid('inventory_uuid')->nullable()->index()->references('uuid')->on('pallet_inventories');
+            $table->foreignUuid('bin_location_uuid')->nullable()->index()->references('uuid')->on('pallet_bin_locations')->onDelete('set null');
             $table->integer('expected_quantity')->default(0);
             $table->integer('counted_quantity')->default(0);
             $table->integer('variance')->default(0);
             $table->string('status', 50)->default('pending');
             $table->timestamp('counted_at')->nullable();
-            $table->string('counted_by_uuid', 191)->nullable()->index();
+            $table->foreignUuid('counted_by_uuid')->nullable()->index()->references('uuid')->on('users')->onDelete('set null');
             $table->string('lot_number', 100)->nullable();
             $table->string('serial_number', 100)->nullable();
             $table->text('notes')->nullable();
@@ -235,23 +223,21 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('cycle_count_uuid')->references('uuid')->on('pallet_cycle_counts')->onDelete('cascade');
-            $table->foreign('bin_location_uuid')->references('uuid')->on('pallet_bin_locations')->onDelete('set null');
         });
 
         // Stock Transfers
         Schema::create('pallet_stock_transfers', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('uuid', 191)->nullable()->index();
+            $table->uuid('uuid')->nullable()->unique();
             $table->string('public_id', 191)->nullable()->unique();
-            $table->string('company_uuid', 191)->nullable()->index();
-            $table->string('from_warehouse_uuid', 191)->nullable()->index();
-            $table->string('to_warehouse_uuid', 191)->nullable()->index();
+            $table->foreignUuid('company_uuid')->nullable()->index()->references('uuid')->on('companies');
+            $table->foreignUuid('from_warehouse_uuid')->nullable()->index()->references('uuid')->on('pallet_warehouses')->onDelete('cascade');
+            $table->foreignUuid('to_warehouse_uuid')->nullable()->index()->references('uuid')->on('pallet_warehouses')->onDelete('cascade');
             $table->string('transfer_number', 100)->unique();
             $table->string('status', 50)->default('pending');
             $table->string('type', 50)->default('standard');
-            $table->string('requested_by_uuid', 191)->nullable()->index();
-            $table->string('approved_by_uuid', 191)->nullable()->index();
+            $table->foreignUuid('requested_by_uuid')->nullable()->index()->references('uuid')->on('users')->onDelete('set null');
+            $table->foreignUuid('approved_by_uuid')->nullable()->index()->references('uuid')->on('users')->onDelete('set null');
             $table->timestamp('shipped_at')->nullable();
             $table->timestamp('received_at')->nullable();
             $table->text('notes')->nullable();
@@ -259,20 +245,18 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('from_warehouse_uuid')->references('uuid')->on('pallet_warehouses')->onDelete('cascade');
-            $table->foreign('to_warehouse_uuid')->references('uuid')->on('pallet_warehouses')->onDelete('cascade');
             $table->index(['status', 'created_at']);
         });
 
         // Stock Transfer Items
         Schema::create('pallet_stock_transfer_items', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('uuid', 191)->nullable()->index();
+            $table->uuid('uuid')->nullable()->unique();
             $table->string('public_id', 191)->nullable()->unique();
-            $table->string('company_uuid', 191)->nullable()->index();
-            $table->string('stock_transfer_uuid', 191)->nullable()->index();
-            $table->string('product_uuid', 191)->nullable()->index();
-            $table->string('variant_uuid', 191)->nullable()->index();
+            $table->foreignUuid('company_uuid')->nullable()->index()->references('uuid')->on('companies');
+            $table->foreignUuid('stock_transfer_uuid')->nullable()->index()->references('uuid')->on('pallet_stock_transfers')->onDelete('cascade');
+            $table->foreignUuid('product_uuid')->nullable()->index()->references('uuid')->on('pallet_products');
+            $table->foreignUuid('variant_uuid')->nullable()->index()->references('uuid')->on('pallet_product_variants');
             $table->integer('quantity')->default(0);
             $table->integer('quantity_received')->nullable();
             $table->string('lot_number', 100)->nullable();
@@ -282,7 +266,6 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('stock_transfer_uuid')->references('uuid')->on('pallet_stock_transfers')->onDelete('cascade');
         });
 
         // Add new columns to existing pallet_inventories table

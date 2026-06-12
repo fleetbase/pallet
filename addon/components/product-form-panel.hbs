@@ -42,6 +42,7 @@
                         @wrapperClass="mb-2"
                     />
                     <InputGroup @name="SKU" @value={{this.product.sku}} @helpText="Stock keeping unit number if applicable." @wrapperClass="mb-2" />
+                    <InputGroup @name="Storefront Product UUID" @value={{this.product.storefront_product_uuid}} @helpText="Linked Storefront product UUID for inventory availability enforcement." @wrapperClass="mb-2" />
                     <InputGroup @name="Product Category">
                         <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
                             <PowerSelect
@@ -78,7 +79,7 @@
                 </div>
             </ContentPanel>
 
-            <ContentPanel @title="Pricing & Value" @open={{false}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
+            <ContentPanel @title="Pricing & Value" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
                 <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-2">
                     <InputGroup @name="Unit Price" @helpText="Default product sale price." @wrapperClass="mb-2">
                         <MoneyInput
@@ -110,7 +111,7 @@
                 </div>
             </ContentPanel>
 
-            <ContentPanel @title="Measurements & Weight" @open={{false}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
+            <ContentPanel @title="Measurements & Weight" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
                 <div class="grid grid-cols-3 gap-1">
                     <InputGroup @name="Length" @helpText="The length of the entity." @wrapperClass="mb-2">
                         <UnitInput
@@ -156,7 +157,7 @@
                     </InputGroup>
                 </div>
             </ContentPanel>
-            <ContentPanel @title="Upload Images" @open={{this.product.files.length}} @pad={{false}} @panelBodyWrapperClass="px-0 py-4" @panelBodyClass="bg-white dark:bg-gray-800">
+            <ContentPanel @title="Upload Images" @open={{true}} @pad={{false}} @panelBodyWrapperClass="px-0 py-4" @panelBodyClass="bg-white dark:bg-gray-800">
                 <div class="px-6 space-y-4">
                     {{#if this.isUploading}}
                         <div

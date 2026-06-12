@@ -188,4 +188,12 @@ export default class WarehouseFormPanelComponent extends Component {
 
         this.warehouse.meta[property] = value;
     }
+
+    @action setWarehouseType(event) {
+        this.warehouse.type = event.target.value;
+    }
+
+    @action setWarehouseStatus(event) {
+        this.warehouse.status = event.target.value;
+    }
 }

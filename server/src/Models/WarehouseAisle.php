@@ -107,6 +107,6 @@ class WarehouseAisle extends Model
      */
     public function racks()
     {
-        return $this->hasMany(WarehouseRack::class, 'aisle_uuid');
+        return $this->hasMany(WarehouseRack::class, 'aisle_uuid', 'uuid');
     }
 }

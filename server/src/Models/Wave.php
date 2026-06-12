@@ -92,7 +92,7 @@ class Wave extends Model
      */
     public function warehouse()
     {
-        return $this->belongsTo(Warehouse::class, 'warehouse_uuid');
+        return $this->belongsTo(Warehouse::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
@@ -102,7 +102,7 @@ class Wave extends Model
      */
     public function pickLists()
     {
-        return $this->hasMany(PickList::class, 'wave_uuid');
+        return $this->hasMany(PickList::class, 'wave_uuid', 'uuid');
     }
 
     /**

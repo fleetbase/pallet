@@ -71,7 +71,7 @@ class StockTransferItem extends Model
      */
     public function stockTransfer()
     {
-        return $this->belongsTo(StockTransfer::class, 'stock_transfer_uuid');
+        return $this->belongsTo(StockTransfer::class, 'stock_transfer_uuid', 'uuid');
     }
 
     /**

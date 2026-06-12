@@ -13,10 +13,10 @@
 
 This monorepo contains both the frontend and backend components of the Pallet extension for Fleetbase. The frontend is built using Ember.js and the backend is implemented in PHP.
 
-* PHP 7.3.0 or above
-* Ember.js v4.8 or above
-* Ember CLI v4.8 or above
-* Node.js v18 or above
+* PHP 8.0 or above
+* Ember.js v5.4 or above
+* Ember CLI v5.4 or above
+* Node.js v22 for CI builds
 
 ## Structure
 
@@ -56,16 +56,14 @@ This monorepo contains both the frontend and backend components of the Pallet ex
 Install the PHP packages using Composer:
 
 ```bash
-composer require fleetbase/core-api
-composer require fleetbase/fleetops
-composer require fleetbase/pallet
+composer require fleetbase/pallet-api
 ```
 ### Frontend
 
 Install the Ember.js Engine/Addon:
 
 ```bash
-pnpm install @fleetbase/pallet
+pnpm install @fleetbase/pallet-engine
 ```
 
 ## Usage
@@ -75,6 +73,7 @@ pnpm install @fleetbase/pallet
 🧹 Keep a modern codebase with **PHP CS Fixer**:
 ```bash
 composer lint
+composer lint:fix
 ```
 
 ⚗️ Run static analysis using **PHPStan**:
@@ -120,4 +119,4 @@ pnpm build
 See the Contributing Guide for details on how to contribute to this project.
 
 ## License
-This project is licensed under the MIT License.
+This project is licensed under the AGPL-3.0-or-later License.

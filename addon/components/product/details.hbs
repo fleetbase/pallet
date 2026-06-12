@@ -21,6 +21,10 @@
                 <div class="field-name">{{t "product.fields.barcode"}}</div>
                 <ClickToCopy @value={{@resource.barcode}} class="field-value">{{n-a @resource.barcode}}</ClickToCopy>
             </div>
+            <div class="field-info-container md:col-span-2">
+                <div class="field-name">Storefront Product UUID</div>
+                <ClickToCopy @value={{@resource.storefront_product_uuid}} class="field-value">{{n-a @resource.storefront_product_uuid}}</ClickToCopy>
+            </div>
             <div class="field-info-container">
                 <div class="field-name">{{t "product.fields.category"}}</div>
                 <div class="field-value">{{smart-humanize @resource.category}}</div>
@@ -131,7 +135,7 @@
         </div>
     </ContentPanel>
 
-    <ContentPanel @title={{t "product.sections.dimensions"}} @open={{false}} @wrapperClass="bordered-top">
+    <ContentPanel @title={{t "product.sections.dimensions"}} @open={{true}} @wrapperClass="bordered-top">
         <div class="grid grid-cols-2 gap-2 text-xs dark:text-gray-100">
             <div class="field-info-container">
                 <div class="field-name">{{t "common.length"}}</div>

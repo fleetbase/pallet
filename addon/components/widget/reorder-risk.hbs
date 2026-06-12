@@ -1,0 +1,33 @@
+<div class="pallet-dashboard-widget flex h-full min-h-0 flex-col overflow-hidden rounded-md border bg-white shadow-sm dark:bg-gray-800" ...attributes>
+    <div class="pallet-widget-header">
+        <div>
+            <div class="pallet-widget-title">Reorder Risk</div>
+            <div class="pallet-widget-subtitle">Products at or below reorder point</div>
+        </div>
+        <FaIcon @icon="cart-flatbed" class="text-gray-400" />
+    </div>
+    <div class="pallet-widget-scroll-body">
+        {{#if this.error}}
+            <div class="pallet-widget-empty">{{this.error}}</div>
+        {{else if this.load.isRunning}}
+            <div class="pallet-widget-empty"><Spinner /></div>
+        {{else if (eq this.products.length 0)}}
+            <div class="pallet-widget-empty">No reorder risks right now.</div>
+        {{else}}
+            <div class="divide-y divide-gray-100 dark:divide-gray-700">
+                {{#each this.products as |product|}}
+                    <div class="flex items-center justify-between gap-3 py-2">
+                        <div class="min-w-0">
+                            <div class="truncate text-sm font-semibold text-gray-800 dark:text-gray-100">{{product.name}}</div>
+                            <div class="truncate text-xs text-gray-500 dark:text-gray-400">{{n-a product.sku}} · {{n-a product.supplier_name}}</div>
+                        </div>
+                        <div class="shrink-0 text-right">
+                            <div class="text-sm font-bold text-rose-600 dark:text-rose-300">{{product.available_stock}}</div>
+                            <div class="text-xs text-gray-500 dark:text-gray-400">min {{product.reorder_point}}</div>
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
+        {{/if}}
+    </div>
+</div>
