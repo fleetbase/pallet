@@ -11,6 +11,9 @@ export default class PurchaseOrderSerializer extends ApplicationSerializer.exten
         return {
             supplier: { embedded: 'always' },
             items: { embedded: 'always' },
+            product: { embedded: 'always' },
+            variant: { embedded: 'always' },
+            warehouse: { embedded: 'always' },
         };
     }
 }

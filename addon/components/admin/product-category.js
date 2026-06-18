@@ -21,6 +21,10 @@ export default class AdminProductCategoryComponent extends Component {
         this.fetchCategoryHierarchy();
     }
 
+    getRecordUuid(record) {
+        return record?.uuid ?? record?.id;
+    }
+
     @action async addCategory() {
         const category = this.store.createRecord('category', {
             for: 'pallet_product',
@@ -38,13 +42,13 @@ export default class AdminProductCategoryComponent extends Component {
                     file,
                     {
                         path: `uploads/${category.company_uuid}/product-category-icon/${dasherize(category.name ?? this.currentUser.companyId)}`,
-                        subject_uuid: category.id,
+                        subject_uuid: this.getRecordUuid(category),
                         subject_type: `category`,
                         type: `category_icon`,
                     },
                     (uploadedFile) => {
                         category.setProperties({
-                            icon_file_uuid: uploadedFile.id,
+                            icon_file_uuid: this.getRecordUuid(uploadedFile),
                             icon_url: uploadedFile.url,
                             icon: uploadedFile,
                         });
@@ -93,13 +97,13 @@ export default class AdminProductCategoryComponent extends Component {
                     file,
                     {
                         path: `uploads/${category.company_uuid}/product-category-icon/${dasherize(category.name ?? this.currentUser.companyId)}`,
-                        subject_uuid: category.id,
+                        subject_uuid: this.getRecordUuid(category),
                         subject_type: `category`,
                         type: `category_icon`,
                     },
                     (uploadedFile) => {
                         category.setProperties({
-                            icon_file_uuid: uploadedFile.id,
+                            icon_file_uuid: this.getRecordUuid(uploadedFile),
                             icon_url: uploadedFile.url,
                             icon: uploadedFile,
                         });

@@ -298,14 +298,22 @@ class Inventory extends Model
      */
     public function reserve($quantity)
     {
-        if ($this->available_quantity < $quantity) {
+        $quantity = (int) $quantity;
+
+        if ($quantity <= 0 || $this->available_quantity < $quantity) {
             return false;
         }
 
         $this->reserved_quantity += $quantity;
-        $this->available_quantity -= $quantity;
+        $this->syncAvailableQuantity();
 
-        return $this->save();
+        $saved = $this->save();
+
+        if ($saved) {
+            $this->recordStockTransaction('reserved', $quantity);
+        }
+
+        return $saved;
     }
 
     /**
@@ -317,10 +325,22 @@ class Inventory extends Model
      */
     public function releaseReservation($quantity)
     {
-        $this->reserved_quantity  = max(0, $this->reserved_quantity - $quantity);
-        $this->available_quantity = $this->quantity - $this->reserved_quantity;
+        $quantity = (int) $quantity;
 
-        return $this->save();
+        if ($quantity <= 0) {
+            return false;
+        }
+
+        $this->reserved_quantity = max(0, $this->reserved_quantity - min($quantity, $this->reserved_quantity));
+        $this->syncAvailableQuantity();
+
+        $saved = $this->save();
+
+        if ($saved) {
+            $this->recordStockTransaction('released', $quantity);
+        }
+
+        return $saved;
     }
 
     /**
@@ -330,12 +350,52 @@ class Inventory extends Model
      *
      * @return bool
      */
-    public function deduct($quantity)
+    public function deduct($quantity, string $transactionType = 'fulfilled')
     {
-        $this->quantity -= $quantity;
-        $this->available_quantity = $this->quantity - $this->reserved_quantity;
+        $quantity = (int) $quantity;
 
-        return $this->save();
+        if ($quantity <= 0 || $this->available_quantity < $quantity) {
+            return false;
+        }
+
+        $this->quantity -= $quantity;
+        $this->syncAvailableQuantity();
+
+        $saved = $this->save();
+
+        if ($saved) {
+            $this->recordStockTransaction($transactionType, $quantity * -1);
+        }
+
+        return $saved;
+    }
+
+    /**
+     * Deduct stock that has already been reserved.
+     *
+     * @param int $quantity
+     *
+     * @return bool
+     */
+    public function commitReserved($quantity)
+    {
+        $quantity = (int) $quantity;
+
+        if ($quantity <= 0 || $this->reserved_quantity < $quantity || $this->quantity < $quantity) {
+            return false;
+        }
+
+        $this->quantity -= $quantity;
+        $this->reserved_quantity -= $quantity;
+        $this->syncAvailableQuantity();
+
+        $saved = $this->save();
+
+        if ($saved) {
+            $this->recordStockTransaction('fulfilled_reserved', $quantity * -1);
+        }
+
+        return $saved;
     }
 
     /**
@@ -345,12 +405,59 @@ class Inventory extends Model
      *
      * @return bool
      */
-    public function add($quantity)
+    public function add($quantity, string $transactionType = 'received')
     {
-        $this->quantity += $quantity;
-        $this->available_quantity = $this->quantity - $this->reserved_quantity;
+        $quantity = (int) $quantity;
 
-        return $this->save();
+        if ($quantity <= 0) {
+            return false;
+        }
+
+        $this->quantity += $quantity;
+        $this->syncAvailableQuantity();
+
+        $saved = $this->save();
+
+        if ($saved) {
+            $this->recordStockTransaction($transactionType, $quantity);
+        }
+
+        return $saved;
+    }
+
+    public function recordStockTransaction(string $type, int $quantity, array $meta = []): ?StockTransaction
+    {
+        if ($quantity === 0) {
+            return null;
+        }
+
+        return StockTransaction::create([
+            'company_uuid'            => $this->company_uuid,
+            'created_by_uuid'         => session('user') ?: $this->created_by_uuid,
+            'product_uuid'            => $this->product_uuid,
+            'variant_uuid'            => $this->variant_uuid,
+            'batch_uuid'              => $this->batch_uuid,
+            'transaction_type'        => $type,
+            'quantity'                => $quantity,
+            'transaction_date_at'     => now(),
+            'transaction_created_at'  => now(),
+            'source_uuid'             => $this->uuid,
+            'source_type'             => static::class,
+            'destination_uuid'        => $this->warehouse_uuid,
+            'meta'                    => array_filter(array_merge([
+                'inventory_uuid' => $this->uuid,
+                'warehouse_uuid' => $this->warehouse_uuid,
+            ], $meta), fn ($value) => $value !== null),
+        ]);
+    }
+
+    /**
+     * Keep available quantity derived from on-hand minus reserved quantity.
+     */
+    public function syncAvailableQuantity(): void
+    {
+        $this->reserved_quantity  = max(0, min((int) $this->reserved_quantity, (int) $this->quantity));
+        $this->available_quantity = max(0, (int) $this->quantity - (int) $this->reserved_quantity);
     }
 
     /**
@@ -437,15 +544,19 @@ class Inventory extends Model
             if (!isset($model->reserved_quantity)) {
                 $model->reserved_quantity = 0;
             }
-            if (!isset($model->available_quantity)) {
-                $model->available_quantity = $model->quantity ?? 0;
+            $model->syncAvailableQuantity();
+        });
+
+        static::created(function ($model) {
+            if ((int) $model->quantity > 0) {
+                $model->recordStockTransaction('received', (int) $model->quantity, ['source' => 'inventory_create']);
             }
         });
 
         static::saving(function ($model) {
             // Ensure available quantity is calculated correctly
             if ($model->isDirty(['quantity', 'reserved_quantity'])) {
-                $model->available_quantity = max(0, $model->quantity - $model->reserved_quantity);
+                $model->syncAvailableQuantity();
             }
         });
     }

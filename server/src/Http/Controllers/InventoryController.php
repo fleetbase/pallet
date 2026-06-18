@@ -5,8 +5,13 @@ namespace Fleetbase\Pallet\Http\Controllers;
 use Fleetbase\Exceptions\FleetbaseRequestValidationException;
 use Fleetbase\Pallet\Http\Resources\IndexInventory;
 use Fleetbase\Pallet\Models\Batch;
+use Fleetbase\Pallet\Models\BinLocation;
 use Fleetbase\Pallet\Models\Inventory;
 use Fleetbase\Pallet\Models\Product;
+use Fleetbase\Pallet\Models\ProductVariant;
+use Fleetbase\Pallet\Models\Supplier;
+use Fleetbase\Pallet\Models\Warehouse;
+use Fleetbase\Pallet\Models\WarehouseZone;
 use Fleetbase\Support\Http;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -61,21 +66,100 @@ class InventoryController extends PalletResourceController
     {
         try {
             $this->validateRequest($request);
-            $data    = $request->input('inventory');
-            $product = Product::where('uuid', data_get($data, 'product_uuid'))->where('company_uuid', session('company'))->first();
+            $data      = $request->input('inventory');
+            $productId = data_get($data, 'product_uuid');
+            $product   = Product::where('company_uuid', session('company'))
+                ->where(fn ($query) => $query->where('uuid', $productId)->orWhere('public_id', $productId))
+                ->first();
 
-            if ($product?->has_variants && !data_get($data, 'variant_uuid')) {
+            if (!$product) {
+                return response()->error('Product is required to create inventory.', 422);
+            }
+
+            $variantUuid = data_get($data, 'variant_uuid');
+            if ($product->has_variants && !$variantUuid) {
                 return response()->error('Variant is required for inventory on products with variants.', 422);
             }
+
+            if ($variantUuid) {
+                $variant = ProductVariant::where('company_uuid', session('company'))
+                    ->where('product_uuid', $product->uuid)
+                    ->where(fn ($query) => $query->where('uuid', $variantUuid)->orWhere('public_id', $variantUuid))
+                    ->first();
+
+                if (!$variant) {
+                    return response()->error('Selected variant does not belong to this product.', 422);
+                }
+
+                $variantUuid = $variant->uuid;
+            }
+
+            $warehouseUuid = data_get($data, 'warehouse_uuid');
+            if ($warehouseUuid) {
+                $warehouse = Warehouse::where('company_uuid', session('company'))
+                    ->where(fn ($query) => $query->where('uuid', $warehouseUuid)->orWhere('public_id', $warehouseUuid))
+                    ->first();
+
+                if (!$warehouse) {
+                    return response()->error('Selected warehouse could not be found.', 422);
+                }
+
+                $warehouseUuid = $warehouse->uuid;
+            }
+
+            $supplierUuid = data_get($data, 'supplier_uuid');
+            if ($supplierUuid) {
+                $supplier = Supplier::where('company_uuid', session('company'))
+                    ->where(fn ($query) => $query->where('uuid', $supplierUuid)->orWhere('public_id', $supplierUuid))
+                    ->first();
+
+                if (!$supplier) {
+                    return response()->error('Selected supplier could not be found.', 422);
+                }
+
+                $supplierUuid = $supplier->uuid;
+            }
+
+            $zoneUuid = data_get($data, 'zone_uuid');
+            if ($zoneUuid) {
+                $zone = WarehouseZone::where('company_uuid', session('company'))
+                    ->when($warehouseUuid, fn ($query) => $query->where('warehouse_uuid', $warehouseUuid))
+                    ->where(fn ($query) => $query->where('uuid', $zoneUuid)->orWhere('public_id', $zoneUuid))
+                    ->first();
+
+                if (!$zone) {
+                    return response()->error('Selected zone could not be found for this warehouse.', 422);
+                }
+
+                $zoneUuid = $zone->uuid;
+            }
+
+            $binLocationUuid = data_get($data, 'bin_location_uuid');
+            if ($binLocationUuid) {
+                $binLocation = BinLocation::where('company_uuid', session('company'))
+                    ->when($warehouseUuid, fn ($query) => $query->where('warehouse_uuid', $warehouseUuid))
+                    ->where(fn ($query) => $query->where('uuid', $binLocationUuid)->orWhere('public_id', $binLocationUuid))
+                    ->first();
+
+                if (!$binLocation) {
+                    return response()->error('Selected bin location could not be found for this warehouse.', 422);
+                }
+
+                $binLocationUuid = $binLocation->uuid;
+                $zoneUuid        = $binLocation->zone_uuid ?? $zoneUuid;
+                $warehouseUuid   = $binLocation->warehouse_uuid ?? $warehouseUuid;
+            }
+
+            $quantity = (int) data_get($data, 'quantity', 0);
 
             // Create the batch record first
             $batch = new Batch([
                 'company_uuid'        => session('company'),
                 'created_by_uuid'     => session('user'),
-                'product_uuid'        => data_get($data, 'product_uuid'),
-                'variant_uuid'        => data_get($data, 'variant_uuid'),
+                'product_uuid'        => $product->uuid,
+                'variant_uuid'        => $variantUuid,
                 'batch_number'        => data_get($data, 'batch_number', now()->format('Y-m-d-') . strtoupper(Str::random(6))),
-                'quantity'            => data_get($data, 'quantity', 0),
+                'quantity'            => $quantity,
                 'expiry_date_at'      => data_get($data, 'expiry_date_at'),
                 'manufacture_date_at' => data_get($data, 'manufacture_date_at'),
             ]);
@@ -85,13 +169,15 @@ class InventoryController extends PalletResourceController
             $inventory = new Inventory([
                 'company_uuid'      => session('company'),
                 'created_by_uuid'   => session('user'),
-                'product_uuid'      => data_get($data, 'product_uuid'),
-                'variant_uuid'      => data_get($data, 'variant_uuid'),
-                'supplier_uuid'     => data_get($data, 'supplier_uuid'),
-                'warehouse_uuid'    => data_get($data, 'warehouse_uuid'),
+                'product_uuid'      => $product->uuid,
+                'variant_uuid'      => $variantUuid,
+                'supplier_uuid'     => $supplierUuid,
+                'warehouse_uuid'    => $warehouseUuid,
                 'batch_uuid'        => $batch->uuid,
+                'bin_location_uuid' => $binLocationUuid,
+                'zone_uuid'         => $zoneUuid,
                 'status'            => data_get($data, 'status', 'active'),
-                'quantity'          => data_get($data, 'quantity', 0),
+                'quantity'          => $quantity,
                 'min_quantity'      => data_get($data, 'min_quantity', 0),
                 'max_quantity'      => data_get($data, 'max_quantity'),
                 'reorder_point'     => data_get($data, 'reorder_point'),

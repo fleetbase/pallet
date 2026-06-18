@@ -89,6 +89,9 @@ class AuditService
             $adjustment->reason,
             [
                 'product_uuid'    => $adjustment->product_uuid,
+                'variant_uuid'    => $adjustment->variant_uuid,
+                'inventory_uuid'  => $adjustment->inventory_uuid,
+                'warehouse_uuid'  => $adjustment->warehouse_uuid,
                 'before_quantity' => $adjustment->before_quantity,
                 'after_quantity'  => $adjustment->after_quantity,
                 'quantity_delta'  => $adjustment->quantity,

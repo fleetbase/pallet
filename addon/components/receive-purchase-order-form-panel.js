@@ -103,6 +103,11 @@ export default class ReceivePurchaseOrderFormPanelComponent extends Component {
         return this.receivableItems.length === 0;
     }
 
+    get hasWarehouseContext() {
+        const purchaseOrder = this.purchaseOrder;
+        return Boolean(purchaseOrder?.warehouse_uuid || purchaseOrder?.warehouse || this.receivableItems.some((item) => item.warehouse_uuid));
+    }
+
     /**
      * Returns the receipt entry for a given item.
      *
@@ -111,6 +116,20 @@ export default class ReceivePurchaseOrderFormPanelComponent extends Component {
      */
     getReceiptEntry(item) {
         return this.receiptData[item.id] || {};
+    }
+
+    valueFromEvent(value) {
+        return value?.target ? value.target.value : value;
+    }
+
+    normalizeQuantity(value, maxQuantity) {
+        const numericValue = Number(this.valueFromEvent(value));
+        const normalized = Number.isFinite(numericValue) ? numericValue : 0;
+        return Math.max(0, Math.min(normalized, Number(maxQuantity) || 0));
+    }
+
+    getRecordUuid(record) {
+        return record?.uuid ?? record?.id;
     }
 
     /**
@@ -123,9 +142,35 @@ export default class ReceivePurchaseOrderFormPanelComponent extends Component {
      */
     @action updateReceiptField(item, field, value) {
         const current = this.receiptData[item.id] || {};
+        const normalizedValue = field === 'quantity_received' ? this.normalizeQuantity(value, item.outstanding_quantity) : this.valueFromEvent(value);
         this.receiptData = {
             ...this.receiptData,
-            [item.id]: { ...current, [field]: value },
+            [item.id]: { ...current, [field]: normalizedValue },
+        };
+    }
+
+    @action setReceiptZone(item, zone) {
+        const current = this.receiptData[item.id] || {};
+        this.receiptData = {
+            ...this.receiptData,
+            [item.id]: {
+                ...current,
+                zone,
+                zone_uuid: this.getRecordUuid(zone),
+            },
+        };
+    }
+
+    @action setReceiptBinLocation(item, binLocation) {
+        const current = this.receiptData[item.id] || {};
+        this.receiptData = {
+            ...this.receiptData,
+            [item.id]: {
+                ...current,
+                binLocation,
+                bin_location_uuid: this.getRecordUuid(binLocation),
+                zone_uuid: binLocation?.zone_uuid ?? current.zone_uuid,
+            },
         };
     }
 
@@ -136,10 +181,15 @@ export default class ReceivePurchaseOrderFormPanelComponent extends Component {
      */
     @task *receiveOrder() {
         const purchaseOrder = this.purchaseOrder;
-        const items = Object.values(this.receiptData).filter((entry) => entry.quantity_received > 0);
+        const items = Object.values(this.receiptData).filter((entry) => Number(entry.quantity_received) > 0);
 
         if (items.length === 0) {
             this.notifications.warning('Please enter at least one quantity to receive.');
+            return;
+        }
+
+        if (!this.hasWarehouseContext) {
+            this.notifications.warning('Select a warehouse before receiving this purchase order.');
             return;
         }
 

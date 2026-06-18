@@ -342,30 +342,46 @@ return new class extends Migration
         Schema::dropIfExists('pallet_product_kit_components');
 
         // Remove added columns from pallet_inventories
-        Schema::table('pallet_inventories', function (Blueprint $table) {
-            $table->dropColumn([
-                'bin_location_uuid',
-                'zone_uuid',
-                'lot_number',
-                'serial_number',
-                'uom',
-                'reserved_quantity',
-                'available_quantity',
-                'max_quantity',
-                'reorder_point',
-                'unit_cost',
-                'received_at',
-                'last_counted_at',
-            ]);
-        });
+        if (Schema::hasTable('pallet_inventories')) {
+            Schema::table('pallet_inventories', function (Blueprint $table) {
+                $columns = [
+                    'bin_location_uuid',
+                    'zone_uuid',
+                    'lot_number',
+                    'serial_number',
+                    'uom',
+                    'reserved_quantity',
+                    'available_quantity',
+                    'max_quantity',
+                    'reorder_point',
+                    'unit_cost',
+                    'received_at',
+                    'last_counted_at',
+                ];
+
+                foreach ($columns as $column) {
+                    if (Schema::hasColumn('pallet_inventories', $column)) {
+                        $table->dropColumn($column);
+                    }
+                }
+            });
+        }
 
         // Remove added columns from places
-        Schema::table('places', function (Blueprint $table) {
-            $table->dropColumn([
-                'capacity',
-                'current_utilization',
-                'is_3pl',
-            ]);
-        });
+        if (Schema::hasTable('places')) {
+            Schema::table('places', function (Blueprint $table) {
+                $columns = [
+                    'capacity',
+                    'current_utilization',
+                    'is_3pl',
+                ];
+
+                foreach ($columns as $column) {
+                    if (Schema::hasColumn('places', $column)) {
+                        $table->dropColumn($column);
+                    }
+                }
+            });
+        }
     }
 };

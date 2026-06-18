@@ -18,11 +18,6 @@
             </div>
 
             <div class="field-info-container">
-                <div class="field-name">Storefront Product UUID</div>
-                <div class="field-value">{{n-a @product.storefront_product_uuid}}</div>
-            </div>
-
-            <div class="field-info-container">
                 <div class="field-name">Product Supplier</div>
                 <div class="field-value">{{n-a @product.supplier.name}}</div>
             </div>
@@ -32,6 +27,9 @@
                 <div class="field-value">{{format-currency @product.price @product.currency}}</div>
             </div>
         </div>
+    </ContentPanel>
+    <ContentPanel @title="Storefront Inventory" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-900">
+        <Product::StorefrontInventory @product={{@product}} />
     </ContentPanel>
     <ContentPanel @title="Dimensions" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-900">
         <div class="grid grid-cols-1 gap-2 lg:grid-cols-2 lg:gap-4 text-xs dark:text-gray-100">

@@ -13,7 +13,7 @@ export default class SalesOrderItemModel extends Model {
     /** @relationships */
     @belongsTo('pallet-product', { async: false }) product;
     @belongsTo('pallet-product-variant', { async: false }) variant;
-    @belongsTo('pallet-warehouse', { async: false }) warehouse;
+    @belongsTo('warehouse', { async: false }) warehouse;
     @belongsTo('inventory', { async: false }) inventory;
 
     /** @quantities */

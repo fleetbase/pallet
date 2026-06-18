@@ -5,6 +5,7 @@ export default class WaveSerializer extends ApplicationSerializer.extend(Embedde
     get attrs() {
         return {
             warehouse: { embedded: 'always' },
+            pickLists: { embedded: 'always' },
         };
     }
 }

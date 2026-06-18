@@ -3,7 +3,10 @@
 namespace Fleetbase\Pallet\Models;
 
 use Fleetbase\Casts\Json;
+use Fleetbase\Models\Company;
 use Fleetbase\Models\Model;
+use Fleetbase\Models\Transaction;
+use Fleetbase\Models\User;
 use Fleetbase\Pallet\Traits\HasOperationalAuditTrail;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;
@@ -58,6 +61,7 @@ class PurchaseOrder extends Model
         'company_uuid',
         'created_by_uuid',
         'supplier_uuid',
+        'warehouse_uuid',
         'transaction_uuid',
         'assigned_to_uuid',
         'point_of_contact_uuid',
@@ -66,6 +70,7 @@ class PurchaseOrder extends Model
         'description',
         'comments',
         'currency',
+        'meta',
         'status',
         'order_created_at',
         'expected_delivery_at',
@@ -100,6 +105,8 @@ class PurchaseOrder extends Model
      */
     protected $hidden = [];
 
+    protected $with = ['supplier', 'warehouse', 'items.product', 'items.variant', 'items.warehouse'];
+
     /**
      * Relationship with the company associated with the purchase order.
      *
@@ -128,6 +135,11 @@ class PurchaseOrder extends Model
     public function supplier()
     {
         return $this->belongsTo(Supplier::class, 'supplier_uuid', 'uuid');
+    }
+
+    public function warehouse()
+    {
+        return $this->belongsTo(Warehouse::class, 'warehouse_uuid', 'uuid');
     }
 
     /**

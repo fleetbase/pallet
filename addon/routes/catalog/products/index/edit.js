@@ -1,1 +1,10 @@
-export { default } from '../../../products/index/edit';
+import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
+
+export default class ProductsIndexEditRoute extends Route {
+    @service store;
+
+    model({ public_id }) {
+        return this.store.findRecord('pallet-product', public_id);
+    }
+}

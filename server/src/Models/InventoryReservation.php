@@ -8,6 +8,7 @@ use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 use Fleetbase\Traits\TracksApiCredential;
+use Illuminate\Support\Facades\DB;
 
 class InventoryReservation extends Model
 {
@@ -169,14 +170,24 @@ class InventoryReservation extends Model
      */
     public function release()
     {
-        if ($this->status === 'active' && $this->inventory) {
-            $this->inventory->releaseReservation($this->quantity);
+        if ($this->status !== 'active') {
+            return false;
         }
 
-        $this->status      = 'released';
-        $this->released_at = now();
+        return DB::transaction(function () {
+            if ($this->inventory_uuid) {
+                $inventory = $this->inventory()->lockForUpdate()->first();
 
-        return $this->save();
+                if (!$inventory || !$inventory->releaseReservation($this->quantity)) {
+                    return false;
+                }
+            }
+
+            $this->status      = 'released';
+            $this->released_at = now();
+
+            return $this->save();
+        });
     }
 
     /**
@@ -186,17 +197,23 @@ class InventoryReservation extends Model
      */
     public function fulfill()
     {
-        if ($this->status === 'active' && $this->inventory) {
-            $inventory = $this->inventory;
-            $inventory->reserved_quantity  = max(0, $inventory->reserved_quantity - $this->quantity);
-            $inventory->quantity           = max(0, $inventory->quantity - $this->quantity);
-            $inventory->available_quantity = max(0, $inventory->quantity - $inventory->reserved_quantity);
-            $inventory->save();
+        if ($this->status !== 'active') {
+            return false;
         }
 
-        $this->status = 'fulfilled';
+        return DB::transaction(function () {
+            if ($this->inventory_uuid) {
+                $inventory = $this->inventory()->lockForUpdate()->first();
 
-        return $this->save();
+                if (!$inventory || !$inventory->commitReserved($this->quantity)) {
+                    return false;
+                }
+            }
+
+            $this->status = 'fulfilled';
+
+            return $this->save();
+        });
     }
 
     /**

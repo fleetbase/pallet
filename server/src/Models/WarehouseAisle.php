@@ -2,7 +2,9 @@
 
 namespace Fleetbase\Pallet\Models;
 
+use Fleetbase\Models\Company;
 use Fleetbase\Models\Model;
+use Fleetbase\Models\User;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasUuid;
 

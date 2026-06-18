@@ -9,8 +9,7 @@
                     @triggerClass="form-select form-input"
                     @infiniteScroll={{false}}
                     @renderInPlace={{true}}
-                    @onChange={{fn (mut @resource.product)}}
-                    @onChangeId={{fn (mut @resource.product_uuid)}}
+                    @onChange={{this.setProduct}}
                     @disabled={{cannot-write @resource}}
                     as |model|
                 >
@@ -47,8 +46,7 @@
                     @triggerClass="form-select form-input"
                     @infiniteScroll={{false}}
                     @renderInPlace={{true}}
-                    @onChange={{fn (mut @resource.warehouse)}}
-                    @onChangeId={{fn (mut @resource.warehouse_uuid)}}
+                    @onChange={{this.setWarehouse}}
                     @disabled={{cannot-write @resource}}
                     as |model|
                 >
@@ -64,8 +62,7 @@
                     @triggerClass="form-select form-input"
                     @infiniteScroll={{false}}
                     @renderInPlace={{true}}
-                    @onChange={{fn (mut @resource.supplier)}}
-                    @onChangeId={{fn (mut @resource.supplier_uuid)}}
+                    @onChange={{this.setSupplier}}
                     @disabled={{cannot-write @resource}}
                     as |model|
                 >
@@ -134,13 +131,12 @@
                     @modelName="bin-location"
                     @selectedModel={{@resource.binLocation}}
                     @placeholder={{t "inventory.fields.select-bin"}}
-                    @triggerClass="form-select form-input"
-                    @infiniteScroll={{false}}
-                    @renderInPlace={{true}}
-                    @onChange={{fn (mut @resource.binLocation)}}
-                    @onChangeId={{fn (mut @resource.bin_location_uuid)}}
-                    @disabled={{cannot-write @resource}}
-                    as |model|
+                        @triggerClass="form-select form-input"
+                        @infiniteScroll={{false}}
+                        @renderInPlace={{true}}
+                        @onChange={{this.setBinLocation}}
+                        @disabled={{cannot-write @resource}}
+                        as |model|
                 >
                     {{model.bin_number}}
                 </ModelSelect>
@@ -151,13 +147,12 @@
                     @modelName="warehouse-zone"
                     @selectedModel={{@resource.zone}}
                     @placeholder={{t "inventory.fields.select-zone"}}
-                    @triggerClass="form-select form-input"
-                    @infiniteScroll={{false}}
-                    @renderInPlace={{true}}
-                    @onChange={{fn (mut @resource.zone)}}
-                    @onChangeId={{fn (mut @resource.zone_uuid)}}
-                    @disabled={{cannot-write @resource}}
-                    as |model|
+                        @triggerClass="form-select form-input"
+                        @infiniteScroll={{false}}
+                        @renderInPlace={{true}}
+                        @onChange={{this.setZone}}
+                        @disabled={{cannot-write @resource}}
+                        as |model|
                 >
                     {{model.name}}
                 </ModelSelect>

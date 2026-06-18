@@ -3,7 +3,9 @@
 namespace Fleetbase\Pallet\Models;
 
 use Fleetbase\Casts\Json;
+use Fleetbase\Models\Company;
 use Fleetbase\Models\Model;
+use Fleetbase\Models\User;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
@@ -53,19 +55,22 @@ class Batch extends Model
     protected $fillable = [
         'id',
         'uuid',
+        'company_uuid',
+        'created_by_uuid',
         'batch_number',
         'product_uuid',
         'variant_uuid',
         'manufacture_date_at',
         'expiry_date_at',
         'quantity',
+        'meta',
         'created_at',
         'updated_at',
     ];
 
     public $timestamps = true;
 
-    protected $dates = ['expiry_date_at'];
+    protected $dates = ['manufacture_date_at', 'expiry_date_at'];
 
     /**
      * The attributes that should be cast to native types.

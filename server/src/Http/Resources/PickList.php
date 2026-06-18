@@ -19,6 +19,8 @@ class PickList extends FleetbaseResource
             'wave_uuid'             => $this->wave_uuid,
             'assigned_to_uuid'      => $this->assigned_to_uuid,
             'warehouse'             => $this->whenLoaded('warehouse', fn () => new Warehouse($this->warehouse)),
+            'wave'                  => $this->whenLoaded('wave', fn () => new Wave($this->wave)),
+            'assigned_to'           => $this->whenLoaded('assignedTo', $this->assignedTo),
             'items'                 => $this->whenLoaded('items', fn () => PickListItem::collection($this->items)),
             'pick_list_number'      => $this->pick_list_number,
             'type'                  => $this->type,

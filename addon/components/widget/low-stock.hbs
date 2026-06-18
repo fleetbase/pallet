@@ -1,35 +1,41 @@
-<div class="flex flex-col h-full overflow-hidden">
-    {{#if this.loadLowStock.isRunning}}
-        <div class="flex items-center justify-center h-full">
-            <Spinner />
+<div class="pallet-dashboard-widget flex h-full min-h-0 flex-col overflow-hidden rounded-md border bg-white shadow-sm dark:bg-gray-800" ...attributes>
+    <div class="pallet-widget-header">
+        <div>
+            <div class="pallet-widget-title">Low Stock Alerts</div>
+            <div class="pallet-widget-subtitle">Items at or below their minimum stock threshold</div>
         </div>
+        <FaIcon @icon="triangle-exclamation" class="text-gray-400" />
+    </div>
+
+    {{#if this.error}}
+        <div class="pallet-widget-empty">{{this.error}}</div>
+    {{else if this.loadLowStock.isRunning}}
+        <div class="pallet-widget-empty"><Spinner /></div>
     {{else if (eq this.items.length 0)}}
-        <div class="flex flex-col items-center justify-center h-full text-gray-400 dark:text-gray-600">
-            <FaIcon @icon="check-circle" class="text-green-400 text-3xl mb-2" />
-            <span class="text-sm">All stock levels are healthy</span>
+        <div class="pallet-widget-empty">
+            <div>
+                <FaIcon @icon="check-circle" class="mb-2 text-2xl text-green-400" />
+                <div>All stock levels are healthy</div>
+            </div>
         </div>
     {{else}}
-        <div class="overflow-y-auto flex-1">
+        <div class="pallet-widget-scroll-body p-0">
             <table class="w-full text-xs">
-                <thead class="sticky top-0 bg-white dark:bg-gray-900 z-10">
-                    <tr class="border-b border-gray-100 dark:border-gray-700 text-gray-500 dark:text-gray-400">
-                        <th class="text-left px-3 py-2 font-medium">Product</th>
-                        <th class="text-left px-3 py-2 font-medium">SKU</th>
-                        <th class="text-right px-3 py-2 font-medium">In Stock</th>
-                        <th class="text-right px-3 py-2 font-medium">Min</th>
+                <thead class="sticky top-0 z-10 bg-white dark:bg-gray-900">
+                    <tr class="border-b border-gray-100 text-gray-500 dark:border-gray-700 dark:text-gray-400">
+                        <th class="px-3 py-2 text-left font-medium">Product</th>
+                        <th class="px-3 py-2 text-left font-medium">SKU</th>
+                        <th class="px-3 py-2 text-right font-medium">In Stock</th>
+                        <th class="px-3 py-2 text-right font-medium">Min</th>
                     </tr>
                 </thead>
                 <tbody>
                     {{#each this.items as |item|}}
-                        <tr class="border-b border-gray-50 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                            <td class="px-3 py-2 font-medium text-gray-800 dark:text-gray-100 truncate max-w-[120px]">
-                                {{n-a item.name}}
-                            </td>
+                        <tr class="border-b border-gray-50 hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-gray-800/50">
+                            <td class="max-w-[120px] truncate px-3 py-2 font-medium text-gray-800 dark:text-gray-100">{{n-a item.name}}</td>
                             <td class="px-3 py-2 text-gray-500 dark:text-gray-400">{{n-a item.sku}}</td>
                             <td class="px-3 py-2 text-right">
-                                <span class="font-semibold {{if (eq item.quantity 0) 'text-red-600' 'text-orange-500'}}">
-                                    {{item.quantity}}
-                                </span>
+                                <span class="font-semibold {{if (eq item.quantity 0) 'text-red-600' 'text-orange-500'}}">{{item.quantity}}</span>
                             </td>
                             <td class="px-3 py-2 text-right text-gray-500 dark:text-gray-400">{{item.min_stock}}</td>
                         </tr>

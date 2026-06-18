@@ -1,298 +1,327 @@
-<div class="form-wrapper" ...attributes>
-    <ContentPanel @title={{t "product.sections.details"}} @open={{true}} @wrapperClass="bordered-top">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 text-xs no-input-group-padding">
-            <InputGroup @name={{t "common.name"}} @wrapperClass="col-span-2">
-                <Input @value={{@resource.name}} @type="text" class="w-full form-input" placeholder={{t "product.fields.name-placeholder"}} disabled={{cannot-write @resource}} />
-            </InputGroup>
-
-            <InputGroup @name={{t "common.internal-id"}}>
-                <Input @value={{@resource.internal_id}} @type="text" class="w-full form-input" placeholder={{t "common.internal-id"}} disabled={{cannot-write @resource}} />
-            </InputGroup>
-
-            <InputGroup @name={{t "product.fields.sku"}}>
-                <Input @value={{@resource.sku}} @type="text" class="w-full form-input" placeholder={{t "product.fields.sku"}} disabled={{cannot-write @resource}} />
-            </InputGroup>
-
-            <InputGroup @name={{t "product.fields.barcode"}}>
-                <Input @value={{@resource.barcode}} @type="text" class="w-full form-input" placeholder={{t "product.fields.barcode"}} disabled={{cannot-write @resource}} />
-            </InputGroup>
-
-            <InputGroup @name="Storefront Product UUID" @wrapperClass="col-span-2">
-                <Input @value={{@resource.storefront_product_uuid}} @type="text" class="w-full form-input" placeholder="Linked Storefront product UUID" disabled={{cannot-write @resource}} />
-            </InputGroup>
-
-            <InputGroup @name={{t "product.fields.category"}}>
-                <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
-                    <PowerSelect
-                        @options={{this.productCategories}}
-                        @selected={{@resource.category}}
-                        @onChange={{fn (mut @resource.category)}}
-                        @placeholder={{t "product.fields.select-category"}}
-                        @triggerClass="form-select form-input"
-                        @disabled={{or (cannot-write @resource) (not this.productCategories)}}
-                        as |category|
-                    >
-                        {{smart-humanize category}}
-                    </PowerSelect>
-                </div>
-            </InputGroup>
-
-            <InputGroup @name={{t "product.fields.supplier"}}>
-                <ModelSelect
-                    @modelName="vendor"
-                    @selectedModel={{@resource.supplier}}
-                    @placeholder={{t "product.fields.select-supplier"}}
-                    @triggerClass="form-select form-input"
-                    @infiniteScroll={{false}}
-                    @renderInPlace={{true}}
-                    @onChange={{fn (mut @resource.supplier)}}
-                    @onChangeId={{fn (mut @resource.supplier_uuid)}}
-                    @disabled={{cannot-write @resource}}
-                    as |model|
-                >
-                    {{model.name}}
-                </ModelSelect>
-            </InputGroup>
-
-            <InputGroup @name={{t "common.status"}}>
-                <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
-                    <PowerSelect
-                        @options={{this.statusOptions}}
-                        @selected={{find-by "value" @resource.status this.statusOptions}}
-                        @onChange={{set-model-attr @resource "status"}}
-                        @placeholder={{t "common.select-status"}}
-                        @triggerClass="form-select form-input"
-                        @disabled={{cannot-write @resource}}
-                        as |option|
-                    >
-                        {{option.label}}
-                    </PowerSelect>
-                </div>
-            </InputGroup>
-
-            <InputGroup @name={{t "common.description"}} @wrapperClass="col-span-2">
-                <Textarea @value={{@resource.description}} class="w-full form-input" placeholder={{t "common.description"}} disabled={{cannot-write @resource}} />
-            </InputGroup>
-        </div>
-    </ContentPanel>
-
-    <ContentPanel @title={{t "product.sections.inventory-settings"}} @open={{true}} @wrapperClass="bordered-top">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 text-xs no-input-group-padding">
-            <InputGroup @name={{t "product.fields.reorder-point"}}>
-                <Input @value={{@resource.reorder_point}} @type="number" class="w-full form-input" placeholder={{t "product.fields.reorder-point"}} disabled={{cannot-write @resource}} />
-            </InputGroup>
-
-            <InputGroup @name={{t "product.fields.reorder-quantity"}}>
-                <Input @value={{@resource.reorder_quantity}} @type="number" class="w-full form-input" placeholder={{t "product.fields.reorder-quantity"}} disabled={{cannot-write @resource}} />
-            </InputGroup>
-
-            <InputGroup @name={{t "product.fields.shelf-life-days"}}>
-                <Input @value={{@resource.shelf_life_days}} @type="number" class="w-full form-input" placeholder={{t "product.fields.shelf-life-days"}} disabled={{cannot-write @resource}} />
-            </InputGroup>
-
-            <InputGroup @name={{t "product.fields.is-serialized"}}>
-                <Checkbox @checked={{@resource.is_serialized}} @onChange={{fn (mut @resource.is_serialized)}} @disabled={{cannot-write @resource}}>
-                    {{t "product.fields.track-serial-numbers"}}
-                </Checkbox>
-            </InputGroup>
-
-            <InputGroup @name={{t "product.fields.is-lot-tracked"}}>
-                <Checkbox @checked={{@resource.is_lot_tracked}} @onChange={{fn (mut @resource.is_lot_tracked)}} @disabled={{cannot-write @resource}}>
-                    {{t "product.fields.track-lot-numbers"}}
-                </Checkbox>
-            </InputGroup>
-
-            <InputGroup @name={{t "product.fields.is-perishable"}}>
-                <Checkbox @checked={{@resource.is_perishable}} @onChange={{fn (mut @resource.is_perishable)}} @disabled={{cannot-write @resource}}>
-                    {{t "product.fields.perishable-item"}}
-                </Checkbox>
-            </InputGroup>
-
-            <InputGroup @name={{t "product.fields.requires-quality-check"}}>
-                <Checkbox @checked={{@resource.requires_quality_check}} @onChange={{fn (mut @resource.requires_quality_check)}} @disabled={{cannot-write @resource}}>
-                    {{t "product.fields.requires-qc"}}
-                </Checkbox>
-            </InputGroup>
-
-            <InputGroup @name="Variants">
-                <Checkbox @checked={{@resource.has_variants}} @onChange={{fn (mut @resource.has_variants)}} @disabled={{cannot-write @resource}}>
-                    Track stock by product variants
-                </Checkbox>
-            </InputGroup>
-        </div>
-    </ContentPanel>
-
-    <ContentPanel @title="Variants" @open={{true}} @wrapperClass="bordered-top">
-        {{#if this.canManageVariants}}
-            <div class="space-y-3 text-xs">
-                {{#if this.variants.length}}
-                    <table class="w-full">
-                        <thead>
-                            <tr class="border-b border-gray-100 dark:border-gray-700 text-gray-500 dark:text-gray-400">
-                                <th class="text-left py-2 pr-2 font-medium">Variant</th>
-                                <th class="text-left py-2 px-2 font-medium">SKU</th>
-                                <th class="text-right py-2 px-2 font-medium">Available</th>
-                                <th class="py-2 pl-2"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {{#each this.variants as |variant|}}
-                                <tr class="border-b border-gray-100 dark:border-gray-800">
-                                    <td class="py-2 pr-2 font-medium">{{n-a variant.display_name variant.name}}</td>
-                                    <td class="py-2 px-2 text-gray-500">{{n-a variant.sku}}</td>
-                                    <td class="py-2 px-2 text-right">{{format-number variant.available_stock}}</td>
-                                    <td class="py-2 pl-2">
-                                        <div class="flex justify-end gap-1">
-                                            <Button @icon="pen" @type="default" @size="xs" @onClick={{fn this.startEditingVariant variant}} @helpText="Edit variant" />
-                                            <Button @icon="trash" @type="danger" @size="xs" @onClick={{fn this.removeVariant variant}} @helpText="Remove variant" />
-                                        </div>
-                                    </td>
-                                </tr>
-                            {{/each}}
-                        </tbody>
-                    </table>
-                {{/if}}
-
-                {{#if this.editingVariant}}
-                    <div class="grid grid-cols-1 lg:grid-cols-7 gap-2 p-3 bg-blue-50 dark:bg-blue-900/20">
-                        <Input @value={{this.editingVariant.name}} class="form-input" placeholder="Variant name" />
-                        <Input @value={{this.editingVariant.sku}} class="form-input" placeholder="SKU" />
-                        <Input @value={{this.editingVariant.barcode}} class="form-input" placeholder="Barcode" />
-                        <Input @value={{this.editingVariant.storefront_variant_uuid}} class="form-input" placeholder="Storefront variant UUID" />
-                        <Input @value={{this.editingVariant.option_values_text}} class="form-input lg:col-span-2" placeholder="Color=Black, Storage=256GB" />
-                        <div class="flex gap-1">
-                            <Button @icon="check" @type="primary" @size="sm" @onClick={{this.saveVariant}} />
-                            <Button @icon="times" @type="default" @size="sm" @onClick={{this.cancelEditingVariant}} />
-                        </div>
-                    </div>
-                {{/if}}
-
-                {{#if this.isAddingVariant}}
-                    <div class="grid grid-cols-1 lg:grid-cols-7 gap-2 p-3 bg-green-50 dark:bg-green-900/20">
-                        <Input @value={{this.newVariant.name}} class="form-input" placeholder="Variant name" />
-                        <Input @value={{this.newVariant.sku}} class="form-input" placeholder="SKU" />
-                        <Input @value={{this.newVariant.barcode}} class="form-input" placeholder="Barcode" />
-                        <Input @value={{this.newVariant.storefront_variant_uuid}} class="form-input" placeholder="Storefront variant UUID" />
-                        <Input @value={{this.newVariant.option_values_text}} class="form-input lg:col-span-2" placeholder="Color=Black, Storage=256GB" />
-                        <div class="flex gap-1">
-                            <Button @icon="plus" @type="primary" @size="sm" @onClick={{this.addVariant}} />
-                            <Button @icon="times" @type="default" @size="sm" @onClick={{this.cancelAddingVariant}} />
-                        </div>
-                    </div>
-                {{else}}
-                    <Button @icon="plus" @type="default" @size="sm" @text="Add Variant" @onClick={{this.startAddingVariant}} @disabled={{cannot-write @resource}} />
-                {{/if}}
+<div class="pallet-product-editor" ...attributes>
+    <div class="pallet-product-editor__main">
+        <ContentPanel @title="Product identity" @open={{true}} @wrapperClass="pallet-product-editor-panel">
+            <div class="pallet-product-title-block">
+                <InputGroup @name="Product title">
+                    <Input @value={{@resource.name}} @type="text" class="w-full form-input pallet-product-title-input" placeholder="Wireless scanner, packing tape, spare battery..." disabled={{cannot-write @resource}} />
+                </InputGroup>
+                <InputGroup @name="Description">
+                    <Textarea @value={{@resource.description}} class="w-full form-input pallet-product-description-input" placeholder="Describe the product, handling notes, compatible equipment, or receiving guidance." disabled={{cannot-write @resource}} />
+                </InputGroup>
             </div>
-        {{else}}
-            <div class="text-xs text-gray-500 dark:text-gray-400">Save the product before adding variants.</div>
-        {{/if}}
-    </ContentPanel>
+        </ContentPanel>
 
-    <ContentPanel @title={{t "product.sections.pricing"}} @open={{true}} @wrapperClass="bordered-top">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 text-xs no-input-group-padding">
-            <InputGroup @name={{t "product.fields.unit-cost"}}>
-                <MoneyInput
-                    class="w-full"
-                    @value={{@resource.unit_cost}}
-                    @currency={{@resource.currency}}
-                    @canSelectCurrency={{true}}
-                    @onCurrencyChange={{fn (mut @resource.currency)}}
-                    @disabled={{cannot-write @resource}}
-                />
-            </InputGroup>
+        <ContentPanel @title="Media" @open={{true}} @wrapperClass="pallet-product-editor-panel">
+            {{#if this.canManageMedia}}
+                <div class="pallet-product-media-grid">
+                    <div class="pallet-product-primary-media">
+                        <Image src={{@resource.photo_url}} @fallbackSrc={{config "defaultValues.productImage"}} alt={{@resource.name}} />
+                    </div>
+                    <div class="pallet-product-media-manager">
+                        {{#let (file-queue name="product-images" onFileAdded=this.queueFile accept=(join "," this.acceptedFileTypes)) as |queue|}}
+                            <FileDropzone @queue={{queue}} class="pallet-product-media-dropzone" as |dropzone|>
+                                {{#if dropzone.active}}
+                                    {{#if dropzone.valid}}
+                                        Drop images to upload
+                                    {{else}}
+                                        Unsupported file type
+                                    {{/if}}
+                                {{else if queue.files.length}}
+                                    <Spinner @loadingMessage="Preparing upload..." />
+                                {{else}}
+                                    <FaIcon @icon="image" />
+                                    <div>
+                                        <div class="pallet-product-empty-title">Upload product images</div>
+                                        <div class="pallet-product-empty-copy">Use product photos to make picking, receiving, and Storefront matching easier.</div>
+                                    </div>
+                                    <FileUpload @name="product-images" @for="product-images" @accept={{join "," this.acceptedFileTypes}} @multiple={{true}} @onFileAdded={{this.queueFile}}>
+                                        <span class="btn btn-xs btn-default">Select files</span>
+                                    </FileUpload>
+                                {{/if}}
+                            </FileDropzone>
+                        {{/let}}
+                        {{#if this.uploadQueue.length}}
+                            <div class="pallet-product-upload-queue">
+                                {{#each this.uploadQueue as |file|}}
+                                    <div>
+                                        <span>{{file.name}}</span>
+                                        <span>{{round file.progress}}%</span>
+                                    </div>
+                                {{/each}}
+                            </div>
+                        {{/if}}
+                    </div>
+                </div>
+                {{#if this.hasImages}}
+                    <div class="pallet-product-image-strip">
+                        {{#each @resource.files as |file|}}
+                            <FileRecord @file={{file}} @fileIconClass={{if (eq @resource.photo_uuid file.id) "border-blue-400"}} @onDelete={{this.removeFile}}>
+                                <Button
+                                    @icon="image"
+                                    @text="Make primary"
+                                    @size="xs"
+                                    @textClass="text-xs truncate"
+                                    @onClick={{fn this.setProductPhoto file}}
+                                    @disabled={{eq @resource.photo_uuid file.id}}
+                                />
+                            </FileRecord>
+                        {{/each}}
+                    </div>
+                {{/if}}
+            {{else}}
+                <div class="pallet-product-empty-panel">
+                    <FaIcon @icon="image" />
+                    <div>
+                        <div class="pallet-product-empty-title">Save product before adding media</div>
+                        <div class="pallet-product-empty-copy">Images are linked to the product record after it has been created.</div>
+                    </div>
+                </div>
+            {{/if}}
+        </ContentPanel>
 
-            <InputGroup @name={{t "product.fields.unit-price"}}>
-                <MoneyInput
-                    class="w-full"
-                    @value={{@resource.unit_price}}
-                    @currency={{@resource.currency}}
-                    @canSelectCurrency={{true}}
-                    @onCurrencyChange={{fn (mut @resource.currency)}}
-                    @disabled={{cannot-write @resource}}
-                />
-            </InputGroup>
+        <ContentPanel @title="Identifiers" @open={{true}} @wrapperClass="pallet-product-editor-panel">
+            <div class="pallet-product-field-grid">
+                <InputGroup @name="SKU">
+                    <Input @value={{@resource.sku}} @type="text" class="w-full form-input" placeholder="Primary stock keeping unit" disabled={{cannot-write @resource}} />
+                </InputGroup>
+                <InputGroup @name="Barcode">
+                    <Input @value={{@resource.barcode}} @type="text" class="w-full form-input" placeholder="UPC, EAN, or scanner code" disabled={{cannot-write @resource}} />
+                </InputGroup>
+                <InputGroup @name="Internal ID">
+                    <Input @value={{@resource.internal_id}} @type="text" class="w-full form-input" placeholder="Internal product reference" disabled={{cannot-write @resource}} />
+                </InputGroup>
+                <InputGroup @name="Storefront Product UUID">
+                    <Input @value={{@resource.storefront_product_uuid}} @type="text" class="w-full form-input" placeholder="Linked Storefront product UUID" disabled={{cannot-write @resource}} />
+                </InputGroup>
+            </div>
+        </ContentPanel>
 
-            <InputGroup @name={{t "product.fields.sale-price"}}>
-                <MoneyInput
-                    class="w-full"
-                    @value={{@resource.sale_price}}
-                    @currency={{@resource.currency}}
-                    @canSelectCurrency={{true}}
-                    @onCurrencyChange={{fn (mut @resource.currency)}}
-                    @disabled={{cannot-write @resource}}
-                />
-            </InputGroup>
+        <ContentPanel @title="Pricing & value" @open={{true}} @wrapperClass="pallet-product-editor-panel">
+            <div class="pallet-product-field-grid">
+                <InputGroup @name="Unit cost">
+                    <MoneyInput class="w-full" @value={{@resource.unit_cost}} @currency={{@resource.currency}} @canSelectCurrency={{true}} @onCurrencyChange={{fn (mut @resource.currency)}} @disabled={{cannot-write @resource}} />
+                </InputGroup>
+                <InputGroup @name="Unit price">
+                    <MoneyInput class="w-full" @value={{@resource.unit_price}} @currency={{@resource.currency}} @canSelectCurrency={{true}} @onCurrencyChange={{fn (mut @resource.currency)}} @disabled={{cannot-write @resource}} />
+                </InputGroup>
+                <InputGroup @name="Sale price">
+                    <MoneyInput class="w-full" @value={{@resource.sale_price}} @currency={{@resource.currency}} @canSelectCurrency={{true}} @onCurrencyChange={{fn (mut @resource.currency)}} @disabled={{cannot-write @resource}} />
+                </InputGroup>
+                <InputGroup @name="Declared value">
+                    <MoneyInput class="w-full" @value={{@resource.declared_value}} @currency={{@resource.currency}} @canSelectCurrency={{true}} @onCurrencyChange={{fn (mut @resource.currency)}} @disabled={{cannot-write @resource}} />
+                </InputGroup>
+            </div>
+        </ContentPanel>
 
-            <InputGroup @name={{t "product.fields.declared-value"}}>
-                <MoneyInput
-                    class="w-full"
-                    @value={{@resource.declared_value}}
-                    @currency={{@resource.currency}}
-                    @canSelectCurrency={{true}}
-                    @onCurrencyChange={{fn (mut @resource.currency)}}
-                    @disabled={{cannot-write @resource}}
-                />
-            </InputGroup>
-        </div>
-    </ContentPanel>
+        <ContentPanel @title="Variants" @open={{true}} @wrapperClass="pallet-product-editor-panel">
+            {{#if this.canManageVariants}}
+                <div class="pallet-product-variant-manager">
+                    {{#if this.variants.length}}
+                        <div class="pallet-product-variant-table">
+                            <div class="pallet-product-variant-row pallet-product-variant-row--header">
+                                <span>Variant</span>
+                                <span>SKU / Barcode</span>
+                                <span>Stock</span>
+                                <span>Price</span>
+                                <span></span>
+                            </div>
+                            {{#each this.variants as |variant|}}
+                                <div class="pallet-product-variant-row">
+                                    <span>
+                                        <strong>{{n-a variant.display_name variant.name}}</strong>
+                                        <small>{{n-a variant.optionSummary "No options"}}</small>
+                                    </span>
+                                    <span>
+                                        <strong>{{n-a variant.sku "No SKU"}}</strong>
+                                        <small>{{n-a variant.barcode "No barcode"}}</small>
+                                    </span>
+                                    <span>
+                                        <strong>{{format-number (or variant.available_stock 0)}}</strong>
+                                        <small>{{format-number (or variant.reserved_stock 0)}} reserved</small>
+                                    </span>
+                                    <span>
+                                        <strong>{{format-currency variant.unit_price variant.currency}}</strong>
+                                        <small>{{format-currency variant.unit_cost variant.currency}} cost</small>
+                                    </span>
+                                    <span class="pallet-product-variant-actions">
+                                        <Button @icon="pen" @type="default" @size="xs" @onClick={{fn this.startEditingVariant variant}} @helpText="Edit variant" />
+                                        <Button @icon="trash" @type="danger" @size="xs" @onClick={{fn this.removeVariant variant}} @helpText="Remove variant" />
+                                    </span>
+                                </div>
+                            {{/each}}
+                        </div>
+                    {{else}}
+                        <div class="pallet-product-empty-panel">
+                            <FaIcon @icon="layer-group" />
+                            <div>
+                                <div class="pallet-product-empty-title">No variants configured</div>
+                                <div class="pallet-product-empty-copy">Add variants when stock must be tracked by options like size, color, pack, or region.</div>
+                            </div>
+                        </div>
+                    {{/if}}
 
-    <ContentPanel @title={{t "product.sections.dimensions"}} @open={{true}} @wrapperClass="bordered-top">
-        <div class="grid grid-cols-3 gap-2 text-xs no-input-group-padding mb-2">
-            <InputGroup @name={{t "common.length"}}>
-                <UnitInput
-                    class="w-full"
-                    @measurement="length"
-                    @value={{@resource.length}}
-                    @unit={{@resource.dimensions_unit}}
-                    @canSelectUnit={{true}}
-                    @onUnitChange={{fn (mut @resource.dimensions_unit)}}
-                    @disabled={{cannot-write @resource}}
-                />
-            </InputGroup>
+                    {{#if this.editingVariant}}
+                        <div class="pallet-product-variant-editor">
+                            <Input @value={{this.editingVariant.name}} class="form-input" placeholder="Variant name" />
+                            <Input @value={{this.editingVariant.sku}} class="form-input" placeholder="SKU" />
+                            <Input @value={{this.editingVariant.barcode}} class="form-input" placeholder="Barcode" />
+                            <Input @value={{this.editingVariant.storefront_variant_uuid}} class="form-input" placeholder="Storefront variant UUID" />
+                            <Input @value={{this.editingVariant.option_values_text}} class="form-input lg:col-span-2" placeholder="Color=Black, Pack=12" />
+                            <MoneyInput @value={{this.editingVariant.unit_cost}} @currency={{@resource.currency}} @disabled={{cannot-write @resource}} />
+                            <MoneyInput @value={{this.editingVariant.unit_price}} @currency={{@resource.currency}} @disabled={{cannot-write @resource}} />
+                            <div class="pallet-product-variant-editor__actions">
+                                <Button @icon="check" @type="primary" @size="sm" @onClick={{this.saveVariant}} />
+                                <Button @icon="times" @type="default" @size="sm" @onClick={{this.cancelEditingVariant}} />
+                            </div>
+                        </div>
+                    {{/if}}
 
-            <InputGroup @name={{t "common.width"}}>
-                <UnitInput
-                    class="w-full"
-                    @measurement="length"
-                    @value={{@resource.width}}
-                    @unit={{@resource.dimensions_unit}}
-                    @canSelectUnit={{true}}
-                    @onUnitChange={{fn (mut @resource.dimensions_unit)}}
-                    @disabled={{cannot-write @resource}}
-                />
-            </InputGroup>
+                    {{#if this.isAddingVariant}}
+                        <div class="pallet-product-variant-editor">
+                            <Input @value={{this.newVariant.name}} class="form-input" placeholder="Variant name" />
+                            <Input @value={{this.newVariant.sku}} class="form-input" placeholder="SKU" />
+                            <Input @value={{this.newVariant.barcode}} class="form-input" placeholder="Barcode" />
+                            <Input @value={{this.newVariant.storefront_variant_uuid}} class="form-input" placeholder="Storefront variant UUID" />
+                            <Input @value={{this.newVariant.option_values_text}} class="form-input lg:col-span-2" placeholder="Color=Black, Pack=12" />
+                            <MoneyInput @value={{this.newVariant.unit_cost}} @currency={{@resource.currency}} @disabled={{cannot-write @resource}} />
+                            <MoneyInput @value={{this.newVariant.unit_price}} @currency={{@resource.currency}} @disabled={{cannot-write @resource}} />
+                            <div class="pallet-product-variant-editor__actions">
+                                <Button @icon="plus" @type="primary" @size="sm" @onClick={{this.addVariant}} />
+                                <Button @icon="times" @type="default" @size="sm" @onClick={{this.cancelAddingVariant}} />
+                            </div>
+                        </div>
+                    {{else}}
+                        <Button @icon="plus" @type="default" @size="sm" @text="Add variant" @onClick={{this.startAddingVariant}} @disabled={{cannot-write @resource}} />
+                    {{/if}}
+                </div>
+            {{else}}
+                <div class="pallet-product-empty-panel">
+                    <FaIcon @icon="layer-group" />
+                    <div>
+                        <div class="pallet-product-empty-title">Save product before adding variants</div>
+                        <div class="pallet-product-empty-copy">Variant inventory and Storefront variant links are managed after the product exists.</div>
+                    </div>
+                </div>
+            {{/if}}
+        </ContentPanel>
 
-            <InputGroup @name={{t "common.height"}}>
-                <UnitInput
-                    class="w-full"
-                    @measurement="length"
-                    @value={{@resource.height}}
-                    @unit={{@resource.dimensions_unit}}
-                    @canSelectUnit={{true}}
-                    @onUnitChange={{fn (mut @resource.dimensions_unit)}}
-                    @disabled={{cannot-write @resource}}
-                />
-            </InputGroup>
-        </div>
+        <ContentPanel @title="Measurements & handling" @open={{true}} @wrapperClass="pallet-product-editor-panel">
+            <div class="pallet-product-dimensions-grid">
+                <InputGroup @name="Length">
+                    <UnitInput class="w-full" @measurement="length" @value={{@resource.length}} @unit={{@resource.dimensions_unit}} @canSelectUnit={{true}} @onUnitChange={{fn (mut @resource.dimensions_unit)}} @disabled={{cannot-write @resource}} />
+                </InputGroup>
+                <InputGroup @name="Width">
+                    <UnitInput class="w-full" @measurement="length" @value={{@resource.width}} @unit={{@resource.dimensions_unit}} @canSelectUnit={{true}} @onUnitChange={{fn (mut @resource.dimensions_unit)}} @disabled={{cannot-write @resource}} />
+                </InputGroup>
+                <InputGroup @name="Height">
+                    <UnitInput class="w-full" @measurement="length" @value={{@resource.height}} @unit={{@resource.dimensions_unit}} @canSelectUnit={{true}} @onUnitChange={{fn (mut @resource.dimensions_unit)}} @disabled={{cannot-write @resource}} />
+                </InputGroup>
+                <InputGroup @name="Weight">
+                    <UnitInput class="w-full" @measurement="weight" @value={{@resource.weight}} @unit={{@resource.weight_unit}} @canSelectUnit={{true}} @onUnitChange={{fn (mut @resource.weight_unit)}} @disabled={{cannot-write @resource}} />
+                </InputGroup>
+            </div>
+        </ContentPanel>
 
-        <div class="grid grid-cols-3 gap-2 text-xs no-input-group-padding">
-            <InputGroup @name={{t "common.weight"}}>
-                <UnitInput
-                    class="w-full"
-                    @measurement="weight"
-                    @value={{@resource.weight}}
-                    @unit={{@resource.weight_unit}}
-                    @canSelectUnit={{true}}
-                    @onUnitChange={{fn (mut @resource.weight_unit)}}
-                    @disabled={{cannot-write @resource}}
-                />
-            </InputGroup>
-        </div>
-    </ContentPanel>
+        <CustomField::Yield @subject={{@resource}} @wrapperClass="bordered-top" />
 
-    <CustomField::Yield @subject={{@resource}} @wrapperClass="bordered-top" />
+        <ContentPanel @title="Metadata" @open={{true}} @wrapperClass="pallet-product-editor-panel">
+            <MetadataEditor @value={{@resource.meta}} @onChange={{fn (mut @resource.meta)}} />
+        </ContentPanel>
+    </div>
 
-    <ContentPanel @title={{t "common.metadata"}} @open={{true}} @wrapperClass="bordered-top">
-        <MetadataEditor @value={{@resource.meta}} @onChange={{fn (mut @resource.meta)}} />
-    </ContentPanel>
+    <aside class="pallet-product-editor__sidebar">
+        <ContentPanel @title="Status" @open={{true}} @wrapperClass="pallet-product-editor-panel">
+            <div class="pallet-product-sidebar-stack">
+                <InputGroup @name="Product status">
+                    <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                        <PowerSelect
+                            @options={{this.statusOptions}}
+                            @selected={{find-by "value" @resource.status this.statusOptions}}
+                            @onChange={{this.setStatus}}
+                            @placeholder="Select status"
+                            @triggerClass="form-select form-input"
+                            @disabled={{cannot-write @resource}}
+                            as |option|
+                        >
+                            {{option.label}}
+                        </PowerSelect>
+                    </div>
+                </InputGroup>
+                <div class="pallet-product-stock-card">
+                    <Badge @status={{this.stockStatusBadge}} @hideStatusDot={{true}}>{{this.stockStatusLabel}}</Badge>
+                    <div>
+                        <span>{{format-number this.availableStock}}</span>
+                        <small>available</small>
+                    </div>
+                    <div>
+                        <span>{{format-number this.reservedStock}}</span>
+                        <small>reserved</small>
+                    </div>
+                    <div>
+                        <span>{{format-number this.totalStock}}</span>
+                        <small>total</small>
+                    </div>
+                </div>
+            </div>
+        </ContentPanel>
+
+        <ContentPanel @title="Organization" @open={{true}} @wrapperClass="pallet-product-editor-panel">
+            <div class="pallet-product-sidebar-stack">
+                <InputGroup @name="Category">
+                    <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                        <PowerSelect
+                            @options={{this.productCategories}}
+                            @selected={{@resource.category}}
+                            @onChange={{this.setProductCategory}}
+                            @placeholder="Select category"
+                            @triggerClass="form-select form-input"
+                            @disabled={{or (cannot-write @resource) (not this.productCategories)}}
+                            as |category|
+                        >
+                            {{smart-humanize category}}
+                        </PowerSelect>
+                    </div>
+                </InputGroup>
+                <InputGroup @name="Supplier">
+                    <ModelSelect
+                        @modelName="supplier"
+                        @selectedModel={{@resource.supplier}}
+                        @placeholder="Select supplier"
+                        @triggerClass="form-select form-input"
+                        @infiniteScroll={{false}}
+                        @renderInPlace={{true}}
+                        @onChange={{this.setSupplier}}
+                        @disabled={{cannot-write @resource}}
+                        as |model|
+                    >
+                        {{model.name}}
+                    </ModelSelect>
+                </InputGroup>
+            </div>
+        </ContentPanel>
+
+        <ContentPanel @title="Inventory policy" @open={{true}} @wrapperClass="pallet-product-editor-panel">
+            <div class="pallet-product-sidebar-stack">
+                <InputGroup @name="Reorder point">
+                    <Input @value={{@resource.reorder_point}} @type="number" class="w-full form-input" placeholder="Minimum available quantity" disabled={{cannot-write @resource}} />
+                </InputGroup>
+                <InputGroup @name="Reorder quantity">
+                    <Input @value={{@resource.reorder_quantity}} @type="number" class="w-full form-input" placeholder="Suggested reorder quantity" disabled={{cannot-write @resource}} />
+                </InputGroup>
+                <InputGroup @name="Shelf life days">
+                    <Input @value={{@resource.shelf_life_days}} @type="number" class="w-full form-input" placeholder="Days before expiry" disabled={{cannot-write @resource}} />
+                </InputGroup>
+            </div>
+        </ContentPanel>
+
+        <ContentPanel @title="Tracking" @open={{true}} @wrapperClass="pallet-product-editor-panel">
+            <div class="pallet-product-checkbox-stack">
+                <Checkbox @checked={{@resource.has_variants}} @onChange={{fn (mut @resource.has_variants)}} @disabled={{cannot-write @resource}}>Track by variants</Checkbox>
+                <Checkbox @checked={{@resource.is_serialized}} @onChange={{fn (mut @resource.is_serialized)}} @disabled={{cannot-write @resource}}>Track serial numbers</Checkbox>
+                <Checkbox @checked={{@resource.is_lot_tracked}} @onChange={{fn (mut @resource.is_lot_tracked)}} @disabled={{cannot-write @resource}}>Track lot numbers</Checkbox>
+                <Checkbox @checked={{@resource.is_perishable}} @onChange={{fn (mut @resource.is_perishable)}} @disabled={{cannot-write @resource}}>Perishable item</Checkbox>
+                <Checkbox @checked={{@resource.requires_quality_check}} @onChange={{fn (mut @resource.requires_quality_check)}} @disabled={{cannot-write @resource}}>Requires quality check</Checkbox>
+            </div>
+        </ContentPanel>
+    </aside>
 </div>

@@ -11,11 +11,11 @@
             </div>
             <div class="field-info-container">
                 <div class="field-name">{{t "purchase-order.fields.supplier"}}</div>
-                <div class="field-value">{{n-a @resource.supplier_name}}</div>
+                <div class="field-value">{{n-a @resource.supplier.name}}</div>
             </div>
             <div class="field-info-container">
                 <div class="field-name">{{t "purchase-order.fields.warehouse"}}</div>
-                <div class="field-value">{{n-a @resource.warehouse_name}}</div>
+                <div class="field-value">{{n-a @resource.warehouse.name}}</div>
             </div>
             <div class="field-info-container">
                 <div class="field-name">{{t "common.status"}}</div>
@@ -29,7 +29,7 @@
             </div>
             <div class="field-info-container md:col-span-2">
                 <div class="field-name">{{t "common.notes"}}</div>
-                <div class="field-value">{{n-a @resource.notes}}</div>
+                <div class="field-value">{{n-a @resource.comments}}</div>
             </div>
         </div>
     </ContentPanel>

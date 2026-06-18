@@ -77,6 +77,24 @@ export default class ProductFormPanelComponent extends Component {
         applyContextComponentArguments(this);
     }
 
+    getRecordUuid(record) {
+        return record?.uuid ?? record?.id;
+    }
+
+    get productUuid() {
+        return this.getRecordUuid(this.product);
+    }
+
+    @action setProductCategory(category) {
+        this.product.category = category;
+        this.product.category_uuid = this.getRecordUuid(category);
+    }
+
+    @action setSupplier(supplier) {
+        this.product.supplier = supplier;
+        this.product.supplier_uuid = this.getRecordUuid(supplier);
+    }
+
     /**
      * Sets the overlay context.
      *
@@ -123,13 +141,13 @@ export default class ProductFormPanelComponent extends Component {
             file,
             {
                 path: `uploads/${this.currentUser.companyId}/drivers/${this.product.id}`,
-                subject_uuid: this.product.id,
+                subject_uuid: this.productUuid,
                 subject_type: `product`,
                 type: `product_photo`,
             },
             (uploadedFile) => {
                 this.product.setProperties({
-                    photo_uuid: uploadedFile.id,
+                    photo_uuid: this.getRecordUuid(uploadedFile),
                     photo_url: uploadedFile.url,
                     photo: uploadedFile,
                 });
@@ -166,7 +184,7 @@ export default class ProductFormPanelComponent extends Component {
             file,
             {
                 path: `uploads/${this.currentUser.companyId}/pallet-products/${getWithDefault(this.product, 'id', '~')}`,
-                subject_uuid: this.product.id,
+                subject_uuid: this.productUuid,
                 subject_type: `pallet:product`,
                 type: `pallet_product`,
             },
@@ -175,7 +193,7 @@ export default class ProductFormPanelComponent extends Component {
 
                 // if no main photo set it
                 if (!this.product.photo_uuid) {
-                    this.product.photo_uuid = uploadedFile.id;
+                    this.product.photo_uuid = this.getRecordUuid(uploadedFile);
                 }
 
                 this.uploadQueue.removeObject(file);
@@ -193,7 +211,7 @@ export default class ProductFormPanelComponent extends Component {
         }
 
         this.notifications.success(`${file.original_filename} was made the product photo.`);
-        this.product.photo_uuid = file.id;
+        this.product.photo_uuid = this.getRecordUuid(file);
         this.product.photo_url = file.url;
         this.product.photo = file;
     }
@@ -208,13 +226,13 @@ export default class ProductFormPanelComponent extends Component {
             file,
             {
                 path: `uploads/${this.product.company_uuid}/pallet-products/${this.product.slug}`,
-                subject_uuid: this.product.id,
+                subject_uuid: this.productUuid,
                 subject_type: 'pallet:product',
                 type: 'pallet_product_photo',
             },
             (uploadedFile) => {
                 this.product.setProperties({
-                    photo_uuid: uploadedFile.id,
+                    photo_uuid: this.getRecordUuid(uploadedFile),
                     photo_url: uploadedFile.url,
                     photo: uploadedFile,
                 });

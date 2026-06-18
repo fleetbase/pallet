@@ -8,10 +8,13 @@ export default class SalesOrderModel extends Model {
     @attr('string') public_id;
     @attr('string') company_uuid;
     @attr('string') supplier_uuid;
+    @attr('string') warehouse_uuid;
     @attr('string') created_by_uuid;
     @attr('string') transaction_uuid;
     @attr('string') assigned_to_uuid;
     @attr('string') point_of_contact_uuid;
+    @attr('string') customer_uuid;
+    @attr('string') customer_type;
 
     /** @relationships */
     @belongsTo('company') company;
@@ -19,7 +22,9 @@ export default class SalesOrderModel extends Model {
     @belongsTo('transaction') transaction;
     @belongsTo('user') assignedTo;
     @belongsTo('supplier') supplier;
+    @belongsTo('warehouse') warehouse;
     @belongsTo('contact') pointOfContact;
+    @belongsTo('contact') customer;
     @hasMany('sales-order-item', { async: false }) items;
 
     /** @attributes */

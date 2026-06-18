@@ -11,6 +11,7 @@ use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -102,9 +103,9 @@ class Product extends Model
         'shelf_life_days'        => 'integer',
     ];
 
-    protected $appends = ['incrementing_id', 'total_stock', 'available_stock', 'variant_count'];
+    protected $appends = ['incrementing_id', 'total_stock', 'available_stock', 'reserved_stock', 'is_out_of_stock', 'variant_count'];
 
-    protected $with = ['category', 'supplier', 'variants'];
+    protected $with = ['category', 'supplier', 'variants', 'files'];
 
     public function getIncrementingIdAttribute(): ?int
     {
@@ -113,7 +114,7 @@ class Product extends Model
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo(\Fleetbase\FleetOps\Models\Category::class, 'category_uuid', 'uuid');
+        return $this->belongsTo(\Fleetbase\Models\Category::class, 'category_uuid', 'uuid');
     }
 
     public function supplier(): BelongsTo
@@ -128,7 +129,7 @@ class Product extends Model
 
     public function files(): HasMany
     {
-        return $this->hasMany(\Fleetbase\Models\File::class, 'subject_uuid', 'uuid');
+        return $this->hasMany(\Fleetbase\Models\File::class, 'subject_uuid', 'uuid')->where('subject_type', 'pallet:product');
     }
 
     public function inventories(): HasMany
@@ -173,6 +174,22 @@ class Product extends Model
         return (int) $query->sum('available_quantity');
     }
 
+    public function getReservedStockAttribute(): int
+    {
+        $query = $this->inventories();
+
+        if (!$this->has_variants) {
+            $query->whereNull('variant_uuid');
+        }
+
+        return (int) $query->sum('reserved_quantity');
+    }
+
+    public function getIsOutOfStockAttribute(): bool
+    {
+        return $this->available_stock <= 0;
+    }
+
     public function needsReorder(): bool
     {
         return $this->reorder_point !== null && $this->available_stock <= $this->reorder_point;
@@ -189,23 +206,40 @@ class Product extends Model
 
     public function reserveInventory($quantity, $orderUuid, $warehouseUuid = null, ?string $variantUuid = null): ?InventoryReservation
     {
-        $availableStock = $variantUuid
-            ? (ProductVariant::where('uuid', $variantUuid)->first()?->available_stock ?? 0)
-            : $this->available_stock;
+        $quantity = (int) $quantity;
 
-        if ($availableStock < $quantity) {
+        if ($quantity <= 0) {
             return null;
         }
 
-        return InventoryReservation::create([
-            'company_uuid'   => session('company'),
-            'product_uuid'   => $this->uuid,
-            'variant_uuid'   => $variantUuid,
-            'order_uuid'     => $orderUuid,
-            'warehouse_uuid' => $warehouseUuid,
-            'quantity'       => $quantity,
-            'status'         => 'active',
-        ]);
+        return DB::transaction(function () use ($quantity, $orderUuid, $warehouseUuid, $variantUuid) {
+            $inventory = $this->inventories()
+                ->where('company_uuid', $this->company_uuid ?? session('company'))
+                ->when($variantUuid, fn ($query) => $query->where('variant_uuid', $variantUuid))
+                ->when(!$variantUuid && !$this->has_variants, fn ($query) => $query->whereNull('variant_uuid'))
+                ->when($warehouseUuid, fn ($query) => $query->where('warehouse_uuid', $warehouseUuid))
+                ->whereIn('status', ['active', 'available'])
+                ->where('available_quantity', '>=', $quantity)
+                ->orderByRaw('CASE WHEN expiry_date_at IS NULL THEN 1 ELSE 0 END')
+                ->orderBy('expiry_date_at')
+                ->lockForUpdate()
+                ->first();
+
+            if (!$inventory || !$inventory->reserve($quantity)) {
+                return null;
+            }
+
+            return InventoryReservation::create([
+                'company_uuid'    => $this->company_uuid ?? session('company'),
+                'product_uuid'    => $this->uuid,
+                'variant_uuid'    => $variantUuid,
+                'inventory_uuid'  => $inventory->uuid,
+                'order_uuid'      => $orderUuid,
+                'warehouse_uuid'  => $inventory->warehouse_uuid,
+                'quantity'        => $quantity,
+                'status'          => 'active',
+            ]);
+        });
     }
 
     protected static function boot()

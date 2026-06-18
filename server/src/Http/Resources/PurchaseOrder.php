@@ -23,6 +23,8 @@ class PurchaseOrder extends FleetbaseResource
             'order_number'               => $this->public_id,
             'supplier_uuid'              => $this->supplier_uuid,
             'supplier'                   => $this->whenLoaded('supplier', $this->supplier),
+            'warehouse_uuid'             => $this->warehouse_uuid,
+            'warehouse'                  => $this->whenLoaded('warehouse', $this->warehouse),
             'assigned_to_uuid'           => $this->assigned_to_uuid,
             'assigned_to'                => $this->whenLoaded('assignedTo', $this->assignedTo),
             'point_of_contact_uuid'      => $this->point_of_contact_uuid,

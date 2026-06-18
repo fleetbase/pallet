@@ -26,6 +26,10 @@ export default class WarehouseEditorComponent extends Component {
         this.warehouse = this.args.warehouse;
     }
 
+    get warehouseUuid() {
+        return this.warehouse?.uuid ?? this.warehouse?.id;
+    }
+
     @action setOverlayContext(overlayContextApi) {
         this.overlayContextApi = overlayContextApi;
     }
@@ -44,7 +48,7 @@ export default class WarehouseEditorComponent extends Component {
     }
 
     @action addSection() {
-        const section = this.store.createRecord('warehouse-section', { warehouse_uuid: this.warehouse.id });
+        const section = this.store.createRecord('warehouse-section', { warehouse_uuid: this.warehouseUuid });
         this.warehouse.sections.pushObject(section);
     }
 
@@ -79,7 +83,7 @@ export default class WarehouseEditorComponent extends Component {
     }
 
     @action addDock() {
-        const dock = this.store.createRecord('warehouse-dock', { warehouse_uuid: this.warehouse.id });
+        const dock = this.store.createRecord('warehouse-dock', { warehouse_uuid: this.warehouseUuid });
         this.warehouse.docks.pushObject(dock);
     }
 

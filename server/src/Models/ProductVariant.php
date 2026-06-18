@@ -58,7 +58,7 @@ class ProductVariant extends Model
         'weight'         => 'decimal:4',
     ];
 
-    protected $appends = ['incrementing_id', 'display_name', 'total_stock', 'available_stock'];
+    protected $appends = ['incrementing_id', 'display_name', 'total_stock', 'available_stock', 'reserved_stock', 'is_out_of_stock'];
 
     protected $with = [];
 
@@ -90,6 +90,16 @@ class ProductVariant extends Model
     public function getAvailableStockAttribute(): int
     {
         return (int) $this->inventories()->sum('available_quantity');
+    }
+
+    public function getReservedStockAttribute(): int
+    {
+        return (int) $this->inventories()->sum('reserved_quantity');
+    }
+
+    public function getIsOutOfStockAttribute(): bool
+    {
+        return $this->available_stock <= 0;
     }
 
     protected static function boot()

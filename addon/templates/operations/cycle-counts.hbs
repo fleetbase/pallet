@@ -3,6 +3,52 @@
 </Layout::Section::Header>
 
 <Layout::Section::Body class="overflow-y-scroll h-full p-4">
+    <ContentPanel @title="Create Cycle Count" @open={{true}} @wrapperClass="bordered-classic mb-4">
+        <div class="grid grid-cols-1 gap-3 text-xs lg:grid-cols-5">
+            <InputGroup @name="Warehouse">
+                <ModelSelect
+                    @modelName="warehouse"
+                    @selectedModel={{this.newCycleCount.warehouse}}
+                    @placeholder="Warehouse"
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{this.setCycleCountWarehouse}}
+                    as |model|
+                >
+                    {{n-a model.name model.address}}
+                </ModelSelect>
+            </InputGroup>
+
+            <InputGroup @name="Zone">
+                <ModelSelect
+                    @modelName="warehouse-zone"
+                    @selectedModel={{this.newCycleCount.zone}}
+                    @placeholder="Optional zone"
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{this.setCycleCountZone}}
+                    as |model|
+                >
+                    {{n-a model.name model.public_id}}
+                </ModelSelect>
+            </InputGroup>
+
+            <InputGroup @name="Type">
+                <Input @value={{this.newCycleCount.type}} class="w-full form-input" placeholder="standard" />
+            </InputGroup>
+
+            <InputGroup @name="Scheduled">
+                <Input @value={{this.newCycleCount.scheduled_at}} @type="datetime-local" class="w-full form-input" />
+            </InputGroup>
+
+            <div class="flex items-end">
+                <Button @icon="plus" @type="primary" @text="Create" @onClick={{this.createCycleCount}} @wrapperClass="w-full" />
+            </div>
+        </div>
+    </ContentPanel>
+
     <ContentPanel @title="Cycle Counts" @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
         <table class="w-full text-sm">
             <thead>
@@ -10,6 +56,7 @@
                     <th class="px-4 py-3">Count</th>
                     <th class="px-4 py-3">Warehouse</th>
                     <th class="px-4 py-3">Zone</th>
+                    <th class="px-4 py-3">Assigned To</th>
                     <th class="px-4 py-3">Status</th>
                     <th class="px-4 py-3 text-right">Accuracy</th>
                     <th class="px-4 py-3 text-right">Actions</th>
@@ -21,6 +68,7 @@
                         <td class="px-4 py-3 font-medium">{{n-a count.count_number}}</td>
                         <td class="px-4 py-3">{{n-a count.warehouse.name}}</td>
                         <td class="px-4 py-3">{{n-a count.zone.name}}</td>
+                        <td class="px-4 py-3">{{n-a count.assignedTo.name count.assignedTo.email}}</td>
                         <td class="px-4 py-3"><Badge @status="info">{{n-a count.status}}</Badge></td>
                         <td class="px-4 py-3 text-right">{{n-a count.accuracy_percentage}}</td>
                         <td class="px-4 py-3">
@@ -37,8 +85,57 @@
                             </div>
                         </td>
                     </tr>
+                    {{#if count.items.length}}
+                        <tr class="border-b border-gray-100 bg-gray-50/60 dark:border-gray-800 dark:bg-gray-900/40">
+                            <td colspan="7" class="px-4 py-3">
+                                <div class="overflow-x-auto">
+                                    <table class="w-full min-w-max text-xs">
+                                        <thead>
+                                            <tr class="text-left uppercase text-gray-400">
+                                                <th class="py-2 pr-3">Item</th>
+                                                <th class="py-2 px-3">Location</th>
+                                                <th class="py-2 px-3 text-right">Expected</th>
+                                                <th class="py-2 px-3 text-right">Counted</th>
+                                                <th class="py-2 px-3 text-right">Variance</th>
+                                                <th class="py-2 px-3">Status</th>
+                                                <th class="py-2 pl-3 text-right">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{#each count.items as |item|}}
+                                                <tr class="border-t border-gray-100 dark:border-gray-800">
+                                                    <td class="py-2 pr-3">
+                                                        <div class="font-semibold text-gray-700 dark:text-gray-200">{{n-a item.product.name}}</div>
+                                                        <div class="text-gray-400">{{n-a item.variant.display_name item.variant.name item.product.sku}}</div>
+                                                    </td>
+                                                    <td class="py-2 px-3">{{n-a item.binLocation.name item.binLocation.bin_number item.lot_number item.serial_number}}</td>
+                                                    <td class="py-2 px-3 text-right">{{n-a item.expected_quantity}}</td>
+                                                    <td class="py-2 px-3 text-right">
+                                                        <Input @type="number" @value={{item.counted_quantity}} class="form-input w-20 text-right text-xs" />
+                                                    </td>
+                                                    <td class="py-2 px-3 text-right">
+                                                        <span class={{if item.has_discrepancy "font-semibold text-amber-600 dark:text-amber-300" "text-gray-500 dark:text-gray-400"}}>
+                                                            {{n-a item.variance}}
+                                                        </span>
+                                                    </td>
+                                                    <td class="py-2 px-3"><Badge @status={{if (eq item.status "counted") "success" "info"}}>{{n-a item.status}}</Badge></td>
+                                                    <td class="py-2 pl-3 text-right">
+                                                        {{#if (eq item.status "counted")}}
+                                                            <span class="text-xs text-gray-400">Counted</span>
+                                                        {{else}}
+                                                            <Button @icon="calculator" @type="primary" @size="xs" @text="Record" @onClick={{fn this.recordCycleCountItem item}} />
+                                                        {{/if}}
+                                                    </td>
+                                                </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    {{/if}}
                 {{else}}
-                    <tr><td colspan="6" class="px-4 py-8 text-center text-gray-500">No cycle counts yet.</td></tr>
+                    <tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">No cycle counts yet.</td></tr>
                 {{/each}}
             </tbody>
         </table>

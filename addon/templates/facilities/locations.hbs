@@ -3,6 +3,56 @@
 </Layout::Section::Header>
 
 <Layout::Section::Body class="overflow-y-scroll h-full p-4">
+    <ContentPanel @title="Create Bin Location" @open={{true}} @wrapperClass="bordered-classic mb-4">
+        <div class="grid grid-cols-1 gap-3 text-xs lg:grid-cols-6">
+            <InputGroup @name="Warehouse">
+                <ModelSelect
+                    @modelName="warehouse"
+                    @selectedModel={{this.newLocation.warehouse}}
+                    @placeholder="Warehouse"
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{this.setWarehouse}}
+                    as |model|
+                >
+                    {{n-a model.name model.address}}
+                </ModelSelect>
+            </InputGroup>
+
+            <InputGroup @name="Zone">
+                <ModelSelect
+                    @modelName="warehouse-zone"
+                    @selectedModel={{this.newLocation.zone}}
+                    @placeholder="Optional zone"
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{this.setZone}}
+                    as |model|
+                >
+                    {{n-a model.name model.public_id}}
+                </ModelSelect>
+            </InputGroup>
+
+            <InputGroup @name="Bin">
+                <Input @value={{this.newLocation.bin_number}} class="w-full form-input" placeholder="A-01-01" />
+            </InputGroup>
+
+            <InputGroup @name="Type">
+                <Input @value={{this.newLocation.type}} class="w-full form-input" placeholder="storage" />
+            </InputGroup>
+
+            <InputGroup @name="Capacity">
+                <Input @value={{this.newLocation.capacity}} @type="number" class="w-full form-input" placeholder="0" />
+            </InputGroup>
+
+            <div class="flex items-end">
+                <Button @icon="plus" @type="primary" @text="Create" @onClick={{this.createLocation}} @wrapperClass="w-full" />
+            </div>
+        </div>
+    </ContentPanel>
+
     <ContentPanel @title="Bin Locations" @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
         <table class="w-full text-sm">
             <thead>

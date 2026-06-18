@@ -19,6 +19,7 @@ class CycleCount extends FleetbaseResource
             'assigned_to_uuid'    => $this->assigned_to_uuid,
             'warehouse'           => $this->whenLoaded('warehouse', fn () => new Warehouse($this->warehouse)),
             'zone'                => $this->whenLoaded('zone', fn () => new WarehouseZone($this->zone)),
+            'assigned_to'         => $this->whenLoaded('assignedTo', $this->assignedTo),
             'items'               => $this->whenLoaded('items', fn () => CycleCountItem::collection($this->items)),
             'count_number'        => $this->count_number,
             'type'                => $this->type,

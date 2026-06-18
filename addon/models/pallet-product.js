@@ -48,6 +48,9 @@ export default class PalletProductModel extends Model {
     @attr('number') shelf_life_days;
     @attr('number') total_stock;
     @attr('number') available_stock;
+    @attr('number') reserved_stock;
+    @attr('boolean') is_out_of_stock;
+    @attr('raw') inventory_summary;
     @attr('string') status;
     @attr('string') slug;
     @attr('string') photo_url;
@@ -95,5 +98,37 @@ export default class PalletProductModel extends Model {
             return null;
         }
         return formatDistanceToNow(this.updated_at);
+    }
+
+    get storefrontAvailableQuantity() {
+        return this.inventory_summary?.available_quantity ?? this.available_stock ?? 0;
+    }
+
+    get storefrontReservedQuantity() {
+        return this.inventory_summary?.reserved_quantity ?? this.reserved_stock ?? 0;
+    }
+
+    get storefrontTotalQuantity() {
+        return this.inventory_summary?.total_quantity ?? this.total_stock ?? 0;
+    }
+
+    get storefrontOutOfStock() {
+        return this.inventory_summary?.out_of_stock ?? this.is_out_of_stock ?? false;
+    }
+
+    get storefrontInventoryStatus() {
+        return this.storefrontOutOfStock ? 'out-of-stock' : 'available';
+    }
+
+    get storefrontLinkStatus() {
+        return this.storefront_product_uuid ? 'linked' : 'unlinked';
+    }
+
+    get storefrontReorderPoint() {
+        return this.inventory_summary?.reorder_point ?? this.reorder_point ?? 0;
+    }
+
+    get storefrontReorderQuantity() {
+        return this.inventory_summary?.reorder_quantity ?? this.reorder_quantity ?? 0;
     }
 }

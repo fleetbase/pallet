@@ -10,6 +10,9 @@ export default class StockAdjustment extends ApplicationSerializer.extend(Embedd
     get attrs() {
         return {
             product: { embedded: 'always' },
+            variant: { embedded: 'always' },
+            inventory: { embedded: 'always' },
+            warehouse: { embedded: 'always' },
         };
     }
 }

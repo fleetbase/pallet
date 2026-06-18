@@ -4,6 +4,7 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 
 export default class ProductFormComponent extends Component {
+    @service currentUser;
     @service fetch;
     @service store;
     @service notifications;
@@ -11,6 +12,8 @@ export default class ProductFormComponent extends Component {
     @tracked isAddingVariant = false;
     @tracked editingVariant = null;
     @tracked newVariant = {};
+    @tracked uploadQueue = [];
+    acceptedFileTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
     @tracked statusOptions = [
         { label: 'Active', value: 'active' },
         { label: 'Inactive', value: 'inactive' },
@@ -37,6 +40,73 @@ export default class ProductFormComponent extends Component {
 
     get canManageVariants() {
         return Boolean(this.args.resource?.id);
+    }
+
+    get canManageMedia() {
+        return Boolean(this.args.resource?.id);
+    }
+
+    get hasImages() {
+        return (this.args.resource?.files?.length ?? 0) > 0;
+    }
+
+    get stockStatusLabel() {
+        if (this.args.resource?.is_out_of_stock) {
+            return 'Out of stock';
+        }
+
+        if (this.isLowStock) {
+            return 'Low stock';
+        }
+
+        return 'Available';
+    }
+
+    get availableStock() {
+        return Number(this.args.resource?.available_stock ?? 0);
+    }
+
+    get reservedStock() {
+        return Number(this.args.resource?.reserved_stock ?? 0);
+    }
+
+    get totalStock() {
+        return Number(this.args.resource?.total_stock ?? 0);
+    }
+
+    get stockStatusBadge() {
+        if (this.args.resource?.is_out_of_stock) {
+            return 'danger';
+        }
+
+        if (this.isLowStock) {
+            return 'warning';
+        }
+
+        return 'success';
+    }
+
+    get isLowStock() {
+        const reorderPoint = Number(this.args.resource?.reorder_point ?? 0);
+        return reorderPoint > 0 && this.availableStock <= reorderPoint;
+    }
+
+    getRecordUuid(record) {
+        return record?.uuid ?? record?.id;
+    }
+
+    @action setStatus(option) {
+        this.args.resource.status = option?.value ?? option;
+    }
+
+    @action setProductCategory(category) {
+        this.args.resource.category = category;
+        this.args.resource.category_uuid = this.getRecordUuid(category);
+    }
+
+    @action setSupplier(supplier) {
+        this.args.resource.supplier = supplier;
+        this.args.resource.supplier_uuid = this.getRecordUuid(supplier);
     }
 
     variantPayload(variant = {}) {
@@ -161,6 +231,66 @@ export default class ProductFormComponent extends Component {
             await this.fetch.delete(`products/${product.id}/variants/${variant.id}`, {}, { namespace: 'pallet/int/v1' });
             product.variants.removeObject(variant);
             this.notifications.success('Variant removed.');
+        } catch (error) {
+            this.notifications.serverError(error);
+        }
+    }
+
+    @action queueFile(file) {
+        const product = this.args.resource;
+
+        if (!product?.id) {
+            return this.notifications.warning('Save the product before uploading images.');
+        }
+
+        this.uploadQueue.pushObject(file);
+        this.fetch.uploadFile.perform(
+            file,
+            {
+                path: `uploads/${this.currentUser.companyId}/pallet-products/${product.id}`,
+                subject_uuid: this.getRecordUuid(product),
+                subject_type: 'pallet:product',
+                type: 'pallet_product',
+            },
+            (uploadedFile) => {
+                product.files.pushObject(uploadedFile);
+
+                if (!product.photo_uuid) {
+                    product.photo_uuid = this.getRecordUuid(uploadedFile);
+                    product.photo_url = uploadedFile.url;
+                    product.photo = uploadedFile;
+                }
+
+                this.uploadQueue.removeObject(file);
+            },
+            (error) => {
+                this.notifications.serverError(error);
+                this.uploadQueue.removeObject(file);
+            }
+        );
+    }
+
+    @action setProductPhoto(file) {
+        if (file.isNotImage) {
+            return this.notifications.warning('Only image files can be used as the product photo.');
+        }
+
+        this.args.resource.photo_uuid = this.getRecordUuid(file);
+        this.args.resource.photo_url = file.url;
+        this.args.resource.photo = file;
+        this.notifications.success(`${file.original_filename} was made the product photo.`);
+    }
+
+    @action async removeFile(file) {
+        try {
+            await file.destroyRecord();
+            this.args.resource.files.removeObject(file);
+
+            if (this.args.resource.photo_uuid === this.getRecordUuid(file)) {
+                this.args.resource.photo_uuid = null;
+                this.args.resource.photo_url = null;
+                this.args.resource.photo = null;
+            }
         } catch (error) {
             this.notifications.serverError(error);
         }

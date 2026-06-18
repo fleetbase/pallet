@@ -71,6 +71,10 @@ export default class InventoryFormPanelComponent extends Component {
         contextComponentCallback(this, 'onLoad', ...arguments);
     }
 
+    getRecordUuid(record) {
+        return record?.uuid ?? record?.id;
+    }
+
     /**
      * Saves the fuel report changes.
      *
@@ -121,21 +125,52 @@ export default class InventoryFormPanelComponent extends Component {
 
     @action setVariant(variant) {
         this.inventory.variant = variant;
-        this.inventory.variant_uuid = variant?.uuid;
+        this.inventory.variant_uuid = this.getRecordUuid(variant);
     }
 
     @action defaultProductSupplier(selectedProduct) {
+        this.inventory.product = selectedProduct;
+        this.inventory.product_uuid = this.getRecordUuid(selectedProduct);
+        this.inventory.variant = null;
+        this.inventory.variant_uuid = null;
+
         this.store
             .findRecord('supplier', selectedProduct.supplier_uuid)
             .then((supplier) => {
                 this.inventory.setProperties({
                     product: selectedProduct,
                     supplier: supplier,
+                    supplier_uuid: this.getRecordUuid(supplier),
                 });
             })
             .catch((error) => {
                 console.error('Error fetching supplier:', error);
             });
+    }
+
+    @action setSupplier(supplier) {
+        this.inventory.supplier = supplier;
+        this.inventory.supplier_uuid = this.getRecordUuid(supplier);
+    }
+
+    @action setWarehouse(warehouse) {
+        this.inventory.warehouse = warehouse;
+        this.inventory.warehouse_uuid = this.getRecordUuid(warehouse);
+        this.inventory.binLocation = null;
+        this.inventory.bin_location_uuid = null;
+        this.inventory.zone = null;
+        this.inventory.zone_uuid = null;
+    }
+
+    @action setBinLocation(binLocation) {
+        this.inventory.binLocation = binLocation;
+        this.inventory.bin_location_uuid = this.getRecordUuid(binLocation);
+        this.inventory.zone_uuid = binLocation?.zone_uuid ?? this.inventory.zone_uuid;
+    }
+
+    @action setZone(zone) {
+        this.inventory.zone = zone;
+        this.inventory.zone_uuid = this.getRecordUuid(zone);
     }
 
     @action setDefaultBatchValues() {

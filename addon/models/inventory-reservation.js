@@ -8,8 +8,17 @@ export default class InventoryReservationModel extends Model {
     @attr('string') variant_uuid;
     @attr('string') inventory_uuid;
     @attr('string') warehouse_uuid;
+    @attr('string') order_uuid;
     @attr('string') sales_order_uuid;
     @attr('string') pick_list_uuid;
+    @attr('string') storefront_product_uuid;
+    @attr('string') storefront_variant_uuid;
+    @attr('string') storefront_store_uuid;
+    @attr('string') storefront_cart_uuid;
+    @attr('string') storefront_checkout_uuid;
+    @attr('string') storefront_order_uuid;
+    @attr('string') storefront_line_uuid;
+    @attr('string') storefront_reservation_key;
     @belongsTo('pallet-product', { async: false }) product;
     @belongsTo('pallet-product-variant', { async: false }) variant;
     @belongsTo('inventory', { async: false }) inventory;

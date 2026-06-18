@@ -12,7 +12,7 @@ export default class PurchaseOrderItemModel extends Model {
     /** @relationships */
     @belongsTo('pallet-product', { async: false }) product;
     @belongsTo('pallet-product-variant', { async: false }) variant;
-    @belongsTo('pallet-warehouse', { async: false }) warehouse;
+    @belongsTo('warehouse', { async: false }) warehouse;
 
     /** @quantities */
     @attr('number') quantity;

@@ -53,6 +53,17 @@ export default class BatchFormPanelComponent extends Component {
         applyContextComponentArguments(this);
     }
 
+    getRecordUuid(record) {
+        return record?.uuid ?? record?.id;
+    }
+
+    @action setProduct(product) {
+        this.batch.product = product;
+        this.batch.product_uuid = this.getRecordUuid(product);
+        this.batch.variant = null;
+        this.batch.variant_uuid = null;
+    }
+
     /**
      * Sets the overlay context.
      *

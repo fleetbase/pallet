@@ -27,6 +27,8 @@ Route::prefix(config('pallet.api.routing.prefix', 'pallet'))->namespace('Fleetba
                 $router->group(
                     ['prefix' => 'v1', 'middleware' => ['fleetbase.protected']],
                     function ($router) {
+                        $router->get('search', 'SearchController@search');
+
                         /*
                         |--------------------------------------------------------------
                         | Audit Trail — Read-Only
@@ -192,9 +194,16 @@ Route::prefix(config('pallet.api.routing.prefix', 'pallet'))->namespace('Fleetba
                         $router->prefix('storefront')->group(function ($router) {
                             $router->get('inventory/resolve', 'StorefrontInventoryController@resolve');
                             $router->get('inventory/availability', 'StorefrontInventoryController@availability');
+                            $router->post('inventory/availability-batch', 'StorefrontInventoryController@availabilityBatch');
                             $router->post('inventory/link', 'StorefrontInventoryController@link');
                             $router->post('inventory/unlink', 'StorefrontInventoryController@unlink');
                             $router->post('inventory/reserve', 'StorefrontInventoryController@reserve');
+                            $router->post('inventory/reserve-batch', 'StorefrontInventoryController@reserveBatch');
+                            $router->get('inventory/reservations/context', 'StorefrontInventoryController@contextReservations');
+                            $router->post('inventory/reservations/release-context', 'StorefrontInventoryController@releaseContext');
+                            $router->post('inventory/reservations/commit-context', 'StorefrontInventoryController@commitContext');
+                            $router->post('inventory/reservations/release-batch', 'StorefrontInventoryController@releaseBatch');
+                            $router->post('inventory/reservations/commit-batch', 'StorefrontInventoryController@commitBatch');
                             $router->post('inventory/reservations/{id}/release', 'StorefrontInventoryController@release');
                             $router->post('inventory/reservations/{id}/commit', 'StorefrontInventoryController@commit');
                         });

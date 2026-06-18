@@ -3,10 +3,13 @@
 namespace Fleetbase\Pallet\Http\Controllers;
 
 use Fleetbase\Exceptions\FleetbaseRequestValidationException;
+use Fleetbase\FleetOps\Models\Contact;
 use Fleetbase\Pallet\Http\Resources\SalesOrder as SalesOrderResource;
 use Fleetbase\Pallet\Models\Inventory;
 use Fleetbase\Pallet\Models\SalesOrder;
 use Fleetbase\Pallet\Models\SalesOrderItem;
+use Fleetbase\Pallet\Models\Supplier;
+use Fleetbase\Pallet\Models\Warehouse;
 use Fleetbase\Support\Http;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -31,14 +34,56 @@ class SalesOrderController extends PalletResourceController
         try {
             $this->validateRequest($request);
             $data = $request->input('sales_order');
+            $supplierUuid = data_get($data, 'supplier_uuid');
+            $warehouseUuid = data_get($data, 'warehouse_uuid');
+            $customerUuid = data_get($data, 'customer_uuid');
+
+            if ($supplierUuid) {
+                $supplier = Supplier::where('company_uuid', session('company'))
+                    ->where(fn ($query) => $query->where('uuid', $supplierUuid)->orWhere('public_id', $supplierUuid))
+                    ->first();
+
+                if (!$supplier) {
+                    return response()->error('Selected supplier could not be found.', 422);
+                }
+
+                $supplierUuid = $supplier->uuid;
+            }
+
+            if ($warehouseUuid) {
+                $warehouse = Warehouse::where('company_uuid', session('company'))
+                    ->where(fn ($query) => $query->where('uuid', $warehouseUuid)->orWhere('public_id', $warehouseUuid))
+                    ->first();
+
+                if (!$warehouse) {
+                    return response()->error('Selected warehouse could not be found.', 422);
+                }
+
+                $warehouseUuid = $warehouse->uuid;
+            }
+
+            if ($customerUuid) {
+                $customer = Contact::where('company_uuid', session('company'))
+                    ->where(fn ($query) => $query->where('uuid', $customerUuid)->orWhere('public_id', $customerUuid))
+                    ->first();
+
+                if (!$customer) {
+                    return response()->error('Selected customer could not be found.', 422);
+                }
+
+                $customerUuid = $customer->uuid;
+            }
 
             $salesOrder = new SalesOrder([
                 'company_uuid'              => session('company'),
                 'created_by_uuid'           => session('user'),
-                'supplier_uuid'             => data_get($data, 'supplier_uuid'),
+                'supplier_uuid'             => $supplierUuid,
+                'warehouse_uuid'            => $warehouseUuid,
                 'transaction_uuid'          => data_get($data, 'transaction_uuid'),
                 'assigned_to_uuid'          => data_get($data, 'assigned_to_uuid'),
                 'point_of_contact_uuid'     => data_get($data, 'point_of_contact_uuid'),
+                'customer_uuid'             => $customerUuid,
+                'customer_type'             => data_get($data, 'customer_type'),
                 'status'                    => data_get($data, 'status', 'pending'),
                 'reference_code'            => data_get($data, 'reference_code'),
                 'reference_url'             => data_get($data, 'reference_url'),
@@ -127,7 +172,9 @@ class SalesOrderController extends PalletResourceController
                     continue;
                 }
 
-                $item = SalesOrderItem::where('uuid', $itemUuid)
+                $item = SalesOrderItem::where(function ($query) use ($itemUuid) {
+                    $query->where('uuid', $itemUuid)->orWhere('public_id', $itemUuid);
+                })
                     ->where('sales_order_uuid', $salesOrder->uuid)
                     ->first();
 
@@ -136,29 +183,44 @@ class SalesOrderController extends PalletResourceController
                 }
 
                 $warehouseUuid = $item->warehouse_uuid ?? $salesOrder->warehouse_uuid ?? null;
+                $outstanding    = max(0, $item->quantity - ($item->quantity_fulfilled ?? 0));
+                $qtyToFulfill   = min($qtyFulfill, $outstanding);
+
+                if ($qtyToFulfill <= 0) {
+                    continue;
+                }
 
                 // Find the inventory to deduct from
+                $inventoryUuid = $inventoryUuid ?: $item->inventory_uuid;
+
                 if ($inventoryUuid) {
-                    $inventory = Inventory::where('uuid', $inventoryUuid)
-                        ->where('company_uuid', $salesOrder->company_uuid)
+                    $inventory = Inventory::where('company_uuid', $salesOrder->company_uuid)
+                        ->where(fn ($query) => $query->where('uuid', $inventoryUuid)->orWhere('public_id', $inventoryUuid))
+                        ->where('product_uuid', $item->product_uuid)
+                        ->where('variant_uuid', $item->variant_uuid)
+                        ->when($warehouseUuid, fn ($query) => $query->where('warehouse_uuid', $warehouseUuid))
                         ->first();
                 } else {
                     $inventory = Inventory::where('company_uuid', $salesOrder->company_uuid)
                         ->where('product_uuid', $item->product_uuid)
                         ->where('variant_uuid', $item->variant_uuid)
-                        ->where('warehouse_uuid', $warehouseUuid)
-                        ->where('status', 'available')
+                        ->when($warehouseUuid, fn ($query) => $query->where('warehouse_uuid', $warehouseUuid))
+                        ->whereIn('status', ['active', 'available'])
                         ->orderBy('expiry_date_at', 'asc') // FEFO: First Expired, First Out
                         ->first();
                 }
 
-                if (!$inventory || $inventory->available_quantity < $qtyFulfill) {
+                $fulfillableQuantity = $inventory && $item->inventory_uuid === $inventory->uuid
+                    ? $inventory->available_quantity + $inventory->reserved_quantity
+                    : ($inventory->available_quantity ?? 0);
+
+                if (!$inventory || $fulfillableQuantity < $qtyToFulfill) {
                     $insufficientStock[] = [
                         'item_uuid'          => $itemUuid,
                         'product_uuid'       => $item->product_uuid,
                         'variant_uuid'       => $item->variant_uuid,
-                        'requested'          => $qtyFulfill,
-                        'available'          => $inventory ? $inventory->available_quantity : 0,
+                        'requested'          => $qtyToFulfill,
+                        'available'          => $fulfillableQuantity,
                     ];
                 }
             }
@@ -184,7 +246,9 @@ class SalesOrderController extends PalletResourceController
                         continue;
                     }
 
-                    $item = SalesOrderItem::where('uuid', $itemUuid)
+                    $item = SalesOrderItem::where(function ($query) use ($itemUuid) {
+                        $query->where('uuid', $itemUuid)->orWhere('public_id', $itemUuid);
+                    })
                         ->where('sales_order_uuid', $salesOrder->uuid)
                         ->first();
 
@@ -203,17 +267,24 @@ class SalesOrderController extends PalletResourceController
                     $warehouseUuid = $item->warehouse_uuid ?? $salesOrder->warehouse_uuid ?? null;
 
                     // Resolve inventory record
+                    $inventoryUuid = $inventoryUuid ?: $item->inventory_uuid;
+
                     if ($inventoryUuid) {
-                        $inventory = Inventory::where('uuid', $inventoryUuid)
-                            ->where('company_uuid', $salesOrder->company_uuid)
+                        $inventory = Inventory::where('company_uuid', $salesOrder->company_uuid)
+                            ->where(fn ($query) => $query->where('uuid', $inventoryUuid)->orWhere('public_id', $inventoryUuid))
+                            ->where('product_uuid', $item->product_uuid)
+                            ->where('variant_uuid', $item->variant_uuid)
+                            ->when($warehouseUuid, fn ($query) => $query->where('warehouse_uuid', $warehouseUuid))
+                            ->lockForUpdate()
                             ->first();
                     } else {
                         $inventory = Inventory::where('company_uuid', $salesOrder->company_uuid)
                             ->where('product_uuid', $item->product_uuid)
                             ->where('variant_uuid', $item->variant_uuid)
-                            ->where('warehouse_uuid', $warehouseUuid)
-                            ->where('status', 'available')
+                            ->when($warehouseUuid, fn ($query) => $query->where('warehouse_uuid', $warehouseUuid))
+                            ->whereIn('status', ['active', 'available'])
                             ->orderBy('expiry_date_at', 'asc') // FEFO
+                            ->lockForUpdate()
                             ->first();
                     }
 
@@ -221,12 +292,21 @@ class SalesOrderController extends PalletResourceController
                         continue;
                     }
 
-                    // Release any reservation for this item, then deduct
-                    if ($item->inventory_uuid) {
-                        $inventory->releaseReservation($qtyToFulfill);
+                    if ($item->inventory_uuid === $inventory->uuid && $inventory->reserved_quantity > 0) {
+                        $reservedToCommit = min($qtyToFulfill, $inventory->reserved_quantity);
+                        $remainingQty     = $qtyToFulfill - $reservedToCommit;
+                        $stockUpdated     = $inventory->commitReserved($reservedToCommit);
+
+                        if ($stockUpdated && $remainingQty > 0) {
+                            $stockUpdated = $inventory->deduct($remainingQty);
+                        }
+                    } else {
+                        $stockUpdated = $inventory->deduct($qtyToFulfill);
                     }
 
-                    $inventory->deduct($qtyToFulfill);
+                    if (!$stockUpdated) {
+                        throw new \RuntimeException('Insufficient stock while fulfilling sales order item.');
+                    }
 
                     // Update the SO line item
                     $newQtyFulfilled          = ($item->quantity_fulfilled ?? 0) + $qtyToFulfill;
@@ -276,9 +356,11 @@ class SalesOrderController extends PalletResourceController
             return new SalesOrderResource($salesOrder);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response()->error('Sales order not found.', 404);
-        } catch (\Exception $e) {
-            return response()->error($e->getMessage());
+        } catch (\RuntimeException $e) {
+            return response()->error($e->getMessage(), 422);
         } catch (QueryException $e) {
+            return response()->error($e->getMessage());
+        } catch (\Exception $e) {
             return response()->error($e->getMessage());
         }
     }

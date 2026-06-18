@@ -39,10 +39,18 @@ export default class StockAdjustmentFormPanelComponent extends Component {
     @tracked context;
 
     /**
-     * Fuel Report status
+     * Stock adjustment type options.
      * @type {Array}
      */
-    @tracked statusOptions = ['draft', 'pending-approval', 'approved', 'rejected', 'revised', 'submitted', 'in-review', 'confirmed', 'processed', 'archived', 'cancelled'];
+    @tracked stockAdjustmentTypeOptions = [
+        { label: 'Add Stock', value: 'add' },
+        { label: 'Remove Stock', value: 'remove' },
+        { label: 'Correct Count', value: 'correction' },
+        { label: 'Damage', value: 'damage' },
+        { label: 'Expiry', value: 'expiry' },
+        { label: 'Loss', value: 'loss' },
+        { label: 'Found Stock', value: 'found' },
+    ];
 
     /**
      * Constructs the component and applies initial state.
@@ -50,7 +58,48 @@ export default class StockAdjustmentFormPanelComponent extends Component {
     constructor() {
         super(...arguments);
         this.stockAdjustment = this.args.stockAdjustment;
+        this.stockAdjustment.type ??= 'add';
+        this.stockAdjustment.approval_required ??= false;
         applyContextComponentArguments(this);
+    }
+
+    get selectedTypeOption() {
+        return this.stockAdjustmentTypeOptions.find((option) => option.value === this.stockAdjustment.type);
+    }
+
+    get quantityLabel() {
+        return ['correction', 'count'].includes(this.stockAdjustment.type) ? 'Target Quantity' : 'Adjustment Quantity';
+    }
+
+    get hasProductVariants() {
+        return Boolean(this.stockAdjustment.product?.has_variants);
+    }
+
+    getRecordUuid(record) {
+        return record?.uuid ?? record?.id;
+    }
+
+    @action setType(option) {
+        this.stockAdjustment.type = option?.value;
+    }
+
+    @action setProduct(product) {
+        this.stockAdjustment.product = product;
+        this.stockAdjustment.product_uuid = this.getRecordUuid(product);
+        this.stockAdjustment.variant = null;
+        this.stockAdjustment.variant_uuid = null;
+    }
+
+    @action setVariant(variant) {
+        this.stockAdjustment.variant = variant;
+        this.stockAdjustment.variant_uuid = this.getRecordUuid(variant);
+    }
+
+    @action setWarehouse(warehouse) {
+        this.stockAdjustment.warehouse = warehouse;
+        this.stockAdjustment.warehouse_uuid = this.getRecordUuid(warehouse);
+        this.stockAdjustment.inventory = null;
+        this.stockAdjustment.inventory_uuid = null;
     }
 
     /**
@@ -65,7 +114,7 @@ export default class StockAdjustmentFormPanelComponent extends Component {
     }
 
     /**
-     * Saves the fuel report changes.
+     * Saves the stock adjustment changes.
      *
      * @action
      * @returns {Promise<any>}
@@ -73,7 +122,23 @@ export default class StockAdjustmentFormPanelComponent extends Component {
     @task *saveTask() {
         const { stockAdjustment } = this;
 
-        this.loader.showLoader('.next-content-overlay-panel-container', { loadingMessage: 'Saving stockAdjustment...', preserveTargetPosition: true });
+        if (!stockAdjustment.product_uuid) {
+            return this.notifications.warning('Select a product for this stock adjustment.');
+        }
+
+        if (this.hasProductVariants && !stockAdjustment.variant_uuid) {
+            return this.notifications.warning('Select a variant for this product.');
+        }
+
+        if (!stockAdjustment.warehouse_uuid) {
+            return this.notifications.warning('Select a warehouse for this stock adjustment.');
+        }
+
+        if (!Number(stockAdjustment.quantity) || Number(stockAdjustment.quantity) <= 0) {
+            return this.notifications.warning('Enter an adjustment quantity greater than zero.');
+        }
+
+        this.loader.showLoader('.next-content-overlay-panel-container', { loadingMessage: 'Saving stock adjustment...', preserveTargetPosition: true });
         contextComponentCallback(this, 'onBeforeSave', stockAdjustment);
 
         try {
@@ -89,7 +154,7 @@ export default class StockAdjustmentFormPanelComponent extends Component {
     }
 
     /**
-     * View the details of the fuel-report.
+     * View the details of the stock adjustment.
      *
      * @action
      */

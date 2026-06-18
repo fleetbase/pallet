@@ -155,12 +155,44 @@ class MetricsController extends Controller
         $rows = DB::table('pallet_stock_transactions')
             ->where('company_uuid', $companyUuid)
             ->where('created_at', '>=', now()->subDays($days))
-            ->selectRaw("DATE(COALESCE(transaction_created_at, created_at)) as date, COALESCE(transaction_type, 'movement') as type, SUM(quantity) as quantity")
+            ->selectRaw("DATE(COALESCE(transaction_created_at, created_at)) as date, COALESCE(transaction_type, 'movement') as type, SUM(ABS(quantity)) as quantity")
             ->groupBy('date', 'type')
             ->orderBy('date')
             ->get();
 
-        return response()->json(['series' => $rows]);
+        $totals = $rows
+            ->groupBy('type')
+            ->map(function ($items, $type) {
+                return [
+                    'type'     => $type,
+                    'label'    => str_replace('_', ' ', $type),
+                    'quantity' => (int) $items->sum('quantity'),
+                ];
+            })
+            ->sortByDesc('quantity')
+            ->values();
+
+        $dates = collect(range($days - 1, 0))
+            ->map(fn ($offset) => now()->subDays($offset)->toDateString())
+            ->push(now()->toDateString())
+            ->unique()
+            ->values();
+
+        $daily = $dates->map(function ($date) use ($rows) {
+            $quantity = (int) $rows->where('date', $date)->sum('quantity');
+
+            return [
+                'date'     => $date,
+                'quantity' => $quantity,
+            ];
+        });
+
+        return response()->json([
+            'series'         => $rows,
+            'totals'         => $totals,
+            'daily'          => $daily,
+            'total_quantity' => (int) $totals->sum('quantity'),
+        ]);
     }
 
     /**
@@ -187,25 +219,39 @@ class MetricsController extends Controller
         $companyUuid = session('company');
         $limit       = (int) $request->input('limit', 10);
 
+        $availableStockSubquery = Inventory::query()
+            ->selectRaw('COALESCE(SUM(available_quantity), 0)')
+            ->whereColumn('product_uuid', 'pallet_products.uuid')
+            ->where('company_uuid', $companyUuid);
+
+        $reservedStockSubquery = Inventory::query()
+            ->selectRaw('COALESCE(SUM(reserved_quantity), 0)')
+            ->whereColumn('product_uuid', 'pallet_products.uuid')
+            ->where('company_uuid', $companyUuid);
+
         $products = Product::where('company_uuid', $companyUuid)
             ->whereNotNull('reorder_point')
             ->where('reorder_point', '>', 0)
             ->with('supplier:uuid,name')
+            ->select('pallet_products.*')
+            ->selectSub($availableStockSubquery, 'dashboard_available_stock')
+            ->selectSub($reservedStockSubquery, 'dashboard_reserved_stock')
+            ->havingRaw('dashboard_available_stock <= reorder_point')
+            ->orderBy('dashboard_available_stock')
+            ->limit($limit)
             ->get()
-            ->filter(fn ($product) => $product->available_stock <= $product->reorder_point)
-            ->sortBy('available_stock')
-            ->take($limit)
-            ->values()
             ->map(function ($product) {
                 return [
                     'uuid'             => $product->uuid,
                     'public_id'        => $product->public_id,
                     'name'             => $product->name,
                     'sku'              => $product->sku,
-                    'available_stock'  => (int) $product->available_stock,
+                    'available_stock'  => (int) $product->dashboard_available_stock,
+                    'reserved_stock'   => (int) $product->dashboard_reserved_stock,
                     'reorder_point'    => (int) $product->reorder_point,
                     'reorder_quantity' => (int) $product->reorder_quantity,
                     'supplier_name'    => $product->supplier->name ?? null,
+                    'shortage'         => max(0, (int) $product->reorder_point - (int) $product->dashboard_available_stock),
                 ];
             });
 
@@ -325,6 +371,7 @@ class MetricsController extends Controller
             ->toArray();
 
         $recent = SalesOrder::where('company_uuid', $companyUuid)
+            ->with('customer:uuid,name')
             ->orderBy('created_at', 'desc')
             ->limit(5)
             ->get()
@@ -333,7 +380,7 @@ class MetricsController extends Controller
                     'uuid'          => $so->uuid,
                     'public_id'     => $so->public_id,
                     'status'        => $so->status,
-                    'customer_name' => $so->customer_reference_code ?? $so->supplier?->name,
+                    'customer_name' => $so->customer?->name ?? $so->customer_reference_code,
                 ];
             });
 

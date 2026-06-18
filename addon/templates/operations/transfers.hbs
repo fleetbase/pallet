@@ -3,6 +3,79 @@
 </Layout::Section::Header>
 
 <Layout::Section::Body class="overflow-y-scroll h-full p-4">
+    <ContentPanel @title="Create Transfer" @open={{true}} @wrapperClass="bordered-classic mb-4">
+        <div class="grid grid-cols-1 gap-3 text-xs lg:grid-cols-6">
+            <InputGroup @name="From Warehouse">
+                <ModelSelect
+                    @modelName="warehouse"
+                    @selectedModel={{this.newTransfer.fromWarehouse}}
+                    @placeholder="Source warehouse"
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{this.setFromWarehouse}}
+                    as |model|
+                >
+                    {{n-a model.name model.address}}
+                </ModelSelect>
+            </InputGroup>
+
+            <InputGroup @name="To Warehouse">
+                <ModelSelect
+                    @modelName="warehouse"
+                    @selectedModel={{this.newTransfer.toWarehouse}}
+                    @placeholder="Destination warehouse"
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{this.setToWarehouse}}
+                    as |model|
+                >
+                    {{n-a model.name model.address}}
+                </ModelSelect>
+            </InputGroup>
+
+            <InputGroup @name="Product">
+                <ModelSelect
+                    @modelName="pallet-product"
+                    @selectedModel={{this.newTransfer.product}}
+                    @placeholder="Product"
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{this.setTransferProduct}}
+                    as |model|
+                >
+                    {{model.name}}
+                </ModelSelect>
+            </InputGroup>
+
+            <InputGroup @name="Variant">
+                <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                    <PowerSelect
+                        @options={{this.newTransfer.product.variants}}
+                        @selected={{this.newTransfer.variant}}
+                        @onChange={{this.setTransferVariant}}
+                        @placeholder="Variant"
+                        @triggerClass="form-select form-input"
+                        @disabled={{not this.newTransfer.product.has_variants}}
+                        as |variant|
+                    >
+                        {{n-a variant.display_name variant.name}}
+                    </PowerSelect>
+                </div>
+            </InputGroup>
+
+            <InputGroup @name="Quantity">
+                <Input @value={{this.newTransfer.quantity}} @type="number" class="w-full form-input" placeholder="Qty" />
+            </InputGroup>
+
+            <div class="flex items-end">
+                <Button @icon="plus" @type="primary" @text="Create" @onClick={{this.createTransfer}} @wrapperClass="w-full" />
+            </div>
+        </div>
+    </ContentPanel>
+
     <ContentPanel @title="Stock Transfers" @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
         <table class="w-full text-sm">
             <thead>
@@ -10,6 +83,7 @@
                     <th class="px-4 py-3">Transfer</th>
                     <th class="px-4 py-3">From</th>
                     <th class="px-4 py-3">To</th>
+                    <th class="px-4 py-3">Items</th>
                     <th class="px-4 py-3">Status</th>
                     <th class="px-4 py-3 text-right">Quantity</th>
                     <th class="px-4 py-3 text-right">Actions</th>
@@ -21,6 +95,17 @@
                         <td class="px-4 py-3 font-medium">{{n-a transfer.transfer_number}}</td>
                         <td class="px-4 py-3">{{n-a transfer.fromWarehouse.name}}</td>
                         <td class="px-4 py-3">{{n-a transfer.toWarehouse.name}}</td>
+                        <td class="px-4 py-3">
+                            <div class="flex max-w-xs flex-col gap-1">
+                                {{#each transfer.items as |item|}}
+                                    <div class="truncate text-xs text-gray-600 dark:text-gray-300">
+                                        {{n-a item.product.name}} {{#if item.variant}}· {{n-a item.variant.display_name item.variant.name}}{{/if}}
+                                    </div>
+                                {{else}}
+                                    <span class="text-xs text-gray-400">No items</span>
+                                {{/each}}
+                            </div>
+                        </td>
                         <td class="px-4 py-3"><Badge @status="info">{{n-a transfer.status}}</Badge></td>
                         <td class="px-4 py-3 text-right">{{n-a transfer.total_quantity}}</td>
                         <td class="px-4 py-3">
@@ -40,7 +125,7 @@
                         </td>
                     </tr>
                 {{else}}
-                    <tr><td colspan="6" class="px-4 py-8 text-center text-gray-500">No transfers yet.</td></tr>
+                    <tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">No transfers yet.</td></tr>
                 {{/each}}
             </tbody>
         </table>

@@ -20,11 +20,11 @@ export default class ContextPanelService extends Service {
         palletProduct: {
             viewing: {
                 component: 'product-panel',
-                componentArguments: [{ isResizable: true }, { width: '600px' }],
+                componentArguments: [{ isResizable: true }, { width: '760px' }],
             },
             editing: {
                 component: 'product-form-panel',
-                componentArguments: [{ isResizable: true }, { width: '600px' }],
+                componentArguments: [{ isResizable: true }, { width: '920px' }],
             },
         },
         warehouse: {

@@ -64,6 +64,20 @@ export default class SalesOrderFormPanelComponent extends Component {
         applyContextComponentArguments(this);
     }
 
+    getRecordUuid(record) {
+        return record?.uuid ?? record?.id;
+    }
+
+    @action setCustomer(customer) {
+        this.salesOrder.customer = customer;
+        this.salesOrder.customer_uuid = this.getRecordUuid(customer);
+    }
+
+    @action setWarehouse(warehouse) {
+        this.salesOrder.warehouse = warehouse;
+        this.salesOrder.warehouse_uuid = this.getRecordUuid(warehouse);
+    }
+
     /**
      * Sets the overlay context.
      *

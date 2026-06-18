@@ -67,6 +67,8 @@ class StockAdjustment extends Model
         'created_by_uuid',
         'product_uuid',
         'variant_uuid',
+        'inventory_uuid',
+        'warehouse_uuid',
         'assignee_uuid',
         'type',
         'reason',
@@ -137,6 +139,16 @@ class StockAdjustment extends Model
         return $this->belongsTo(ProductVariant::class, 'variant_uuid', 'uuid');
     }
 
+    public function inventory()
+    {
+        return $this->belongsTo(Inventory::class, 'inventory_uuid', 'uuid');
+    }
+
+    public function warehouse()
+    {
+        return $this->belongsTo(Warehouse::class, 'warehouse_uuid', 'uuid');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'assignee_uuid', 'uuid');
@@ -159,6 +171,8 @@ class StockAdjustment extends Model
                 [
                     'product_uuid'    => $adjustment->product_uuid,
                     'variant_uuid'    => $adjustment->variant_uuid,
+                    'inventory_uuid'  => $adjustment->inventory_uuid,
+                    'warehouse_uuid'  => $adjustment->warehouse_uuid,
                     'before_quantity' => $adjustment->before_quantity,
                     'after_quantity'  => $adjustment->after_quantity,
                     'quantity_delta'  => $adjustment->quantity,

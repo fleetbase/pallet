@@ -13,9 +13,15 @@ class CycleCountItemController extends PalletResourceController
     public function recordCount(Request $request, string $id)
     {
         $item = $this->findItem($id);
-        $item->recordCount((int) $request->input('counted_quantity', 0), $request->input('counted_by_uuid', session('user')));
+        $countedQuantity = (int) $request->input('counted_quantity', 0);
 
-        return new CycleCountItemResource($item->fresh());
+        if ($countedQuantity < 0) {
+            return response()->error('Counted quantity must be zero or greater.', 422);
+        }
+
+        $item->recordCount($countedQuantity, $request->input('counted_by_uuid', session('user')));
+
+        return new CycleCountItemResource($item->fresh(['product', 'variant', 'inventory', 'binLocation']));
     }
 
     protected function findItem(string $id): CycleCountItem

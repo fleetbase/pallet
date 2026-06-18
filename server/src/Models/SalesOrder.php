@@ -3,7 +3,11 @@
 namespace Fleetbase\Pallet\Models;
 
 use Fleetbase\Casts\Json;
+use Fleetbase\FleetOps\Models\Contact;
+use Fleetbase\Models\Company;
 use Fleetbase\Models\Model;
+use Fleetbase\Models\Transaction;
+use Fleetbase\Models\User;
 use Fleetbase\Pallet\Traits\HasOperationalAuditTrail;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;
@@ -60,7 +64,10 @@ class SalesOrder extends Model
         'transaction_uuid',
         'assigned_to_uuid',
         'point_of_contact_uuid',
+        'customer_uuid',
+        'customer_type',
         'supplier_uuid',
+        'warehouse_uuid',
         'meta',
         'status',
         'customer_reference_code',
@@ -100,6 +107,8 @@ class SalesOrder extends Model
      * @var array
      */
     protected $hidden = [];
+
+    protected $with = ['customer', 'warehouse', 'items.product', 'items.variant', 'items.warehouse', 'items.inventory'];
 
     /**
      * Relationship with the company associated with the sales order.
@@ -151,6 +160,11 @@ class SalesOrder extends Model
         return $this->belongsTo(Contact::class, 'point_of_contact_uuid', 'uuid');
     }
 
+    public function customer()
+    {
+        return $this->belongsTo(Contact::class, 'customer_uuid', 'uuid');
+    }
+
     /**
      * Relationship with the supplier associated with the sales order.
      *
@@ -159,6 +173,11 @@ class SalesOrder extends Model
     public function supplier()
     {
         return $this->belongsTo(Supplier::class, 'supplier_uuid', 'uuid');
+    }
+
+    public function warehouse()
+    {
+        return $this->belongsTo(Warehouse::class, 'warehouse_uuid', 'uuid');
     }
 
     /**

@@ -38,6 +38,12 @@
 
             {{! Receive Items }}
             <ContentPanel @title="Receive Items" @open={{true}} @pad={{false}} @panelBodyClass="bg-white dark:bg-gray-900">
+                {{#unless this.hasWarehouseContext}}
+                    <div class="px-4 py-3 text-xs text-yellow-800 bg-yellow-50 border-b border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-700 dark:text-yellow-200">
+                        <FaIcon @icon="triangle-exclamation" class="mr-1" />
+                        Select a warehouse on this order before receiving stock.
+                    </div>
+                {{/unless}}
                 {{#if this.hasNoReceivableItems}}
                     <div class="p-6 text-center text-gray-400 dark:text-gray-500 text-sm">
                         <FaIcon @icon="check-circle" class="text-green-500 text-2xl mb-2" />
@@ -53,6 +59,8 @@
                                     <th class="px-4 py-2 text-right font-medium text-gray-500 dark:text-gray-400">Received</th>
                                     <th class="px-4 py-2 text-right font-medium text-gray-500 dark:text-gray-400">Outstanding</th>
                                     <th class="px-4 py-2 text-right font-medium text-gray-500 dark:text-gray-400 w-24">Receive Now</th>
+                                    <th class="px-4 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Zone</th>
+                                    <th class="px-4 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Bin</th>
                                     <th class="px-4 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Lot #</th>
                                     <th class="px-4 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Expiry</th>
                                     <th class="px-4 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Notes</th>
@@ -89,6 +97,34 @@
                                                 placeholder="0"
                                                 {{on "input" (fn this.updateReceiptField item "quantity_received")}}
                                             />
+                                        </td>
+                                        <td class="px-4 py-3 min-w-40">
+                                            <ModelSelect
+                                                @modelName="warehouse-zone"
+                                                @selectedModel={{(get (this.getReceiptEntry item) "zone")}}
+                                                @placeholder="Zone"
+                                                @triggerClass="form-select form-input text-xs"
+                                                @infiniteScroll={{false}}
+                                                @renderInPlace={{true}}
+                                                @onChange={{fn this.setReceiptZone item}}
+                                                as |zone|
+                                            >
+                                                {{n-a zone.name zone.public_id}}
+                                            </ModelSelect>
+                                        </td>
+                                        <td class="px-4 py-3 min-w-40">
+                                            <ModelSelect
+                                                @modelName="bin-location"
+                                                @selectedModel={{(get (this.getReceiptEntry item) "binLocation")}}
+                                                @placeholder="Bin"
+                                                @triggerClass="form-select form-input text-xs"
+                                                @infiniteScroll={{false}}
+                                                @renderInPlace={{true}}
+                                                @onChange={{fn this.setReceiptBinLocation item}}
+                                                as |binLocation|
+                                            >
+                                                {{n-a binLocation.bin_number binLocation.barcode}}
+                                            </ModelSelect>
                                         </td>
                                         <td class="px-4 py-3">
                                             <Input
@@ -134,7 +170,7 @@
                     @icon="truck-ramp-box"
                     @text="Receive Goods"
                     @isLoading={{this.receiveOrder.isRunning}}
-                    @disabled={{this.receiveOrder.isRunning}}
+                    @disabled={{or this.receiveOrder.isRunning (not this.hasWarehouseContext)}}
                     @onClick={{perform this.receiveOrder}}
                 />
             {{/unless}}

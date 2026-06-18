@@ -12,6 +12,7 @@ export default class WidgetPoStatusComponent extends Component {
     @tracked received = 0;
     @tracked cancelled = 0;
     @tracked recentOrders = [];
+    @tracked error = null;
 
     get total() {
         return this.pending + this.partiallyReceived + this.received + this.cancelled;
@@ -31,7 +32,9 @@ export default class WidgetPoStatusComponent extends Component {
             this.received = data.received ?? 0;
             this.cancelled = data.cancelled ?? 0;
             this.recentOrders = data.recent ?? [];
+            this.error = null;
         } catch (error) {
+            this.error = error?.message ?? 'Unable to load purchase order status';
             this.notifications.serverError(error);
         }
     }

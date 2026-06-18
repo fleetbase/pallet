@@ -9,6 +9,7 @@ export default class PurchaseOrderModel extends Model {
     @attr('string') company_uuid;
     @attr('string') created_by_uuid;
     @attr('string') supplier_uuid;
+    @attr('string') warehouse_uuid;
     @attr('string') transaction_uuid;
     @attr('string') assigned_to_uuid;
     @attr('string') point_of_contact_uuid;
@@ -17,6 +18,7 @@ export default class PurchaseOrderModel extends Model {
     @belongsTo('company') company;
     @belongsTo('user') createdBy;
     @belongsTo('supplier') supplier;
+    @belongsTo('warehouse') warehouse;
     @belongsTo('transaction') transaction;
     @belongsTo('user') assignedTo;
     @belongsTo('contact') pointOfContact;

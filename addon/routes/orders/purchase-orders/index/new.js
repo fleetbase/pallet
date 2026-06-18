@@ -1,1 +1,3 @@
-export { default } from '../../../purchase-orders/index/new';
+import Route from '@ember/routing/route';
+
+export default class PurchaseOrdersIndexNewRoute extends Route {}

@@ -16,8 +16,39 @@ export default class InventoryFormComponent extends Component {
         }
     }
 
+    getRecordUuid(record) {
+        return record?.uuid ?? record?.id;
+    }
+
+    @action setProduct(product) {
+        this.args.resource.product = product;
+        this.args.resource.product_uuid = this.getRecordUuid(product);
+        this.args.resource.variant = null;
+        this.args.resource.variant_uuid = null;
+    }
+
     @action setVariant(variant) {
         this.args.resource.variant = variant;
-        this.args.resource.variant_uuid = variant?.uuid;
+        this.args.resource.variant_uuid = this.getRecordUuid(variant);
+    }
+
+    @action setWarehouse(warehouse) {
+        this.args.resource.warehouse = warehouse;
+        this.args.resource.warehouse_uuid = this.getRecordUuid(warehouse);
+    }
+
+    @action setSupplier(supplier) {
+        this.args.resource.supplier = supplier;
+        this.args.resource.supplier_uuid = this.getRecordUuid(supplier);
+    }
+
+    @action setBinLocation(binLocation) {
+        this.args.resource.binLocation = binLocation;
+        this.args.resource.bin_location_uuid = this.getRecordUuid(binLocation);
+    }
+
+    @action setZone(zone) {
+        this.args.resource.zone = zone;
+        this.args.resource.zone_uuid = this.getRecordUuid(zone);
     }
 }

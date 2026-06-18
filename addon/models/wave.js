@@ -1,4 +1,4 @@
-import Model, { attr, belongsTo } from '@ember-data/model';
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 
 export default class WaveModel extends Model {
     @attr('string') uuid;
@@ -6,6 +6,7 @@ export default class WaveModel extends Model {
     @attr('string') company_uuid;
     @attr('string') warehouse_uuid;
     @belongsTo('warehouse', { async: false }) warehouse;
+    @hasMany('pick-list', { async: false }) pickLists;
     @attr('string') wave_number;
     @attr('string') type;
     @attr('string') status;

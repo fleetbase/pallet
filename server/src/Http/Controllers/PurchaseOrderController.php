@@ -4,9 +4,13 @@ namespace Fleetbase\Pallet\Http\Controllers;
 
 use Fleetbase\Exceptions\FleetbaseRequestValidationException;
 use Fleetbase\Pallet\Http\Resources\PurchaseOrder as PurchaseOrderResource;
+use Fleetbase\Pallet\Models\BinLocation;
 use Fleetbase\Pallet\Models\Inventory;
 use Fleetbase\Pallet\Models\PurchaseOrder;
 use Fleetbase\Pallet\Models\PurchaseOrderItem;
+use Fleetbase\Pallet\Models\Supplier;
+use Fleetbase\Pallet\Models\Warehouse;
+use Fleetbase\Pallet\Models\WarehouseZone;
 use Fleetbase\Support\Http;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -31,11 +35,38 @@ class PurchaseOrderController extends PalletResourceController
         try {
             $this->validateRequest($request);
             $data = $request->input('purchase_order');
+            $supplierUuid = data_get($data, 'supplier_uuid');
+            $warehouseUuid = data_get($data, 'warehouse_uuid');
+
+            if ($supplierUuid) {
+                $supplier = Supplier::where('company_uuid', session('company'))
+                    ->where(fn ($query) => $query->where('uuid', $supplierUuid)->orWhere('public_id', $supplierUuid))
+                    ->first();
+
+                if (!$supplier) {
+                    return response()->error('Selected supplier could not be found.', 422);
+                }
+
+                $supplierUuid = $supplier->uuid;
+            }
+
+            if ($warehouseUuid) {
+                $warehouse = Warehouse::where('company_uuid', session('company'))
+                    ->where(fn ($query) => $query->where('uuid', $warehouseUuid)->orWhere('public_id', $warehouseUuid))
+                    ->first();
+
+                if (!$warehouse) {
+                    return response()->error('Selected warehouse could not be found.', 422);
+                }
+
+                $warehouseUuid = $warehouse->uuid;
+            }
 
             $purchaseOrder = new PurchaseOrder([
                 'company_uuid'          => session('company'),
                 'created_by_uuid'       => session('user'),
-                'supplier_uuid'         => data_get($data, 'supplier_uuid'),
+                'supplier_uuid'         => $supplierUuid,
+                'warehouse_uuid'        => $warehouseUuid,
                 'transaction_uuid'      => data_get($data, 'transaction_uuid'),
                 'assigned_to_uuid'      => data_get($data, 'assigned_to_uuid'),
                 'point_of_contact_uuid' => data_get($data, 'point_of_contact_uuid'),
@@ -133,7 +164,9 @@ class PurchaseOrderController extends PalletResourceController
                     }
 
                     // Resolve the line item — must belong to this PO
-                    $item = PurchaseOrderItem::where('uuid', $itemUuid)
+                    $item = PurchaseOrderItem::where(function ($query) use ($itemUuid) {
+                        $query->where('uuid', $itemUuid)->orWhere('public_id', $itemUuid);
+                    })
                         ->where('purchase_order_uuid', $purchaseOrder->uuid)
                         ->first();
 
@@ -153,6 +186,37 @@ class PurchaseOrderController extends PalletResourceController
                     // Create or increment the Inventory record
                     // ----------------------------------------------------------
                     $warehouseUuid = $item->warehouse_uuid ?? $purchaseOrder->warehouse_uuid ?? null;
+
+                    if (!$warehouseUuid) {
+                        throw new \RuntimeException('A warehouse is required before purchase order items can be received.');
+                    }
+
+                    if ($zoneUuid) {
+                        $zone = WarehouseZone::where('company_uuid', $purchaseOrder->company_uuid)
+                            ->where('warehouse_uuid', $warehouseUuid)
+                            ->where(fn ($query) => $query->where('uuid', $zoneUuid)->orWhere('public_id', $zoneUuid))
+                            ->first();
+
+                        if (!$zone) {
+                            throw new \RuntimeException('Selected receiving zone could not be found for this warehouse.');
+                        }
+
+                        $zoneUuid = $zone->uuid;
+                    }
+
+                    if ($binLocationUuid) {
+                        $binLocation = BinLocation::where('company_uuid', $purchaseOrder->company_uuid)
+                            ->where('warehouse_uuid', $warehouseUuid)
+                            ->where(fn ($query) => $query->where('uuid', $binLocationUuid)->orWhere('public_id', $binLocationUuid))
+                            ->first();
+
+                        if (!$binLocation) {
+                            throw new \RuntimeException('Selected receiving bin could not be found for this warehouse.');
+                        }
+
+                        $binLocationUuid = $binLocation->uuid;
+                        $zoneUuid        = $binLocation->zone_uuid ?? $zoneUuid;
+                    }
 
                     $inventoryQuery = Inventory::where('company_uuid', $purchaseOrder->company_uuid)
                         ->where('product_uuid', $item->product_uuid)
@@ -198,7 +262,7 @@ class PurchaseOrderController extends PalletResourceController
                             'expiry_date_at'     => $expiryDate,
                             'received_at'        => now(),
                             'comments'           => $notes,
-                            'status'             => 'available',
+                            'status'             => 'active',
                         ]);
                     }
 
@@ -246,9 +310,11 @@ class PurchaseOrderController extends PalletResourceController
             return new PurchaseOrderResource($purchaseOrder);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response()->error('Purchase order not found.', 404);
-        } catch (\Exception $e) {
-            return response()->error($e->getMessage());
+        } catch (\RuntimeException $e) {
+            return response()->error($e->getMessage(), 422);
         } catch (QueryException $e) {
+            return response()->error($e->getMessage());
+        } catch (\Exception $e) {
             return response()->error($e->getMessage());
         }
     }

@@ -5,6 +5,7 @@
     @saveTask={{this.save}}
     @onPressCancel={{transition-to "catalog.products.index"}}
     @onOverlayReady={{fn (mut this.overlay)}}
+    @width="920px"
 >
     <Product::Form @resource={{this.product}} @controller={{this}} />
     <Spacer @height="200px" />

@@ -3,24 +3,127 @@
 </Layout::Section::Header>
 
 <Layout::Section::Body class="overflow-y-scroll h-full p-4">
+    <ContentPanel @title="Create Reservation" @open={{true}} @wrapperClass="bordered-classic mb-4">
+        <div class="grid grid-cols-1 gap-3 text-xs lg:grid-cols-6">
+            <InputGroup @name="Product">
+                <ModelSelect
+                    @modelName="pallet-product"
+                    @selectedModel={{this.newReservation.product}}
+                    @placeholder="Product"
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{this.setReservationProduct}}
+                    as |model|
+                >
+                    {{model.name}}
+                </ModelSelect>
+            </InputGroup>
+
+            <InputGroup @name="Variant">
+                <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                    <PowerSelect
+                        @options={{this.newReservation.product.variants}}
+                        @selected={{this.newReservation.variant}}
+                        @onChange={{this.setReservationVariant}}
+                        @placeholder="Variant"
+                        @triggerClass="form-select form-input"
+                        @disabled={{not this.newReservation.product.has_variants}}
+                        as |variant|
+                    >
+                        {{n-a variant.display_name variant.name}}
+                    </PowerSelect>
+                </div>
+            </InputGroup>
+
+            <InputGroup @name="Warehouse">
+                <ModelSelect
+                    @modelName="warehouse"
+                    @selectedModel={{this.newReservation.warehouse}}
+                    @placeholder="Warehouse"
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{this.setReservationWarehouse}}
+                    as |model|
+                >
+                    {{n-a model.name model.address}}
+                </ModelSelect>
+            </InputGroup>
+
+            <InputGroup @name="Quantity">
+                <Input @value={{this.newReservation.quantity}} @type="number" class="w-full form-input" placeholder="Qty" />
+            </InputGroup>
+
+            <InputGroup @name="Expires">
+                <Input @value={{this.newReservation.expires_at}} @type="datetime-local" class="w-full form-input" />
+            </InputGroup>
+
+            <div class="flex items-end">
+                <Button @icon="plus" @type="primary" @text="Reserve" @onClick={{this.createReservation}} @wrapperClass="w-full" />
+            </div>
+        </div>
+    </ContentPanel>
+
+    <ContentPanel @title="Storefront Reservation Context" @open={{true}} @wrapperClass="bordered-classic mb-4">
+        <div class="grid grid-cols-1 gap-3 text-xs lg:grid-cols-6">
+            <InputGroup @name="Checkout">
+                <Input @value={{this.storefrontContext.storefront_checkout_uuid}} @type="text" class="w-full form-input" placeholder="Checkout UUID" />
+            </InputGroup>
+            <InputGroup @name="Cart">
+                <Input @value={{this.storefrontContext.storefront_cart_uuid}} @type="text" class="w-full form-input" placeholder="Cart UUID" />
+            </InputGroup>
+            <InputGroup @name="Order">
+                <Input @value={{this.storefrontContext.storefront_order_uuid}} @type="text" class="w-full form-input" placeholder="Order UUID" />
+            </InputGroup>
+            <InputGroup @name="Line">
+                <Input @value={{this.storefrontContext.storefront_line_uuid}} @type="text" class="w-full form-input" placeholder="Line UUID" />
+            </InputGroup>
+            <InputGroup @name="Reservation Key">
+                <Input @value={{this.storefrontContext.storefront_reservation_key}} @type="text" class="w-full form-input" placeholder="Key" />
+            </InputGroup>
+            <div class="flex flex-wrap items-end gap-2">
+                <Button @icon="search" @type="default" @text="Lookup" @onClick={{this.lookupStorefrontContext}} @wrapperClass="flex-1" />
+                <Button @icon="unlock" @type="default" @text="Release" @onClick={{this.releaseStorefrontContext}} @wrapperClass="flex-1" />
+                <Button @icon="check" @type="primary" @text="Fulfill" @onClick={{this.fulfillStorefrontContext}} @wrapperClass="flex-1" />
+            </div>
+        </div>
+    </ContentPanel>
+
     <ContentPanel @title="Inventory Reservations" @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
-        <table class="w-full text-sm">
+        {{#if this.hasContextReservations}}
+            <div class="flex items-center justify-between border-b border-gray-100 px-4 py-2 text-xs dark:border-gray-800">
+                <span class="font-semibold text-gray-600 dark:text-gray-300">Showing Storefront context results</span>
+                <Button @icon="times" @type="default" @size="xs" @text="Clear" @onClick={{this.clearStorefrontContextResults}} />
+            </div>
+        {{/if}}
+        <div class="overflow-x-auto">
+        <table class="w-full min-w-max text-sm">
             <thead>
                 <tr class="border-b border-gray-200 dark:border-gray-700 text-left text-xs uppercase text-gray-500">
                     <th class="px-4 py-3">Product</th>
                     <th class="px-4 py-3">Variant</th>
                     <th class="px-4 py-3">Warehouse</th>
+                    <th class="px-4 py-3">Storefront Context</th>
                     <th class="px-4 py-3">Status</th>
                     <th class="px-4 py-3 text-right">Quantity</th>
                     <th class="px-4 py-3 text-right">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                {{#each @model as |reservation|}}
+                {{#each this.reservations as |reservation|}}
                     <tr class="border-b border-gray-100 dark:border-gray-800">
                         <td class="px-4 py-3 font-medium">{{n-a reservation.product.name}}</td>
                         <td class="px-4 py-3">{{n-a reservation.variant.display_name}}</td>
                         <td class="px-4 py-3">{{n-a reservation.warehouse.name}}</td>
+                        <td class="px-4 py-3 text-xs text-gray-500 dark:text-gray-400">
+                            <div class="space-y-1">
+                                <div>Checkout: {{n-a reservation.storefront_checkout_uuid}}</div>
+                                <div>Cart: {{n-a reservation.storefront_cart_uuid}}</div>
+                                <div>Line: {{n-a reservation.storefront_line_uuid}}</div>
+                                <div>Key: {{n-a reservation.storefront_reservation_key}}</div>
+                            </div>
+                        </td>
                         <td class="px-4 py-3"><Badge @status={{if reservation.is_active "success" "default"}}>{{n-a reservation.status}}</Badge></td>
                         <td class="px-4 py-3 text-right">{{n-a reservation.quantity}}</td>
                         <td class="px-4 py-3">
@@ -35,9 +138,10 @@
                         </td>
                     </tr>
                 {{else}}
-                    <tr><td colspan="6" class="px-4 py-8 text-center text-gray-500">No reservations yet.</td></tr>
+                    <tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">No reservations yet.</td></tr>
                 {{/each}}
             </tbody>
         </table>
+        </div>
     </ContentPanel>
 </Layout::Section::Body>

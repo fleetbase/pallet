@@ -12,8 +12,7 @@
                     @triggerClass="form-select form-input"
                     @infiniteScroll={{false}}
                     @renderInPlace={{true}}
-                    @onChange={{fn (mut @resource.supplier)}}
-                    @onChangeId={{fn (mut @resource.supplier_uuid)}}
+                    @onChange={{this.setSupplier}}
                     @disabled={{cannot-write @resource}}
                     as |model|
                 >
@@ -28,8 +27,7 @@
                     @triggerClass="form-select form-input"
                     @infiniteScroll={{false}}
                     @renderInPlace={{true}}
-                    @onChange={{fn (mut @resource.warehouse)}}
-                    @onChangeId={{fn (mut @resource.warehouse_uuid)}}
+                    @onChange={{this.setWarehouse}}
                     @disabled={{cannot-write @resource}}
                     as |model|
                 >
@@ -52,10 +50,10 @@
                 </div>
             </InputGroup>
             <InputGroup @name={{t "purchase-order.fields.expected-delivery"}}>
-                <input value={{@resource.expected_delivery_at}} type="date" class="form-input w-full" disabled={{cannot-write @resource}} />
+                <Input @value={{@resource.expected_delivery_at}} @type="date" class="w-full form-input" disabled={{cannot-write @resource}} />
             </InputGroup>
             <InputGroup @name={{t "common.notes"}} @wrapperClass="col-span-2">
-                <Textarea @value={{@resource.notes}} class="w-full form-input" placeholder={{t "common.notes"}} disabled={{cannot-write @resource}} />
+                <Textarea @value={{@resource.comments}} class="w-full form-input" placeholder={{t "common.notes"}} disabled={{cannot-write @resource}} />
             </InputGroup>
         </div>
     </ContentPanel>

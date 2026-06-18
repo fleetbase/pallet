@@ -12,6 +12,7 @@ export default class WidgetSoStatusComponent extends Component {
     @tracked fulfilled = 0;
     @tracked cancelled = 0;
     @tracked recentOrders = [];
+    @tracked error = null;
 
     get total() {
         return this.pending + this.partiallyFulfilled + this.fulfilled + this.cancelled;
@@ -31,7 +32,9 @@ export default class WidgetSoStatusComponent extends Component {
             this.fulfilled = data.fulfilled ?? 0;
             this.cancelled = data.cancelled ?? 0;
             this.recentOrders = data.recent ?? [];
+            this.error = null;
         } catch (error) {
+            this.error = error?.message ?? 'Unable to load sales order status';
             this.notifications.serverError(error);
         }
     }

@@ -12,6 +12,7 @@
                 <tr class="border-b border-gray-200 dark:border-gray-700 text-left text-xs uppercase text-gray-500">
                     <th class="px-4 py-3">Product</th>
                     <th class="px-4 py-3">Variant</th>
+                    <th class="px-4 py-3">Warehouse</th>
                     <th class="px-4 py-3">Type</th>
                     <th class="px-4 py-3">Reason</th>
                     <th class="px-4 py-3 text-right">Before</th>
@@ -25,6 +26,7 @@
                     <tr class="border-b border-gray-100 dark:border-gray-800">
                         <td class="px-4 py-3 font-medium">{{n-a adjustment.product.name}}</td>
                         <td class="px-4 py-3">{{n-a adjustment.variant.display_name}}</td>
+                        <td class="px-4 py-3">{{n-a adjustment.warehouse.name}}</td>
                         <td class="px-4 py-3"><Badge @status="info">{{n-a adjustment.type}}</Badge></td>
                         <td class="px-4 py-3">{{n-a adjustment.reason}}</td>
                         <td class="px-4 py-3 text-right">{{n-a adjustment.before_quantity}}</td>
@@ -33,7 +35,7 @@
                         <td class="px-4 py-3">{{n-a adjustment.createdAt}}</td>
                     </tr>
                 {{else}}
-                    <tr><td colspan="8" class="px-4 py-8 text-center text-gray-500">No stock adjustments yet.</td></tr>
+                    <tr><td colspan="9" class="px-4 py-8 text-center text-gray-500">No stock adjustments yet.</td></tr>
                 {{/each}}
             </tbody>
         </table>

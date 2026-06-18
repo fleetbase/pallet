@@ -79,7 +79,7 @@ class StockTransfer extends Model
      *
      * @var array
      */
-    protected $with = ['fromWarehouse', 'toWarehouse', 'items'];
+    protected $with = ['fromWarehouse', 'toWarehouse', 'items.product', 'items.variant'];
 
     /**
      * Searchable columns.
@@ -167,6 +167,10 @@ class StockTransfer extends Model
      */
     public function approve($userUuid = null)
     {
+        if ($this->status !== 'pending') {
+            throw new RuntimeException('Only pending stock transfers can be approved.');
+        }
+
         $this->status = 'approved';
         if ($userUuid) {
             $this->approved_by_uuid = $userUuid;
@@ -182,12 +186,17 @@ class StockTransfer extends Model
      */
     public function ship()
     {
+        if ($this->status !== 'approved') {
+            throw new RuntimeException('Only approved stock transfers can be shipped.');
+        }
+
         $result = DB::transaction(function () {
             foreach ($this->items as $item) {
                 $inventory = Inventory::where('company_uuid', $this->company_uuid)
                     ->where('product_uuid', $item->product_uuid)
                     ->where('variant_uuid', $item->variant_uuid)
                     ->where('warehouse_uuid', $this->from_warehouse_uuid)
+                    ->whereIn('status', ['active', 'available'])
                     ->lockForUpdate()
                     ->first();
 
@@ -195,7 +204,7 @@ class StockTransfer extends Model
                     throw new RuntimeException('Insufficient source inventory for stock transfer item.');
                 }
 
-                $inventory->deduct($item->quantity);
+                $inventory->deduct($item->quantity, 'transferred');
             }
 
             $this->status     = 'in_transit';
@@ -229,6 +238,10 @@ class StockTransfer extends Model
      */
     public function receive()
     {
+        if ($this->status !== 'in_transit') {
+            throw new RuntimeException('Only in-transit stock transfers can be received.');
+        }
+
         $result = DB::transaction(function () {
             foreach ($this->items as $item) {
                 $inventory = Inventory::firstOrCreate(
@@ -242,10 +255,11 @@ class StockTransfer extends Model
                         'quantity'           => 0,
                         'available_quantity' => 0,
                         'reserved_quantity'  => 0,
+                        'status'             => 'active',
                     ]
                 );
 
-                $inventory->add($item->quantity_received ?? $item->quantity);
+                $inventory->add($item->quantity_received ?? $item->quantity, 'transferred');
             }
 
             $this->status      = 'completed';
@@ -279,6 +293,10 @@ class StockTransfer extends Model
      */
     public function cancel()
     {
+        if (in_array($this->status, ['completed', 'cancelled'])) {
+            throw new RuntimeException('Completed or cancelled stock transfers cannot be cancelled.');
+        }
+
         $this->status = 'cancelled';
 
         return $this->save();

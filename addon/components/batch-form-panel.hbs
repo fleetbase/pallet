@@ -40,8 +40,7 @@
                     @triggerClass="form-select form-input"
                     @infiniteScroll={{false}}
                     @renderInPlace={{true}}
-                    @onChange={{fn (mut this.batch.product)}}
-                    @onChangeId={{fn (mut this.batch.product_uuid)}}
+                    @onChange={{this.setProduct}}
                     as |model|
                 >
                     {{model.name}}

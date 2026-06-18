@@ -31,17 +31,30 @@
     </Overlay::Header>
 
     <Overlay::Body @wrapperClass="new-service-rate-overlay-body px-4 space-y-4 pt-4" @increaseInnerBodyHeightBy={{1000}}>
-        <div class="grid grid-cols-1 text-xs dark:text-gray-100">
-            <InputGroup @name="Supplier">
+        <div class="grid grid-cols-1 gap-2 text-xs dark:text-gray-100">
+            <InputGroup @name="Customer">
                 <ModelSelect
-                    @modelName="vendor"
-                    @selectedModel={{this.salesOrder.supplier}}
-                    @placeholder="Select Supplier"
+                    @modelName="contact"
+                    @selectedModel={{this.salesOrder.customer}}
+                    @placeholder="Select customer"
                     @triggerClass="form-select form-input"
                     @infiniteScroll={{false}}
                     @renderInPlace={{true}}
-                    @onChange={{fn (mut this.salesOrder.supplier)}}
-                    @onChangeId={{fn (mut this.salesOrder.supplier_uuid)}}
+                    @onChange={{this.setCustomer}}
+                    as |model|
+                >
+                    {{model.name}}
+                </ModelSelect>
+            </InputGroup>
+            <InputGroup @name="Warehouse">
+                <ModelSelect
+                    @modelName="warehouse"
+                    @selectedModel={{this.salesOrder.warehouse}}
+                    @placeholder="Select fulfillment warehouse"
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{this.setWarehouse}}
                     as |model|
                 >
                     {{model.name}}

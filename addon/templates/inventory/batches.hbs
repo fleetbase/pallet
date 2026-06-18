@@ -10,7 +10,8 @@
                     <th class="px-4 py-3">Batch</th>
                     <th class="px-4 py-3">Product</th>
                     <th class="px-4 py-3">Variant</th>
-                    <th class="px-4 py-3">Supplier</th>
+                    <th class="px-4 py-3 text-right">Quantity</th>
+                    <th class="px-4 py-3">Manufactured</th>
                     <th class="px-4 py-3">Expiry</th>
                 </tr>
             </thead>
@@ -20,11 +21,12 @@
                         <td class="px-4 py-3 font-medium">{{n-a batch.batch_number}}</td>
                         <td class="px-4 py-3">{{n-a batch.product.name}}</td>
                         <td class="px-4 py-3">{{n-a batch.variant.display_name}}</td>
-                        <td class="px-4 py-3">{{n-a batch.supplier.name}}</td>
+                        <td class="px-4 py-3 text-right">{{format-number batch.quantity}}</td>
+                        <td class="px-4 py-3">{{format-date batch.manufacture_date_at}}</td>
                         <td class="px-4 py-3">{{format-date batch.expiry_date_at}}</td>
                     </tr>
                 {{else}}
-                    <tr><td colspan="5" class="px-4 py-8 text-center text-gray-500">No batches yet.</td></tr>
+                    <tr><td colspan="6" class="px-4 py-8 text-center text-gray-500">No batches yet.</td></tr>
                 {{/each}}
             </tbody>
         </table>

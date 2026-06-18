@@ -8,6 +8,7 @@ export default class WidgetLowStockComponent extends Component {
     @service notifications;
 
     @tracked items = [];
+    @tracked error = null;
 
     constructor() {
         super(...arguments);
@@ -19,7 +20,9 @@ export default class WidgetLowStockComponent extends Component {
         try {
             const data = yield this.fetch.get('metrics/low-stock', { limit: 10 }, { namespace: 'pallet/int/v1' });
             this.items = data.items ?? [];
+            this.error = null;
         } catch (error) {
+            this.error = error?.message ?? 'Unable to load low stock alerts';
             this.notifications.serverError(error);
         }
     }

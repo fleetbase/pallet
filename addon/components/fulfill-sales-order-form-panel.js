@@ -66,6 +66,8 @@ export default class FulfillSalesOrderFormPanelComponent extends Component {
             if (['pending', 'partial'].includes(item.status)) {
                 data[item.id] = {
                     uuid: item.id,
+                    inventory: item.inventory,
+                    inventory_uuid: item.inventory_uuid,
                     quantity_fulfilled: item.outstanding_quantity || 0,
                     notes: '',
                 };
@@ -106,6 +108,20 @@ export default class FulfillSalesOrderFormPanelComponent extends Component {
         return this.fulfillmentData[item.id] || {};
     }
 
+    valueFromEvent(value) {
+        return value?.target ? value.target.value : value;
+    }
+
+    normalizeQuantity(value, maxQuantity) {
+        const numericValue = Number(this.valueFromEvent(value));
+        const normalized = Number.isFinite(numericValue) ? numericValue : 0;
+        return Math.max(0, Math.min(normalized, Number(maxQuantity) || 0));
+    }
+
+    getRecordUuid(record) {
+        return record?.uuid ?? record?.id;
+    }
+
     /**
      * Updates a field in the fulfillment entry for a given item.
      *
@@ -116,9 +132,22 @@ export default class FulfillSalesOrderFormPanelComponent extends Component {
      */
     @action updateFulfillmentField(item, field, value) {
         const current = this.fulfillmentData[item.id] || {};
+        const normalizedValue = field === 'quantity_fulfilled' ? this.normalizeQuantity(value, item.outstanding_quantity) : this.valueFromEvent(value);
         this.fulfillmentData = {
             ...this.fulfillmentData,
-            [item.id]: { ...current, [field]: value },
+            [item.id]: { ...current, [field]: normalizedValue },
+        };
+    }
+
+    @action setFulfillmentInventory(item, inventory) {
+        const current = this.fulfillmentData[item.id] || {};
+        this.fulfillmentData = {
+            ...this.fulfillmentData,
+            [item.id]: {
+                ...current,
+                inventory,
+                inventory_uuid: this.getRecordUuid(inventory),
+            },
         };
     }
 
@@ -129,7 +158,7 @@ export default class FulfillSalesOrderFormPanelComponent extends Component {
      */
     @task *fulfillOrder() {
         const salesOrder = this.salesOrder;
-        const items = Object.values(this.fulfillmentData).filter((entry) => entry.quantity_fulfilled > 0);
+        const items = Object.values(this.fulfillmentData).filter((entry) => Number(entry.quantity_fulfilled) > 0);
 
         if (items.length === 0) {
             this.notifications.warning('Please enter at least one quantity to fulfill.');

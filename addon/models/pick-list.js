@@ -9,6 +9,8 @@ export default class PickListModel extends Model {
     @attr('string') wave_uuid;
     @attr('string') assigned_to_uuid;
     @belongsTo('warehouse', { async: false }) warehouse;
+    @belongsTo('wave', { async: false }) wave;
+    @belongsTo('user') assignedTo;
     @hasMany('pick-list-item', { async: false }) items;
     @attr('string') pick_list_number;
     @attr('string') type;

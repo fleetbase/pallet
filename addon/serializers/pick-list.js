@@ -5,6 +5,8 @@ export default class PickListSerializer extends ApplicationSerializer.extend(Emb
     get attrs() {
         return {
             warehouse: { embedded: 'always' },
+            wave: { embedded: 'always' },
+            assignedTo: { embedded: 'always' },
             items: { embedded: 'always' },
         };
     }

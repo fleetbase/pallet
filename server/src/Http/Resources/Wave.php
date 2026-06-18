@@ -16,6 +16,7 @@ class Wave extends FleetbaseResource
             'company_uuid'         => $this->when(Http::isInternalRequest(), $this->company_uuid),
             'warehouse_uuid'       => $this->warehouse_uuid,
             'warehouse'            => $this->whenLoaded('warehouse', fn () => new Warehouse($this->warehouse)),
+            'pick_lists'           => $this->whenLoaded('pickLists', fn () => PickList::collection($this->pickLists)),
             'wave_number'          => $this->wave_number,
             'type'                 => $this->type,
             'status'               => $this->status,

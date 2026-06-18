@@ -10,6 +10,8 @@ use Fleetbase\Traits\HasMetaAttributes;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 use Fleetbase\Traits\TracksApiCredential;
+use Illuminate\Support\Facades\DB;
+use RuntimeException;
 
 class CycleCount extends Model
 {
@@ -180,10 +182,20 @@ class CycleCount extends Model
      */
     public function start()
     {
-        $this->status     = 'in_progress';
-        $this->started_at = now();
+        if ($this->status !== 'pending') {
+            throw new RuntimeException('Only pending cycle counts can be started.');
+        }
 
-        return $this->save();
+        return DB::transaction(function () {
+            if ($this->items()->count() === 0) {
+                $this->seedItemsFromInventory();
+            }
+
+            $this->status     = 'in_progress';
+            $this->started_at = now();
+
+            return $this->save();
+        });
     }
 
     /**
@@ -193,6 +205,18 @@ class CycleCount extends Model
      */
     public function complete()
     {
+        if ($this->status !== 'in_progress') {
+            throw new RuntimeException('Only in-progress cycle counts can be completed.');
+        }
+
+        if ($this->items()->count() === 0) {
+            throw new RuntimeException('Cycle count cannot be completed without count items.');
+        }
+
+        if ($this->items()->where('status', '!=', 'counted')->exists()) {
+            throw new RuntimeException('All cycle count items must be counted before completing the cycle count.');
+        }
+
         $this->status       = 'completed';
         $this->completed_at = now();
         $result             = $this->save();
@@ -215,6 +239,39 @@ class CycleCount extends Model
         return $result;
     }
 
+    protected function seedItemsFromInventory(): void
+    {
+        $inventories = Inventory::where('company_uuid', $this->company_uuid)
+            ->where('warehouse_uuid', $this->warehouse_uuid)
+            ->when($this->zone_uuid, fn ($query) => $query->where('zone_uuid', $this->zone_uuid))
+            ->whereIn('status', ['active', 'available'])
+            ->orderBy('product_uuid')
+            ->orderBy('variant_uuid')
+            ->lockForUpdate()
+            ->get();
+
+        if ($inventories->isEmpty()) {
+            throw new RuntimeException('No inventory records were found for this cycle count scope.');
+        }
+
+        foreach ($inventories as $inventory) {
+            CycleCountItem::create([
+                'company_uuid'      => $this->company_uuid,
+                'cycle_count_uuid'  => $this->uuid,
+                'product_uuid'      => $inventory->product_uuid,
+                'variant_uuid'      => $inventory->variant_uuid,
+                'inventory_uuid'    => $inventory->uuid,
+                'bin_location_uuid' => $inventory->bin_location_uuid,
+                'expected_quantity' => (int) $inventory->quantity,
+                'counted_quantity'  => 0,
+                'variance'          => 0 - (int) $inventory->quantity,
+                'status'            => 'pending',
+                'lot_number'        => $inventory->lot_number,
+                'serial_number'     => $inventory->serial_number,
+            ]);
+        }
+    }
+
     /**
      * Approve count and apply adjustments.
      *
@@ -222,6 +279,10 @@ class CycleCount extends Model
      */
     public function approve()
     {
+        if ($this->status !== 'completed') {
+            throw new RuntimeException('Only completed cycle counts can be approved.');
+        }
+
         // Apply inventory adjustments for discrepancies
         foreach ($this->items as $item) {
             if ($item->expected_quantity != $item->counted_quantity) {

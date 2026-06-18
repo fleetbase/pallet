@@ -64,6 +64,20 @@ export default class PurchaseOrderFormPanelComponent extends Component {
         applyContextComponentArguments(this);
     }
 
+    getRecordUuid(record) {
+        return record?.uuid ?? record?.id;
+    }
+
+    @action setSupplier(supplier) {
+        this.purchaseOrder.supplier = supplier;
+        this.purchaseOrder.supplier_uuid = this.getRecordUuid(supplier);
+    }
+
+    @action setWarehouse(warehouse) {
+        this.purchaseOrder.warehouse = warehouse;
+        this.purchaseOrder.warehouse_uuid = this.getRecordUuid(warehouse);
+    }
+
     /**
      * Sets the overlay context.
      *
@@ -89,7 +103,7 @@ export default class PurchaseOrderFormPanelComponent extends Component {
 
         try {
             const savedPurchaseOrder = yield purchaseOrder.save();
-            this.notifications.success(`Sales order (${savedPurchaseOrder.id}) saved successfully.`);
+            this.notifications.success(`Purchase order (${savedPurchaseOrder.id}) saved successfully.`);
             contextComponentCallback(this, 'onAfterSave', savedPurchaseOrder);
             return savedPurchaseOrder;
         } catch (error) {

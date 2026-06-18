@@ -12,6 +12,38 @@ export default class SalesOrderPanelItemsComponent extends Component {
     @tracked editingItem = null;
     @tracked newItem = {};
 
+    getRecordUuid(record) {
+        return record?.uuid ?? record?.id;
+    }
+
+    validateItemDraft(draft) {
+        const product = draft.product;
+        const quantity = Number(draft.quantity);
+        const unitPrice = Number(draft.unit_price ?? 0);
+
+        if (!draft.product_uuid && !product) {
+            this.notifications.warning('Select a product for this line item.');
+            return false;
+        }
+
+        if (product?.has_variants && !draft.variant_uuid) {
+            this.notifications.warning('Select a variant for this product.');
+            return false;
+        }
+
+        if (!Number.isFinite(quantity) || quantity <= 0) {
+            this.notifications.warning('Enter a quantity greater than zero.');
+            return false;
+        }
+
+        if (!Number.isFinite(unitPrice) || unitPrice < 0) {
+            this.notifications.warning('Enter a valid unit price.');
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      * Returns the items for this sales order.
      *
@@ -53,14 +85,15 @@ export default class SalesOrderPanelItemsComponent extends Component {
     @action async addItem() {
         const salesOrder = this.args.salesOrder;
         if (!salesOrder) return;
+        if (!this.validateItemDraft(this.newItem)) return;
 
         try {
             const item = await this.fetch.post(
                 `sales-orders/${salesOrder.id}/items`,
                 {
                     sales_order_item: {
-                        product_uuid: this.newItem.product_uuid ?? this.newItem.product?.id,
-                        variant_uuid: this.newItem.variant_uuid ?? this.newItem.variant?.id,
+                        product_uuid: this.newItem.product_uuid ?? this.getRecordUuid(this.newItem.product),
+                        variant_uuid: this.newItem.variant_uuid ?? this.getRecordUuid(this.newItem.variant),
                         sku: this.newItem.sku,
                         quantity: this.newItem.quantity,
                         unit_price: this.newItem.unit_price,
@@ -100,20 +133,44 @@ export default class SalesOrderPanelItemsComponent extends Component {
         };
     }
 
+    @action setNewProduct(product) {
+        this.newItem = {
+            ...this.newItem,
+            product,
+            product_uuid: this.getRecordUuid(product),
+            variant: null,
+            variant_uuid: null,
+            sku: product?.has_variants ? null : product?.sku,
+        };
+    }
+
+    @action setEditingProduct(product) {
+        this.editingItem = {
+            ...this.editingItem,
+            product,
+            product_uuid: this.getRecordUuid(product),
+            variant: null,
+            variant_uuid: null,
+            sku: product?.has_variants ? null : product?.sku,
+        };
+    }
+
     @action setNewVariant(variant) {
-        this.newItem.variant = variant;
-        this.newItem.variant_uuid = variant?.uuid;
-        if (variant?.sku && !this.newItem.sku) {
-            this.newItem.sku = variant.sku;
-        }
+        this.newItem = {
+            ...this.newItem,
+            variant,
+            variant_uuid: this.getRecordUuid(variant),
+            sku: variant?.sku ?? this.newItem.sku,
+        };
     }
 
     @action setEditingVariant(variant) {
-        this.editingItem.variant = variant;
-        this.editingItem.variant_uuid = variant?.uuid;
-        if (variant?.sku && !this.editingItem.sku) {
-            this.editingItem.sku = variant.sku;
-        }
+        this.editingItem = {
+            ...this.editingItem,
+            variant,
+            variant_uuid: this.getRecordUuid(variant),
+            sku: variant?.sku ?? this.editingItem.sku,
+        };
     }
 
     /**
@@ -129,14 +186,15 @@ export default class SalesOrderPanelItemsComponent extends Component {
     @action async saveEditingItem() {
         const salesOrder = this.args.salesOrder;
         if (!this.editingItem || !salesOrder) return;
+        if (!this.validateItemDraft(this.editingItem)) return;
 
         try {
             await this.fetch.put(
                 `sales-orders/${salesOrder.id}/items/${this.editingItem.id}`,
                 {
                     sales_order_item: {
-                        product_uuid: this.editingItem.product_uuid ?? this.editingItem.product?.id,
-                        variant_uuid: this.editingItem.variant_uuid ?? this.editingItem.variant?.id,
+                        product_uuid: this.editingItem.product_uuid ?? this.getRecordUuid(this.editingItem.product),
+                        variant_uuid: this.editingItem.variant_uuid ?? this.getRecordUuid(this.editingItem.variant),
                         sku: this.editingItem.sku,
                         quantity: this.editingItem.quantity,
                         unit_price: this.editingItem.unit_price,

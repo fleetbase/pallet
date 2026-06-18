@@ -7,6 +7,8 @@ use Fleetbase\Models\Model;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
+use Illuminate\Support\Facades\DB;
+use RuntimeException;
 
 class CycleCountItem extends Model
 {
@@ -176,18 +178,48 @@ class CycleCountItem extends Model
             return null;
         }
 
-        return StockAdjustment::create([
-            'company_uuid'    => $this->company_uuid,
-            'product_uuid'    => $this->product_uuid,
-            'variant_uuid'    => $this->variant_uuid,
-            'inventory_uuid'  => $this->inventory_uuid,
-            'warehouse_uuid'  => $this->inventory->warehouse_uuid ?? null,
-            'quantity'        => $this->variance,
-            'type'            => $this->variance > 0 ? 'increase' : 'decrease',
-            'reason'          => 'cycle_count',
-            'reference_uuid'  => $this->cycle_count_uuid,
-            'notes'           => "Cycle count adjustment: {$this->cycleCount->count_number}",
-        ]);
+        return DB::transaction(function () {
+            $inventory = Inventory::where('company_uuid', $this->company_uuid)
+                ->where('uuid', $this->inventory_uuid)
+                ->lockForUpdate()
+                ->first();
+
+            if (!$inventory) {
+                throw new RuntimeException('No inventory record was found for this cycle count item.');
+            }
+
+            $beforeQuantity = (int) $inventory->quantity;
+            $afterQuantity  = (int) $this->counted_quantity;
+
+            if ($afterQuantity < (int) $inventory->reserved_quantity) {
+                throw new RuntimeException('Cycle count approval cannot reduce on-hand inventory below reserved stock.');
+            }
+
+            $inventory->quantity = $afterQuantity;
+            $inventory->last_counted_at = now();
+            $inventory->syncAvailableQuantity();
+            $inventory->save();
+            $inventory->recordStockTransaction('adjusted', $afterQuantity - $beforeQuantity, [
+                'source'           => 'cycle_count',
+                'cycle_count_uuid' => $this->cycle_count_uuid,
+                'count_item_uuid'  => $this->uuid,
+            ]);
+
+            return StockAdjustment::create([
+                'company_uuid'      => $this->company_uuid,
+                'created_by_uuid'   => $this->counted_by_uuid,
+                'product_uuid'      => $this->product_uuid,
+                'variant_uuid'      => $this->variant_uuid,
+                'inventory_uuid'    => $this->inventory_uuid,
+                'warehouse_uuid'    => $inventory->warehouse_uuid,
+                'quantity'          => $afterQuantity - $beforeQuantity,
+                'before_quantity'   => $beforeQuantity,
+                'after_quantity'    => $afterQuantity,
+                'type'              => 'correction',
+                'reason'            => "Cycle count adjustment: {$this->cycleCount->count_number}",
+                'approval_required' => false,
+            ]);
+        });
     }
 
     /**

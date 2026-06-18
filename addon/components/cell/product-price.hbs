@@ -1,0 +1,10 @@
+<div class="pallet-product-price-cell" ...attributes>
+    <div class="pallet-product-price-cell__primary">{{format-currency this.price this.currency}}</div>
+    <div class="pallet-product-price-cell__secondary">
+        <span>Cost {{format-currency this.cost this.currency}}</span>
+        {{#if this.hasSalePrice}}
+            <span>Sale {{format-currency this.salePrice this.currency}}</span>
+        {{/if}}
+    </div>
+    <div class="pallet-product-price-cell__value">Declared {{format-currency this.declaredValue this.currency}}</div>
+</div>

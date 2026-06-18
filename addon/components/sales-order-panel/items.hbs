@@ -37,8 +37,7 @@
                                     @triggerClass="form-select form-input text-xs"
                                     @infiniteScroll={{false}}
                                     @renderInPlace={{true}}
-                                    @onChange={{fn (mut this.editingItem.product)}}
-                                    @onChangeId={{fn (mut this.editingItem.product_uuid)}}
+                                    @onChange={{this.setEditingProduct}}
                                     as |model|
                                 >
                                     {{model.name}}
@@ -122,8 +121,7 @@
                             @triggerClass="form-select form-input text-xs"
                             @infiniteScroll={{false}}
                             @renderInPlace={{true}}
-                            @onChange={{fn (mut this.newItem.product)}}
-                            @onChangeId={{fn (mut this.newItem.product_uuid)}}
+                            @onChange={{this.setNewProduct}}
                             as |model|
                         >
                             {{model.name}}

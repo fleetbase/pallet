@@ -56,7 +56,7 @@ export default class InventoryIndexNewStockAdjustmentController extends Controll
      * @memberof InventoryIndexNewStockAdjustmentController
      */
     @action transitionBack() {
-        return this.hostRouter.transitionTo('console.pallet.inventory.index');
+        return this.hostRouter.transitionTo('console.pallet.inventory.adjustments');
     }
 
     /**
@@ -72,7 +72,7 @@ export default class InventoryIndexNewStockAdjustmentController extends Controll
         }
 
         this.hostRouter.refresh();
-        return this.hostRouter.transitionTo('console.pallet.inventory.index');
+        return this.hostRouter.transitionTo('console.pallet.inventory.adjustments');
     }
 
     /**

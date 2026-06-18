@@ -10,6 +10,8 @@ export default class StockAdjustmentModel extends Model {
     @attr('string') created_by_uuid;
     @attr('string') product_uuid;
     @attr('string') variant_uuid;
+    @attr('string') inventory_uuid;
+    @attr('string') warehouse_uuid;
     @attr('string') assignee_uuid;
 
     /** @relationships */
@@ -17,15 +19,16 @@ export default class StockAdjustmentModel extends Model {
     @belongsTo('user') createdBy;
     @belongsTo('pallet-product') product;
     @belongsTo('pallet-product-variant') variant;
+    @belongsTo('inventory') inventory;
+    @belongsTo('warehouse') warehouse;
 
     /** @attributes */
     @attr('string') type;
     @attr('string') reason;
-    @attr('string') approval_required;
+    @attr('boolean') approval_required;
     @attr('number') before_quantity;
     @attr('number') after_quantity;
     @attr('number') quantity;
-    @attr('string') comments;
 
     /** @date */
     @attr('date') created_at;

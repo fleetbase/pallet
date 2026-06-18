@@ -58,6 +58,7 @@
                                     <th class="px-4 py-2 text-right font-medium text-gray-500 dark:text-gray-400">Ordered</th>
                                     <th class="px-4 py-2 text-right font-medium text-gray-500 dark:text-gray-400">Fulfilled</th>
                                     <th class="px-4 py-2 text-right font-medium text-gray-500 dark:text-gray-400">Outstanding</th>
+                                    <th class="px-4 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Inventory</th>
                                     <th class="px-4 py-2 text-right font-medium text-gray-500 dark:text-gray-400 w-24">Fulfill Now</th>
                                     <th class="px-4 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Notes</th>
                                     <th class="px-4 py-2 text-center font-medium text-gray-500 dark:text-gray-400">Status</th>
@@ -83,6 +84,20 @@
                                         </td>
                                         <td class="px-4 py-3 text-right font-medium text-orange-600 dark:text-orange-400">
                                             {{item.outstanding_quantity}}
+                                        </td>
+                                        <td class="px-4 py-3 min-w-48">
+                                            <ModelSelect
+                                                @modelName="inventory"
+                                                @selectedModel={{(get (this.getFulfillmentEntry item) "inventory")}}
+                                                @placeholder="FEFO default"
+                                                @triggerClass="form-select form-input text-xs"
+                                                @infiniteScroll={{false}}
+                                                @renderInPlace={{true}}
+                                                @onChange={{fn this.setFulfillmentInventory item}}
+                                                as |inventory|
+                                            >
+                                                {{n-a inventory.lot_number inventory.serial_number inventory.public_id}}
+                                            </ModelSelect>
                                         </td>
                                         <td class="px-4 py-3">
                                             <Input

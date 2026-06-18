@@ -53,6 +53,15 @@ export default class SupplierFormPanelComponent extends Component {
         applyContextComponentArguments(this);
     }
 
+    getRecordUuid(record) {
+        return record?.uuid ?? record?.id;
+    }
+
+    @action setPlace(place) {
+        this.supplier.place = place;
+        this.supplier.place_uuid = this.getRecordUuid(place);
+    }
+
     /**
      * Sets the overlay context.
      *

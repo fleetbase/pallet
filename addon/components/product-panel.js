@@ -96,8 +96,8 @@ export default class ProductPanelComponent extends Component {
 
     getProductSupplier() {
         if (this.product.supplier_uuid) {
-            this.store.findRecord('vendor', this.product.supplier_uuid).then((vendor) => {
-                this.product.set('supplier', vendor);
+            this.store.findRecord('supplier', this.product.supplier_uuid).then((supplier) => {
+                this.product.set('supplier', supplier);
             });
         }
     }

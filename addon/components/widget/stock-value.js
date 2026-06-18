@@ -9,6 +9,7 @@ export default class WidgetStockValueComponent extends Component {
 
     @tracked warehouses = [];
     @tracked totalValue = 0;
+    @tracked error = null;
 
     constructor() {
         super(...arguments);
@@ -21,7 +22,9 @@ export default class WidgetStockValueComponent extends Component {
             const data = yield this.fetch.get('metrics/stock-value', {}, { namespace: 'pallet/int/v1' });
             this.warehouses = data.warehouses ?? [];
             this.totalValue = data.total_value ?? 0;
+            this.error = null;
         } catch (error) {
+            this.error = error?.message ?? 'Unable to load stock value';
             this.notifications.serverError(error);
         }
     }

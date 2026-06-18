@@ -6,6 +6,7 @@ export default class CycleCountSerializer extends ApplicationSerializer.extend(E
         return {
             warehouse: { embedded: 'always' },
             zone: { embedded: 'always' },
+            assignedTo: { embedded: 'always' },
             items: { embedded: 'always' },
         };
     }

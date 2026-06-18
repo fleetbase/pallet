@@ -9,6 +9,7 @@ export default class CycleCountModel extends Model {
     @attr('string') assigned_to_uuid;
     @belongsTo('warehouse', { async: false }) warehouse;
     @belongsTo('warehouse-zone', { async: false }) zone;
+    @belongsTo('user') assignedTo;
     @hasMany('cycle-count-item', { async: false }) items;
     @attr('string') count_number;
     @attr('string') type;

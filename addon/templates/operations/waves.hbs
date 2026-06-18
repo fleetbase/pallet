@@ -3,6 +3,41 @@
 </Layout::Section::Header>
 
 <Layout::Section::Body class="overflow-y-scroll h-full p-4">
+    <ContentPanel @title="Create Wave" @open={{true}} @wrapperClass="bordered-classic mb-4">
+        <div class="grid grid-cols-1 gap-3 text-xs lg:grid-cols-5">
+            <InputGroup @name="Warehouse">
+                <ModelSelect
+                    @modelName="warehouse"
+                    @selectedModel={{this.newWave.warehouse}}
+                    @placeholder="Warehouse"
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{this.setWaveWarehouse}}
+                    as |model|
+                >
+                    {{n-a model.name model.address}}
+                </ModelSelect>
+            </InputGroup>
+
+            <InputGroup @name="Type">
+                <Input @value={{this.newWave.type}} class="w-full form-input" placeholder="standard" />
+            </InputGroup>
+
+            <InputGroup @name="Priority">
+                <Input @value={{this.newWave.priority}} @type="number" class="w-full form-input" />
+            </InputGroup>
+
+            <InputGroup @name="Scheduled">
+                <Input @value={{this.newWave.scheduled_at}} @type="datetime-local" class="w-full form-input" />
+            </InputGroup>
+
+            <div class="flex items-end">
+                <Button @icon="plus" @type="primary" @text="Create" @onClick={{this.createWave}} @wrapperClass="w-full" />
+            </div>
+        </div>
+    </ContentPanel>
+
     <ContentPanel @title="Waves" @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
         <table class="w-full text-sm">
             <thead>
@@ -11,7 +46,8 @@
                     <th class="px-4 py-3">Warehouse</th>
                     <th class="px-4 py-3">Type</th>
                     <th class="px-4 py-3">Status</th>
-                    <th class="px-4 py-3 text-right">Pick Lists</th>
+                    <th class="px-4 py-3">Pick Lists</th>
+                    <th class="px-4 py-3 text-right">Progress</th>
                     <th class="px-4 py-3 text-right">Actions</th>
                 </tr>
             </thead>
@@ -22,6 +58,17 @@
                         <td class="px-4 py-3">{{n-a wave.warehouse.name}}</td>
                         <td class="px-4 py-3">{{n-a wave.type}}</td>
                         <td class="px-4 py-3"><Badge @status="info">{{n-a wave.status}}</Badge></td>
+                        <td class="px-4 py-3">
+                            <div class="flex max-w-xs flex-col gap-1">
+                                {{#each wave.pickLists as |pickList|}}
+                                    <div class="truncate text-xs text-gray-600 dark:text-gray-300">
+                                        {{n-a pickList.pick_list_number pickList.public_id}} · {{n-a pickList.status}}
+                                    </div>
+                                {{else}}
+                                    <span class="text-xs text-gray-400">No pick lists</span>
+                                {{/each}}
+                            </div>
+                        </td>
                         <td class="px-4 py-3 text-right">{{wave.completed_pick_lists}} / {{wave.total_pick_lists}}</td>
                         <td class="px-4 py-3">
                             <div class="flex items-center justify-end gap-2">
@@ -39,7 +86,7 @@
                         </td>
                     </tr>
                 {{else}}
-                    <tr><td colspan="6" class="px-4 py-8 text-center text-gray-500">No waves yet.</td></tr>
+                    <tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">No waves yet.</td></tr>
                 {{/each}}
             </tbody>
         </table>

@@ -23,7 +23,8 @@
                         </div>
                         <div class="shrink-0 text-right">
                             <div class="text-sm font-bold text-rose-600 dark:text-rose-300">{{product.available_stock}}</div>
-                            <div class="text-xs text-gray-500 dark:text-gray-400">min {{product.reorder_point}}</div>
+                            <div class="text-xs text-gray-500 dark:text-gray-400">short {{product.shortage}} · min {{product.reorder_point}}</div>
+                            <div class="text-xs text-gray-400 dark:text-gray-500">reserved {{product.reserved_stock}}</div>
                         </div>
                     </div>
                 {{/each}}

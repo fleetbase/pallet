@@ -10,7 +10,12 @@ export default class SalesOrderSerializer extends ApplicationSerializer.extend(E
     get attrs() {
         return {
             supplier: { embedded: 'always' },
+            customer: { embedded: 'always' },
             items: { embedded: 'always' },
+            product: { embedded: 'always' },
+            variant: { embedded: 'always' },
+            warehouse: { embedded: 'always' },
+            inventory: { embedded: 'always' },
         };
     }
 }
