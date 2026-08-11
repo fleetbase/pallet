@@ -79,7 +79,7 @@ class ProductVariant extends Model
 
     public function getDisplayNameAttribute(): string
     {
-        return $this->name ?: trim(collect($this->option_values ?? [])->implode(' / ')) ?: ($this->sku ?: $this->public_id);
+        return $this->name ?: trim(collect($this->option_values ?? [])->implode(' / ')) ?: ($this->sku ?: ($this->public_id ?? ''));
     }
 
     public function getTotalStockAttribute(): int
