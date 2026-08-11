@@ -74,7 +74,7 @@
         "lint": "php-cs-fixer fix -v --dry-run",
         "lint:fix": "php-cs-fixer fix -v",
         "test:lint": "@lint",
-        "test:types": "server_vendor/bin/phpstan analyse --ansi --memory-limit=0",
+        "test:types": "server_vendor/bin/phpstan analyse --ansi --memory-limit=1G",
         "test:unit": [
             "@php -r \"file_exists('vendor') || symlink('server_vendor', 'vendor');\"",
             "@php -d error_reporting=\"E_ALL & ~E_DEPRECATED\" -d xdebug.mode=off -d memory_limit=512M server_vendor/bin/pest --colors=always --test-directory server/tests"
