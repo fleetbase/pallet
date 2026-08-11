@@ -33,16 +33,23 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('pallet_purchase_orders', function (Blueprint $table) {
+        // no dropForeign on SQLite: SQLite cannot drop foreign keys
+        $sqlite = Schema::getConnection()->getDriverName() === 'sqlite';
+
+        Schema::table('pallet_purchase_orders', function (Blueprint $table) use ($sqlite) {
             if (Schema::hasColumn('pallet_purchase_orders', 'warehouse_uuid')) {
-                $table->dropForeign(['warehouse_uuid']);
+                if (!$sqlite) {
+                    $table->dropForeign(['warehouse_uuid']);
+                }
                 $table->dropColumn('warehouse_uuid');
             }
         });
 
-        Schema::table('pallet_sales_orders', function (Blueprint $table) {
+        Schema::table('pallet_sales_orders', function (Blueprint $table) use ($sqlite) {
             if (Schema::hasColumn('pallet_sales_orders', 'warehouse_uuid')) {
-                $table->dropForeign(['warehouse_uuid']);
+                if (!$sqlite) {
+                    $table->dropForeign(['warehouse_uuid']);
+                }
                 $table->dropColumn('warehouse_uuid');
             }
         });

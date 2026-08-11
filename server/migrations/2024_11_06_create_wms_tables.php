@@ -342,46 +342,48 @@ return new class extends Migration
         Schema::dropIfExists('pallet_product_kit_components');
 
         // Remove added columns from pallet_inventories
+        // (one column per call: SQLite cannot combine multiple dropColumn
+        // operations in a single table modification)
         if (Schema::hasTable('pallet_inventories')) {
-            Schema::table('pallet_inventories', function (Blueprint $table) {
-                $columns = [
-                    'bin_location_uuid',
-                    'zone_uuid',
-                    'lot_number',
-                    'serial_number',
-                    'uom',
-                    'reserved_quantity',
-                    'available_quantity',
-                    'max_quantity',
-                    'reorder_point',
-                    'unit_cost',
-                    'received_at',
-                    'last_counted_at',
-                ];
+            $columns = [
+                'bin_location_uuid',
+                'zone_uuid',
+                'lot_number',
+                'serial_number',
+                'uom',
+                'reserved_quantity',
+                'available_quantity',
+                'max_quantity',
+                'reorder_point',
+                'unit_cost',
+                'received_at',
+                'last_counted_at',
+            ];
 
-                foreach ($columns as $column) {
-                    if (Schema::hasColumn('pallet_inventories', $column)) {
+            foreach ($columns as $column) {
+                if (Schema::hasColumn('pallet_inventories', $column)) {
+                    Schema::table('pallet_inventories', function (Blueprint $table) use ($column) {
                         $table->dropColumn($column);
-                    }
+                    });
                 }
-            });
+            }
         }
 
         // Remove added columns from places
         if (Schema::hasTable('places')) {
-            Schema::table('places', function (Blueprint $table) {
-                $columns = [
-                    'capacity',
-                    'current_utilization',
-                    'is_3pl',
-                ];
+            $columns = [
+                'capacity',
+                'current_utilization',
+                'is_3pl',
+            ];
 
-                foreach ($columns as $column) {
-                    if (Schema::hasColumn('places', $column)) {
+            foreach ($columns as $column) {
+                if (Schema::hasColumn('places', $column)) {
+                    Schema::table('places', function (Blueprint $table) use ($column) {
                         $table->dropColumn($column);
-                    }
+                    });
                 }
-            });
+            }
         }
     }
 };
