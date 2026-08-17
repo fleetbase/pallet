@@ -97,10 +97,12 @@ class StorefrontInventoryController extends Controller
 
         $product = $this->findProduct($productId, $request->input('storefront_product_uuid'));
 
-        $product->storefront_product_uuid = null;
-        $product->save();
+        DB::transaction(function () use ($product) {
+            $product->storefront_product_uuid = null;
+            $product->save();
 
-        $product->variants()->update(['storefront_variant_uuid' => null]);
+            $product->variants()->update(['storefront_variant_uuid' => null]);
+        });
 
         return new ProductResource($product->fresh(['supplier', 'category', 'variants']));
     }

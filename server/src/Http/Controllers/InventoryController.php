@@ -16,6 +16,7 @@ use Fleetbase\Support\Http;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class InventoryController extends PalletResourceController
@@ -152,44 +153,48 @@ class InventoryController extends PalletResourceController
 
             $quantity = (int) data_get($data, 'quantity', 0);
 
-            // Create the batch record first
-            $batch = new Batch([
-                'company_uuid'        => session('company'),
-                'created_by_uuid'     => session('user'),
-                'product_uuid'        => $product->uuid,
-                'variant_uuid'        => $variantUuid,
-                'batch_number'        => data_get($data, 'batch_number', now()->format('Y-m-d-') . strtoupper(Str::random(6))),
-                'quantity'            => $quantity,
-                'expiry_date_at'      => data_get($data, 'expiry_date_at'),
-                'manufacture_date_at' => data_get($data, 'manufacture_date_at'),
-            ]);
-            $batch->save();
+            // batch + inventory must land together — a failed inventory save
+            // must not leave an orphaned batch behind
+            $inventory = DB::transaction(function () use ($data, $product, $variantUuid, $supplierUuid, $warehouseUuid, $binLocationUuid, $zoneUuid, $quantity) {
+                $batch = new Batch([
+                    'company_uuid'        => session('company'),
+                    'created_by_uuid'     => session('user'),
+                    'product_uuid'        => $product->uuid,
+                    'variant_uuid'        => $variantUuid,
+                    'batch_number'        => data_get($data, 'batch_number', now()->format('Y-m-d-') . strtoupper(Str::random(6))),
+                    'quantity'            => $quantity,
+                    'expiry_date_at'      => data_get($data, 'expiry_date_at'),
+                    'manufacture_date_at' => data_get($data, 'manufacture_date_at'),
+                ]);
+                $batch->save();
 
-            // Create the inventory record, explicitly setting batch_uuid
-            $inventory = new Inventory([
-                'company_uuid'      => session('company'),
-                'created_by_uuid'   => session('user'),
-                'product_uuid'      => $product->uuid,
-                'variant_uuid'      => $variantUuid,
-                'supplier_uuid'     => $supplierUuid,
-                'warehouse_uuid'    => $warehouseUuid,
-                'batch_uuid'        => $batch->uuid,
-                'bin_location_uuid' => $binLocationUuid,
-                'zone_uuid'         => $zoneUuid,
-                'status'            => data_get($data, 'status', 'active'),
-                'quantity'          => $quantity,
-                'min_quantity'      => data_get($data, 'min_quantity', 0),
-                'max_quantity'      => data_get($data, 'max_quantity'),
-                'reorder_point'     => data_get($data, 'reorder_point'),
-                'unit_cost'         => data_get($data, 'unit_cost'),
-                'lot_number'        => data_get($data, 'lot_number'),
-                'serial_number'     => data_get($data, 'serial_number'),
-                'uom'               => data_get($data, 'uom'),
-                'comments'          => data_get($data, 'comments'),
-                'expiry_date_at'    => data_get($data, 'expiry_date_at'),
-                'received_at'       => now(),
-            ]);
-            $inventory->save();
+                $inventory = new Inventory([
+                    'company_uuid'      => session('company'),
+                    'created_by_uuid'   => session('user'),
+                    'product_uuid'      => $product->uuid,
+                    'variant_uuid'      => $variantUuid,
+                    'supplier_uuid'     => $supplierUuid,
+                    'warehouse_uuid'    => $warehouseUuid,
+                    'batch_uuid'        => $batch->uuid,
+                    'bin_location_uuid' => $binLocationUuid,
+                    'zone_uuid'         => $zoneUuid,
+                    'status'            => data_get($data, 'status', 'active'),
+                    'quantity'          => $quantity,
+                    'min_quantity'      => data_get($data, 'min_quantity', 0),
+                    'max_quantity'      => data_get($data, 'max_quantity'),
+                    'reorder_point'     => data_get($data, 'reorder_point'),
+                    'unit_cost'         => data_get($data, 'unit_cost'),
+                    'lot_number'        => data_get($data, 'lot_number'),
+                    'serial_number'     => data_get($data, 'serial_number'),
+                    'uom'               => data_get($data, 'uom'),
+                    'comments'          => data_get($data, 'comments'),
+                    'expiry_date_at'    => data_get($data, 'expiry_date_at'),
+                    'received_at'       => now(),
+                ]);
+                $inventory->save();
+
+                return $inventory;
+            });
 
             if (Http::isInternalRequest($request)) {
                 $this->resource::wrap($this->resourceSingularlName);
