@@ -11,7 +11,6 @@ use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 use Fleetbase\Traits\TracksApiCredential;
 use Illuminate\Support\Facades\DB;
-use RuntimeException;
 
 class StockTransfer extends Model
 {
@@ -168,7 +167,7 @@ class StockTransfer extends Model
     public function approve($userUuid = null)
     {
         if ($this->status !== 'pending') {
-            throw new RuntimeException('Only pending stock transfers can be approved.');
+            throw new \RuntimeException('Only pending stock transfers can be approved.');
         }
 
         $this->status = 'approved';
@@ -187,7 +186,7 @@ class StockTransfer extends Model
     public function ship()
     {
         if ($this->status !== 'approved') {
-            throw new RuntimeException('Only approved stock transfers can be shipped.');
+            throw new \RuntimeException('Only approved stock transfers can be shipped.');
         }
 
         $result = DB::transaction(function () {
@@ -201,7 +200,7 @@ class StockTransfer extends Model
                     ->first();
 
                 if (!$inventory || $inventory->available_quantity < $item->quantity) {
-                    throw new RuntimeException('Insufficient source inventory for stock transfer item.');
+                    throw new \RuntimeException('Insufficient source inventory for stock transfer item.');
                 }
 
                 $inventory->deduct($item->quantity, 'transferred');
@@ -239,7 +238,7 @@ class StockTransfer extends Model
     public function receive()
     {
         if ($this->status !== 'in_transit') {
-            throw new RuntimeException('Only in-transit stock transfers can be received.');
+            throw new \RuntimeException('Only in-transit stock transfers can be received.');
         }
 
         $result = DB::transaction(function () {
@@ -294,12 +293,60 @@ class StockTransfer extends Model
     public function cancel()
     {
         if (in_array($this->status, ['completed', 'cancelled'])) {
-            throw new RuntimeException('Completed or cancelled stock transfers cannot be cancelled.');
+            throw new \RuntimeException('Completed or cancelled stock transfers cannot be cancelled.');
         }
 
-        $this->status = 'cancelled';
+        // stock deducted by ship() must return to the source warehouse
+        $restoreStock = $this->status === 'in_transit';
 
-        return $this->save();
+        $result = DB::transaction(function () use ($restoreStock) {
+            if ($restoreStock) {
+                foreach ($this->items as $item) {
+                    $inventory = Inventory::where('company_uuid', $this->company_uuid)
+                        ->where('product_uuid', $item->product_uuid)
+                        ->where('variant_uuid', $item->variant_uuid)
+                        ->where('warehouse_uuid', $this->from_warehouse_uuid)
+                        ->whereIn('status', ['active', 'available'])
+                        ->lockForUpdate()
+                        ->first();
+
+                    if (!$inventory) {
+                        $inventory = Inventory::create([
+                            'company_uuid'       => $this->company_uuid,
+                            'product_uuid'       => $item->product_uuid,
+                            'variant_uuid'       => $item->variant_uuid,
+                            'warehouse_uuid'     => $this->from_warehouse_uuid,
+                            'quantity'           => 0,
+                            'reserved_quantity'  => 0,
+                            'available_quantity' => 0,
+                            'status'             => 'active',
+                        ]);
+                    }
+
+                    $inventory->add($item->quantity, 'transfer_cancelled');
+                }
+            }
+
+            $this->status = 'cancelled';
+
+            return $this->save();
+        });
+
+        // Log operational audit event
+        $this->logAuditEvent(
+            AuditEventType::STOCK_TRANSFER,
+            'Stock Transfer Cancelled',
+            'cancelled',
+            null,
+            [
+                'transfer_number'     => $this->transfer_number,
+                'from_warehouse_uuid' => $this->from_warehouse_uuid,
+                'to_warehouse_uuid'   => $this->to_warehouse_uuid,
+                'stock_restored'      => $restoreStock,
+            ]
+        );
+
+        return $result;
     }
 
     /**

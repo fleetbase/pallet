@@ -25,6 +25,14 @@ abstract class TestCase extends TestbenchTestCase
 {
     private static bool $freshDatabasePrepared = false;
 
+    protected function getPackageProviders($app): array
+    {
+        return [
+            \Spatie\ResponseCache\ResponseCacheServiceProvider::class,
+            \Spatie\Activitylog\ActivitylogServiceProvider::class,
+        ];
+    }
+
     protected function defineEnvironment($app): void
     {
         $dbFile = self::databaseFile();
@@ -51,13 +59,57 @@ abstract class TestCase extends TestbenchTestCase
 
         $permissionPath = InstalledVersions::getInstallPath('spatie/laravel-permission');
         $app['config']->set('permission', require $permissionPath . '/config/permission.php');
+
+        // model saves flush the response cache and log activity; keep both inert in tests
+        $app['config']->set('responsecache.enabled', false);
+        $app['config']->set('activitylog.enabled', false);
     }
 
     protected function defineDatabaseMigrations(): void
     {
+        self::registerCoreExpansions();
         $this->createCoreTableShims();
 
         $this->loadMigrationsFrom(__DIR__ . '/../migrations');
+    }
+
+    /**
+     * Apply fleetbase/core-api's class expansions (Str::humanize etc.) the
+     * same way CoreServiceProvider::registerExpansionsFrom() does, without
+     * booting the full core provider.
+     */
+    private static function registerCoreExpansions(): void
+    {
+        static $registered = false;
+        if ($registered) {
+            return;
+        }
+        $registered = true;
+
+        $corePath = InstalledVersions::getInstallPath('fleetbase/core-api');
+
+        foreach (glob($corePath . '/src/Expansions/*.php') as $file) {
+            $class = 'Fleetbase\\Expansions\\' . basename($file, '.php');
+
+            if (!class_exists($class)) {
+                continue;
+            }
+
+            $target = $class::target();
+
+            if (!is_string($target) || !class_exists($target)) {
+                continue;
+            }
+
+            try {
+                $target::expand(new $class());
+            } catch (\Throwable) {
+                try {
+                    $target::mixin(new $class());
+                } catch (\Throwable) {
+                }
+            }
+        }
     }
 
     /**

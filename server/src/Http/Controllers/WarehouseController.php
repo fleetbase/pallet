@@ -3,7 +3,7 @@
 namespace Fleetbase\Pallet\Http\Controllers;
 
 use Fleetbase\Exceptions\FleetbaseRequestValidationException;
-use Fleetbase\Models\Place;
+use Fleetbase\FleetOps\Models\Place;
 use Fleetbase\Pallet\Models\WarehouseAisle;
 use Fleetbase\Pallet\Models\WarehouseBin;
 use Fleetbase\Pallet\Models\WarehouseDock;

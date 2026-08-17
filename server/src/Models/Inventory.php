@@ -437,6 +437,7 @@ class Inventory extends Model
             'product_uuid'            => $this->product_uuid,
             'variant_uuid'            => $this->variant_uuid,
             'batch_uuid'              => $this->batch_uuid,
+            'inventory_uuid'          => $this->uuid,
             'transaction_type'        => $type,
             'quantity'                => $quantity,
             'transaction_date_at'     => now(),

@@ -3,9 +3,9 @@
 namespace Fleetbase\Pallet\Models;
 
 use Fleetbase\Casts\Json;
+use Fleetbase\FleetOps\Models\Place;
 use Fleetbase\Models\Company;
 use Fleetbase\Models\Model;
-use Fleetbase\Models\Place;
 use Fleetbase\Models\User;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;

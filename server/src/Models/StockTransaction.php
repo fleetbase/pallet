@@ -2,14 +2,18 @@
 
 namespace Fleetbase\Pallet\Models;
 
+use Fleetbase\Casts\Json;
 use Fleetbase\Models\Model;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasMetaAttributes;
+use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class StockTransaction extends Model
 {
     use HasUuid;
+    use HasPublicId;
     use HasApiModelBehavior;
     use HasMetaAttributes;
 
@@ -19,6 +23,13 @@ class StockTransaction extends Model
      * @var string
      */
     protected $table = 'pallet_stock_transactions';
+
+    /**
+     * The type of public Id to generate.
+     *
+     * @var string
+     */
+    protected $publicIdType = 'stock_txn';
 
     /**
      * The singularName overwrite.
@@ -32,7 +43,7 @@ class StockTransaction extends Model
      *
      * @var array
      */
-    protected $searchableColumns = ['uuid', 'product_uuid', 'variant_uuid', 'transaction_type', 'quantity', 'transaction_date_at'];
+    protected $searchableColumns = ['uuid', 'public_id', 'product_uuid', 'variant_uuid', 'inventory_uuid', 'transaction_type', 'quantity', 'transaction_date_at'];
 
     /**
      * The attributes that are mass assignable.
@@ -47,6 +58,7 @@ class StockTransaction extends Model
         'product_uuid',
         'variant_uuid',
         'batch_uuid',
+        'inventory_uuid',
         'transaction_type',
         'quantity',
         'transaction_date_at',
@@ -64,7 +76,12 @@ class StockTransaction extends Model
      *
      * @var array
      */
-    protected $casts = [];
+    protected $casts = [
+        'meta'                   => Json::class,
+        'quantity'               => 'integer',
+        'transaction_date_at'    => 'datetime',
+        'transaction_created_at' => 'datetime',
+    ];
 
     /**
      * Dynamic attributes that are appended to object.
@@ -79,4 +96,39 @@ class StockTransaction extends Model
      * @var array
      */
     protected $hidden = [];
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(\Fleetbase\Models\Company::class, 'company_uuid', 'uuid');
+    }
+
+    public function createdBy(): BelongsTo
+    {
+        return $this->belongsTo(\Fleetbase\Models\User::class, 'created_by_uuid', 'uuid');
+    }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class, 'product_uuid', 'uuid');
+    }
+
+    public function variant(): BelongsTo
+    {
+        return $this->belongsTo(ProductVariant::class, 'variant_uuid', 'uuid');
+    }
+
+    public function batch(): BelongsTo
+    {
+        return $this->belongsTo(Batch::class, 'batch_uuid', 'uuid');
+    }
+
+    public function inventory(): BelongsTo
+    {
+        return $this->belongsTo(Inventory::class, 'inventory_uuid', 'uuid');
+    }
+
+    public function warehouse(): BelongsTo
+    {
+        return $this->belongsTo(Warehouse::class, 'destination_uuid', 'uuid');
+    }
 }
