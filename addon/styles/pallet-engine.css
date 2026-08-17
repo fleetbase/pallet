@@ -564,9 +564,12 @@ body[data-theme='dark'] .pallet-widget-scroll-body::-webkit-scrollbar-thumb {
     gap: 0.25rem;
     border: 1px solid #e5e7eb;
     border-radius: 0.375rem;
-    background:
-        linear-gradient(to top, rgb(148 163 184 / 12%) 1px, transparent 1px) 0 0 / 100% 33.333%,
-        #f8fafc;
+    /* longhand form: clean-css v3 (ember-engines css pipeline) cannot parse
+       multi-layer background shorthand with position/size */
+    background-image: linear-gradient(to top, rgb(148 163 184 / 12%) 1px, transparent 1px);
+    background-position: 0 0;
+    background-size: 100% 33.333%;
+    background-color: #f8fafc;
     padding: 0.65rem;
 }
 
@@ -1325,9 +1328,10 @@ body[data-theme='dark'] .pallet-widget-scroll-body .border-gray-100 {
 body[data-theme='dark'] .pallet-movement-chart,
 .dark .pallet-movement-chart {
     border-color: #374151;
-    background:
-        linear-gradient(to top, rgb(148 163 184 / 10%) 1px, transparent 1px) 0 0 / 100% 33.333%,
-        #111827;
+    background-image: linear-gradient(to top, rgb(148 163 184 / 10%) 1px, transparent 1px);
+    background-position: 0 0;
+    background-size: 100% 33.333%;
+    background-color: #111827;
 }
 
 @media (prefers-reduced-motion: reduce) {
