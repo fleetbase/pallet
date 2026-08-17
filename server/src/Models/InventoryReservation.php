@@ -174,20 +174,34 @@ class InventoryReservation extends Model
             return false;
         }
 
-        return DB::transaction(function () {
-            if ($this->inventory_uuid) {
-                $inventory = $this->inventory()->lockForUpdate()->first();
+        $result = DB::transaction(function () {
+            // re-check under lock: a concurrent release/fulfill may already have
+            // transitioned this reservation, and releasing twice frees stock twice
+            $locked = static::whereKey($this->getKey())->lockForUpdate()->first();
 
-                if (!$inventory || !$inventory->releaseReservation($this->quantity)) {
+            if (!$locked || $locked->status !== 'active') {
+                return false;
+            }
+
+            if ($locked->inventory_uuid) {
+                $inventory = $locked->inventory()->lockForUpdate()->first();
+
+                if (!$inventory || !$inventory->releaseReservation($locked->quantity)) {
                     return false;
                 }
             }
 
-            $this->status      = 'released';
-            $this->released_at = now();
+            $locked->status      = 'released';
+            $locked->released_at = now();
 
-            return $this->save();
+            return $locked->save();
         });
+
+        if ($result) {
+            $this->refresh();
+        }
+
+        return $result;
     }
 
     /**
@@ -201,19 +215,33 @@ class InventoryReservation extends Model
             return false;
         }
 
-        return DB::transaction(function () {
-            if ($this->inventory_uuid) {
-                $inventory = $this->inventory()->lockForUpdate()->first();
+        $result = DB::transaction(function () {
+            // re-check under lock: a concurrent release/fulfill may already have
+            // transitioned this reservation, and committing twice deducts twice
+            $locked = static::whereKey($this->getKey())->lockForUpdate()->first();
 
-                if (!$inventory || !$inventory->commitReserved($this->quantity)) {
+            if (!$locked || $locked->status !== 'active') {
+                return false;
+            }
+
+            if ($locked->inventory_uuid) {
+                $inventory = $locked->inventory()->lockForUpdate()->first();
+
+                if (!$inventory || !$inventory->commitReserved($locked->quantity)) {
                     return false;
                 }
             }
 
-            $this->status = 'fulfilled';
+            $locked->status = 'fulfilled';
 
-            return $this->save();
+            return $locked->save();
         });
+
+        if ($result) {
+            $this->refresh();
+        }
+
+        return $result;
     }
 
     /**

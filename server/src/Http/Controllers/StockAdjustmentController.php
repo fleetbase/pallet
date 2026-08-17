@@ -163,6 +163,7 @@ class StockAdjustmentController extends PalletResourceController
 
             return Inventory::where('company_uuid', session('company'))
                 ->where(fn ($query) => $query->where('uuid', $inventoryId)->orWhere('public_id', $inventoryId))
+                ->lockForUpdate()
                 ->first();
         }
 
@@ -172,6 +173,7 @@ class StockAdjustmentController extends PalletResourceController
             ->when(data_get($data, 'variant_uuid'), fn ($query, $variantUuid) => $query->where('variant_uuid', $variantUuid), fn ($query) => $query->whereNull('variant_uuid'))
             ->where('status', 'active')
             ->orderByDesc('created_at')
+            ->lockForUpdate()
             ->first();
     }
 

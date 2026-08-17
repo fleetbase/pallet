@@ -64,40 +64,46 @@ class InventoryReservationController extends PalletResourceController
             $warehouseUuid = $warehouse->uuid;
         }
 
-        return DB::transaction(function () use ($data, $quantity, $product, $variantUuid, $warehouseUuid) {
-            $inventory = Inventory::where('company_uuid', session('company'))
-                ->where('product_uuid', $product->uuid)
-                ->when($variantUuid, fn ($query) => $query->where('variant_uuid', $variantUuid))
-                ->when(!$variantUuid, fn ($query) => $query->whereNull('variant_uuid'))
-                ->when($warehouseUuid, fn ($query) => $query->where('warehouse_uuid', $warehouseUuid))
-                ->whereIn('status', ['active', 'available'])
-                ->where('available_quantity', '>=', $quantity)
-                ->orderByRaw('CASE WHEN expiry_date_at IS NULL THEN 1 ELSE 0 END')
-                ->orderBy('expiry_date_at')
-                ->lockForUpdate()
-                ->first();
+        try {
+            return DB::transaction(function () use ($data, $quantity, $product, $variantUuid, $warehouseUuid) {
+                $inventory = Inventory::where('company_uuid', session('company'))
+                    ->where('product_uuid', $product->uuid)
+                    ->when($variantUuid, fn ($query) => $query->where('variant_uuid', $variantUuid))
+                    ->when(!$variantUuid, fn ($query) => $query->whereNull('variant_uuid'))
+                    ->when($warehouseUuid, fn ($query) => $query->where('warehouse_uuid', $warehouseUuid))
+                    ->whereIn('status', ['active', 'available'])
+                    ->where('available_quantity', '>=', $quantity)
+                    ->orderByRaw('CASE WHEN expiry_date_at IS NULL THEN 1 ELSE 0 END')
+                    ->orderBy('expiry_date_at')
+                    ->lockForUpdate()
+                    ->first();
 
-            if (!$inventory || !$inventory->reserve($quantity)) {
-                return response()->error('Insufficient inventory available for this reservation.', 422);
-            }
+                // throw, never return, on failure — returning from inside the
+                // transaction closure would commit any partial mutation
+                if (!$inventory || !$inventory->reserve($quantity)) {
+                    throw new \RuntimeException('Insufficient inventory available for this reservation.');
+                }
 
-            $reservation = InventoryReservation::create([
-                'company_uuid'      => session('company'),
-                'product_uuid'      => $inventory->product_uuid,
-                'variant_uuid'      => $inventory->variant_uuid,
-                'inventory_uuid'    => $inventory->uuid,
-                'warehouse_uuid'    => $inventory->warehouse_uuid,
-                'sales_order_uuid'  => data_get($data, 'sales_order_uuid'),
-                'pick_list_uuid'    => data_get($data, 'pick_list_uuid'),
-                'quantity'          => $quantity,
-                'expires_at'        => data_get($data, 'expires_at'),
-                'status'            => 'active',
-                'type'              => data_get($data, 'type', 'hard'),
-                'meta'              => data_get($data, 'meta'),
-            ]);
+                $reservation = InventoryReservation::create([
+                    'company_uuid'      => session('company'),
+                    'product_uuid'      => $inventory->product_uuid,
+                    'variant_uuid'      => $inventory->variant_uuid,
+                    'inventory_uuid'    => $inventory->uuid,
+                    'warehouse_uuid'    => $inventory->warehouse_uuid,
+                    'sales_order_uuid'  => data_get($data, 'sales_order_uuid'),
+                    'pick_list_uuid'    => data_get($data, 'pick_list_uuid'),
+                    'quantity'          => $quantity,
+                    'expires_at'        => data_get($data, 'expires_at'),
+                    'status'            => 'active',
+                    'type'              => data_get($data, 'type', 'hard'),
+                    'meta'              => data_get($data, 'meta'),
+                ]);
 
-            return new InventoryReservationResource($reservation->fresh(['product', 'variant', 'inventory', 'warehouse']));
-        });
+                return new InventoryReservationResource($reservation->fresh(['product', 'variant', 'inventory', 'warehouse']));
+            });
+        } catch (\RuntimeException $e) {
+            return response()->error($e->getMessage(), 422);
+        }
     }
 
     public function release(string $id)

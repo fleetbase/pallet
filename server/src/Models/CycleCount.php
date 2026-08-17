@@ -282,15 +282,19 @@ class CycleCount extends Model
             throw new \RuntimeException('Only completed cycle counts can be approved.');
         }
 
-        // Apply inventory adjustments for discrepancies
-        foreach ($this->items as $item) {
-            if ($item->expected_quantity != $item->counted_quantity) {
-                $item->applyAdjustment();
+        // apply every discrepancy adjustment and the status change atomically —
+        // a failing item must not leave the count half-applied
+        $result = DB::transaction(function () {
+            foreach ($this->items as $item) {
+                if ($item->expected_quantity != $item->counted_quantity) {
+                    $item->applyAdjustment();
+                }
             }
-        }
 
-        $this->status = 'approved';
-        $result       = $this->save();
+            $this->status = 'approved';
+
+            return $this->save();
+        });
 
         // Log operational audit event
         $this->logAuditEvent(

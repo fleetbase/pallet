@@ -88,12 +88,12 @@ class PurchaseOrderController extends PalletResourceController
             }
 
             return new $this->resource($purchaseOrder);
-        } catch (\Exception $e) {
-            return response()->error($e->getMessage());
         } catch (QueryException $e) {
             return response()->error($e->getMessage());
         } catch (FleetbaseRequestValidationException $e) {
             return response()->error($e->getErrors());
+        } catch (\Exception $e) {
+            return response()->error($e->getMessage());
         }
     }
 
@@ -168,6 +168,7 @@ class PurchaseOrderController extends PalletResourceController
                         $query->where('uuid', $itemUuid)->orWhere('public_id', $itemUuid);
                     })
                         ->where('purchase_order_uuid', $purchaseOrder->uuid)
+                        ->lockForUpdate()
                         ->first();
 
                     if (!$item) {
@@ -233,7 +234,7 @@ class PurchaseOrderController extends PalletResourceController
                         $inventoryQuery->where('bin_location_uuid', $binLocationUuid);
                     }
 
-                    $inventory = $inventoryQuery->first();
+                    $inventory = $inventoryQuery->lockForUpdate()->first();
 
                     if ($inventory) {
                         // Increment existing inventory

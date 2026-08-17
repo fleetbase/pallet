@@ -103,12 +103,12 @@ class SalesOrderController extends PalletResourceController
             }
 
             return new $this->resource($salesOrder);
-        } catch (\Exception $e) {
-            return response()->error($e->getMessage());
         } catch (QueryException $e) {
             return response()->error($e->getMessage());
         } catch (FleetbaseRequestValidationException $e) {
             return response()->error($e->getErrors());
+        } catch (\Exception $e) {
+            return response()->error($e->getMessage());
         }
     }
 

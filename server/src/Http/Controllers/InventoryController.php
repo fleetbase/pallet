@@ -196,12 +196,12 @@ class InventoryController extends PalletResourceController
             }
 
             return new $this->resource($inventory);
-        } catch (\Exception $e) {
-            return response()->error($e->getMessage());
         } catch (QueryException $e) {
             return response()->error($e->getMessage());
         } catch (FleetbaseRequestValidationException $e) {
             return response()->error($e->getErrors());
+        } catch (\Exception $e) {
+            return response()->error($e->getMessage());
         }
     }
 }

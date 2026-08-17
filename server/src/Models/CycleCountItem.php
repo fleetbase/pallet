@@ -155,6 +155,12 @@ class CycleCountItem extends Model
      */
     public function recordCount($quantity, $userUuid = null)
     {
+        $cycleCount = $this->cycleCount()->first();
+
+        if (!$cycleCount || $cycleCount->status !== 'in_progress') {
+            throw new \RuntimeException('Counts can only be recorded while the cycle count is in progress.');
+        }
+
         $this->counted_quantity = $quantity;
         $this->variance         = $quantity - $this->expected_quantity;
         $this->status           = 'counted';

@@ -53,9 +53,13 @@ abstract class TestCase extends TestbenchTestCase
             'foreign_key_constraints' => false,
         ];
 
-        $app['config']->set('database.default', 'testing');
-        $app['config']->set('database.connections.testing', $sqlite);
+        // default MUST be the same connection NAME the models pin
+        // (Fleetbase models set $connection = 'mysql'): connection names get
+        // their own PDO handles, and a DB::transaction() on the default
+        // connection would not cover model writes made on another handle
+        $app['config']->set('database.default', 'mysql');
         $app['config']->set('database.connections.mysql', $sqlite);
+        $app['config']->set('database.connections.testing', $sqlite);
 
         $permissionPath = InstalledVersions::getInstallPath('spatie/laravel-permission');
         $app['config']->set('permission', require $permissionPath . '/config/permission.php');
