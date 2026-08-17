@@ -1,5 +1,8 @@
 <?php
 
+use Fleetbase\Pallet\Http\Controllers\StorefrontInventoryController;
+use Fleetbase\Pallet\Http\Resources\Product as ProductResource;
+use Fleetbase\Pallet\Http\Resources\ProductVariant as ProductVariantResource;
 use Fleetbase\Pallet\Models\BinLocation;
 use Fleetbase\Pallet\Models\CycleCount;
 use Fleetbase\Pallet\Models\Inventory;
@@ -12,9 +15,6 @@ use Fleetbase\Pallet\Models\StockTransfer;
 use Fleetbase\Pallet\Models\Warehouse;
 use Fleetbase\Pallet\Models\WarehouseZone;
 use Fleetbase\Pallet\Models\Wave;
-use Fleetbase\Pallet\Http\Resources\Product as ProductResource;
-use Fleetbase\Pallet\Http\Resources\ProductVariant as ProductVariantResource;
-use Fleetbase\Pallet\Http\Controllers\StorefrontInventoryController;
 use Illuminate\Http\Request;
 
 test('pallet products are first class product records', function () {
@@ -177,13 +177,13 @@ test('inventory reservation resources expose generic order uuid for storefront r
         'status'           => 'active',
         'type'             => 'hard',
         'meta'             => [
-            'storefront_checkout_uuid' => 'checkout-123',
-            'storefront_line_uuid' => 'line-123',
+            'storefront_checkout_uuid'   => 'checkout-123',
+            'storefront_line_uuid'       => 'line-123',
             'storefront_reservation_key' => 'checkout-123:line-123',
         ],
     ]);
 
-    $resource = (new \Fleetbase\Pallet\Http\Resources\InventoryReservation($reservation))->toArray(request());
+    $resource = (new Fleetbase\Pallet\Http\Resources\InventoryReservation($reservation))->toArray(request());
 
     expect($resource['order_uuid'])->toBe('storefront-order-123');
     expect($resource['storefront_checkout_uuid'])->toBe('checkout-123');
@@ -235,7 +235,7 @@ test('storefront product links reject invalid variant link payloads before parti
         }
     };
 
-    $product = new Product();
+    $product       = new Product();
     $product->uuid = 'pallet-product-123';
 
     expect(fn () => $controller->exposeLinkVariant($product, 'not-an-object'))->toThrow(RuntimeException::class);

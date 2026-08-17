@@ -65,12 +65,12 @@ class SalesOrderItemController extends Controller
         }
 
         $item = SalesOrderItem::create(array_merge($input, [
-            'uuid'             => Str::uuid(),
-            'company_uuid'     => session('company'),
-            'created_by_uuid'  => session('user'),
-            'sales_order_uuid' => $salesOrder->uuid,
+            'uuid'               => Str::uuid(),
+            'company_uuid'       => session('company'),
+            'created_by_uuid'    => session('user'),
+            'sales_order_uuid'   => $salesOrder->uuid,
             'quantity_fulfilled' => 0,
-            'status'           => $input['status'] ?? 'pending',
+            'status'             => $input['status'] ?? 'pending',
         ]));
 
         // Auto-calculate total_price if unit_price and quantity are provided

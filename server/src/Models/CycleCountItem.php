@@ -8,7 +8,6 @@ use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 use Illuminate\Support\Facades\DB;
-use RuntimeException;
 
 class CycleCountItem extends Model
 {
@@ -185,17 +184,17 @@ class CycleCountItem extends Model
                 ->first();
 
             if (!$inventory) {
-                throw new RuntimeException('No inventory record was found for this cycle count item.');
+                throw new \RuntimeException('No inventory record was found for this cycle count item.');
             }
 
             $beforeQuantity = (int) $inventory->quantity;
             $afterQuantity  = (int) $this->counted_quantity;
 
             if ($afterQuantity < (int) $inventory->reserved_quantity) {
-                throw new RuntimeException('Cycle count approval cannot reduce on-hand inventory below reserved stock.');
+                throw new \RuntimeException('Cycle count approval cannot reduce on-hand inventory below reserved stock.');
             }
 
-            $inventory->quantity = $afterQuantity;
+            $inventory->quantity        = $afterQuantity;
             $inventory->last_counted_at = now();
             $inventory->syncAvailableQuantity();
             $inventory->save();

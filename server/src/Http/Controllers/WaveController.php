@@ -7,7 +7,6 @@ use Fleetbase\Pallet\Models\Warehouse;
 use Fleetbase\Pallet\Models\Wave;
 use Fleetbase\Support\Http;
 use Illuminate\Http\Request;
-use RuntimeException;
 
 class WaveController extends PalletResourceController
 {
@@ -25,7 +24,7 @@ class WaveController extends PalletResourceController
         }
 
         $wave = new Wave([
-            'company_uuid'  => session('company'),
+            'company_uuid'   => session('company'),
             'warehouse_uuid' => $warehouse->uuid,
             'type'           => data_get($data, 'type', 'standard'),
             'status'         => data_get($data, 'status', 'pending'),
@@ -50,7 +49,7 @@ class WaveController extends PalletResourceController
 
         try {
             $wave->start();
-        } catch (RuntimeException $e) {
+        } catch (\RuntimeException $e) {
             return response()->error($e->getMessage(), 422);
         }
 
@@ -63,7 +62,7 @@ class WaveController extends PalletResourceController
 
         try {
             $wave->release();
-        } catch (RuntimeException $e) {
+        } catch (\RuntimeException $e) {
             return response()->error($e->getMessage(), 422);
         }
 
@@ -76,7 +75,7 @@ class WaveController extends PalletResourceController
 
         try {
             $wave->complete();
-        } catch (RuntimeException $e) {
+        } catch (\RuntimeException $e) {
             return response()->error($e->getMessage(), 422);
         }
 

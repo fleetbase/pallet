@@ -33,10 +33,10 @@ class SalesOrderController extends PalletResourceController
     {
         try {
             $this->validateRequest($request);
-            $data = $request->input('sales_order');
-            $supplierUuid = data_get($data, 'supplier_uuid');
+            $data          = $request->input('sales_order');
+            $supplierUuid  = data_get($data, 'supplier_uuid');
             $warehouseUuid = data_get($data, 'warehouse_uuid');
-            $customerUuid = data_get($data, 'customer_uuid');
+            $customerUuid  = data_get($data, 'customer_uuid');
 
             if ($supplierUuid) {
                 $supplier = Supplier::where('company_uuid', session('company'))
@@ -182,7 +182,7 @@ class SalesOrderController extends PalletResourceController
                     continue;
                 }
 
-                $warehouseUuid = $item->warehouse_uuid ?? $salesOrder->warehouse_uuid ?? null;
+                $warehouseUuid  = $item->warehouse_uuid ?? $salesOrder->warehouse_uuid ?? null;
                 $outstanding    = max(0, $item->quantity - ($item->quantity_fulfilled ?? 0));
                 $qtyToFulfill   = min($qtyFulfill, $outstanding);
 

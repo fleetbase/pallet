@@ -9,7 +9,6 @@ use Fleetbase\Traits\HasMetaAttributes;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 use Fleetbase\Traits\TracksApiCredential;
-use RuntimeException;
 
 class Wave extends Model
 {
@@ -134,7 +133,7 @@ class Wave extends Model
     public function start()
     {
         if (!in_array($this->status, ['pending', 'released'], true)) {
-            throw new RuntimeException('Only pending or released waves can be started.');
+            throw new \RuntimeException('Only pending or released waves can be started.');
         }
 
         $this->status     = 'in_progress';
@@ -151,7 +150,7 @@ class Wave extends Model
     public function complete()
     {
         if ($this->status !== 'in_progress') {
-            throw new RuntimeException('Only in-progress waves can be completed.');
+            throw new \RuntimeException('Only in-progress waves can be completed.');
         }
 
         $this->status       = 'completed';
@@ -168,7 +167,7 @@ class Wave extends Model
     public function release()
     {
         if ($this->status !== 'pending') {
-            throw new RuntimeException('Only pending waves can be released.');
+            throw new \RuntimeException('Only pending waves can be released.');
         }
 
         $this->status = 'released';

@@ -34,8 +34,8 @@ class PurchaseOrderController extends PalletResourceController
     {
         try {
             $this->validateRequest($request);
-            $data = $request->input('purchase_order');
-            $supplierUuid = data_get($data, 'supplier_uuid');
+            $data          = $request->input('purchase_order');
+            $supplierUuid  = data_get($data, 'supplier_uuid');
             $warehouseUuid = data_get($data, 'warehouse_uuid');
 
             if ($supplierUuid) {

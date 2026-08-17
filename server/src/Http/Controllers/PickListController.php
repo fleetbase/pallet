@@ -9,7 +9,6 @@ use Fleetbase\Pallet\Models\Warehouse;
 use Fleetbase\Pallet\Models\Wave;
 use Fleetbase\Support\Http;
 use Illuminate\Http\Request;
-use RuntimeException;
 
 class PickListController extends PalletResourceController
 {
@@ -68,7 +67,7 @@ class PickListController extends PalletResourceController
 
         try {
             $pickList->start();
-        } catch (RuntimeException $e) {
+        } catch (\RuntimeException $e) {
             return response()->error($e->getMessage(), 422);
         }
 
@@ -81,7 +80,7 @@ class PickListController extends PalletResourceController
 
         try {
             $pickList->complete();
-        } catch (RuntimeException $e) {
+        } catch (\RuntimeException $e) {
             return response()->error($e->getMessage(), 422);
         }
 
@@ -94,7 +93,7 @@ class PickListController extends PalletResourceController
 
         try {
             $pickList->assignTo($request->input('assigned_to_uuid'));
-        } catch (RuntimeException $e) {
+        } catch (\RuntimeException $e) {
             return response()->error($e->getMessage(), 422);
         }
 

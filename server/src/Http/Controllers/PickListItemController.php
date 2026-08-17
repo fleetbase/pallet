@@ -17,7 +17,7 @@ class PickListItemController extends PalletResourceController
 
     public function createRecord(Request $request)
     {
-        $data = $request->input('pick_list_item', $request->input('pick-list-item', $request->all()));
+        $data         = $request->input('pick_list_item', $request->input('pick-list-item', $request->all()));
         $pickListUuid = data_get($data, 'pick_list_uuid');
 
         if (!$pickListUuid) {
@@ -114,7 +114,7 @@ class PickListItemController extends PalletResourceController
 
     public function markPicked(Request $request, string $id)
     {
-        $item = $this->findItem($id);
+        $item           = $this->findItem($id);
         $quantityPicked = (int) $request->input('quantity_picked', $item->quantity_requested);
 
         if ($quantityPicked <= 0) {

@@ -12,7 +12,7 @@ class CycleCountItemController extends PalletResourceController
 
     public function recordCount(Request $request, string $id)
     {
-        $item = $this->findItem($id);
+        $item            = $this->findItem($id);
         $countedQuantity = (int) $request->input('counted_quantity', 0);
 
         if ($countedQuantity < 0) {

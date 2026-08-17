@@ -9,7 +9,6 @@ use Fleetbase\Traits\HasMetaAttributes;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 use Fleetbase\Traits\TracksApiCredential;
-use RuntimeException;
 
 class PickList extends Model
 {
@@ -179,11 +178,11 @@ class PickList extends Model
     public function start()
     {
         if (!in_array($this->status, ['pending', 'assigned'], true)) {
-            throw new RuntimeException('Only pending or assigned pick lists can be started.');
+            throw new \RuntimeException('Only pending or assigned pick lists can be started.');
         }
 
         if ($this->items()->count() === 0) {
-            throw new RuntimeException('Pick list cannot be started without pick items.');
+            throw new \RuntimeException('Pick list cannot be started without pick items.');
         }
 
         $this->status     = 'in_progress';
@@ -200,15 +199,15 @@ class PickList extends Model
     public function complete()
     {
         if ($this->status !== 'in_progress') {
-            throw new RuntimeException('Only in-progress pick lists can be completed.');
+            throw new \RuntimeException('Only in-progress pick lists can be completed.');
         }
 
         if ($this->items()->count() === 0) {
-            throw new RuntimeException('Pick list cannot be completed without pick items.');
+            throw new \RuntimeException('Pick list cannot be completed without pick items.');
         }
 
         if ($this->items()->where('status', '!=', 'picked')->exists()) {
-            throw new RuntimeException('All pick list items must be picked before completing the pick list.');
+            throw new \RuntimeException('All pick list items must be picked before completing the pick list.');
         }
 
         $this->status       = 'completed';
@@ -227,11 +226,11 @@ class PickList extends Model
     public function assignTo($userUuid)
     {
         if (!$userUuid) {
-            throw new RuntimeException('A user must be selected before assigning a pick list.');
+            throw new \RuntimeException('A user must be selected before assigning a pick list.');
         }
 
         if (!in_array($this->status, ['pending', 'assigned'], true)) {
-            throw new RuntimeException('Only pending pick lists can be assigned.');
+            throw new \RuntimeException('Only pending pick lists can be assigned.');
         }
 
         $this->assigned_to_uuid = $userUuid;

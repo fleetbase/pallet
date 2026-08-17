@@ -8,7 +8,6 @@ use Fleetbase\Pallet\Models\Warehouse;
 use Fleetbase\Pallet\Models\WarehouseZone;
 use Fleetbase\Support\Http;
 use Illuminate\Http\Request;
-use RuntimeException;
 
 class CycleCountController extends PalletResourceController
 {
@@ -59,7 +58,7 @@ class CycleCountController extends PalletResourceController
 
         try {
             $cycleCount->start();
-        } catch (RuntimeException $e) {
+        } catch (\RuntimeException $e) {
             return response()->error($e->getMessage(), 422);
         }
 
@@ -72,7 +71,7 @@ class CycleCountController extends PalletResourceController
 
         try {
             $cycleCount->complete();
-        } catch (RuntimeException $e) {
+        } catch (\RuntimeException $e) {
             return response()->error($e->getMessage(), 422);
         }
 
@@ -85,7 +84,7 @@ class CycleCountController extends PalletResourceController
 
         try {
             $cycleCount->approve();
-        } catch (RuntimeException $e) {
+        } catch (\RuntimeException $e) {
             return response()->error($e->getMessage(), 422);
         }
 

@@ -4,16 +4,16 @@ namespace Fleetbase\Pallet\Http\Controllers;
 
 use Fleetbase\Http\Controllers\Controller;
 use Fleetbase\Pallet\Models\CycleCount;
-use Fleetbase\Pallet\Models\InventoryReservation;
 use Fleetbase\Pallet\Models\Inventory;
+use Fleetbase\Pallet\Models\InventoryReservation;
 use Fleetbase\Pallet\Models\PickList;
 use Fleetbase\Pallet\Models\Product;
 use Fleetbase\Pallet\Models\ProductVariant;
 use Fleetbase\Pallet\Models\PurchaseOrder;
 use Fleetbase\Pallet\Models\SalesOrder;
 use Fleetbase\Pallet\Models\StockTransfer;
-use Fleetbase\Pallet\Models\Wave;
 use Fleetbase\Pallet\Models\Warehouse;
+use Fleetbase\Pallet\Models\Wave;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

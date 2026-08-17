@@ -7,7 +7,6 @@ use Fleetbase\Pallet\Models\StockTransfer;
 use Fleetbase\Pallet\Models\Warehouse;
 use Fleetbase\Support\Http;
 use Illuminate\Http\Request;
-use RuntimeException;
 
 class StockTransferController extends PalletResourceController
 {
@@ -58,7 +57,7 @@ class StockTransferController extends PalletResourceController
 
         try {
             $transfer->approve(session('user'));
-        } catch (RuntimeException $e) {
+        } catch (\RuntimeException $e) {
             return response()->error($e->getMessage(), 422);
         }
 
@@ -71,7 +70,7 @@ class StockTransferController extends PalletResourceController
 
         try {
             $transfer->ship();
-        } catch (RuntimeException $e) {
+        } catch (\RuntimeException $e) {
             return response()->error($e->getMessage(), 422);
         }
 
@@ -84,7 +83,7 @@ class StockTransferController extends PalletResourceController
 
         try {
             $transfer->receive();
-        } catch (RuntimeException $e) {
+        } catch (\RuntimeException $e) {
             return response()->error($e->getMessage(), 422);
         }
 
@@ -97,7 +96,7 @@ class StockTransferController extends PalletResourceController
 
         try {
             $transfer->cancel();
-        } catch (RuntimeException $e) {
+        } catch (\RuntimeException $e) {
             return response()->error($e->getMessage(), 422);
         }
 

@@ -11,7 +11,6 @@ use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 use Fleetbase\Traits\TracksApiCredential;
 use Illuminate\Support\Facades\DB;
-use RuntimeException;
 
 class CycleCount extends Model
 {
@@ -183,7 +182,7 @@ class CycleCount extends Model
     public function start()
     {
         if ($this->status !== 'pending') {
-            throw new RuntimeException('Only pending cycle counts can be started.');
+            throw new \RuntimeException('Only pending cycle counts can be started.');
         }
 
         return DB::transaction(function () {
@@ -206,15 +205,15 @@ class CycleCount extends Model
     public function complete()
     {
         if ($this->status !== 'in_progress') {
-            throw new RuntimeException('Only in-progress cycle counts can be completed.');
+            throw new \RuntimeException('Only in-progress cycle counts can be completed.');
         }
 
         if ($this->items()->count() === 0) {
-            throw new RuntimeException('Cycle count cannot be completed without count items.');
+            throw new \RuntimeException('Cycle count cannot be completed without count items.');
         }
 
         if ($this->items()->where('status', '!=', 'counted')->exists()) {
-            throw new RuntimeException('All cycle count items must be counted before completing the cycle count.');
+            throw new \RuntimeException('All cycle count items must be counted before completing the cycle count.');
         }
 
         $this->status       = 'completed';
@@ -251,7 +250,7 @@ class CycleCount extends Model
             ->get();
 
         if ($inventories->isEmpty()) {
-            throw new RuntimeException('No inventory records were found for this cycle count scope.');
+            throw new \RuntimeException('No inventory records were found for this cycle count scope.');
         }
 
         foreach ($inventories as $inventory) {
@@ -280,7 +279,7 @@ class CycleCount extends Model
     public function approve()
     {
         if ($this->status !== 'completed') {
-            throw new RuntimeException('Only completed cycle counts can be approved.');
+            throw new \RuntimeException('Only completed cycle counts can be approved.');
         }
 
         // Apply inventory adjustments for discrepancies

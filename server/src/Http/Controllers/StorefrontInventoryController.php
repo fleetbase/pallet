@@ -12,7 +12,6 @@ use Fleetbase\Pallet\Models\Product;
 use Fleetbase\Pallet\Models\ProductVariant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use RuntimeException;
 
 class StorefrontInventoryController extends Controller
 {
@@ -55,7 +54,7 @@ class StorefrontInventoryController extends Controller
 
         try {
             $product = DB::transaction(function () use ($request, $productId) {
-                $product = $this->findProduct($productId);
+                $product             = $this->findProduct($productId);
                 $storefrontProductId = $request->input('storefront_product_uuid');
 
                 $this->assertStorefrontProductLinkAvailable($storefrontProductId, $product);
@@ -68,11 +67,11 @@ class StorefrontInventoryController extends Controller
                     }
                 } elseif ($request->filled('variant_uuid') || $request->filled('pallet_variant_uuid')) {
                     if (!$request->filled('storefront_variant_uuid')) {
-                        throw new RuntimeException('A Storefront variant UUID is required to link a Pallet variant.', 422);
+                        throw new \RuntimeException('A Storefront variant UUID is required to link a Pallet variant.', 422);
                     }
 
                     $this->linkStorefrontVariant($product, [
-                        'pallet_variant_uuid' => $request->input('pallet_variant_uuid') ?? $request->input('variant_uuid'),
+                        'pallet_variant_uuid'     => $request->input('pallet_variant_uuid') ?? $request->input('variant_uuid'),
                         'storefront_variant_uuid' => $request->input('storefront_variant_uuid'),
                     ]);
                 }
@@ -81,7 +80,7 @@ class StorefrontInventoryController extends Controller
 
                 return $product;
             });
-        } catch (RuntimeException $e) {
+        } catch (\RuntimeException $e) {
             return response()->error($e->getMessage(), $this->statusCodeFromException($e));
         }
 
@@ -112,20 +111,20 @@ class StorefrontInventoryController extends Controller
 
         if (!$product) {
             return response()->json([
-                'available' => false,
-                'available_quantity' => 0,
-                'reserved_quantity' => 0,
-                'total_quantity' => 0,
-                'requested_quantity' => max(1, (int) $request->input('quantity', 1)),
-                'shortage_quantity' => max(1, (int) $request->input('quantity', 1)),
-                'out_of_stock' => true,
-                'low_stock' => true,
-                'product_uuid' => null,
-                'variant_uuid' => null,
+                'available'               => false,
+                'available_quantity'      => 0,
+                'reserved_quantity'       => 0,
+                'total_quantity'          => 0,
+                'requested_quantity'      => max(1, (int) $request->input('quantity', 1)),
+                'shortage_quantity'       => max(1, (int) $request->input('quantity', 1)),
+                'out_of_stock'            => true,
+                'low_stock'               => true,
+                'product_uuid'            => null,
+                'variant_uuid'            => null,
                 'storefront_product_uuid' => $request->input('storefront_product_uuid'),
                 'storefront_variant_uuid' => $request->input('storefront_variant_uuid'),
-                'inventory_summary' => null,
-                'message' => 'No linked Pallet product was found.',
+                'inventory_summary'       => null,
+                'message'                 => 'No linked Pallet product was found.',
             ], 404);
         }
 
@@ -147,32 +146,32 @@ class StorefrontInventoryController extends Controller
 
             if (!is_array($item)) {
                 return [
-                    'available' => false,
+                    'available'  => false,
                     'line_index' => $index,
-                    'error' => "Availability batch item {$index} must be an object.",
+                    'error'      => "Availability batch item {$index} must be an object.",
                 ];
             }
 
             $lineRequest = $request->duplicate(null, array_merge($request->request->all(), $item));
-            $product = $this->resolveProduct($lineRequest);
+            $product     = $this->resolveProduct($lineRequest);
 
             if (!$product) {
                 return [
-                    'available' => false,
-                    'line_index' => $index,
-                    'available_quantity' => 0,
-                    'reserved_quantity' => 0,
-                    'total_quantity' => 0,
-                    'requested_quantity' => max(1, (int) $lineRequest->input('quantity', 1)),
-                    'shortage_quantity' => max(1, (int) $lineRequest->input('quantity', 1)),
-                    'out_of_stock' => true,
-                    'low_stock' => true,
-                    'product_uuid' => null,
-                    'variant_uuid' => null,
+                    'available'               => false,
+                    'line_index'              => $index,
+                    'available_quantity'      => 0,
+                    'reserved_quantity'       => 0,
+                    'total_quantity'          => 0,
+                    'requested_quantity'      => max(1, (int) $lineRequest->input('quantity', 1)),
+                    'shortage_quantity'       => max(1, (int) $lineRequest->input('quantity', 1)),
+                    'out_of_stock'            => true,
+                    'low_stock'               => true,
+                    'product_uuid'            => null,
+                    'variant_uuid'            => null,
                     'storefront_product_uuid' => $lineRequest->input('storefront_product_uuid'),
                     'storefront_variant_uuid' => $lineRequest->input('storefront_variant_uuid'),
-                    'inventory_summary' => null,
-                    'error' => 'No linked Pallet product was found.',
+                    'inventory_summary'       => null,
+                    'error'                   => 'No linked Pallet product was found.',
                 ];
             }
 
@@ -181,7 +180,7 @@ class StorefrontInventoryController extends Controller
 
         return response()->json([
             'available' => $results->every(fn ($item) => (bool) data_get($item, 'available')),
-            'items' => $results,
+            'items'     => $results,
         ]);
     }
 
@@ -191,7 +190,7 @@ class StorefrontInventoryController extends Controller
             $reservation = DB::transaction(fn () => $this->createStorefrontReservation($request));
 
             return new InventoryReservationResource($reservation->fresh(['product', 'variant', 'inventory', 'warehouse']));
-        } catch (RuntimeException $e) {
+        } catch (\RuntimeException $e) {
             return $this->reservationErrorResponse($e, $request);
         }
     }
@@ -212,7 +211,7 @@ class StorefrontInventoryController extends Controller
                     }
 
                     if (!is_array($item)) {
-                        throw new RuntimeException("Reservation batch item {$index} must be an object.", 422);
+                        throw new \RuntimeException("Reservation batch item {$index} must be an object.", 422);
                     }
 
                     $lineRequest = $request->duplicate(null, array_merge($request->request->all(), $item));
@@ -222,7 +221,7 @@ class StorefrontInventoryController extends Controller
             });
 
             return InventoryReservationResource::collection($reservations->map->fresh(['product', 'variant', 'inventory', 'warehouse']));
-        } catch (RuntimeException $e) {
+        } catch (\RuntimeException $e) {
             return $this->reservationErrorResponse($e, $request);
         }
     }
@@ -243,7 +242,7 @@ class StorefrontInventoryController extends Controller
             $reservations = $this->storefrontReservationContextQuery($request)->get();
 
             return InventoryReservationResource::collection($reservations->map->fresh(['product', 'variant', 'inventory', 'warehouse']));
-        } catch (RuntimeException $e) {
+        } catch (\RuntimeException $e) {
             return response()->error($e->getMessage(), $this->statusCodeFromException($e));
         }
     }
@@ -265,8 +264,8 @@ class StorefrontInventoryController extends Controller
             ->first();
 
         $availableQuantity = (int) ($totals->available_quantity ?? 0);
-        $reservedQuantity = (int) ($totals->reserved_quantity ?? 0);
-        $totalQuantity = (int) ($totals->total_quantity ?? 0);
+        $reservedQuantity  = (int) ($totals->reserved_quantity ?? 0);
+        $totalQuantity     = (int) ($totals->total_quantity ?? 0);
 
         return [
             'product_uuid'             => $product->uuid,
@@ -291,58 +290,58 @@ class StorefrontInventoryController extends Controller
 
         if ($this->hasVariantSelector($request) && !$variant) {
             return [
-                'available' => false,
-                'available_quantity' => 0,
-                'reserved_quantity' => 0,
-                'total_quantity' => 0,
-                'requested_quantity' => max(1, (int) $request->input('quantity', 1)),
-                'shortage_quantity' => max(1, (int) $request->input('quantity', 1)),
-                'out_of_stock' => true,
-                'low_stock' => true,
-                'product_uuid' => $product->uuid,
-                'variant_uuid' => null,
+                'available'               => false,
+                'available_quantity'      => 0,
+                'reserved_quantity'       => 0,
+                'total_quantity'          => 0,
+                'requested_quantity'      => max(1, (int) $request->input('quantity', 1)),
+                'shortage_quantity'       => max(1, (int) $request->input('quantity', 1)),
+                'out_of_stock'            => true,
+                'low_stock'               => true,
+                'product_uuid'            => $product->uuid,
+                'variant_uuid'            => null,
                 'storefront_product_uuid' => $product->storefront_product_uuid,
                 'storefront_variant_uuid' => $request->input('storefront_variant_uuid'),
-                'inventory_summary' => null,
-                'message' => 'No linked Pallet variant was found.',
+                'inventory_summary'       => null,
+                'message'                 => 'No linked Pallet variant was found.',
             ];
         }
 
-        $summary = $this->inventorySummary($product, $variant, $request);
+        $summary           = $this->inventorySummary($product, $variant, $request);
         $availableQuantity = $summary['available_quantity'];
         $requestedQuantity = max(1, (int) $request->input('quantity', 1));
 
         return [
-            'available' => $availableQuantity >= $requestedQuantity,
-            'available_quantity' => $summary['available_quantity'],
-            'reserved_quantity' => $summary['reserved_quantity'],
-            'total_quantity' => $summary['total_quantity'],
-            'requested_quantity' => $requestedQuantity,
-            'shortage_quantity' => max(0, $requestedQuantity - $availableQuantity),
-            'out_of_stock' => (bool) $summary['out_of_stock'],
-            'low_stock' => (bool) $summary['low_stock'],
-            'product_uuid' => $product->uuid,
-            'variant_uuid' => $variant?->uuid,
+            'available'               => $availableQuantity >= $requestedQuantity,
+            'available_quantity'      => $summary['available_quantity'],
+            'reserved_quantity'       => $summary['reserved_quantity'],
+            'total_quantity'          => $summary['total_quantity'],
+            'requested_quantity'      => $requestedQuantity,
+            'shortage_quantity'       => max(0, $requestedQuantity - $availableQuantity),
+            'out_of_stock'            => (bool) $summary['out_of_stock'],
+            'low_stock'               => (bool) $summary['low_stock'],
+            'product_uuid'            => $product->uuid,
+            'variant_uuid'            => $variant?->uuid,
             'storefront_product_uuid' => $summary['storefront_product_uuid'],
             'storefront_variant_uuid' => $summary['storefront_variant_uuid'],
-            'inventory_summary' => $summary,
-            'message' => $availableQuantity >= $requestedQuantity ? 'Inventory is available.' : 'Insufficient inventory available for this Storefront product.',
+            'inventory_summary'       => $summary,
+            'message'                 => $availableQuantity >= $requestedQuantity ? 'Inventory is available.' : 'Insufficient inventory available for this Storefront product.',
         ];
     }
 
     protected function createStorefrontReservation(Request $request): InventoryReservation
     {
         $quantity = max(1, (int) $request->input('quantity', 1));
-        $product = $this->resolveProduct($request);
+        $product  = $this->resolveProduct($request);
 
         if (!$product) {
-            throw new RuntimeException('No linked Pallet product was found.', 404);
+            throw new \RuntimeException('No linked Pallet product was found.', 404);
         }
 
         $variant = $this->resolveVariant($request, $product);
 
         if ($this->hasVariantSelector($request) && !$variant) {
-            throw new RuntimeException('No linked Pallet variant was found.', 404);
+            throw new \RuntimeException('No linked Pallet variant was found.', 404);
         }
 
         $existingReservation = $this->existingStorefrontReservationForKey($request);
@@ -363,29 +362,29 @@ class StorefrontInventoryController extends Controller
             ->first();
 
         if (!$inventory || !$inventory->reserve($quantity)) {
-            throw new RuntimeException('Insufficient inventory available for this Storefront product.', 422);
+            throw new \RuntimeException('Insufficient inventory available for this Storefront product.', 422);
         }
 
         return InventoryReservation::create([
-            'company_uuid' => session('company'),
-            'product_uuid' => $product->uuid,
-            'variant_uuid' => $variant?->uuid,
+            'company_uuid'   => session('company'),
+            'product_uuid'   => $product->uuid,
+            'variant_uuid'   => $variant?->uuid,
             'inventory_uuid' => $inventory->uuid,
             'warehouse_uuid' => $inventory->warehouse_uuid,
-            'order_uuid' => $request->input('order_uuid') ?? $request->input('storefront_order_uuid'),
-            'quantity' => $quantity,
-            'expires_at' => $request->input('expires_at') ?? now()->addMinutes(30),
-            'type' => 'hard',
-            'status' => 'active',
-            'meta' => [
-                'source' => 'storefront',
-                'storefront_product_uuid' => $request->input('storefront_product_uuid'),
-                'storefront_variant_uuid' => $request->input('storefront_variant_uuid'),
-                'storefront_store_uuid' => $request->input('storefront_store_uuid'),
-                'storefront_cart_uuid' => $request->input('storefront_cart_uuid'),
-                'storefront_checkout_uuid' => $request->input('storefront_checkout_uuid'),
-                'storefront_order_uuid' => $request->input('storefront_order_uuid'),
-                'storefront_line_uuid' => $request->input('storefront_line_uuid') ?? $request->input('line_uuid') ?? $request->input('line_id'),
+            'order_uuid'     => $request->input('order_uuid') ?? $request->input('storefront_order_uuid'),
+            'quantity'       => $quantity,
+            'expires_at'     => $request->input('expires_at') ?? now()->addMinutes(30),
+            'type'           => 'hard',
+            'status'         => 'active',
+            'meta'           => [
+                'source'                     => 'storefront',
+                'storefront_product_uuid'    => $request->input('storefront_product_uuid'),
+                'storefront_variant_uuid'    => $request->input('storefront_variant_uuid'),
+                'storefront_store_uuid'      => $request->input('storefront_store_uuid'),
+                'storefront_cart_uuid'       => $request->input('storefront_cart_uuid'),
+                'storefront_checkout_uuid'   => $request->input('storefront_checkout_uuid'),
+                'storefront_order_uuid'      => $request->input('storefront_order_uuid'),
+                'storefront_line_uuid'       => $request->input('storefront_line_uuid') ?? $request->input('line_uuid') ?? $request->input('line_id'),
                 'storefront_reservation_key' => $this->storefrontReservationKey($request),
             ],
         ]);
@@ -425,12 +424,12 @@ class StorefrontInventoryController extends Controller
         }
 
         $checkoutId = $request->input('storefront_checkout_uuid') ?? $request->input('checkout_uuid') ?? $request->input('checkout');
-        $cartId = $request->input('storefront_cart_uuid') ?? $request->input('cart_uuid') ?? $request->input('cart');
-        $orderId = $request->input('storefront_order_uuid') ?? $request->input('order_uuid') ?? $request->input('order');
-        $lineId = $request->input('storefront_line_uuid') ?? $request->input('line_uuid') ?? $request->input('line_id');
-        $productId = $request->input('storefront_product_uuid') ?? $request->input('pallet_product_uuid') ?? $request->input('product_uuid') ?? $request->input('product');
-        $variantId = $request->input('storefront_variant_uuid') ?? $request->input('pallet_variant_uuid') ?? $request->input('variant_uuid') ?? $request->input('variant') ?? 'default';
-        $contextId = $lineId ?: $checkoutId ?: $cartId ?: $orderId;
+        $cartId     = $request->input('storefront_cart_uuid') ?? $request->input('cart_uuid') ?? $request->input('cart');
+        $orderId    = $request->input('storefront_order_uuid') ?? $request->input('order_uuid') ?? $request->input('order');
+        $lineId     = $request->input('storefront_line_uuid') ?? $request->input('line_uuid') ?? $request->input('line_id');
+        $productId  = $request->input('storefront_product_uuid') ?? $request->input('pallet_product_uuid') ?? $request->input('product_uuid') ?? $request->input('product');
+        $variantId  = $request->input('storefront_variant_uuid') ?? $request->input('pallet_variant_uuid') ?? $request->input('variant_uuid') ?? $request->input('variant') ?? 'default';
+        $contextId  = $lineId ?: $checkoutId ?: $cartId ?: $orderId;
 
         if (!$contextId || !$productId) {
             return null;
@@ -455,7 +454,7 @@ class StorefrontInventoryController extends Controller
             ->exists();
 
         if ($exists) {
-            throw new RuntimeException('This Storefront product is already linked to another Pallet product.', 409);
+            throw new \RuntimeException('This Storefront product is already linked to another Pallet product.', 409);
         }
     }
 
@@ -464,14 +463,14 @@ class StorefrontInventoryController extends Controller
         $variantLink = is_object($variantLink) ? (array) $variantLink : $variantLink;
 
         if (!is_array($variantLink)) {
-            throw new RuntimeException('Each Storefront variant link must be an object.', 422);
+            throw new \RuntimeException('Each Storefront variant link must be an object.', 422);
         }
 
-        $variantId = $variantLink['pallet_variant_uuid'] ?? $variantLink['variant_uuid'] ?? $variantLink['variant'] ?? null;
+        $variantId           = $variantLink['pallet_variant_uuid'] ?? $variantLink['variant_uuid'] ?? $variantLink['variant'] ?? null;
         $storefrontVariantId = $variantLink['storefront_variant_uuid'] ?? null;
 
         if (!$variantId) {
-            throw new RuntimeException('Each variant link requires a Pallet variant UUID.', 422);
+            throw new \RuntimeException('Each variant link requires a Pallet variant UUID.', 422);
         }
 
         $variant = $this->findVariant($variantId, $product);
@@ -489,7 +488,7 @@ class StorefrontInventoryController extends Controller
             ->exists();
 
         if ($exists) {
-            throw new RuntimeException('This Storefront variant is already linked to another Pallet variant.', 409);
+            throw new \RuntimeException('This Storefront variant is already linked to another Pallet variant.', 409);
         }
 
         $variant->storefront_variant_uuid = $storefrontVariantId;
@@ -511,7 +510,7 @@ class StorefrontInventoryController extends Controller
                     $reservation = $this->findReservation($id);
 
                     if (!$reservation->{$transition}()) {
-                        throw new RuntimeException('Reservation cannot be transitioned from its current state.', 422);
+                        throw new \RuntimeException('Reservation cannot be transitioned from its current state.', 422);
                     }
 
                     return $reservation;
@@ -519,7 +518,7 @@ class StorefrontInventoryController extends Controller
             });
 
             return InventoryReservationResource::collection($reservations->map->fresh(['product', 'variant', 'inventory', 'warehouse']));
-        } catch (RuntimeException $e) {
+        } catch (\RuntimeException $e) {
             return response()->error($e->getMessage(), $this->statusCodeFromException($e));
         }
     }
@@ -529,18 +528,18 @@ class StorefrontInventoryController extends Controller
         try {
             $reservations = DB::transaction(function () use ($request, $transition) {
                 $includeExpired = $transition === 'release';
-                $reservations = $this->storefrontReservationContextQuery($request, $includeExpired)
+                $reservations   = $this->storefrontReservationContextQuery($request, $includeExpired)
                     ->lockForUpdate()
                     ->get();
 
                 if ($reservations->isEmpty()) {
                     $label = $transition === 'release' ? 'releasable' : 'committable';
-                    throw new RuntimeException("No {$label} Storefront inventory reservations were found for this context.", 404);
+                    throw new \RuntimeException("No {$label} Storefront inventory reservations were found for this context.", 404);
                 }
 
                 return $reservations->map(function ($reservation) use ($transition) {
                     if (!$reservation->{$transition}()) {
-                        throw new RuntimeException('Reservation cannot be transitioned from its current state.', 422);
+                        throw new \RuntimeException('Reservation cannot be transitioned from its current state.', 422);
                     }
 
                     return $reservation;
@@ -548,21 +547,21 @@ class StorefrontInventoryController extends Controller
             });
 
             return InventoryReservationResource::collection($reservations->map->fresh(['product', 'variant', 'inventory', 'warehouse']));
-        } catch (RuntimeException $e) {
+        } catch (\RuntimeException $e) {
             return response()->error($e->getMessage(), $this->statusCodeFromException($e));
         }
     }
 
     protected function storefrontReservationContextQuery(Request $request, bool $includeExpired = false)
     {
-        $checkoutId = $request->input('storefront_checkout_uuid') ?? $request->input('checkout_uuid') ?? $request->input('checkout');
-        $cartId = $request->input('storefront_cart_uuid') ?? $request->input('cart_uuid') ?? $request->input('cart');
-        $orderId = $request->input('storefront_order_uuid') ?? $request->input('order_uuid') ?? $request->input('order');
-        $lineId = $request->input('storefront_line_uuid') ?? $request->input('line_uuid') ?? $request->input('line_id');
+        $checkoutId     = $request->input('storefront_checkout_uuid') ?? $request->input('checkout_uuid') ?? $request->input('checkout');
+        $cartId         = $request->input('storefront_cart_uuid') ?? $request->input('cart_uuid') ?? $request->input('cart');
+        $orderId        = $request->input('storefront_order_uuid') ?? $request->input('order_uuid') ?? $request->input('order');
+        $lineId         = $request->input('storefront_line_uuid') ?? $request->input('line_uuid') ?? $request->input('line_id');
         $reservationKey = $this->storefrontReservationKey($request);
 
         if (!$checkoutId && !$cartId && !$orderId && !$lineId && !$reservationKey) {
-            throw new RuntimeException('A Storefront checkout, cart, order, line, or reservation key is required.', 422);
+            throw new \RuntimeException('A Storefront checkout, cart, order, line, or reservation key is required.', 422);
         }
 
         $query = InventoryReservation::where('company_uuid', session('company'))
@@ -584,29 +583,29 @@ class StorefrontInventoryController extends Controller
             ->when($reservationKey, fn ($query) => $query->where('meta->storefront_reservation_key', $reservationKey));
     }
 
-    protected function reservationErrorResponse(RuntimeException $e, Request $request)
+    protected function reservationErrorResponse(\RuntimeException $e, Request $request)
     {
-        $status = $this->statusCodeFromException($e);
-        $product = $this->resolveProduct($request);
-        $variant = $product ? $this->resolveVariant($request, $product) : null;
+        $status   = $this->statusCodeFromException($e);
+        $product  = $this->resolveProduct($request);
+        $variant  = $product ? $this->resolveVariant($request, $product) : null;
         $quantity = max(1, (int) $request->input('quantity', 1));
-        $summary = $product && (!$this->hasVariantSelector($request) || $variant) ? $this->inventorySummary($product, $variant, $request) : null;
+        $summary  = $product && (!$this->hasVariantSelector($request) || $variant) ? $this->inventorySummary($product, $variant, $request) : null;
 
         return response()->json([
-            'error' => $e->getMessage(),
-            'available_quantity' => $summary['available_quantity'] ?? 0,
-            'requested_quantity' => $quantity,
-            'shortage_quantity' => $summary ? max(0, $quantity - (int) $summary['available_quantity']) : $quantity,
-            'out_of_stock' => (bool) ($summary['out_of_stock'] ?? true),
-            'product_uuid' => $product?->uuid,
-            'variant_uuid' => $variant?->uuid,
+            'error'                   => $e->getMessage(),
+            'available_quantity'      => $summary['available_quantity'] ?? 0,
+            'requested_quantity'      => $quantity,
+            'shortage_quantity'       => $summary ? max(0, $quantity - (int) $summary['available_quantity']) : $quantity,
+            'out_of_stock'            => (bool) ($summary['out_of_stock'] ?? true),
+            'product_uuid'            => $product?->uuid,
+            'variant_uuid'            => $variant?->uuid,
             'storefront_product_uuid' => $summary['storefront_product_uuid'] ?? $request->input('storefront_product_uuid'),
             'storefront_variant_uuid' => $summary['storefront_variant_uuid'] ?? $request->input('storefront_variant_uuid'),
-            'inventory_summary' => $summary,
+            'inventory_summary'       => $summary,
         ], $status);
     }
 
-    protected function statusCodeFromException(RuntimeException $e): int
+    protected function statusCodeFromException(\RuntimeException $e): int
     {
         $code = (int) $e->getCode();
 

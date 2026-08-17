@@ -27,8 +27,8 @@ class StockAdjustmentController extends PalletResourceController
         try {
             $this->validateRequest($request);
 
-            $data = $request->input('stock_adjustment', []);
-            $type = data_get($data, 'type', 'correction');
+            $data              = $request->input('stock_adjustment', []);
+            $type              = data_get($data, 'type', 'correction');
             $requestedQuantity = (int) data_get($data, 'quantity', 0);
 
             if ($requestedQuantity <= 0) {
@@ -36,7 +36,7 @@ class StockAdjustmentController extends PalletResourceController
             }
 
             $productId = data_get($data, 'product_uuid');
-            $product = Product::where('company_uuid', session('company'))
+            $product   = Product::where('company_uuid', session('company'))
                 ->where(fn ($query) => $query->where('uuid', $productId)->orWhere('public_id', $productId))
                 ->first();
 
@@ -50,7 +50,7 @@ class StockAdjustmentController extends PalletResourceController
 
             if (data_get($data, 'variant_uuid')) {
                 $variantId = data_get($data, 'variant_uuid');
-                $variant = ProductVariant::where('company_uuid', session('company'))
+                $variant   = ProductVariant::where('company_uuid', session('company'))
                     ->where('product_uuid', $product->uuid)
                     ->where(fn ($query) => $query->where('uuid', $variantId)->orWhere('public_id', $variantId))
                     ->first();
@@ -67,7 +67,7 @@ class StockAdjustmentController extends PalletResourceController
             }
 
             $warehouseId = data_get($data, 'warehouse_uuid');
-            $warehouse = Warehouse::where('company_uuid', session('company'))
+            $warehouse   = Warehouse::where('company_uuid', session('company'))
                 ->where(fn ($query) => $query->where('uuid', $warehouseId)->orWhere('public_id', $warehouseId))
                 ->first();
 
@@ -75,7 +75,7 @@ class StockAdjustmentController extends PalletResourceController
                 return response()->error('Selected warehouse could not be found.', 422);
             }
 
-            $data['product_uuid'] = $product->uuid;
+            $data['product_uuid']   = $product->uuid;
             $data['warehouse_uuid'] = $warehouse->uuid;
 
             $adjustment = DB::transaction(function () use ($data, $type, $requestedQuantity, $product) {
@@ -101,9 +101,9 @@ class StockAdjustmentController extends PalletResourceController
                     throw new \RuntimeException('No matching inventory record was found for this adjustment.');
                 }
 
-                $beforeQuantity = (int) $inventory->quantity;
+                $beforeQuantity   = (int) $inventory->quantity;
                 $reservedQuantity = (int) $inventory->reserved_quantity;
-                $afterQuantity = $this->calculateAfterQuantity($type, $beforeQuantity, $requestedQuantity);
+                $afterQuantity    = $this->calculateAfterQuantity($type, $beforeQuantity, $requestedQuantity);
 
                 if ($afterQuantity < 0) {
                     throw new \RuntimeException('Stock adjustment cannot reduce inventory below zero.');
@@ -178,10 +178,10 @@ class StockAdjustmentController extends PalletResourceController
     protected function calculateAfterQuantity(string $type, int $beforeQuantity, int $requestedQuantity): int
     {
         return match ($type) {
-            'add', 'receive', 'found' => $beforeQuantity + $requestedQuantity,
+            'add', 'receive', 'found'            => $beforeQuantity + $requestedQuantity,
             'remove', 'damage', 'expiry', 'loss' => $beforeQuantity - $requestedQuantity,
-            'correction', 'count' => $requestedQuantity,
-            default => $beforeQuantity + $requestedQuantity,
+            'correction', 'count'                => $requestedQuantity,
+            default                              => $beforeQuantity + $requestedQuantity,
         };
     }
 }
