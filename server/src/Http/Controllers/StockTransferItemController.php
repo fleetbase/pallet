@@ -30,6 +30,12 @@ class StockTransferItemController extends PalletResourceController
             return response()->error('Selected transfer could not be found.', 422);
         }
 
+        // items added after approval would never be shipped, and items added
+        // after shipping would be received without stock ever leaving the source
+        if (!in_array($transfer->status, ['pending', 'draft'], true)) {
+            return response()->error("Items cannot be added to a transfer with status '{$transfer->status}'.", 422);
+        }
+
         if (!$product) {
             return response()->error('Product is required to add a transfer item.', 422);
         }

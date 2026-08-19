@@ -26,6 +26,15 @@ class PalletServiceProvider extends CoreServiceProvider
     public $observers = [];
 
     /**
+     * The console commands registered with the service provider.
+     *
+     * @var array
+     */
+    public $commands = [
+        \Fleetbase\Pallet\Console\Commands\ReleaseExpiredReservations::class,
+    ];
+
+    /**
      * Register any application services.
      *
      * Within the register method, you should only bind things into the
@@ -53,8 +62,12 @@ class PalletServiceProvider extends CoreServiceProvider
      */
     public function boot()
     {
+        $this->registerCommands();
+        $this->scheduleCommands(function ($schedule) {
+            // abandoned checkouts otherwise hold reserved stock forever
+            $schedule->command('pallet:release-expired-reservations')->everyFiveMinutes()->storeOutputInDb();
+        });
         $this->registerObservers();
-        $this->registerExpansionsFrom(__DIR__ . '/../Expansions');
         $this->loadRoutesFrom(__DIR__ . '/../routes.php');
         $this->loadMigrationsFrom(__DIR__ . '/../../migrations');
     }

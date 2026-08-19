@@ -86,3 +86,23 @@ test('completed transfers cannot be cancelled', function () {
 
     expect(fn () => $transfer->fresh()->cancel())->toThrow(RuntimeException::class);
 });
+
+test('items cannot be added to a transfer once it leaves pending', function () {
+    [$transfer, , $product] = makeTransferFixture(10, 4);
+
+    session(['company' => $transfer->company_uuid]);
+    $transfer->approve();
+
+    $response = (new Fleetbase\Pallet\Http\Controllers\StockTransferItemController())->createRecord(
+        Illuminate\Http\Request::create('/', 'POST', [
+            'stock_transfer_item' => [
+                'stock_transfer_uuid' => $transfer->uuid,
+                'product_uuid'        => $product->uuid,
+                'quantity'            => 2,
+            ],
+        ])
+    );
+
+    expect($response->getStatusCode())->toBe(422)
+        ->and($transfer->fresh()->items)->toHaveCount(1);
+});

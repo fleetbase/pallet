@@ -3,6 +3,8 @@
 namespace Fleetbase\Pallet\Tests;
 
 use Composer\InstalledVersions;
+use Fleetbase\Pallet\Providers\PalletServiceProvider;
+use Illuminate\Contracts\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as TestbenchTestCase;
 
@@ -67,6 +69,20 @@ abstract class TestCase extends TestbenchTestCase
         // model saves flush the response cache and log activity; keep both inert in tests
         $app['config']->set('responsecache.enabled', false);
         $app['config']->set('activitylog.enabled', false);
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // the full PalletServiceProvider pulls in the Core/FleetOps providers,
+        // which the SQLite lane cannot boot; register the commands it declares
+        // directly so console behavior is still exercised
+        $kernel = $this->app->make(ConsoleKernel::class);
+
+        foreach ((new PalletServiceProvider($this->app))->commands as $command) {
+            $kernel->registerCommand($this->app->make($command));
+        }
     }
 
     protected function defineDatabaseMigrations(): void
