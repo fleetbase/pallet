@@ -23,25 +23,24 @@ This monorepo contains both the frontend and backend components of the Pallet ex
 ```
 ├── addon
 ├── app
-├── assets
 ├── translations
 ├── config
 ├── node_modules
 ├── server
 │ ├── config
-│ ├── data
 │ ├── migrations
-│ ├── resources
 │ ├── src
-│ ├── tests
-│ └── vendor
+│ └── tests
+├── server_vendor
 ├── tests
+├── extension.json
 ├── testem.js
 ├── index.js
 ├── package.json
 ├── phpstan.neon.dist
 ├── phpunit.xml.dist
 ├── pnpm-lock.yaml
+├── pnpm-workspace.yaml
 ├── ember-cli-build.js
 ├── composer.json
 ├── CONTRIBUTING.md
