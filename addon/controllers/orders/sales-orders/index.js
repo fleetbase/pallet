@@ -7,6 +7,7 @@ import { timeout } from 'ember-concurrency';
 import { task } from 'ember-concurrency-decorators';
 
 export default class SalesOrdersIndexController extends Controller {
+    @service intl;
     /**
      * Inject the `notifications` service
      *
@@ -118,10 +119,10 @@ export default class SalesOrdersIndexController extends Controller {
      * @var {Array}
      */
     statusOptions = [
-        { value: 'pending', label: 'Pending' },
-        { value: 'partial', label: 'Partial' },
-        { value: 'fulfilled', label: 'Fulfilled' },
-        { value: 'cancelled', label: 'Cancelled' },
+        { value: 'pending', label: this.intl.t('status.pending') },
+        { value: 'partial', label: this.intl.t('status.partial') },
+        { value: 'fulfilled', label: this.intl.t('status.fulfilled') },
+        { value: 'cancelled', label: this.intl.t('status.cancelled') },
     ];
 
     /**
@@ -131,7 +132,7 @@ export default class SalesOrdersIndexController extends Controller {
      */
     @tracked columns = [
         {
-            label: 'SO Number',
+            label: this.intl.t('columns.so-number'),
             valuePath: 'public_id',
             width: '140px',
             cellComponent: 'table/cell/anchor',
@@ -143,7 +144,7 @@ export default class SalesOrdersIndexController extends Controller {
             filterComponent: 'filter/string',
         },
         {
-            label: 'Customer Ref',
+            label: this.intl.t('columns.customer-ref'),
             valuePath: 'customer_reference_code',
             width: '140px',
             resizable: true,
@@ -152,7 +153,7 @@ export default class SalesOrdersIndexController extends Controller {
             filterComponent: 'filter/string',
         },
         {
-            label: 'Reference',
+            label: this.intl.t('columns.reference'),
             valuePath: 'reference_code',
             width: '130px',
             resizable: true,
@@ -161,7 +162,7 @@ export default class SalesOrdersIndexController extends Controller {
             filterComponent: 'filter/string',
         },
         {
-            label: 'Items',
+            label: this.intl.t('columns.items'),
             valuePath: 'item_count',
             width: '70px',
             resizable: false,
@@ -169,7 +170,7 @@ export default class SalesOrdersIndexController extends Controller {
             filterable: false,
         },
         {
-            label: 'Status',
+            label: this.intl.t('common.status'),
             valuePath: 'status',
             cellComponent: 'table/cell/status',
             width: '110px',
@@ -180,7 +181,7 @@ export default class SalesOrdersIndexController extends Controller {
             filterOptions: this.statusOptions,
         },
         {
-            label: 'Expected Delivery',
+            label: this.intl.t('columns.expected-delivery'),
             valuePath: 'expected_delivery_at',
             width: '140px',
             resizable: true,
@@ -189,7 +190,7 @@ export default class SalesOrdersIndexController extends Controller {
             filterComponent: 'filter/date',
         },
         {
-            label: 'Created At',
+            label: this.intl.t('common.created-at'),
             valuePath: 'createdAt',
             sortParam: 'created_at',
             width: '120px',
@@ -199,7 +200,7 @@ export default class SalesOrdersIndexController extends Controller {
             filterComponent: 'filter/date',
         },
         {
-            label: 'Updated At',
+            label: this.intl.t('common.updated-at'),
             valuePath: 'updatedAt',
             sortParam: 'updated_at',
             width: '120px',
@@ -221,11 +222,11 @@ export default class SalesOrdersIndexController extends Controller {
             width: '10%',
             actions: [
                 {
-                    label: 'View Details',
+                    label: this.intl.t('actions.view-details'),
                     fn: this.viewSalesOrder,
                 },
                 {
-                    label: 'Fulfill Order',
+                    label: this.intl.t('actions.fulfill-order'),
                     fn: this.fulfillSalesOrder,
                     isVisible: (salesOrder) => ['pending', 'partial'].includes(salesOrder.status),
                 },
@@ -233,14 +234,14 @@ export default class SalesOrdersIndexController extends Controller {
                     separator: true,
                 },
                 {
-                    label: 'Edit Sales Order',
+                    label: this.intl.t('actions.edit-sales-order'),
                     fn: this.editSalesOrder,
                 },
                 {
                     separator: true,
                 },
                 {
-                    label: 'Delete Sales Order',
+                    label: this.intl.t('actions.delete-sales-order'),
                     fn: this.deleteSalesOrder,
                 },
             ],

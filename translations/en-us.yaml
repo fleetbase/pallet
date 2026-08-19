@@ -257,12 +257,6 @@ widgets:
     in-stock: In Stock
     low-stock: Low Stock
     stock-value: Stock Value
-  status:
-    pending: Pending
-    partial: Partial
-    received: Received
-    fulfilled: Fulfilled
-    cancelled: Cancelled
   empty:
     healthy: All stock levels are healthy
     no-movement: No movement data yet
@@ -284,6 +278,42 @@ facilities:
     zone: Zone
     code: Code
     capacity: Capacity
+
+# Shared record status words
+status:
+  pending: Pending
+  partial: Partial
+  received: Received
+  fulfilled: Fulfilled
+  cancelled: Cancelled
+
+# Shared table column headers
+columns:
+  product: Product
+  product-sku: Product SKU
+  quantity: Quantity
+  batch: Batch
+  expiry-date: Expiry Date
+  last-stocked: Last Stocked
+  reference: Reference
+  items: Items
+  expected-delivery: Expected Delivery
+  supplier: Supplier
+  customer-ref: Customer Ref
+  po-number: PO Number
+  so-number: SO Number
+
+# Row and toolbar actions
+actions:
+  view-details: View Details
+  view-inventory: View Inventory
+  edit-inventory: Edit Inventory
+  edit-purchase-order: Edit Purchase Order
+  delete-purchase-order: Delete Purchase Order
+  receive-goods: Receive Goods
+  edit-sales-order: Edit Sales Order
+  delete-sales-order: Delete Sales Order
+  fulfill-order: Fulfill Order
 
 product:
   sections:
@@ -527,6 +557,14 @@ batch:
 # data-change log — that is handled by Spatie Activity Log at the framework level.
 audit:
   title: Audit Trail
+  columns:
+    event: Event
+    action: Action
+    subject: Subject
+    subject-id: Subject ID
+    reason: Reason
+    performed-by: Performed By
+    date: Date
   search_placeholder: Search audit events...
   all_events: All Events
   filter_event_type: Event Type

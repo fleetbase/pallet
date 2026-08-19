@@ -6,6 +6,7 @@ import { isBlank } from '@ember/utils';
 import { task, timeout } from 'ember-concurrency';
 
 export default class InventoryLowStockController extends Controller {
+    @service intl;
     /**
      * Inject the `notifications` service
      *
@@ -127,7 +128,7 @@ export default class InventoryLowStockController extends Controller {
      */
     @tracked columns = [
         {
-            label: 'Product',
+            label: this.intl.t('columns.product'),
             valuePath: 'product.name',
             width: '170px',
             cellComponent: 'cell/product-info',
@@ -138,7 +139,7 @@ export default class InventoryLowStockController extends Controller {
             filterComponent: 'filter/string',
         },
         {
-            label: 'Product SKU',
+            label: this.intl.t('columns.product-sku'),
             valuePath: 'product.sku',
             cellComponent: 'click-to-copy',
             width: '120px',
@@ -148,12 +149,12 @@ export default class InventoryLowStockController extends Controller {
             filterComponent: 'filter/string',
         },
         {
-            label: 'Quantity',
+            label: this.intl.t('columns.quantity'),
             valuePath: 'quantity',
             width: '120px',
         },
         {
-            label: 'Batch',
+            label: this.intl.t('columns.batch'),
             valuePath: 'batch.name',
             width: '120px',
             cellComponent: 'click-to-copy',
@@ -163,7 +164,7 @@ export default class InventoryLowStockController extends Controller {
             filterComponent: 'filter/string',
         },
         {
-            label: 'Status',
+            label: this.intl.t('common.status'),
             valuePath: 'status',
             cellComponent: 'table/cell/status',
             width: '10%',
@@ -173,7 +174,7 @@ export default class InventoryLowStockController extends Controller {
             filterComponent: 'filter/multi-option',
         },
         {
-            label: 'Last Stocked',
+            label: this.intl.t('columns.last-stocked'),
             valuePath: 'createdAt',
             sortParam: 'created_at',
             width: '10%',
@@ -183,7 +184,7 @@ export default class InventoryLowStockController extends Controller {
             filterComponent: 'filter/date',
         },
         {
-            label: 'Updated At',
+            label: this.intl.t('common.updated-at'),
             valuePath: 'updatedAt',
             sortParam: 'updated_at',
             width: '10%',
@@ -205,11 +206,11 @@ export default class InventoryLowStockController extends Controller {
             width: '10%',
             actions: [
                 {
-                    label: 'View Inventory',
+                    label: this.intl.t('actions.view-inventory'),
                     fn: this.viewInventory,
                 },
                 {
-                    label: 'Edit Inventory',
+                    label: this.intl.t('actions.edit-inventory'),
                     fn: this.editInventory,
                 },
             ],

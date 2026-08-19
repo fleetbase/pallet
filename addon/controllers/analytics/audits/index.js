@@ -15,6 +15,7 @@ import { task } from 'ember-concurrency-decorators';
  * that is handled by Spatie Activity Log at the framework level.
  */
 export default class AuditsIndexController extends Controller {
+    @service intl;
     /**
      * @service notifications
      */
@@ -81,14 +82,14 @@ export default class AuditsIndexController extends Controller {
      * @var {Array}
      */
     eventTypeOptions = [
-        { label: 'All Events', value: null },
-        { label: 'Stock Adjustment', value: 'stock_adjustment' },
-        { label: 'Cycle Count', value: 'cycle_count' },
-        { label: 'PO Received', value: 'po_received' },
-        { label: 'SO Fulfilled', value: 'so_fulfilled' },
-        { label: 'Stock Transfer', value: 'stock_transfer' },
-        { label: 'Inventory Received', value: 'inventory_created' },
-        { label: 'Batch Created', value: 'batch_created' },
+        { label: this.intl.t('audit.all_events'), value: null },
+        { label: this.intl.t('audit.event-types.stock_adjustment'), value: 'stock_adjustment' },
+        { label: this.intl.t('audit.event-types.cycle_count'), value: 'cycle_count' },
+        { label: this.intl.t('audit.event-types.po_received'), value: 'po_received' },
+        { label: this.intl.t('audit.event-types.so_fulfilled'), value: 'so_fulfilled' },
+        { label: this.intl.t('audit.event-types.stock_transfer'), value: 'stock_transfer' },
+        { label: this.intl.t('audit.event-types.inventory_receive'), value: 'inventory_created' },
+        { label: this.intl.t('audit.event-types.batch_created'), value: 'batch_created' },
     ];
 
     /**
@@ -99,7 +100,7 @@ export default class AuditsIndexController extends Controller {
      */
     @tracked columns = [
         {
-            label: 'Event',
+            label: this.intl.t('audit.columns.event'),
             valuePath: 'eventTypeLabel',
             cellComponent: 'table/cell/status',
             width: '160px',
@@ -108,52 +109,52 @@ export default class AuditsIndexController extends Controller {
             filterable: true,
             filterComponent: 'filter/select',
             filterOptions: [
-                { label: 'Stock Adjustment', value: 'stock_adjustment' },
-                { label: 'Cycle Count', value: 'cycle_count' },
-                { label: 'PO Received', value: 'po_received' },
-                { label: 'SO Fulfilled', value: 'so_fulfilled' },
-                { label: 'Stock Transfer', value: 'stock_transfer' },
-                { label: 'Inventory Received', value: 'inventory_created' },
+                { label: this.intl.t('audit.event-types.stock_adjustment'), value: 'stock_adjustment' },
+                { label: this.intl.t('audit.event-types.cycle_count'), value: 'cycle_count' },
+                { label: this.intl.t('audit.event-types.po_received'), value: 'po_received' },
+                { label: this.intl.t('audit.event-types.so_fulfilled'), value: 'so_fulfilled' },
+                { label: this.intl.t('audit.event-types.stock_transfer'), value: 'stock_transfer' },
+                { label: this.intl.t('audit.event-types.inventory_receive'), value: 'inventory_created' },
             ],
             filterParam: 'event_type',
         },
         {
-            label: 'Action',
+            label: this.intl.t('audit.columns.action'),
             valuePath: 'action',
             width: '140px',
             resizable: true,
             sortable: false,
         },
         {
-            label: 'Subject',
+            label: this.intl.t('audit.columns.subject'),
             valuePath: 'subjectLabel',
             width: '140px',
             resizable: true,
             sortable: false,
         },
         {
-            label: 'Subject ID',
+            label: this.intl.t('audit.columns.subject-id'),
             valuePath: 'auditable_uuid',
             width: '200px',
             resizable: true,
             sortable: false,
         },
         {
-            label: 'Reason',
+            label: this.intl.t('audit.columns.reason'),
             valuePath: 'reason',
             width: '200px',
             resizable: true,
             sortable: false,
         },
         {
-            label: 'Performed By',
+            label: this.intl.t('audit.columns.performed-by'),
             valuePath: 'performedBy.name',
             width: '160px',
             resizable: true,
             sortable: false,
         },
         {
-            label: 'Date',
+            label: this.intl.t('audit.columns.date'),
             valuePath: 'createdAt',
             width: '160px',
             resizable: true,

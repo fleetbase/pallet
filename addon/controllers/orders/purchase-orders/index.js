@@ -7,6 +7,7 @@ import { timeout } from 'ember-concurrency';
 import { task } from 'ember-concurrency-decorators';
 
 export default class PurchaseOrdersIndexController extends Controller {
+    @service intl;
     /**
      * Inject the `notifications` service
      *
@@ -118,10 +119,10 @@ export default class PurchaseOrdersIndexController extends Controller {
      * @var {Array}
      */
     statusOptions = [
-        { value: 'pending', label: 'Pending' },
-        { value: 'partial', label: 'Partial' },
-        { value: 'received', label: 'Received' },
-        { value: 'cancelled', label: 'Cancelled' },
+        { value: 'pending', label: this.intl.t('status.pending') },
+        { value: 'partial', label: this.intl.t('status.partial') },
+        { value: 'received', label: this.intl.t('status.received') },
+        { value: 'cancelled', label: this.intl.t('status.cancelled') },
     ];
 
     /**
@@ -131,7 +132,7 @@ export default class PurchaseOrdersIndexController extends Controller {
      */
     @tracked columns = [
         {
-            label: 'PO Number',
+            label: this.intl.t('columns.po-number'),
             valuePath: 'public_id',
             width: '140px',
             cellComponent: 'table/cell/anchor',
@@ -143,7 +144,7 @@ export default class PurchaseOrdersIndexController extends Controller {
             filterComponent: 'filter/string',
         },
         {
-            label: 'Supplier',
+            label: this.intl.t('columns.supplier'),
             valuePath: 'supplier.name',
             width: '160px',
             resizable: true,
@@ -151,7 +152,7 @@ export default class PurchaseOrdersIndexController extends Controller {
             filterable: false,
         },
         {
-            label: 'Reference',
+            label: this.intl.t('columns.reference'),
             valuePath: 'reference_code',
             width: '130px',
             resizable: true,
@@ -160,7 +161,7 @@ export default class PurchaseOrdersIndexController extends Controller {
             filterComponent: 'filter/string',
         },
         {
-            label: 'Items',
+            label: this.intl.t('columns.items'),
             valuePath: 'item_count',
             width: '70px',
             resizable: false,
@@ -168,7 +169,7 @@ export default class PurchaseOrdersIndexController extends Controller {
             filterable: false,
         },
         {
-            label: 'Status',
+            label: this.intl.t('common.status'),
             valuePath: 'status',
             cellComponent: 'table/cell/status',
             width: '110px',
@@ -179,7 +180,7 @@ export default class PurchaseOrdersIndexController extends Controller {
             filterOptions: this.statusOptions,
         },
         {
-            label: 'Expected Delivery',
+            label: this.intl.t('columns.expected-delivery'),
             valuePath: 'expected_delivery_at',
             width: '140px',
             resizable: true,
@@ -188,7 +189,7 @@ export default class PurchaseOrdersIndexController extends Controller {
             filterComponent: 'filter/date',
         },
         {
-            label: 'Created At',
+            label: this.intl.t('common.created-at'),
             valuePath: 'createdAt',
             sortParam: 'created_at',
             width: '120px',
@@ -198,7 +199,7 @@ export default class PurchaseOrdersIndexController extends Controller {
             filterComponent: 'filter/date',
         },
         {
-            label: 'Updated At',
+            label: this.intl.t('common.updated-at'),
             valuePath: 'updatedAt',
             sortParam: 'updated_at',
             width: '120px',
@@ -220,11 +221,11 @@ export default class PurchaseOrdersIndexController extends Controller {
             width: '10%',
             actions: [
                 {
-                    label: 'View Details',
+                    label: this.intl.t('actions.view-details'),
                     fn: this.viewPurchaseOrder,
                 },
                 {
-                    label: 'Receive Goods',
+                    label: this.intl.t('actions.receive-goods'),
                     fn: this.receivePurchaseOrder,
                     isVisible: (purchaseOrder) => ['pending', 'partial'].includes(purchaseOrder.status),
                 },
@@ -232,14 +233,14 @@ export default class PurchaseOrdersIndexController extends Controller {
                     separator: true,
                 },
                 {
-                    label: 'Edit Purchase Order',
+                    label: this.intl.t('actions.edit-purchase-order'),
                     fn: this.editPurchaseOrder,
                 },
                 {
                     separator: true,
                 },
                 {
-                    label: 'Delete Purchase Order',
+                    label: this.intl.t('actions.delete-purchase-order'),
                     fn: this.deletePurchaseOrder,
                 },
             ],
