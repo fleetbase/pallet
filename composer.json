@@ -65,6 +65,7 @@
         "vendor-dir": "./server_vendor",
         "sort-packages": true,
         "preferred-install": "dist",
+        "process-timeout": 1800,
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
