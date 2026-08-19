@@ -1,15 +1,15 @@
-<Layout::Section::Header @title="Reservations">
+<Layout::Section::Header @title={{t "operations.reservations.title"}}>
     <div class="text-sm text-gray-500 dark:text-gray-300">View committed stock before fulfillment execution.</div>
 </Layout::Section::Header>
 
 <Layout::Section::Body class="overflow-y-scroll h-full p-4">
-    <ContentPanel @title="Create Reservation" @open={{true}} @wrapperClass="bordered-classic mb-4">
+    <ContentPanel @title={{t "operations.reservations.create"}} @open={{true}} @wrapperClass="bordered-classic mb-4">
         <div class="grid grid-cols-1 gap-3 text-xs lg:grid-cols-6">
-            <InputGroup @name="Product">
+            <InputGroup @name={{t "operations.common.product"}}>
                 <ModelSelect
                     @modelName="pallet-product"
                     @selectedModel={{this.newReservation.product}}
-                    @placeholder="Product"
+                    @placeholder={{t "operations.common.product"}}
                     @triggerClass="form-select form-input"
                     @infiniteScroll={{false}}
                     @renderInPlace={{true}}
@@ -20,13 +20,13 @@
                 </ModelSelect>
             </InputGroup>
 
-            <InputGroup @name="Variant">
+            <InputGroup @name={{t "operations.common.variant"}}>
                 <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
                     <PowerSelect
                         @options={{this.newReservation.product.variants}}
                         @selected={{this.newReservation.variant}}
                         @onChange={{this.setReservationVariant}}
-                        @placeholder="Variant"
+                        @placeholder={{t "operations.common.variant"}}
                         @triggerClass="form-select form-input"
                         @disabled={{not this.newReservation.product.has_variants}}
                         as |variant|
@@ -36,11 +36,11 @@
                 </div>
             </InputGroup>
 
-            <InputGroup @name="Warehouse">
+            <InputGroup @name={{t "operations.common.warehouse"}}>
                 <ModelSelect
                     @modelName="warehouse"
                     @selectedModel={{this.newReservation.warehouse}}
-                    @placeholder="Warehouse"
+                    @placeholder={{t "operations.common.warehouse"}}
                     @triggerClass="form-select form-input"
                     @infiniteScroll={{false}}
                     @renderInPlace={{true}}
@@ -51,50 +51,50 @@
                 </ModelSelect>
             </InputGroup>
 
-            <InputGroup @name="Quantity">
+            <InputGroup @name={{t "operations.common.quantity"}}>
                 <Input @value={{this.newReservation.quantity}} @type="number" class="w-full form-input" placeholder="Qty" />
             </InputGroup>
 
-            <InputGroup @name="Expires">
+            <InputGroup @name={{t "operations.reservations.expires"}}>
                 <Input @value={{this.newReservation.expires_at}} @type="datetime-local" class="w-full form-input" />
             </InputGroup>
 
             <div class="flex items-end">
-                <Button @icon="plus" @type="primary" @text="Reserve" @onClick={{this.createReservation}} @wrapperClass="w-full" />
+                <Button @icon="plus" @type="primary" @text={{t "operations.reservations.reserve"}} @onClick={{this.createReservation}} @wrapperClass="w-full" />
             </div>
         </div>
     </ContentPanel>
 
-    <ContentPanel @title="Storefront Reservation Context" @open={{true}} @wrapperClass="bordered-classic mb-4">
+    <ContentPanel @title={{t "operations.reservations.context-title"}} @open={{true}} @wrapperClass="bordered-classic mb-4">
         <div class="grid grid-cols-1 gap-3 text-xs lg:grid-cols-6">
-            <InputGroup @name="Checkout">
+            <InputGroup @name={{t "operations.reservations.checkout"}}>
                 <Input @value={{this.storefrontContext.storefront_checkout_uuid}} @type="text" class="w-full form-input" placeholder="Checkout UUID" />
             </InputGroup>
-            <InputGroup @name="Cart">
+            <InputGroup @name={{t "operations.reservations.cart"}}>
                 <Input @value={{this.storefrontContext.storefront_cart_uuid}} @type="text" class="w-full form-input" placeholder="Cart UUID" />
             </InputGroup>
-            <InputGroup @name="Order">
+            <InputGroup @name={{t "operations.reservations.order"}}>
                 <Input @value={{this.storefrontContext.storefront_order_uuid}} @type="text" class="w-full form-input" placeholder="Order UUID" />
             </InputGroup>
-            <InputGroup @name="Line">
+            <InputGroup @name={{t "operations.reservations.line"}}>
                 <Input @value={{this.storefrontContext.storefront_line_uuid}} @type="text" class="w-full form-input" placeholder="Line UUID" />
             </InputGroup>
-            <InputGroup @name="Reservation Key">
+            <InputGroup @name={{t "operations.reservations.reservation-key"}}>
                 <Input @value={{this.storefrontContext.storefront_reservation_key}} @type="text" class="w-full form-input" placeholder="Key" />
             </InputGroup>
             <div class="flex flex-wrap items-end gap-2">
-                <Button @icon="search" @type="default" @text="Lookup" @onClick={{this.lookupStorefrontContext}} @wrapperClass="flex-1" />
-                <Button @icon="unlock" @type="default" @text="Release" @onClick={{this.releaseStorefrontContext}} @wrapperClass="flex-1" />
-                <Button @icon="check" @type="primary" @text="Fulfill" @onClick={{this.fulfillStorefrontContext}} @wrapperClass="flex-1" />
+                <Button @icon="search" @type="default" @text={{t "operations.reservations.lookup"}} @onClick={{this.lookupStorefrontContext}} @wrapperClass="flex-1" />
+                <Button @icon="unlock" @type="default" @text={{t "operations.reservations.release"}} @onClick={{this.releaseStorefrontContext}} @wrapperClass="flex-1" />
+                <Button @icon="check" @type="primary" @text={{t "operations.reservations.fulfill"}} @onClick={{this.fulfillStorefrontContext}} @wrapperClass="flex-1" />
             </div>
         </div>
     </ContentPanel>
 
-    <ContentPanel @title="Inventory Reservations" @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
+    <ContentPanel @title={{t "operations.reservations.list-title"}} @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
         {{#if this.hasContextReservations}}
             <div class="flex items-center justify-between border-b border-gray-100 px-4 py-2 text-xs dark:border-gray-800">
                 <span class="font-semibold text-gray-600 dark:text-gray-300">Showing Storefront context results</span>
-                <Button @icon="times" @type="default" @size="xs" @text="Clear" @onClick={{this.clearStorefrontContextResults}} />
+                <Button @icon="times" @type="default" @size="xs" @text={{t "operations.reservations.clear"}} @onClick={{this.clearStorefrontContextResults}} />
             </div>
         {{/if}}
         <div class="overflow-x-auto">
@@ -129,8 +129,8 @@
                         <td class="px-4 py-3">
                             <div class="flex items-center justify-end gap-2">
                                 {{#if reservation.is_active}}
-                                    <Button @icon="unlock" @type="default" @size="xs" @text="Release" @onClick={{fn this.releaseReservation reservation}} />
-                                    <Button @icon="check" @type="primary" @size="xs" @text="Fulfill" @onClick={{fn this.fulfillReservation reservation}} />
+                                    <Button @icon="unlock" @type="default" @size="xs" @text={{t "operations.reservations.release"}} @onClick={{fn this.releaseReservation reservation}} />
+                                    <Button @icon="check" @type="primary" @size="xs" @text={{t "operations.reservations.fulfill"}} @onClick={{fn this.fulfillReservation reservation}} />
                                 {{else}}
                                     <span class="text-xs text-gray-400">No actions</span>
                                 {{/if}}

@@ -1,15 +1,15 @@
-<Layout::Section::Header @title="Cycle Counts">
+<Layout::Section::Header @title={{t "operations.cycle-counts.title"}}>
     <div class="text-sm text-gray-500 dark:text-gray-300">Schedule and reconcile recurring inventory counts by warehouse or zone.</div>
 </Layout::Section::Header>
 
 <Layout::Section::Body class="overflow-y-scroll h-full p-4">
-    <ContentPanel @title="Create Cycle Count" @open={{true}} @wrapperClass="bordered-classic mb-4">
+    <ContentPanel @title={{t "operations.cycle-counts.create"}} @open={{true}} @wrapperClass="bordered-classic mb-4">
         <div class="grid grid-cols-1 gap-3 text-xs lg:grid-cols-5">
-            <InputGroup @name="Warehouse">
+            <InputGroup @name={{t "operations.common.warehouse"}}>
                 <ModelSelect
                     @modelName="warehouse"
                     @selectedModel={{this.newCycleCount.warehouse}}
-                    @placeholder="Warehouse"
+                    @placeholder={{t "operations.common.warehouse"}}
                     @triggerClass="form-select form-input"
                     @infiniteScroll={{false}}
                     @renderInPlace={{true}}
@@ -20,11 +20,11 @@
                 </ModelSelect>
             </InputGroup>
 
-            <InputGroup @name="Zone">
+            <InputGroup @name={{t "operations.cycle-counts.zone"}}>
                 <ModelSelect
                     @modelName="warehouse-zone"
                     @selectedModel={{this.newCycleCount.zone}}
-                    @placeholder="Optional zone"
+                    @placeholder={{t "operations.cycle-counts.zone-placeholder"}}
                     @triggerClass="form-select form-input"
                     @infiniteScroll={{false}}
                     @renderInPlace={{true}}
@@ -35,21 +35,21 @@
                 </ModelSelect>
             </InputGroup>
 
-            <InputGroup @name="Type">
+            <InputGroup @name={{t "operations.common.type"}}>
                 <Input @value={{this.newCycleCount.type}} class="w-full form-input" placeholder="standard" />
             </InputGroup>
 
-            <InputGroup @name="Scheduled">
+            <InputGroup @name={{t "operations.common.scheduled"}}>
                 <Input @value={{this.newCycleCount.scheduled_at}} @type="datetime-local" class="w-full form-input" />
             </InputGroup>
 
             <div class="flex items-end">
-                <Button @icon="plus" @type="primary" @text="Create" @onClick={{this.createCycleCount}} @wrapperClass="w-full" />
+                <Button @icon="plus" @type="primary" @text={{t "common.create"}} @onClick={{this.createCycleCount}} @wrapperClass="w-full" />
             </div>
         </div>
     </ContentPanel>
 
-    <ContentPanel @title="Cycle Counts" @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
+    <ContentPanel @title={{t "operations.cycle-counts.title"}} @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
         <table class="w-full text-sm">
             <thead>
                 <tr class="border-b border-gray-200 dark:border-gray-700 text-left text-xs uppercase text-gray-500">
@@ -74,11 +74,11 @@
                         <td class="px-4 py-3">
                             <div class="flex items-center justify-end gap-2">
                                 {{#if (eq count.status "pending")}}
-                                    <Button @icon="play" @type="primary" @size="xs" @text="Start" @onClick={{fn this.startCycleCount count}} />
+                                    <Button @icon="play" @type="primary" @size="xs" @text={{t "operations.common.start"}} @onClick={{fn this.startCycleCount count}} />
                                 {{else if (eq count.status "in_progress")}}
-                                    <Button @icon="check" @type="success" @size="xs" @text="Complete" @onClick={{fn this.completeCycleCount count}} />
+                                    <Button @icon="check" @type="success" @size="xs" @text={{t "operations.common.complete"}} @onClick={{fn this.completeCycleCount count}} />
                                 {{else if (eq count.status "completed")}}
-                                    <Button @icon="thumbs-up" @type="primary" @size="xs" @text="Approve" @onClick={{fn this.approveCycleCount count}} />
+                                    <Button @icon="thumbs-up" @type="primary" @size="xs" @text={{t "operations.common.approve"}} @onClick={{fn this.approveCycleCount count}} />
                                 {{else}}
                                     <span class="text-xs text-gray-400">No actions</span>
                                 {{/if}}
@@ -123,7 +123,7 @@
                                                         {{#if (eq item.status "counted")}}
                                                             <span class="text-xs text-gray-400">Counted</span>
                                                         {{else}}
-                                                            <Button @icon="calculator" @type="primary" @size="xs" @text="Record" @onClick={{fn this.recordCycleCountItem item}} />
+                                                            <Button @icon="calculator" @type="primary" @size="xs" @text={{t "operations.cycle-counts.record"}} @onClick={{fn this.recordCycleCountItem item}} />
                                                         {{/if}}
                                                     </td>
                                                 </tr>

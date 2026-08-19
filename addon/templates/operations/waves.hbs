@@ -1,15 +1,15 @@
-<Layout::Section::Header @title="Waves">
+<Layout::Section::Header @title={{t "operations.waves.title"}}>
     <div class="text-sm text-gray-500 dark:text-gray-300">Coordinate grouped warehouse execution for outbound work.</div>
 </Layout::Section::Header>
 
 <Layout::Section::Body class="overflow-y-scroll h-full p-4">
-    <ContentPanel @title="Create Wave" @open={{true}} @wrapperClass="bordered-classic mb-4">
+    <ContentPanel @title={{t "operations.waves.create"}} @open={{true}} @wrapperClass="bordered-classic mb-4">
         <div class="grid grid-cols-1 gap-3 text-xs lg:grid-cols-5">
-            <InputGroup @name="Warehouse">
+            <InputGroup @name={{t "operations.common.warehouse"}}>
                 <ModelSelect
                     @modelName="warehouse"
                     @selectedModel={{this.newWave.warehouse}}
-                    @placeholder="Warehouse"
+                    @placeholder={{t "operations.common.warehouse"}}
                     @triggerClass="form-select form-input"
                     @infiniteScroll={{false}}
                     @renderInPlace={{true}}
@@ -20,25 +20,25 @@
                 </ModelSelect>
             </InputGroup>
 
-            <InputGroup @name="Type">
+            <InputGroup @name={{t "operations.common.type"}}>
                 <Input @value={{this.newWave.type}} class="w-full form-input" placeholder="standard" />
             </InputGroup>
 
-            <InputGroup @name="Priority">
+            <InputGroup @name={{t "operations.common.priority"}}>
                 <Input @value={{this.newWave.priority}} @type="number" class="w-full form-input" />
             </InputGroup>
 
-            <InputGroup @name="Scheduled">
+            <InputGroup @name={{t "operations.common.scheduled"}}>
                 <Input @value={{this.newWave.scheduled_at}} @type="datetime-local" class="w-full form-input" />
             </InputGroup>
 
             <div class="flex items-end">
-                <Button @icon="plus" @type="primary" @text="Create" @onClick={{this.createWave}} @wrapperClass="w-full" />
+                <Button @icon="plus" @type="primary" @text={{t "common.create"}} @onClick={{this.createWave}} @wrapperClass="w-full" />
             </div>
         </div>
     </ContentPanel>
 
-    <ContentPanel @title="Waves" @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
+    <ContentPanel @title={{t "operations.waves.title"}} @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
         <table class="w-full text-sm">
             <thead>
                 <tr class="border-b border-gray-200 dark:border-gray-700 text-left text-xs uppercase text-gray-500">
@@ -73,12 +73,12 @@
                         <td class="px-4 py-3">
                             <div class="flex items-center justify-end gap-2">
                                 {{#if (eq wave.status "pending")}}
-                                    <Button @icon="play" @type="primary" @size="xs" @text="Start" @onClick={{fn this.startWave wave}} />
-                                    <Button @icon="paper-plane" @type="default" @size="xs" @text="Release" @onClick={{fn this.releaseWave wave}} />
+                                    <Button @icon="play" @type="primary" @size="xs" @text={{t "operations.common.start"}} @onClick={{fn this.startWave wave}} />
+                                    <Button @icon="paper-plane" @type="default" @size="xs" @text={{t "operations.waves.release"}} @onClick={{fn this.releaseWave wave}} />
                                 {{else if (eq wave.status "released")}}
-                                    <Button @icon="play" @type="primary" @size="xs" @text="Start" @onClick={{fn this.startWave wave}} />
+                                    <Button @icon="play" @type="primary" @size="xs" @text={{t "operations.common.start"}} @onClick={{fn this.startWave wave}} />
                                 {{else if (eq wave.status "in_progress")}}
-                                    <Button @icon="check" @type="success" @size="xs" @text="Complete" @onClick={{fn this.completeWave wave}} />
+                                    <Button @icon="check" @type="success" @size="xs" @text={{t "operations.common.complete"}} @onClick={{fn this.completeWave wave}} />
                                 {{else}}
                                     <span class="text-xs text-gray-400">No actions</span>
                                 {{/if}}

@@ -1,15 +1,15 @@
-<Layout::Section::Header @title="Transfers">
-    <div class="text-sm text-gray-500 dark:text-gray-300">Track stock movement between warehouses from request through receipt.</div>
+<Layout::Section::Header @title={{t "operations.transfers.title"}}>
+    <div class="text-sm text-gray-500 dark:text-gray-300">{{t "operations.transfers.description"}}</div>
 </Layout::Section::Header>
 
 <Layout::Section::Body class="overflow-y-scroll h-full p-4">
-    <ContentPanel @title="Create Transfer" @open={{true}} @wrapperClass="bordered-classic mb-4">
+    <ContentPanel @title={{t "operations.transfers.create"}} @open={{true}} @wrapperClass="bordered-classic mb-4">
         <div class="grid grid-cols-1 gap-3 text-xs lg:grid-cols-6">
-            <InputGroup @name="From Warehouse">
+            <InputGroup @name={{t "operations.transfers.from-warehouse"}}>
                 <ModelSelect
                     @modelName="warehouse"
                     @selectedModel={{this.newTransfer.fromWarehouse}}
-                    @placeholder="Source warehouse"
+                    @placeholder={{t "operations.transfers.source-placeholder"}}
                     @triggerClass="form-select form-input"
                     @infiniteScroll={{false}}
                     @renderInPlace={{true}}
@@ -20,11 +20,11 @@
                 </ModelSelect>
             </InputGroup>
 
-            <InputGroup @name="To Warehouse">
+            <InputGroup @name={{t "operations.transfers.to-warehouse"}}>
                 <ModelSelect
                     @modelName="warehouse"
                     @selectedModel={{this.newTransfer.toWarehouse}}
-                    @placeholder="Destination warehouse"
+                    @placeholder={{t "operations.transfers.destination-placeholder"}}
                     @triggerClass="form-select form-input"
                     @infiniteScroll={{false}}
                     @renderInPlace={{true}}
@@ -35,11 +35,11 @@
                 </ModelSelect>
             </InputGroup>
 
-            <InputGroup @name="Product">
+            <InputGroup @name={{t "operations.common.product"}}>
                 <ModelSelect
                     @modelName="pallet-product"
                     @selectedModel={{this.newTransfer.product}}
-                    @placeholder="Product"
+                    @placeholder={{t "operations.common.product"}}
                     @triggerClass="form-select form-input"
                     @infiniteScroll={{false}}
                     @renderInPlace={{true}}
@@ -50,13 +50,13 @@
                 </ModelSelect>
             </InputGroup>
 
-            <InputGroup @name="Variant">
+            <InputGroup @name={{t "operations.common.variant"}}>
                 <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
                     <PowerSelect
                         @options={{this.newTransfer.product.variants}}
                         @selected={{this.newTransfer.variant}}
                         @onChange={{this.setTransferVariant}}
-                        @placeholder="Variant"
+                        @placeholder={{t "operations.common.variant"}}
                         @triggerClass="form-select form-input"
                         @disabled={{not this.newTransfer.product.has_variants}}
                         as |variant|
@@ -66,17 +66,17 @@
                 </div>
             </InputGroup>
 
-            <InputGroup @name="Quantity">
+            <InputGroup @name={{t "operations.common.quantity"}}>
                 <Input @value={{this.newTransfer.quantity}} @type="number" class="w-full form-input" placeholder="Qty" />
             </InputGroup>
 
             <div class="flex items-end">
-                <Button @icon="plus" @type="primary" @text="Create" @onClick={{this.createTransfer}} @wrapperClass="w-full" />
+                <Button @icon="plus" @type="primary" @text={{t "common.create"}} @onClick={{this.createTransfer}} @wrapperClass="w-full" />
             </div>
         </div>
     </ContentPanel>
 
-    <ContentPanel @title="Stock Transfers" @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
+    <ContentPanel @title={{t "operations.transfers.list-title"}} @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
         <table class="w-full text-sm">
             <thead>
                 <tr class="border-b border-gray-200 dark:border-gray-700 text-left text-xs uppercase text-gray-500">
@@ -111,13 +111,13 @@
                         <td class="px-4 py-3">
                             <div class="flex items-center justify-end gap-2">
                                 {{#if (eq transfer.status "pending")}}
-                                    <Button @icon="thumbs-up" @type="primary" @size="xs" @text="Approve" @onClick={{fn this.approveTransfer transfer}} />
-                                    <Button @icon="ban" @type="danger" @size="xs" @text="Cancel" @onClick={{fn this.cancelTransfer transfer}} />
+                                    <Button @icon="thumbs-up" @type="primary" @size="xs" @text={{t "operations.common.approve"}} @onClick={{fn this.approveTransfer transfer}} />
+                                    <Button @icon="ban" @type="danger" @size="xs" @text={{t "common.cancel"}} @onClick={{fn this.cancelTransfer transfer}} />
                                 {{else if (eq transfer.status "approved")}}
-                                    <Button @icon="truck" @type="primary" @size="xs" @text="Ship" @onClick={{fn this.shipTransfer transfer}} />
-                                    <Button @icon="ban" @type="danger" @size="xs" @text="Cancel" @onClick={{fn this.cancelTransfer transfer}} />
+                                    <Button @icon="truck" @type="primary" @size="xs" @text={{t "operations.transfers.ship"}} @onClick={{fn this.shipTransfer transfer}} />
+                                    <Button @icon="ban" @type="danger" @size="xs" @text={{t "common.cancel"}} @onClick={{fn this.cancelTransfer transfer}} />
                                 {{else if (eq transfer.status "in_transit")}}
-                                    <Button @icon="box-open" @type="success" @size="xs" @text="Receive" @onClick={{fn this.receiveTransfer transfer}} />
+                                    <Button @icon="box-open" @type="success" @size="xs" @text={{t "operations.transfers.receive"}} @onClick={{fn this.receiveTransfer transfer}} />
                                 {{else}}
                                     <span class="text-xs text-gray-400">No actions</span>
                                 {{/if}}

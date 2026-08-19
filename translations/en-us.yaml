@@ -14,6 +14,87 @@ resource:
   batches: Batches
 
 # Common / shared labels
+# Sidebar navigation
+navigation:
+  dashboard:
+    label: Dashboard
+    description: Pallet dashboard and warehouse operations overview.
+  catalog:
+    label: Catalog
+    description: Products, variants, and supplier records.
+  products:
+    label: Products
+    description: Manage product SKUs, variants, and catalog details.
+  suppliers:
+    label: Suppliers
+    description: Manage suppliers used for purchasing and replenishment.
+  facilities:
+    label: Facilities
+    description: Warehouses, zones, and bin locations.
+  warehouses:
+    label: Warehouses
+    description: Manage warehouse facilities and operating details.
+  locations:
+    label: Locations
+    description: Manage bin locations inside warehouses.
+  zones:
+    label: Zones
+    description: Manage warehouse zones and storage areas.
+  inventory:
+    label: Inventory
+    description: Stock, batches, adjustments, and exception views.
+  inventory-index:
+    label: Inventory
+    description: Review current stock by product, variant, and warehouse.
+  batches:
+    label: Batches
+    description: Review batch and lot-controlled stock.
+  stock-adjustments:
+    label: Stock Adjustments
+    description: Review manual stock adjustments and corrections.
+  low-stock:
+    label: Low Stock
+    description: Find items that are below reorder thresholds.
+  expired-stock:
+    label: Expired Stock
+    description: Find expired and aging inventory.
+  orders:
+    label: Orders
+    description: Purchase orders and sales orders.
+  purchase-orders:
+    label: Purchase Orders
+    description: Manage inbound purchase orders and receiving.
+  sales-orders:
+    label: Sales Orders
+    description: Manage outbound sales orders and fulfillment.
+  operations:
+    label: Operations
+    description: Transfers, cycle counts, pick lists, waves, and reservations.
+  transfers:
+    label: Transfers
+    description: Move stock between warehouses and locations.
+  cycle-counts:
+    label: Cycle Counts
+    description: Run and review inventory count workflows.
+  pick-lists:
+    label: Pick Lists
+    description: Manage picking work for outbound orders.
+  waves:
+    label: Waves
+    description: Group fulfillment work into picking waves.
+  reservations:
+    label: Reservations
+    description: Review reserved inventory and allocation state.
+  analytics:
+    label: Analytics
+    description: Pallet reporting and operational audit trail.
+  reports:
+    label: Reports
+    description: Build and review Pallet reports.
+  audits:
+    label: Audits
+    description: Review warehouse and inventory audit events.
+
 common:
   active: Active
   address: Address
@@ -59,6 +140,75 @@ common:
   loading: Loading...
 
 # Product translations
+# WMS operations screens
+operations:
+  common:
+    product: Product
+    variant: Variant
+    quantity: Quantity
+    warehouse: Warehouse
+    type: Type
+    priority: Priority
+    scheduled: Scheduled
+    start: Start
+    complete: Complete
+    approve: Approve
+  transfers:
+    title: Transfers
+    description: Track stock movement between warehouses from request through receipt.
+    create: Create Transfer
+    list-title: Stock Transfers
+    from-warehouse: From Warehouse
+    to-warehouse: To Warehouse
+    source-placeholder: Source warehouse
+    destination-placeholder: Destination warehouse
+    ship: Ship
+    receive: Receive
+  waves:
+    title: Waves
+    description: Group fulfillment work into picking waves.
+    create: Create Wave
+    release: Release
+  cycle-counts:
+    title: Cycle Counts
+    description: Run and review inventory count workflows.
+    create: Create Cycle Count
+    zone: Zone
+    zone-placeholder: Optional zone
+    record: Record
+  pick-lists:
+    title: Pick Lists
+    description: Manage picking work for outbound orders.
+    create: Create Pick List
+    pick-list: Pick List
+    add-item: Add Item
+    add-pick-item: Add Pick Item
+    assign-to-me: Assign to Me
+    picked: Picked
+    wave: Wave
+    wave-placeholder: Optional wave
+    bin: Bin
+    bin-placeholder: Optional bin
+    inventory: Inventory
+    inventory-placeholder: Optional inventory
+  reservations:
+    title: Reservations
+    description: Review reserved inventory and allocation state.
+    list-title: Inventory Reservations
+    create: Create Reservation
+    reserve: Reserve
+    release: Release
+    fulfill: Fulfill
+    expires: Expires
+    context-title: Storefront Reservation Context
+    reservation-key: Reservation Key
+    checkout: Checkout
+    cart: Cart
+    order: Order
+    line: Line
+    lookup: Lookup
+    clear: Clear
+
 product:
   sections:
     details: Details
