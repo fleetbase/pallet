@@ -5,6 +5,7 @@ namespace Fleetbase\Pallet\Tests;
 use Composer\InstalledVersions;
 use Fleetbase\Pallet\Providers\PalletServiceProvider;
 use Illuminate\Contracts\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as TestbenchTestCase;
 
@@ -88,9 +89,27 @@ abstract class TestCase extends TestbenchTestCase
     protected function defineDatabaseMigrations(): void
     {
         self::registerCoreExpansions();
+        $this->mapSpatialTypesForSqlite();
         $this->createCoreTableShims();
 
         $this->loadMigrationsFrom(__DIR__ . '/../migrations');
+    }
+
+    /**
+     * Several Pallet tables carry MySQL spatial columns (the layout `area`
+     * polygons). Doctrine has no SQLite mapping for them, so any schema
+     * change touching those tables blows up during introspection; treat them
+     * as text for the SQLite lane.
+     */
+    private function mapSpatialTypesForSqlite(): void
+    {
+        $platform = DB::connection()->getDoctrineConnection()->getDatabasePlatform();
+
+        foreach (['polygon', 'point', 'geometry', 'linestring', 'multipolygon'] as $spatialType) {
+            if (!$platform->hasDoctrineTypeMappingFor($spatialType)) {
+                $platform->registerDoctrineTypeMapping($spatialType, 'text');
+            }
+        }
     }
 
     /**
@@ -199,7 +218,17 @@ abstract class TestCase extends TestbenchTestCase
                 $table->string('uuid', 191)->nullable()->index();
                 $table->string('public_id', 191)->nullable()->index();
                 $table->string('company_uuid', 191)->nullable()->index();
+                $table->string('user_uuid', 191)->nullable()->index();
+                $table->string('photo_uuid', 191)->nullable();
+                $table->string('internal_id', 191)->nullable();
+                $table->string('_key', 191)->nullable();
                 $table->string('name')->nullable();
+                $table->string('title')->nullable();
+                $table->string('email')->nullable();
+                $table->string('phone')->nullable();
+                $table->string('type', 191)->nullable();
+                $table->string('slug')->nullable();
+                $table->json('meta')->nullable();
                 $table->timestamps();
                 $table->softDeletes();
             },

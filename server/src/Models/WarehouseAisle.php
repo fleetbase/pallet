@@ -6,11 +6,13 @@ use Fleetbase\Models\Company;
 use Fleetbase\Models\Model;
 use Fleetbase\Models\User;
 use Fleetbase\Traits\HasApiModelBehavior;
+use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 
 class WarehouseAisle extends Model
 {
     use HasUuid;
+    use HasPublicId;
     use HasApiModelBehavior;
 
     /**
@@ -54,6 +56,8 @@ class WarehouseAisle extends Model
      * @var array
      */
     protected $fillable = [
+        'zone_uuid',
+        'warehouse_uuid',
         'uuid',
         'public_id',
         'company_uuid',

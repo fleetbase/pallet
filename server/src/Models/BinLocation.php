@@ -82,7 +82,15 @@ class BinLocation extends Model
      *
      * @var array
      */
-    protected $with = ['warehouse', 'zone'];
+    /**
+     * Relationships to eager load.
+     *
+     * `warehouse` is deliberately excluded — it eager-loads its zones, which
+     * would pull the whole warehouse graph in for every bin.
+     *
+     * @var array
+     */
+    protected $with = ['zone'];
 
     /**
      * Searchable columns.

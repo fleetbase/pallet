@@ -6,11 +6,13 @@ use Fleetbase\Models\Company;
 use Fleetbase\Models\Model;
 use Fleetbase\Models\User;
 use Fleetbase\Traits\HasApiModelBehavior;
+use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 
 class WarehouseRack extends Model
 {
     use HasUuid;
+    use HasPublicId;
     use HasApiModelBehavior;
 
     /**
@@ -25,7 +27,7 @@ class WarehouseRack extends Model
      *
      * @var string
      */
-    protected $publicIdType = 'warehouse_aisle';
+    protected $publicIdType = 'warehouse_rack';
 
     /**
      * The database table used by the model.
@@ -54,6 +56,7 @@ class WarehouseRack extends Model
      * @var array
      */
     protected $fillable = [
+        'warehouse_uuid',
         'uuid',
         'public_id',
         'company_uuid',

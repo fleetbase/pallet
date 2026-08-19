@@ -74,7 +74,15 @@ class WarehouseZone extends Model
      *
      * @var array
      */
-    protected $with = ['warehouse'];
+    /**
+     * Relationships to eager load.
+     *
+     * Deliberately does NOT include `warehouse`: Warehouse eager-loads its
+     * zones, so a back-reference here recurses until memory is exhausted.
+     *
+     * @var array
+     */
+    protected $with = [];
 
     /**
      * Searchable columns.
