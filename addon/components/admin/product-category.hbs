@@ -3,13 +3,18 @@
         <Button @type="primary" @size="sm" @icon="plus" @text="Add category" @onClick={{this.addCategory}} />
     </div>
     <div class="mt-3">
+        {{#if this.isLoading}}
+            <div class="py-6 text-center text-sm text-gray-500 dark:text-gray-400">
+                <Spinner @loadingMessage="Loading categories..." @wrapperClass="flex flex-row items-center justify-center" />
+            </div>
+        {{/if}}
         <ul>
             {{#each this.categories as |category|}}
                 <div class="flex justify-between items-center border-b border-gray-700 py-2">
                     <span>{{category.name}}</span>
                     <div class="flex items-center space-x-2">
                         <Button @type="info" @size="sm" @icon="eye" @text="Add subcategories" @onClick={{fn this.addSubCategory category}} />
-                        <Button @type="danger" @size="sm" @icon="trash" @text="Delete" @onClick={{fn this.deleteCategory category}} />
+                        <Button @type="danger" @size="sm" @icon="trash" @text="Delete" @disabled={{this.isDeleting}} @onClick={{fn this.deleteCategory category}} />
                     </div>
                 </div>
 
@@ -20,12 +25,16 @@
                                 <li>{{subCategory.name}}</li>
                                 <div class="flex items-center space-x-2">
                                     <Button @type="info" @size="sm" @icon="eye" @text="Add subcategories" @onClick={{fn this.addSubCategory subCategory}} />
-                                    <Button @type="danger" @size="sm" @icon="trash" @text="Delete" @onClick={{fn this.deleteCategory subCategory}} />
+                                    <Button @type="danger" @size="sm" @icon="trash" @text="Delete" @disabled={{this.isDeleting}} @onClick={{fn this.deleteCategory subCategory}} />
                                 </div>
                             </div>
                         {{/each}}
                     </ul>
                 {{/if}}
+            {{else}}
+                {{#unless this.isLoading}}
+                    <li class="py-6 text-center text-sm text-gray-500 dark:text-gray-400">No product categories yet.</li>
+                {{/unless}}
             {{/each}}
         </ul>
     </div>

@@ -199,8 +199,8 @@ export default class ProductFormPanelComponent extends Component {
                 this.uploadQueue.removeObject(file);
             },
             (error) => {
-                console.log('some error occurred', error);
                 this.uploadQueue.removeObject(file);
+                this.notifications.serverError(error);
             }
         );
     }

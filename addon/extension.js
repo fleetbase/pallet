@@ -6,7 +6,7 @@ export default {
         const widgetService = universe.getService('universe/widget-service');
 
         // Register header navigation
-        menuService.registerHeaderMenuItem('Pallet', 'console.pallet', { icon: 'pallet', priority: 1, description: 'Warehouse and inventory management.', });
+        menuService.registerHeaderMenuItem('Pallet', 'console.pallet', { icon: 'pallet', priority: 1, description: 'Warehouse and inventory management.' });
 
         // Register dashboard and widgets
         this.registerWidgets(widgetService);

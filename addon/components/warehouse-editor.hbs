@@ -124,7 +124,7 @@
                 <div class="flex flex-row items-center px-4 py-2 border border-gray-700 rounded-md">
                     <div class="flex flex-row items-center justify-end">
                         <Button @icon="trash" @type="danger" @onClick={{fn this.removeAisle aisle}} />
-                        <Button @text="Add Racks" @icon="plus" @onClick={{fn this.addRacks aisle}} />
+                        <Button @text="Add Racks" @icon="plus" @onClick={{fn this.addRack aisle}} />
                     </div>
                 </div>
                 <div class="p-3">
@@ -138,7 +138,7 @@
                     <div class="flex flex-row items-center px-4 py-2 border border-gray-700 rounded-md">
                         <div class="flex flex-row items-center justify-end">
                             <Button @icon="trash" @type="danger" @onClick={{fn this.removeRack rack}} />
-                            <Button @text="Add Bins" @icon="plus" @onClick={{fn this.addBins rack}} />
+                            <Button @text="Add Bins" @icon="plus" @onClick={{fn this.addBin rack}} />
                         </div>
                     </div>
                     <div class="p-3">

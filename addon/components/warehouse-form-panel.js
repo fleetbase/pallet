@@ -136,6 +136,17 @@ export default class WarehouseFormPanelComponent extends Component {
     }
 
     /**
+     * Sets the warehouse phone number from the phone input.
+     *
+     * @action
+     * @param {string} phone - The E164 formatted phone number.
+     * @memberof WarehouseFormPanelComponent
+     */
+    @action setPhone(phone) {
+        this.warehouse.phone = phone;
+    }
+
+    /**
      * Performs reverse geocoding given latitude and longitude. Updates place properties with the geocoding result.
      *
      * @action

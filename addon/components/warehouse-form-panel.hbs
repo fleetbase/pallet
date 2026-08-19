@@ -62,7 +62,7 @@
                     <Input @value={{this.warehouse.capacity}} @type="number" class="w-full form-input" placeholder="0" />
                 </InputGroup>
                 <InputGroup @name="Phone">
-                    <PhoneInput @value={{this.warehouse.phone}} @autocomplete="nope" @onInput={{this.phone}} class="form-input w-full" />
+                    <PhoneInput @value={{this.warehouse.phone}} @autocomplete="nope" @onInput={{this.setPhone}} class="form-input w-full" />
                 </InputGroup>
                 <InputGroup @name="Email" @wrapperClass="col-span-2">
                     <Input @value={{this.warehouse.email}} @type="email" class="w-full form-input" placeholder="warehouse@company.com" />

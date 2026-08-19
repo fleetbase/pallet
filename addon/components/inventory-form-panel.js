@@ -93,7 +93,6 @@ export default class InventoryFormPanelComponent extends Component {
             contextComponentCallback(this, 'onAfterSave', savedInventory);
             return savedInventory;
         } catch (error) {
-            console.error(error);
             this.notifications.serverError(error);
         } finally {
             this.loader.removeLoader('.next-content-overlay-panel-container ');
@@ -144,7 +143,7 @@ export default class InventoryFormPanelComponent extends Component {
                 });
             })
             .catch((error) => {
-                console.error('Error fetching supplier:', error);
+                this.notifications.serverError(error);
             });
     }
 
