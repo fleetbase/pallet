@@ -54,6 +54,11 @@ class AuditEventType
     public const STOCK_TRANSFER = 'stock_transfer';
 
     /**
+     * A wave was released and pick lists were allocated.
+     */
+    public const WAVE_RELEASED = 'wave_released';
+
+    /**
      * A new inventory record was created (initial stock intake).
      * Triggered by InventoryController::store().
      */

@@ -138,6 +138,18 @@ class PickListItem extends Model
      */
     public function markPicked($quantity, $userUuid = null)
     {
+        $pickList = $this->pickList()->first();
+
+        if (!$pickList || $pickList->status !== 'in_progress') {
+            throw new \RuntimeException('Items can only be picked while the pick list is in progress.');
+        }
+
+        $quantity = (int) $quantity;
+
+        if ($quantity <= 0 || $quantity > (int) $this->quantity_requested) {
+            throw new \RuntimeException('Picked quantity must be between one and the requested quantity.');
+        }
+
         $this->quantity_picked = $quantity;
         $this->status          = 'picked';
         $this->picked_at       = now();
