@@ -236,7 +236,12 @@ class MetricsController extends Controller
             ->select('pallet_products.*')
             ->selectSub($availableStockSubquery, 'dashboard_available_stock')
             ->selectSub($reservedStockSubquery, 'dashboard_reserved_stock')
-            ->havingRaw('dashboard_available_stock <= reorder_point')
+            // filtered with WHERE, not HAVING: this query has no GROUP BY, and
+            // only MySQL tolerates a HAVING clause in that position
+            ->whereRaw(
+                '(' . $availableStockSubquery->toSql() . ') <= pallet_products.reorder_point',
+                $availableStockSubquery->getBindings()
+            )
             ->orderBy('dashboard_available_stock')
             ->limit($limit)
             ->get()
