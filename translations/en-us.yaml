@@ -11,6 +11,7 @@ resource:
   warehouses: Warehouses
   audits: Audit Trail
   reports: Reports
+  report: Report
   batches: Batches
 
 # Common / shared labels
@@ -110,7 +111,7 @@ common:
   length: Length
   metadata: Metadata
   name: Name
-  no: No
+  'no': No
   notes: Notes
   phone: Phone
   postal-code: Postal Code
@@ -121,7 +122,7 @@ common:
   street2: Street 2
   weight: Weight
   width: Width
-  yes: Yes
+  'yes': Yes
   save: Save
   cancel: Cancel
   delete: Delete
@@ -138,6 +139,11 @@ common:
   clear_filters: Clear Filters
   no-records: No records found
   loading: Loading...
+  new: New
+  refresh: Refresh
+  clear-filters: Clear Filters
+  continue: Continue
+  continue-without-saving: Continue without saving
 
 # Product translations
 # WMS operations screens
@@ -209,6 +215,76 @@ operations:
     lookup: Lookup
     clear: Clear
 
+# Dashboard widgets
+widgets:
+  kpi:
+    total-skus: Total SKUs
+    available-units: Available Units
+    reserved-units: Reserved Units
+    stock-value: Stock Value
+    low-stock: Low Stock
+    expiring-soon: Expiring Soon
+    open-pos: Open POs
+    open-fulfillment: Open Fulfillment
+  titles:
+    inventory-health: Inventory Health
+    warehouse-utilization: Warehouse Utilization
+    stock-movement: Stock Movement
+    fulfillment-workload: Fulfillment Workload
+    reorder-risk: Reorder Risk
+    expiring-stock: Expiring Stock
+    top-movers: Top Movers
+    recent-activity: Recent Activity
+    stock-value-by-warehouse: Stock Value by Warehouse
+    low-stock-alerts: Low Stock Alerts
+    purchase-order-status: Purchase Order Status
+    sales-order-status: Sales Order Status
+    inventory-summary: Inventory Summary
+  subtitles:
+    reorder-risk: Products at or below reorder point
+    top-movers: Products with the most stock movement
+    inventory-summary: Legacy grouped inventory totals
+  labels:
+    product: Product
+    sku: SKU
+    qty: Qty
+    min: Min
+    expires: Expires
+    warehouses: Warehouses
+    total-units: Total Units
+    total-stock-value: Total Stock Value
+    total-skus: Total SKUs
+    in-stock: In Stock
+    low-stock: Low Stock
+    stock-value: Stock Value
+  status:
+    pending: Pending
+    partial: Partial
+    received: Received
+    fulfilled: Fulfilled
+    cancelled: Cancelled
+  empty:
+    healthy: All stock levels are healthy
+    no-movement: No movement data yet
+    no-activity: No recent activity
+    no-warehouse-data: No warehouse data
+
+# Facilities screens
+facilities:
+  locations:
+    title: Locations
+    list-title: Bin Locations
+    create: Create Bin Location
+    bin: Bin
+    zone-placeholder: Optional zone
+  zones:
+    title: Zones
+    list-title: Warehouse Zones
+    create: Create Zone
+    zone: Zone
+    code: Code
+    capacity: Capacity
+
 product:
   sections:
     details: Details
@@ -248,6 +324,14 @@ product:
 
 # Inventory translations
 inventory:
+  screens:
+    batches-title: Batches
+    batches-list: Inventory Batches
+    adjustments-title: Stock Adjustments
+    adjustments-list: Adjustment History
+    new-adjustment: New Adjustment
+    low-stock-list: Low Stock Inventory
+    expired-stock-list: Expired Stock Inventory
   sections:
     details: Details
     location: Location

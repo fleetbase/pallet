@@ -1,4 +1,4 @@
-<Layout::Section::Header @title="Expired Stock Inventory" @searchQuery={{this.query}} @onSearch={{perform this.search}}>
+<Layout::Section::Header @title={{t "inventory.screens.expired-stock-list"}} @searchQuery={{this.query}} @onSearch={{perform this.search}}>
     <FiltersPicker
         @columns={{this.columns}}
         @onApply={{fn this.filters.apply this}}

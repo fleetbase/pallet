@@ -1,15 +1,15 @@
-<Layout::Section::Header @title="Locations">
+<Layout::Section::Header @title={{t "facilities.locations.title"}}>
     <div class="text-sm text-gray-500 dark:text-gray-300">Manage warehouse bin locations used for receiving, storage, picking, transfers, and cycle counts.</div>
 </Layout::Section::Header>
 
 <Layout::Section::Body class="overflow-y-scroll h-full p-4">
-    <ContentPanel @title="Create Bin Location" @open={{true}} @wrapperClass="bordered-classic mb-4">
+    <ContentPanel @title={{t "facilities.locations.create"}} @open={{true}} @wrapperClass="bordered-classic mb-4">
         <div class="grid grid-cols-1 gap-3 text-xs lg:grid-cols-6">
-            <InputGroup @name="Warehouse">
+            <InputGroup @name={{t "operations.common.warehouse"}}>
                 <ModelSelect
                     @modelName="warehouse"
                     @selectedModel={{this.newLocation.warehouse}}
-                    @placeholder="Warehouse"
+                    @placeholder={{t "operations.common.warehouse"}}
                     @triggerClass="form-select form-input"
                     @infiniteScroll={{false}}
                     @renderInPlace={{true}}
@@ -20,11 +20,11 @@
                 </ModelSelect>
             </InputGroup>
 
-            <InputGroup @name="Zone">
+            <InputGroup @name={{t "facilities.zones.zone"}}>
                 <ModelSelect
                     @modelName="warehouse-zone"
                     @selectedModel={{this.newLocation.zone}}
-                    @placeholder="Optional zone"
+                    @placeholder={{t "facilities.locations.zone-placeholder"}}
                     @triggerClass="form-select form-input"
                     @infiniteScroll={{false}}
                     @renderInPlace={{true}}
@@ -35,25 +35,25 @@
                 </ModelSelect>
             </InputGroup>
 
-            <InputGroup @name="Bin">
+            <InputGroup @name={{t "facilities.locations.bin"}}>
                 <Input @value={{this.newLocation.bin_number}} class="w-full form-input" placeholder="A-01-01" />
             </InputGroup>
 
-            <InputGroup @name="Type">
+            <InputGroup @name={{t "operations.common.type"}}>
                 <Input @value={{this.newLocation.type}} class="w-full form-input" placeholder="storage" />
             </InputGroup>
 
-            <InputGroup @name="Capacity">
+            <InputGroup @name={{t "facilities.zones.capacity"}}>
                 <Input @value={{this.newLocation.capacity}} @type="number" class="w-full form-input" placeholder="0" />
             </InputGroup>
 
             <div class="flex items-end">
-                <Button @icon="plus" @type="primary" @text="Create" @onClick={{this.createLocation}} @wrapperClass="w-full" />
+                <Button @icon="plus" @type="primary" @text={{t "common.create"}} @onClick={{this.createLocation}} @wrapperClass="w-full" />
             </div>
         </div>
     </ContentPanel>
 
-    <ContentPanel @title="Bin Locations" @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
+    <ContentPanel @title={{t "facilities.locations.list-title"}} @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
         <table class="w-full text-sm">
             <thead>
                 <tr class="border-b border-gray-200 dark:border-gray-700 text-left text-xs uppercase text-gray-500">

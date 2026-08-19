@@ -1,7 +1,7 @@
 <Layout::Resource::Tabular
     @resource="audit"
-    @title={{t "pallet.audit.title"}}
-    @searchPlaceholder={{t "pallet.audit.search_placeholder"}}
+    @title={{t "audit.title"}}
+    @searchPlaceholder={{t "audit.search_placeholder"}}
     @searchQuery={{this.query}}
     @onSearch={{perform this.search}}
     @data={{@model}}
@@ -22,10 +22,10 @@
                         class="inline-flex items-center px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"
                     >
                         {{#if this.event_type}}
-                            {{t "pallet.audit.filter_event_type"}}:
+                            {{t "audit.filter_event_type"}}:
                             {{this.event_type}}
                         {{else}}
-                            {{t "pallet.audit.all_events"}}
+                            {{t "audit.all_events"}}
                         {{/if}}
                         <FaIcon @icon="chevron-down" class="ml-1 h-3 w-3" />
                     </button>
@@ -50,7 +50,7 @@
             {{#if (or this.event_type this.auditable_type this.query)}}
                 <button type="button" class="inline-flex items-center px-3 py-1.5 text-sm text-red-600 dark:text-red-400 hover:underline" {{on "click" this.clearFilters}}>
                     <FaIcon @icon="times" class="mr-1 h-3 w-3" />
-                    {{t "pallet.common.clear_filters"}}
+                    {{t "common.clear-filters"}}
                 </button>
             {{/if}}
         </div>

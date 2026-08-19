@@ -1,15 +1,15 @@
-<Layout::Section::Header @title="Zones">
+<Layout::Section::Header @title={{t "facilities.zones.title"}}>
     <div class="text-sm text-gray-500 dark:text-gray-300">Manage storage, receiving, staging, quarantine, and outbound zones across warehouses.</div>
 </Layout::Section::Header>
 
 <Layout::Section::Body class="overflow-y-scroll h-full p-4">
-    <ContentPanel @title="Create Zone" @open={{true}} @wrapperClass="bordered-classic mb-4">
+    <ContentPanel @title={{t "facilities.zones.create"}} @open={{true}} @wrapperClass="bordered-classic mb-4">
         <div class="grid grid-cols-1 gap-3 text-xs lg:grid-cols-6">
-            <InputGroup @name="Warehouse">
+            <InputGroup @name={{t "operations.common.warehouse"}}>
                 <ModelSelect
                     @modelName="warehouse"
                     @selectedModel={{this.newZone.warehouse}}
-                    @placeholder="Warehouse"
+                    @placeholder={{t "operations.common.warehouse"}}
                     @triggerClass="form-select form-input"
                     @infiniteScroll={{false}}
                     @renderInPlace={{true}}
@@ -20,29 +20,29 @@
                 </ModelSelect>
             </InputGroup>
 
-            <InputGroup @name="Name">
+            <InputGroup @name={{t "common.name"}}>
                 <Input @value={{this.newZone.name}} class="w-full form-input" placeholder="Receiving" />
             </InputGroup>
 
-            <InputGroup @name="Code">
+            <InputGroup @name={{t "facilities.zones.code"}}>
                 <Input @value={{this.newZone.code}} class="w-full form-input" placeholder="RCV" />
             </InputGroup>
 
-            <InputGroup @name="Type">
+            <InputGroup @name={{t "operations.common.type"}}>
                 <Input @value={{this.newZone.type}} class="w-full form-input" placeholder="storage" />
             </InputGroup>
 
-            <InputGroup @name="Capacity">
+            <InputGroup @name={{t "facilities.zones.capacity"}}>
                 <Input @value={{this.newZone.capacity}} @type="number" class="w-full form-input" placeholder="0" />
             </InputGroup>
 
             <div class="flex items-end">
-                <Button @icon="plus" @type="primary" @text="Create" @onClick={{this.createZone}} @wrapperClass="w-full" />
+                <Button @icon="plus" @type="primary" @text={{t "common.create"}} @onClick={{this.createZone}} @wrapperClass="w-full" />
             </div>
         </div>
     </ContentPanel>
 
-    <ContentPanel @title="Warehouse Zones" @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
+    <ContentPanel @title={{t "facilities.zones.list-title"}} @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
         <table class="w-full text-sm">
             <thead>
                 <tr class="border-b border-gray-200 dark:border-gray-700 text-left text-xs uppercase text-gray-500">

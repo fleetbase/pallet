@@ -1,7 +1,7 @@
 <div class="pallet-dashboard-widget flex h-full min-h-0 flex-col overflow-hidden rounded-md border bg-white shadow-sm dark:bg-gray-800" ...attributes>
     <div class="pallet-widget-header">
         <div>
-            <div class="pallet-widget-title">Low Stock Alerts</div>
+            <div class="pallet-widget-title">{{t "widgets.titles.low-stock-alerts"}}</div>
             <div class="pallet-widget-subtitle">Items at or below their minimum stock threshold</div>
         </div>
         <FaIcon @icon="triangle-exclamation" class="text-gray-400" />
@@ -15,7 +15,7 @@
         <div class="pallet-widget-empty">
             <div>
                 <FaIcon @icon="check-circle" class="mb-2 text-2xl text-green-400" />
-                <div>All stock levels are healthy</div>
+                <div>{{t "widgets.empty.healthy"}}</div>
             </div>
         </div>
     {{else}}
@@ -23,10 +23,10 @@
             <table class="w-full text-xs">
                 <thead class="sticky top-0 z-10 bg-white dark:bg-gray-900">
                     <tr class="border-b border-gray-100 text-gray-500 dark:border-gray-700 dark:text-gray-400">
-                        <th class="px-3 py-2 text-left font-medium">Product</th>
-                        <th class="px-3 py-2 text-left font-medium">SKU</th>
-                        <th class="px-3 py-2 text-right font-medium">In Stock</th>
-                        <th class="px-3 py-2 text-right font-medium">Min</th>
+                        <th class="px-3 py-2 text-left font-medium">{{t "widgets.labels.product"}}</th>
+                        <th class="px-3 py-2 text-left font-medium">{{t "widgets.labels.sku"}}</th>
+                        <th class="px-3 py-2 text-right font-medium">{{t "widgets.labels.in-stock"}}</th>
+                        <th class="px-3 py-2 text-right font-medium">{{t "widgets.labels.min"}}</th>
                     </tr>
                 </thead>
                 <tbody>

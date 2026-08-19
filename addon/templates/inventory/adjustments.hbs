@@ -1,12 +1,12 @@
-<Layout::Section::Header @title="Stock Adjustments">
+<Layout::Section::Header @title={{t "inventory.screens.adjustments-title"}}>
     <div class="flex flex-1 items-center justify-between gap-3">
         <div class="text-sm text-gray-500 dark:text-gray-300">Track inventory corrections, discrepancies, and manual quantity changes from a dedicated inventory control surface.</div>
-        <Button @icon="plus" @type="primary" @size="sm" @text="New Adjustment" @onClick={{this.createAdjustment}} />
+        <Button @icon="plus" @type="primary" @size="sm" @text={{t "inventory.screens.new-adjustment"}} @onClick={{this.createAdjustment}} />
     </div>
 </Layout::Section::Header>
 
 <Layout::Section::Body class="overflow-y-scroll h-full p-4">
-    <ContentPanel @title="Adjustment History" @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
+    <ContentPanel @title={{t "inventory.screens.adjustments-list"}} @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
         <table class="w-full text-sm">
             <thead>
                 <tr class="border-b border-gray-200 dark:border-gray-700 text-left text-xs uppercase text-gray-500">

@@ -1,9 +1,9 @@
-<Layout::Section::Header @title="Batches">
+<Layout::Section::Header @title={{t "inventory.screens.batches-title"}}>
     <div class="text-sm text-gray-500 dark:text-gray-300">Track batch, lot, and expiry context for traceable inventory.</div>
 </Layout::Section::Header>
 
 <Layout::Section::Body class="overflow-y-scroll h-full p-4">
-    <ContentPanel @title="Inventory Batches" @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
+    <ContentPanel @title={{t "inventory.screens.batches-list"}} @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
         <table class="w-full text-sm">
             <thead>
                 <tr class="border-b border-gray-200 dark:border-gray-700 text-left text-xs uppercase text-gray-500">

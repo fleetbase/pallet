@@ -1,7 +1,7 @@
 <div class="pallet-dashboard-widget flex h-full min-h-0 flex-col overflow-hidden rounded-md border bg-white shadow-sm dark:bg-gray-800" ...attributes>
     <div class="pallet-widget-header">
         <div>
-            <div class="pallet-widget-title">Expiring Stock</div>
+            <div class="pallet-widget-title">{{t "widgets.titles.expiring-stock"}}</div>
             <div class="pallet-widget-subtitle">Inventory lots expiring within 30 days</div>
         </div>
         <FaIcon @icon="calendar-xmark" class="text-gray-400" />
@@ -22,9 +22,9 @@
             <table class="w-full text-xs">
                 <thead class="sticky top-0 bg-white dark:bg-gray-900 z-10">
                     <tr class="border-b border-gray-100 dark:border-gray-700 text-gray-500 dark:text-gray-400">
-                        <th class="text-left px-3 py-2 font-medium">Product</th>
-                        <th class="text-right px-3 py-2 font-medium">Qty</th>
-                        <th class="text-right px-3 py-2 font-medium">Expires</th>
+                        <th class="text-left px-3 py-2 font-medium">{{t "widgets.labels.product"}}</th>
+                        <th class="text-right px-3 py-2 font-medium">{{t "widgets.labels.qty"}}</th>
+                        <th class="text-right px-3 py-2 font-medium">{{t "widgets.labels.expires"}}</th>
                     </tr>
                 </thead>
                 <tbody>

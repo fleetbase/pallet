@@ -1,7 +1,7 @@
 <div class="pallet-dashboard-widget flex h-full min-h-0 flex-col overflow-hidden rounded-md border bg-white shadow-sm dark:bg-gray-800" ...attributes>
     <div class="pallet-widget-header">
         <div>
-            <div class="pallet-widget-title">Stock Value by Warehouse</div>
+            <div class="pallet-widget-title">{{t "widgets.titles.stock-value-by-warehouse"}}</div>
             <div class="pallet-widget-subtitle">Total inventory value broken down per warehouse</div>
         </div>
         <FaIcon @icon="chart-bar" class="text-gray-400" />
@@ -15,12 +15,12 @@
         <div class="pallet-widget-empty">
             <div>
                 <FaIcon @icon="warehouse" class="mb-2 text-2xl" />
-                <div>No warehouse data</div>
+                <div>{{t "widgets.empty.no-warehouse-data"}}</div>
             </div>
         </div>
     {{else}}
         <div class="flex items-center justify-between gap-3 border-b border-gray-100 px-3 py-2 dark:border-gray-700">
-            <span class="truncate text-xs text-gray-500 dark:text-gray-400">Total Stock Value</span>
+            <span class="truncate text-xs text-gray-500 dark:text-gray-400">{{t "widgets.labels.total-stock-value"}}</span>
             <span class="shrink-0 text-sm font-bold text-gray-800 dark:text-gray-100">{{this.totalValue}}</span>
         </div>
         <div class="pallet-widget-scroll-body">

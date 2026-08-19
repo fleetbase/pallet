@@ -1,8 +1,8 @@
 <div class="pallet-dashboard-widget flex h-full min-h-0 flex-col overflow-hidden rounded-md border bg-white shadow-sm dark:bg-gray-800" ...attributes>
     <div class="pallet-widget-header">
         <div>
-            <div class="pallet-widget-title">Top Movers</div>
-            <div class="pallet-widget-subtitle">Products with the most stock movement</div>
+            <div class="pallet-widget-title">{{t "widgets.titles.top-movers"}}</div>
+            <div class="pallet-widget-subtitle">{{t "widgets.subtitles.top-movers"}}</div>
         </div>
         <FaIcon @icon="arrow-trend-up" class="text-gray-400" />
     </div>
@@ -15,7 +15,7 @@
             <div class="pallet-widget-empty">
                 <div>
                     <FaIcon @icon="arrow-trend-up" class="mb-2 text-2xl" />
-                    <div>No movement data yet</div>
+                    <div>{{t "widgets.empty.no-movement"}}</div>
                 </div>
             </div>
         {{else}}
