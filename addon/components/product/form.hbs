@@ -1,6 +1,6 @@
 <div class="pallet-product-editor" ...attributes>
     <div class="pallet-product-editor__main">
-        <ContentPanel @title="Product identity" @open={{true}} @wrapperClass="pallet-product-editor-panel">
+        <ContentPanel @title="Product identity" @open={{true}} @wrapperClass="bordered-top pallet-product-editor-panel" @panelBodyWrapperClass="pallet-product-editor-panel__body">
             <div class="pallet-product-title-block">
                 <InputGroup @name="Product title">
                     <Input @value={{@resource.name}} @type="text" class="w-full form-input pallet-product-title-input" placeholder="Wireless scanner, packing tape, spare battery..." disabled={{cannot-write @resource}} />
@@ -11,7 +11,7 @@
             </div>
         </ContentPanel>
 
-        <ContentPanel @title="Media" @open={{true}} @wrapperClass="pallet-product-editor-panel">
+        <ContentPanel @title="Media" @open={{true}} @wrapperClass="bordered-top pallet-product-editor-panel" @panelBodyWrapperClass="pallet-product-editor-panel__body">
             {{#if this.canManageMedia}}
                 <div class="pallet-product-media-grid">
                     <div class="pallet-product-primary-media">
@@ -79,7 +79,7 @@
             {{/if}}
         </ContentPanel>
 
-        <ContentPanel @title="Identifiers" @open={{true}} @wrapperClass="pallet-product-editor-panel">
+        <ContentPanel @title="Identifiers" @open={{true}} @wrapperClass="bordered-top pallet-product-editor-panel" @panelBodyWrapperClass="pallet-product-editor-panel__body">
             <div class="pallet-product-field-grid">
                 <InputGroup @name="SKU">
                     <Input @value={{@resource.sku}} @type="text" class="w-full form-input" placeholder="Primary stock keeping unit" disabled={{cannot-write @resource}} />
@@ -96,7 +96,7 @@
             </div>
         </ContentPanel>
 
-        <ContentPanel @title="Pricing & value" @open={{true}} @wrapperClass="pallet-product-editor-panel">
+        <ContentPanel @title="Pricing & value" @open={{true}} @wrapperClass="bordered-top pallet-product-editor-panel" @panelBodyWrapperClass="pallet-product-editor-panel__body">
             <div class="pallet-product-field-grid">
                 <InputGroup @name="Unit cost">
                     <MoneyInput class="w-full" @value={{@resource.unit_cost}} @currency={{@resource.currency}} @canSelectCurrency={{true}} @onCurrencyChange={{fn (mut @resource.currency)}} @disabled={{cannot-write @resource}} />
@@ -113,7 +113,7 @@
             </div>
         </ContentPanel>
 
-        <ContentPanel @title="Variants" @open={{true}} @wrapperClass="pallet-product-editor-panel">
+        <ContentPanel @title="Variants" @open={{true}} @wrapperClass="bordered-top pallet-product-editor-panel" @panelBodyWrapperClass="pallet-product-editor-panel__body">
             {{#if this.canManageVariants}}
                 <div class="pallet-product-variant-manager">
                     {{#if this.variants.length}}
@@ -205,7 +205,7 @@
             {{/if}}
         </ContentPanel>
 
-        <ContentPanel @title="Measurements & handling" @open={{true}} @wrapperClass="pallet-product-editor-panel">
+        <ContentPanel @title="Measurements & handling" @open={{true}} @wrapperClass="bordered-top pallet-product-editor-panel" @panelBodyWrapperClass="pallet-product-editor-panel__body">
             <div class="pallet-product-dimensions-grid">
                 <InputGroup @name="Length">
                     <UnitInput class="w-full" @measurement="length" @value={{@resource.length}} @unit={{@resource.dimensions_unit}} @canSelectUnit={{true}} @onUnitChange={{fn (mut @resource.dimensions_unit)}} @disabled={{cannot-write @resource}} />
@@ -224,13 +224,13 @@
 
         <CustomField::Yield @subject={{@resource}} @wrapperClass="bordered-top" />
 
-        <ContentPanel @title="Metadata" @open={{true}} @wrapperClass="pallet-product-editor-panel">
+        <ContentPanel @title="Metadata" @open={{true}} @wrapperClass="bordered-top pallet-product-editor-panel" @panelBodyWrapperClass="pallet-product-editor-panel__body">
             <MetadataEditor @value={{@resource.meta}} @onChange={{fn (mut @resource.meta)}} />
         </ContentPanel>
     </div>
 
     <aside class="pallet-product-editor__sidebar">
-        <ContentPanel @title="Status" @open={{true}} @wrapperClass="pallet-product-editor-panel">
+        <ContentPanel @title="Status" @open={{true}} @wrapperClass="bordered-top pallet-product-editor-panel" @panelBodyWrapperClass="pallet-product-editor-panel__body">
             <div class="pallet-product-sidebar-stack">
                 <InputGroup @name="Product status">
                     <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
@@ -265,7 +265,7 @@
             </div>
         </ContentPanel>
 
-        <ContentPanel @title="Organization" @open={{true}} @wrapperClass="pallet-product-editor-panel">
+        <ContentPanel @title="Organization" @open={{true}} @wrapperClass="bordered-top pallet-product-editor-panel" @panelBodyWrapperClass="pallet-product-editor-panel__body">
             <div class="pallet-product-sidebar-stack">
                 <InputGroup @name="Category">
                     <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
@@ -300,7 +300,7 @@
             </div>
         </ContentPanel>
 
-        <ContentPanel @title="Inventory policy" @open={{true}} @wrapperClass="pallet-product-editor-panel">
+        <ContentPanel @title="Inventory policy" @open={{true}} @wrapperClass="bordered-top pallet-product-editor-panel" @panelBodyWrapperClass="pallet-product-editor-panel__body">
             <div class="pallet-product-sidebar-stack">
                 <InputGroup @name="Reorder point">
                     <Input @value={{@resource.reorder_point}} @type="number" class="w-full form-input" placeholder="Minimum available quantity" disabled={{cannot-write @resource}} />
@@ -314,7 +314,7 @@
             </div>
         </ContentPanel>
 
-        <ContentPanel @title="Tracking" @open={{true}} @wrapperClass="pallet-product-editor-panel">
+        <ContentPanel @title="Tracking" @open={{true}} @wrapperClass="bordered-top pallet-product-editor-panel" @panelBodyWrapperClass="pallet-product-editor-panel__body">
             <div class="pallet-product-checkbox-stack">
                 <Checkbox @checked={{@resource.has_variants}} @onChange={{fn (mut @resource.has_variants)}} @disabled={{cannot-write @resource}}>Track by variants</Checkbox>
                 <Checkbox @checked={{@resource.is_serialized}} @onChange={{fn (mut @resource.is_serialized)}} @disabled={{cannot-write @resource}}>Track serial numbers</Checkbox>
