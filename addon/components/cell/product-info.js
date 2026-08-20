@@ -12,17 +12,40 @@ export default class CellProductInfoComponent extends Component {
         return row;
     }
 
+    /**
+     * `product` may be a relationship proxy (when the column resolves a
+     * belongsTo via modelPath), and Ember asserts on direct property access
+     * against a proxy — which threw mid-render and truncated the whole row.
+     * Read through Ember's get() so both plain models and proxies work.
+     */
     get categoryName() {
-        return this.product?.category?.name ?? this.product?.category?.label ?? this.product?.category;
+        const category = this.readProduct('category');
+
+        if (typeof category === 'string') {
+            return category;
+        }
+
+        return get(category ?? {}, 'name') ?? get(category ?? {}, 'label') ?? null;
     }
 
     get supplierName() {
-        return this.product?.supplier?.name;
+        return this.readProduct('supplier.name');
     }
 
     get variantCountLabel() {
-        const count = Number(this.product?.variant_count ?? this.product?.variants?.length ?? 0);
+        const count = Number(this.readProduct('variant_count') ?? this.readProduct('variants.length') ?? 0);
+
         return count === 1 ? '1 variant' : `${count} variants`;
+    }
+
+    readProduct(path) {
+        const product = this.product;
+
+        if (!product) {
+            return null;
+        }
+
+        return get(product, path);
     }
 
     @action onClick(event) {

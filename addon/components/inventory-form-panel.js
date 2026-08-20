@@ -133,8 +133,17 @@ export default class InventoryFormPanelComponent extends Component {
         this.inventory.variant = null;
         this.inventory.variant_uuid = null;
 
+        // most products have no supplier; findRecord(null) throws
+        const supplierUuid = selectedProduct?.supplier_uuid;
+
+        if (!supplierUuid) {
+            this.inventory.setProperties({ supplier: null, supplier_uuid: null });
+
+            return;
+        }
+
         this.store
-            .findRecord('supplier', selectedProduct.supplier_uuid)
+            .findRecord('supplier', supplierUuid)
             .then((supplier) => {
                 this.inventory.setProperties({
                     product: selectedProduct,
