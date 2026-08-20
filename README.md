@@ -75,12 +75,15 @@ https://<your-fleetbase-host>/pallet/v1/...
 
 ### Authentication
 
-Every route requires an API credential, supplied as HTTP basic auth with the key as the username:
+Every route requires an organization API credential, sent as a bearer token:
 
 ```bash
 curl https://api.fleetbase.io/pallet/v1/products \
-  -u "$FLEETBASE_API_KEY:"
+  -H "Authorization: Bearer $FLEETBASE_API_KEY"
 ```
+
+The middleware behind these routes is named `AuthenticateOnceWithBasicAuth`, but it reads
+`Authorization: Bearer` — HTTP basic auth is not accepted.
 
 The credential resolves the company, and every listing, lookup and write is scoped to it. A record belonging to another company responds `404` rather than `403` — an id you cannot see is indistinguishable from one that does not exist.
 
@@ -174,7 +177,7 @@ The question an integrator usually has is whether a quantity can be committed, s
 
 ```bash
 curl "https://api.fleetbase.io/pallet/v1/inventory/availability?product=product_a1b2c3&quantity=10" \
-  -u "$FLEETBASE_API_KEY:"
+  -H "Authorization: Bearer $FLEETBASE_API_KEY"
 ```
 
 ```json
@@ -210,7 +213,7 @@ An order and its lines are created together, then received by line:
 
 ```bash
 curl -X POST https://api.fleetbase.io/pallet/v1/purchase-orders \
-  -u "$FLEETBASE_API_KEY:" \
+  -H "Authorization: Bearer $FLEETBASE_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "supplier": "supplier_a1b2c3",
@@ -221,7 +224,7 @@ curl -X POST https://api.fleetbase.io/pallet/v1/purchase-orders \
 
 ```bash
 curl -X POST https://api.fleetbase.io/pallet/v1/purchase-orders/purchase_order_d4e5f6/receive \
-  -u "$FLEETBASE_API_KEY:" \
+  -H "Authorization: Bearer $FLEETBASE_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{ "items": [{ "id": "poi_g7h8i9", "quantity_received": 12 }] }'
 ```

@@ -98,3 +98,21 @@ test('the README does not promise writes the API refuses', function () {
         expect(in_array($signature, $documented, true))->toBeFalse($signature . ' must not be documented — ' . $why);
     }
 });
+
+/*
+ * The middleware behind these routes is called AuthenticateOnceWithBasicAuth but reads
+ * $request->bearerToken(), which only matches "Authorization: Bearer". A curl example
+ * using -u would send basic auth and 401 — this documentation said exactly that until
+ * e402d991, so it is worth pinning rather than trusting the class name.
+ */
+test('the README documents bearer auth, not basic auth', function () {
+    $readme = implode("\n", readmeLines());
+
+    expect($readme)->toContain('Authorization: Bearer $FLEETBASE_API_KEY');
+
+    foreach (readmeLines() as $number => $line) {
+        if (str_contains($line, 'FLEETBASE_API_KEY') && str_contains($line, '-u ')) {
+            throw new RuntimeException('README line ' . ($number + 1) . ' documents basic auth; the API only accepts a bearer token');
+        }
+    }
+});
