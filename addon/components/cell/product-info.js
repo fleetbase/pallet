@@ -45,7 +45,12 @@ export default class CellProductInfoComponent extends Component {
             return null;
         }
 
-        return get(product, path);
+        // Walk one segment at a time: a dotted path resolves its intermediate
+        // hops without proxy-aware access, so `supplier.name` asserts as soon as
+        // `supplier` is itself a relationship proxy.
+        return String(path)
+            .split('.')
+            .reduce((value, key) => (value === null || value === undefined ? null : get(value, key)), product);
     }
 
     @action onClick(event) {
