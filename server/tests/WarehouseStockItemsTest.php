@@ -1,5 +1,6 @@
 <?php
 
+use Fleetbase\Pallet\Http\Controllers\WarehouseController;
 use Fleetbase\Pallet\Http\Resources\Warehouse as WarehouseResource;
 use Fleetbase\Pallet\Models\Inventory;
 use Fleetbase\Pallet\Models\Product;
@@ -42,4 +43,40 @@ test('a warehouse with no stock reports zero rather than omitting the field', fu
 
     expect($payload)->toHaveKey('stock_items')
         ->and($payload['stock_items'])->toBe(0);
+});
+
+/**
+ * The count has to survive the LIST query, not just a find().
+ *
+ * Model::newQuery() adds the $withCount subquery, then searchBuilder() calls
+ * select(['*']) which replaces the entire select list and discards it — so the
+ * list reported zero stock items for every warehouse while a find() reported
+ * the truth. Exercising only the resource hid that completely.
+ */
+test('the stock items count survives the list query, not just a direct find', function () {
+    $company = (string) Illuminate\Support\Str::uuid();
+    session(['company' => $company]);
+
+    $warehouse = Warehouse::create(['company_uuid' => $company, 'name' => 'Listed WH', 'code' => 'LST-' . uniqid()]);
+
+    foreach (range(1, 2) as $i) {
+        $product = Product::create(['company_uuid' => $company, 'name' => 'LP' . $i, 'sku' => 'LST-' . uniqid()]);
+        Inventory::create([
+            'company_uuid'   => $company,
+            'warehouse_uuid' => $warehouse->uuid,
+            'product_uuid'   => $product->uuid,
+            'quantity'       => 5,
+            'status'         => 'active',
+        ]);
+    }
+
+    // Build the list query the way the controller does, applying the same hook.
+    $query = Warehouse::query()->select(['*']);
+    (new WarehouseController())->onQueryRecord($query);
+
+    $listed = $query->where('company_uuid', $company)->first();
+
+    expect($listed->inventories_count)->not->toBeNull()
+        ->and((int) $listed->inventories_count)->toBe(2)
+        ->and((new WarehouseResource($listed))->toArray(Request::create('/'))['stock_items'])->toBe(2);
 });

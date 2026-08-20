@@ -17,6 +17,19 @@ use Illuminate\Http\Request;
 class WarehouseController extends PalletResourceController
 {
     /**
+     * The list query counts each warehouse's stock items.
+     *
+     * The model declares $withCount, but searchBuilder() calls select(['*'])
+     * after newQuery() has added the count subquery, which replaces the whole
+     * select list and drops it — so every warehouse reported zero stock items.
+     * Re-applying it here runs after that select and survives.
+     */
+    public function onQueryRecord($query)
+    {
+        $query->withCount('inventories');
+    }
+
+    /**
      * The resource to query.
      *
      * @var string
