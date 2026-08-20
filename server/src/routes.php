@@ -71,6 +71,47 @@ Route::prefix(config('pallet.api.routing.prefix', 'pallet'))->namespace('Fleetba
                     $router->post('{id}/fulfill', 'SalesOrderController@fulfill');
                 });
 
+                $router->group(['prefix' => 'product-variants'], function ($router) {
+                    $router->post('/', 'ProductVariantController@create');
+                    $router->get('/', 'ProductVariantController@query');
+                    $router->get('{id}', 'ProductVariantController@find');
+                    $router->put('{id}', 'ProductVariantController@update');
+                    $router->patch('{id}', 'ProductVariantController@update');
+                    $router->delete('{id}', 'ProductVariantController@delete');
+                });
+
+                $router->group(['prefix' => 'warehouse-zones'], function ($router) {
+                    $router->post('/', 'WarehouseZoneController@create');
+                    $router->get('/', 'WarehouseZoneController@query');
+                    $router->get('{id}', 'WarehouseZoneController@find');
+                    $router->put('{id}', 'WarehouseZoneController@update');
+                    $router->patch('{id}', 'WarehouseZoneController@update');
+                    $router->delete('{id}', 'WarehouseZoneController@delete');
+                });
+
+                $router->group(['prefix' => 'bin-locations'], function ($router) {
+                    $router->post('/', 'BinLocationController@create');
+                    $router->get('/', 'BinLocationController@query');
+                    $router->get('{id}', 'BinLocationController@find');
+                    $router->put('{id}', 'BinLocationController@update');
+                    $router->patch('{id}', 'BinLocationController@update');
+                    $router->delete('{id}', 'BinLocationController@delete');
+                });
+
+                // The lifecycle is exposed as transitions, not a settable status:
+                // shipping deducts from the source, receiving credits the destination,
+                // and cancelling an in-transit transfer restores what was shipped.
+                $router->group(['prefix' => 'stock-transfers'], function ($router) {
+                    $router->post('/', 'StockTransferController@create');
+                    $router->get('/', 'StockTransferController@query');
+                    $router->get('{id}', 'StockTransferController@find');
+                    $router->delete('{id}', 'StockTransferController@delete');
+                    $router->post('{id}/approve', 'StockTransferController@approve');
+                    $router->post('{id}/ship', 'StockTransferController@ship');
+                    $router->post('{id}/receive', 'StockTransferController@receive');
+                    $router->post('{id}/cancel', 'StockTransferController@cancel');
+                });
+
                 $router->group(['prefix' => 'suppliers'], function ($router) {
                     $router->post('/', 'SupplierController@create');
                     $router->get('/', 'SupplierController@query');
