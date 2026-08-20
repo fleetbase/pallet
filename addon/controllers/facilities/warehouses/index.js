@@ -162,7 +162,7 @@ export default class WarehousesIndexController extends Controller {
             },
             {
                 label: 'Stock Items',
-                valuePath: 'stockItems',
+                valuePath: 'stock_items',
                 width: '120px',
                 cellComponent: 'table/cell/anchor',
                 resizable: true,

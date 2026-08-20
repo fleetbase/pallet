@@ -39,6 +39,7 @@ class Warehouse extends FleetbaseResource
             'phone'                  => $this->phone,
             'email'                  => $this->email,
             'total_docks'            => $this->total_docks,
+            'stock_items'            => (int) ($this->inventories_count ?? 0),
             'is_active'              => $this->is_active,
             'is_default'             => $this->is_default,
             'meta'                   => $this->meta ?? [],

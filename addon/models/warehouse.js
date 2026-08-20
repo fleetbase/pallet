@@ -1,5 +1,6 @@
 import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import { computed } from '@ember/object';
+import { format as formatDate, isValid as isValidDate, formatDistanceToNow } from 'date-fns';
 
 export default class WarehouseModel extends Model {
     /** @ids */
@@ -55,6 +56,7 @@ export default class WarehouseModel extends Model {
     /** @computed */
     @attr('number') total_zones;
     @attr('number') total_bins;
+    @attr('number') stock_items;
 
     /** @dates */
     @attr('date') updated_at;
@@ -74,5 +76,33 @@ export default class WarehouseModel extends Model {
             return 0;
         }
         return Math.round((this.current_utilization / this.capacity) * 100 * 100) / 100;
+    }
+
+    @computed('created_at') get createdAgo() {
+        if (!isValidDate(this.created_at)) {
+            return null;
+        }
+        return formatDistanceToNow(this.created_at);
+    }
+
+    @computed('created_at') get createdAt() {
+        if (!isValidDate(this.created_at)) {
+            return null;
+        }
+        return formatDate(this.created_at, 'PPP p');
+    }
+
+    @computed('updated_at') get updatedAgo() {
+        if (!isValidDate(this.updated_at)) {
+            return null;
+        }
+        return formatDistanceToNow(this.updated_at);
+    }
+
+    @computed('updated_at') get updatedAt() {
+        if (!isValidDate(this.updated_at)) {
+            return null;
+        }
+        return formatDate(this.updated_at, 'PPP p');
     }
 }
