@@ -2,9 +2,7 @@
 
 namespace Fleetbase\Pallet\Http\Filter;
 
-use Fleetbase\Http\Filter\Filter;
-
-class SupplierFilter extends Filter
+class SupplierFilter extends PalletFilter
 {
     /**
      * Pallet suppliers share the core `vendors` table with FleetOps vendors, so
@@ -21,21 +19,15 @@ class SupplierFilter extends Filter
      * pattern would treat the underscore as a single-character wildcard) and
      * portable across MySQL and the SQLite test lane.
      */
-    private function scopeToPalletSuppliers(): void
+    protected function scopeToCompany(): void
     {
+        if ($this->companyScopeApplied) {
+            return;
+        }
+
+        parent::scopeToCompany();
+
         $this->builder->whereRaw('SUBSTR(public_id, 1, 9) = ?', ['supplier_']);
-    }
-
-    public function queryForInternal()
-    {
-        $this->builder->where('company_uuid', $this->session->get('company'));
-        $this->scopeToPalletSuppliers();
-    }
-
-    public function queryForPublic()
-    {
-        $this->builder->where('company_uuid', $this->session->get('company'));
-        $this->scopeToPalletSuppliers();
     }
 
     public function query(?string $query)

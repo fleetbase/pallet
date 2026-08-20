@@ -2,24 +2,10 @@
 
 namespace Fleetbase\Pallet\Http\Filter;
 
-use Fleetbase\Http\Filter\Filter;
 use Fleetbase\Pallet\Support\Utils;
 
-class ProductFilter extends Filter
+class ProductFilter extends PalletFilter
 {
-    public function queryForInternal()
-    {
-        $this->builder->where('company_uuid', $this->session->get('company'));
-    }
-
-    /**
-     * Was absent, so the public API would have served products unscoped.
-     */
-    public function queryForPublic()
-    {
-        $this->builder->where('company_uuid', $this->session->get('company'));
-    }
-
     public function query(?string $query)
     {
         $this->builder->search($query);

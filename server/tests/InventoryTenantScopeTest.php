@@ -66,15 +66,11 @@ test('each company sees only its own inventory', function () {
         ->and($resultsB[0]->product_uuid)->toBe($theirs->product_uuid);
 });
 
-test('every pallet http filter declares company scoping for internal and public requests', function () {
-    $filters = glob(__DIR__ . '/../src/Http/Filter/*.php');
-
-    expect($filters)->not->toBeEmpty();
-
-    foreach ($filters as $file) {
-        $class = 'Fleetbase\\Pallet\\Http\\Filter\\' . basename($file, '.php');
-
-        expect(method_exists($class, 'queryForInternal'))->toBeTrue($class . ' must scope internal requests')
-            ->and(method_exists($class, 'queryForPublic'))->toBeTrue($class . ' must scope public requests');
-    }
-});
+/*
+ * The structural guard that used to live here checked method_exists() on each filter
+ * class. That became meaningless once the filters inherited those methods from
+ * PalletFilter — it would pass for a model with no filter class at all, which was the
+ * actual defect. TenantScopeContractTest replaces it: it enumerates every tenant-owned
+ * model and asserts a company clause in the SQL that gets built, for both the internal
+ * and the consumable route shapes.
+ */

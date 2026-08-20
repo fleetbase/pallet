@@ -2,20 +2,8 @@
 
 namespace Fleetbase\Pallet\Http\Filter;
 
-use Fleetbase\Http\Filter\Filter;
-
-class StockTransactionFilter extends Filter
+class StockTransactionFilter extends PalletFilter
 {
-    public function queryForInternal()
-    {
-        $this->builder->where('company_uuid', $this->session->get('company'));
-    }
-
-    public function queryForPublic()
-    {
-        $this->builder->where('company_uuid', $this->session->get('company'));
-    }
-
     public function query(?string $query)
     {
         $this->builder->search($query);
