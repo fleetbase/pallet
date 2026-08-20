@@ -37,7 +37,7 @@ export default class InventoryIndexNewStockAdjustmentController extends Controll
      *
      * @var {StockAdjustmentModel}
      */
-    @tracked stockAdjustment = this.store.createRecord('stock-adjustment');
+    @tracked stockAdjustment = this.store.createRecord('stock-adjustment', { type: 'add', approval_required: false });
 
     /**
      * Set the overlay component context object.
@@ -81,6 +81,6 @@ export default class InventoryIndexNewStockAdjustmentController extends Controll
      * @memberof InventoryIndexNewStockAdjustmentController
      */
     resetForm() {
-        this.stockAdjustment = this.store.createRecord('stock-adjustment');
+        this.stockAdjustment = this.store.createRecord('stock-adjustment', { type: 'add', approval_required: false });
     }
 }

@@ -58,8 +58,10 @@ export default class StockAdjustmentFormPanelComponent extends Component {
     constructor() {
         super(...arguments);
         this.stockAdjustment = this.args.stockAdjustment;
-        this.stockAdjustment.type ??= 'add';
-        this.stockAdjustment.approval_required ??= false;
+        // Defaults belong on the record at creation, not here. `??=` reads the
+        // tracked property before writing it, so doing this during render
+        // consumed the tag and then dirtied it — Ember's backtracking assertion
+        // then aborted the whole panel and the screen rendered nothing.
         applyContextComponentArguments(this);
     }
 
