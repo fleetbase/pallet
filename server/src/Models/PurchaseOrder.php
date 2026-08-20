@@ -3,6 +3,7 @@
 namespace Fleetbase\Pallet\Models;
 
 use Fleetbase\Casts\Json;
+use Fleetbase\FleetOps\Models\Contact;
 use Fleetbase\Models\Company;
 use Fleetbase\Models\Model;
 use Fleetbase\Models\Transaction;
