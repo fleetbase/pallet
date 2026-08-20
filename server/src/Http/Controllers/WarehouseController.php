@@ -4,6 +4,7 @@ namespace Fleetbase\Pallet\Http\Controllers;
 
 use Fleetbase\Exceptions\FleetbaseRequestValidationException;
 use Fleetbase\FleetOps\Models\Place;
+use Fleetbase\LaravelMysqlSpatial\Types\Point as SpatialPoint;
 use Fleetbase\Pallet\Models\WarehouseAisle;
 use Fleetbase\Pallet\Models\WarehouseBin;
 use Fleetbase\Pallet\Models\WarehouseDock;
@@ -45,7 +46,10 @@ class WarehouseController extends PalletResourceController
                     ]);
                 }
                 if (!empty($placeData)) {
-                    $place = Place::create(array_merge($placeData, [
+                    // places.location is NOT NULL with no default, and array_filter
+                    // strips a null location — supply the Fleetbase default point
+                    $placeData['location'] = $placeData['location'] ?? new SpatialPoint(0, 0);
+                    $place                 = Place::create(array_merge($placeData, [
                         'company_uuid'    => session('company'),
                         'created_by_uuid' => session('user'),
                         'type'            => 'pallet-warehouse',
@@ -141,7 +145,9 @@ class WarehouseController extends PalletResourceController
                     if ($warehouse->place_uuid) {
                         Place::where('uuid', $warehouse->place_uuid)->update($placeData);
                     } else {
-                        $place = Place::create(array_merge($placeData, [
+                        // see createRecord: location is NOT NULL with no default
+                        $placeData['location'] = $placeData['location'] ?? new SpatialPoint(0, 0);
+                        $place                 = Place::create(array_merge($placeData, [
                             'company_uuid'    => session('company'),
                             'created_by_uuid' => session('user'),
                             'type'            => 'pallet-warehouse',
