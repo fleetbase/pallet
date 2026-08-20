@@ -20,7 +20,7 @@ class WarehouseRack extends Model
      *
      * @var string
      */
-    protected $payloadKey = 'warehouse_aisle';
+    protected $payloadKey = 'warehouse_rack';
 
     /**
      * The type of public Id to generate.

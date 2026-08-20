@@ -29,6 +29,13 @@ class Wave extends Model
     protected $table = 'pallet_waves';
 
     /**
+     * Overwrite both entity resource name with `payloadKey`.
+     *
+     * @var string
+     */
+    protected $payloadKey = 'wave';
+
+    /**
      * The type of public Id to generate.
      *
      * @var string

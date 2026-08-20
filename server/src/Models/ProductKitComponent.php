@@ -21,6 +21,13 @@ class ProductKitComponent extends Model
     protected $table = 'pallet_product_kit_components';
 
     /**
+     * Overwrite both entity resource name with `payloadKey`.
+     *
+     * @var string
+     */
+    protected $payloadKey = 'product_kit_component';
+
+    /**
      * The type of public Id to generate.
      *
      * @var string

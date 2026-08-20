@@ -29,6 +29,13 @@ class CycleCount extends Model
     protected $table = 'pallet_cycle_counts';
 
     /**
+     * Overwrite both entity resource name with `payloadKey`.
+     *
+     * @var string
+     */
+    protected $payloadKey = 'cycle_count';
+
+    /**
      * The type of public Id to generate.
      *
      * @var string

@@ -29,6 +29,13 @@ class StockTransfer extends Model
     protected $table = 'pallet_stock_transfers';
 
     /**
+     * Overwrite both entity resource name with `payloadKey`.
+     *
+     * @var string
+     */
+    protected $payloadKey = 'stock_transfer';
+
+    /**
      * The type of public Id to generate.
      *
      * @var string

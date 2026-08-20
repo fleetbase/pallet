@@ -24,6 +24,13 @@ class BinLocation extends Model
     protected $table = 'pallet_bin_locations';
 
     /**
+     * Overwrite both entity resource name with `payloadKey`.
+     *
+     * @var string
+     */
+    protected $payloadKey = 'bin_location';
+
+    /**
      * The type of public Id to generate.
      *
      * @var string

@@ -24,6 +24,13 @@ class WarehouseZone extends Model
     protected $table = 'pallet_warehouse_zones';
 
     /**
+     * Overwrite both entity resource name with `payloadKey`.
+     *
+     * @var string
+     */
+    protected $payloadKey = 'warehouse_zone';
+
+    /**
      * The type of public Id to generate.
      *
      * @var string

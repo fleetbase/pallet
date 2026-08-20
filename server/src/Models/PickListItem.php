@@ -22,6 +22,13 @@ class PickListItem extends Model
     protected $table = 'pallet_pick_list_items';
 
     /**
+     * Overwrite both entity resource name with `payloadKey`.
+     *
+     * @var string
+     */
+    protected $payloadKey = 'pick_list_item';
+
+    /**
      * The type of public Id to generate.
      *
      * @var string

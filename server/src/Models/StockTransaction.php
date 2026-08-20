@@ -25,6 +25,13 @@ class StockTransaction extends Model
     protected $table = 'pallet_stock_transactions';
 
     /**
+     * Overwrite both entity resource name with `payloadKey`.
+     *
+     * @var string
+     */
+    protected $payloadKey = 'stock_transaction';
+
+    /**
      * The type of public Id to generate.
      *
      * @var string

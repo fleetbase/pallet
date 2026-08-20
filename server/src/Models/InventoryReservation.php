@@ -25,6 +25,13 @@ class InventoryReservation extends Model
     protected $table = 'pallet_inventory_reservations';
 
     /**
+     * Overwrite both entity resource name with `payloadKey`.
+     *
+     * @var string
+     */
+    protected $payloadKey = 'inventory_reservation';
+
+    /**
      * The type of public Id to generate.
      *
      * @var string
