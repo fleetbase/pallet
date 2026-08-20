@@ -45,7 +45,7 @@ test('a warehouse with no stock reports zero rather than omitting the field', fu
         ->and($payload['stock_items'])->toBe(0);
 });
 
-/**
+/*
  * The count has to survive the LIST query, not just a find().
  *
  * Model::newQuery() adds the $withCount subquery, then searchBuilder() calls
