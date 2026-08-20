@@ -1,6 +1,6 @@
 <div class="pallet-product-cell" ...attributes>
     <button type="button" class="pallet-product-cell__media" {{on "click" this.onClick}}>
-        <img src={{this.product.photo_url}} alt={{this.product.name}} {{fallback-img-src (config "defaultValues.productImage")}} />
+        <Image src={{this.product.photo_url}} @fallbackSrc={{config "defaultValues.placeholderImage"}} alt={{this.product.name}} />
     </button>
     <div class="pallet-product-cell__body">
         <button type="button" class="pallet-product-cell__title" {{on "click" this.onClick}}>

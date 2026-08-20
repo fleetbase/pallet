@@ -2,7 +2,7 @@
     <ContentPanel @title="Product overview" @open={{true}} @wrapperClass="bordered-top pallet-product-details-panel">
         <div class="pallet-product-overview">
             <div class="pallet-product-overview__media">
-                <Image src={{@resource.photo_url}} @fallbackSrc={{config "defaultValues.productImage"}} alt={{@resource.name}} />
+                <Image src={{@resource.photo_url}} @fallbackSrc={{config "defaultValues.placeholderImage"}} alt={{@resource.name}} />
             </div>
             <div class="pallet-product-overview__body">
                 <div class="pallet-product-overview__eyebrow">
@@ -86,7 +86,7 @@
         {{#if this.hasImages}}
             <div class="pallet-product-detail-media-strip">
                 {{#each @resource.files as |file|}}
-                    <Image src={{file.url}} @fallbackSrc={{config "defaultValues.productImage"}} alt={{file.original_filename}} />
+                    <Image src={{file.url}} @fallbackSrc={{config "defaultValues.placeholderImage"}} alt={{file.original_filename}} />
                 {{/each}}
             </div>
         {{else}}

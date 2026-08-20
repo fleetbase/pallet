@@ -15,7 +15,7 @@
             {{#if this.canManageMedia}}
                 <div class="pallet-product-media-grid">
                     <div class="pallet-product-primary-media">
-                        <Image src={{@resource.photo_url}} @fallbackSrc={{config "defaultValues.productImage"}} alt={{@resource.name}} />
+                        <Image src={{@resource.photo_url}} @fallbackSrc={{config "defaultValues.placeholderImage"}} alt={{@resource.name}} />
                     </div>
                     <div class="pallet-product-media-manager">
                         {{#let (file-queue name="product-images" onFileAdded=this.queueFile accept=(join "," this.acceptedFileTypes)) as |queue|}}

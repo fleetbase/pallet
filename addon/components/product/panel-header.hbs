@@ -1,6 +1,6 @@
 <div class="pallet-product-panel-header" ...attributes>
     <div class="pallet-product-panel-header__identity">
-        <Image src={{@resource.photo_url}} @fallbackSrc={{config "defaultValues.productImage"}} alt={{@resource.name}} />
+        <Image src={{@resource.photo_url}} @fallbackSrc={{config "defaultValues.placeholderImage"}} alt={{@resource.name}} />
         <div>
             <div class="pallet-product-panel-header__title">{{n-a @resource.name "Untitled product"}}</div>
             <div class="pallet-product-panel-header__meta">
