@@ -71,6 +71,35 @@ Route::prefix(config('pallet.api.routing.prefix', 'pallet'))->namespace('Fleetba
                     $router->post('{id}/fulfill', 'SalesOrderController@fulfill');
                 });
 
+                $router->group(['prefix' => 'suppliers'], function ($router) {
+                    $router->post('/', 'SupplierController@create');
+                    $router->get('/', 'SupplierController@query');
+                    $router->get('{id}', 'SupplierController@find');
+                    $router->put('{id}', 'SupplierController@update');
+                    $router->patch('{id}', 'SupplierController@update');
+                    $router->delete('{id}', 'SupplierController@delete');
+                });
+
+                // No update or delete: an adjustment is a ledger entry describing
+                // something that happened. Correcting one means making another.
+                $router->group(['prefix' => 'stock-adjustments'], function ($router) {
+                    $router->post('/', 'StockAdjustmentController@create');
+                    $router->get('/', 'StockAdjustmentController@query');
+                    $router->get('{id}', 'StockAdjustmentController@find');
+                });
+
+                // Read-only: batches are produced by receiving stock.
+                $router->group(['prefix' => 'batches'], function ($router) {
+                    $router->get('/', 'BatchController@query');
+                    $router->get('{id}', 'BatchController@find');
+                });
+
+                // Read-only: audit entries are written by the system as operations happen.
+                $router->group(['prefix' => 'audits'], function ($router) {
+                    $router->get('/', 'AuditController@query');
+                    $router->get('{id}', 'AuditController@find');
+                });
+
                 // Read-only: stock levels follow from receipts, fulfilments, transfers
                 // and adjustments rather than being set directly.
                 $router->group(['prefix' => 'inventory'], function ($router) {
