@@ -5,6 +5,7 @@ namespace Fleetbase\Pallet\Http\Controllers;
 use Fleetbase\Pallet\Http\Resources\Audit as AuditResource;
 use Fleetbase\Pallet\Models\Audit;
 use Fleetbase\Pallet\Models\AuditEventType;
+use Fleetbase\Support\Http;
 use Illuminate\Http\Request;
 
 /**
@@ -101,6 +102,14 @@ class AuditController extends PalletResourceController
         $limit  = (int) $request->input('limit', 30);
         $limit  = min(max($limit, 1), 100);
         $audits = $query->paginate($limit);
+
+        // This controller builds its own query, so it also has to apply the
+        // resource envelope the rest of the API relies on. Without it the
+        // collection falls back to Laravel's default `data` key, which the
+        // Ember store cannot match — the audits screen rendered nothing.
+        if (Http::isInternalRequest($request)) {
+            AuditResource::wrap((new Audit())->getPluralName());
+        }
 
         return AuditResource::collection($audits);
     }
