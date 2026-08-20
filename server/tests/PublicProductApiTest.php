@@ -3,8 +3,6 @@
 use Fleetbase\Pallet\Http\Controllers\Api\v1\ProductController;
 use Fleetbase\Pallet\Models\Product;
 use Fleetbase\Pallet\Models\Supplier;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Route;
 use Illuminate\Support\Str;
 
 /**
@@ -16,26 +14,6 @@ use Illuminate\Support\Str;
  * is indistinguishable from one that does not exist, and a relation that fails to
  * resolve is an error rather than a silent null.
  */
-function publicApiRequest(string $uri, string $method = 'GET', array $payload = []): Request
-{
-    $request = Request::create('/pallet/v1/' . $uri, $method, $payload);
-    $request->setLaravelSession(app('session.store'));
-
-    $route = new Route([$method], 'pallet/v1/' . $uri, [
-        'namespace'  => '\\Fleetbase\\Pallet',
-        'controller' => ProductController::class . '@query',
-    ]);
-    $route->controller = app(ProductController::class);
-    $request->setRouteResolver(fn () => $route);
-
-    return $request;
-}
-
-function asCompany(string $company): void
-{
-    session(['company' => $company, 'api_credential' => 'test-credential']);
-}
-
 function makePublicProduct(string $company, string $name): Product
 {
     asCompany($company);
@@ -45,11 +23,6 @@ function makePublicProduct(string $company, string $name): Product
         'name'         => $name,
         'sku'          => 'PUB-' . uniqid(),
     ]);
-}
-
-function resourceArray($resource, Request $request): array
-{
-    return json_decode(json_encode($resource->toArray($request)), true);
 }
 
 test('a product is addressed and returned by its public id', function () {
@@ -89,7 +62,7 @@ test('a listing returns only the calling company products', function () {
     makePublicProduct($companyB, 'Theirs');
 
     asCompany($companyA);
-    $request = publicApiRequest('products');
+    $request = publicApiRequest('products', 'GET', [], ProductController::class);
     $results = Product::queryWithRequest($request);
 
     expect($results)->toHaveCount(1)

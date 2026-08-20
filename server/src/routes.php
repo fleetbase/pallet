@@ -41,6 +41,23 @@ Route::prefix(config('pallet.api.routing.prefix', 'pallet'))->namespace('Fleetba
                     $router->patch('{id}', 'ProductController@update');
                     $router->delete('{id}', 'ProductController@delete');
                 });
+
+                $router->group(['prefix' => 'warehouses'], function ($router) {
+                    $router->post('/', 'WarehouseController@create');
+                    $router->get('/', 'WarehouseController@query');
+                    $router->get('{id}', 'WarehouseController@find');
+                    $router->put('{id}', 'WarehouseController@update');
+                    $router->patch('{id}', 'WarehouseController@update');
+                    $router->delete('{id}', 'WarehouseController@delete');
+                });
+
+                // Read-only: stock levels follow from receipts, fulfilments, transfers
+                // and adjustments rather than being set directly.
+                $router->group(['prefix' => 'inventory'], function ($router) {
+                    $router->get('availability', 'InventoryController@availability');
+                    $router->get('/', 'InventoryController@query');
+                    $router->get('{id}', 'InventoryController@find');
+                });
             }
         );
 
