@@ -227,6 +227,34 @@ class PurchaseOrder extends Model
         return $result;
     }
 
+    /**
+     * Mark the purchase order as partially received and log an operational audit event.
+     * Partial receipts move stock, so they belong in the audit trail just as full
+     * receipts do; the `type` discriminates them while keeping the same event type
+     * so filtering by PO_RECEIVED surfaces the whole receiving history.
+     *
+     * @param array $receivedItems Array of received line items with quantities
+     */
+    public function markAsPartiallyReceived(array $receivedItems = []): bool
+    {
+        $this->status = 'partial';
+        $result       = $this->save();
+
+        $this->logAuditEvent(
+            AuditEventType::PO_RECEIVED,
+            'Purchase Order Partially Received',
+            'partially_received',
+            null,
+            [
+                'order_number'   => $this->public_id,
+                'supplier_uuid'  => $this->supplier_uuid,
+                'received_items' => $receivedItems,
+            ]
+        );
+
+        return $result;
+    }
+
     protected static function boot()
     {
         parent::boot();

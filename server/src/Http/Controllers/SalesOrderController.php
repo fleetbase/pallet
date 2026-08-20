@@ -345,8 +345,7 @@ class SalesOrderController extends PalletResourceController
                     $salesOrder->markAsFulfilled($fulfilledSummary);
                 } elseif ($fulfilledItems > 0 || $partialItems > 0) {
                     // Partial fulfillment
-                    $salesOrder->status = 'partial';
-                    $salesOrder->save();
+                    $salesOrder->markAsPartiallyFulfilled($fulfilledSummary);
                 }
             });
 

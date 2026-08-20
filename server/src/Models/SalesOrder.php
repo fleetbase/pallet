@@ -226,6 +226,36 @@ class SalesOrder extends Model
             null,
             [
                 'order_number'    => $this->public_id,
+                'customer_uuid'   => $this->customer_uuid,
+                'supplier_uuid'   => $this->supplier_uuid,
+                'fulfilled_items' => $fulfilledItems,
+            ]
+        );
+
+        return $result;
+    }
+
+    /**
+     * Mark the sales order as partially fulfilled and log an operational audit event.
+     * Partial fulfillment deducts stock, so it belongs in the audit trail just as full
+     * fulfillment does; the `type` discriminates them while keeping the same event type
+     * so filtering by SO_FULFILLED surfaces the whole fulfillment history.
+     *
+     * @param array $fulfilledItems Array of fulfilled line items with quantities
+     */
+    public function markAsPartiallyFulfilled(array $fulfilledItems = []): bool
+    {
+        $this->status = 'partial';
+        $result       = $this->save();
+
+        $this->logAuditEvent(
+            AuditEventType::SO_FULFILLED,
+            'Sales Order Partially Fulfilled',
+            'partially_fulfilled',
+            null,
+            [
+                'order_number'    => $this->public_id,
+                'customer_uuid'   => $this->customer_uuid,
                 'supplier_uuid'   => $this->supplier_uuid,
                 'fulfilled_items' => $fulfilledItems,
             ]

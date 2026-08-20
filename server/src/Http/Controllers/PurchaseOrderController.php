@@ -300,8 +300,7 @@ class PurchaseOrderController extends PalletResourceController
                     $purchaseOrder->markAsReceived($receivedSummary);
                 } elseif ($receivedItems > 0 || $partialItems > 0) {
                     // Partial receipt
-                    $purchaseOrder->status = 'partial';
-                    $purchaseOrder->save();
+                    $purchaseOrder->markAsPartiallyReceived($receivedSummary);
                 }
             });
 
