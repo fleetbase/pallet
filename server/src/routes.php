@@ -51,6 +51,16 @@ Route::prefix(config('pallet.api.routing.prefix', 'pallet'))->namespace('Fleetba
                     $router->delete('{id}', 'WarehouseController@delete');
                 });
 
+                $router->group(['prefix' => 'purchase-orders'], function ($router) {
+                    $router->post('/', 'PurchaseOrderController@create');
+                    $router->get('/', 'PurchaseOrderController@query');
+                    $router->get('{id}', 'PurchaseOrderController@find');
+                    $router->put('{id}', 'PurchaseOrderController@update');
+                    $router->patch('{id}', 'PurchaseOrderController@update');
+                    $router->delete('{id}', 'PurchaseOrderController@delete');
+                    $router->post('{id}/receive', 'PurchaseOrderController@receive');
+                });
+
                 // Read-only: stock levels follow from receipts, fulfilments, transfers
                 // and adjustments rather than being set directly.
                 $router->group(['prefix' => 'inventory'], function ($router) {
