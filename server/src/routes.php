@@ -37,6 +37,10 @@ Route::prefix(config('pallet.api.routing.prefix', 'pallet'))->namespace('Fleetba
                         | the system. Only index and show are permitted via the API.
                         | The event-types endpoint returns available filter categories.
                         */
+                        // Stock movement ledger — read-only, see StockTransactionController
+                        $router->get('stock-transactions', 'StockTransactionController@queryRecord');
+                        $router->get('stock-transactions/{id}', 'StockTransactionController@find');
+
                         $router->get('audits', 'AuditController@index');
                         $router->get('audits/event-types', 'AuditController@eventTypes');
                         $router->get('audits/{id}', 'AuditController@show');
