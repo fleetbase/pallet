@@ -6,14 +6,18 @@ export default buildRoutes(function () {
         this.route('products', function () {
             this.route('index', { path: '/' }, function () {
                 this.route('new');
-                this.route('details', { path: '/:public_id' });
+                this.route('details', { path: '/:public_id' }, function () {
+                    this.route('index', { path: '/' });
+                });
                 this.route('edit', { path: '/edit/:public_id' });
             });
         });
         this.route('suppliers', function () {
             this.route('index', { path: '/' }, function () {
                 this.route('new');
-                this.route('details', { path: '/:public_id' });
+                this.route('details', { path: '/:public_id' }, function () {
+                    this.route('index', { path: '/' });
+                });
                 this.route('edit', { path: '/edit/:public_id' });
             });
         });
@@ -22,7 +26,9 @@ export default buildRoutes(function () {
         this.route('warehouses', function () {
             this.route('index', { path: '/' }, function () {
                 this.route('new');
-                this.route('details', { path: '/:public_id' });
+                this.route('details', { path: '/:public_id' }, function () {
+                    this.route('index', { path: '/' });
+                });
                 this.route('edit', { path: '/edit/:public_id' });
             });
         });
