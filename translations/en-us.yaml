@@ -257,6 +257,14 @@ widgets:
     in-stock: In Stock
     low-stock: Low Stock
     stock-value: Stock Value
+    out-of-stock: Out of Stock
+    expired: Expired
+    expiring-soon: Expiring Soon
+    reservations: Reservations
+    waves: Waves
+    pick-lists: Pick Lists
+    cycle-counts: Cycle Counts
+    transfers: Transfers
   empty:
     healthy: All stock levels are healthy
     no-movement: No movement data yet

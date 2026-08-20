@@ -4,6 +4,7 @@ import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
 
 export default class WidgetInventoryHealthComponent extends Component {
+    @service intl;
     @service fetch;
 
     @tracked data = null;
@@ -17,11 +18,11 @@ export default class WidgetInventoryHealthComponent extends Component {
     get items() {
         const data = this.data ?? {};
         return [
-            { label: 'In Stock', value: data.in_stock ?? 0, status: 'success' },
-            { label: 'Low Stock', value: data.low_stock ?? 0, status: 'warning' },
-            { label: 'Out of Stock', value: data.out_of_stock ?? 0, status: 'danger' },
-            { label: 'Expired', value: data.expired ?? 0, status: 'danger' },
-            { label: 'Expiring Soon', value: data.expiring_soon ?? 0, status: 'warning' },
+            { label: this.intl.t('widgets.labels.in-stock'), value: String(data.in_stock ?? 0), status: 'success' },
+            { label: this.intl.t('widgets.labels.low-stock'), value: String(data.low_stock ?? 0), status: 'warning' },
+            { label: this.intl.t('widgets.labels.out-of-stock'), value: String(data.out_of_stock ?? 0), status: 'danger' },
+            { label: this.intl.t('widgets.labels.expired'), value: String(data.expired ?? 0), status: 'danger' },
+            { label: this.intl.t('widgets.labels.expiring-soon'), value: String(data.expiring_soon ?? 0), status: 'warning' },
         ];
     }
 
