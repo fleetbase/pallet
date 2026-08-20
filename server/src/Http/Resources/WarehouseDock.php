@@ -20,6 +20,13 @@ class WarehouseDock extends FleetbaseResource
             'id'                   => $this->when(Http::isInternalRequest(), $this->id, $this->public_id),
             'uuid'                 => $this->when(Http::isInternalRequest(), $this->uuid),
             'public_id'            => $this->when(Http::isInternalRequest(), $this->public_id),
+            'warehouse_uuid'       => $this->warehouse_uuid,
+            'dock_number'          => $this->dock_number,
+            'type'                 => $this->type,
+            'direction'            => $this->direction,
+            'status'               => $this->status,
+            'capacity'             => $this->capacity,
+            'meta'                 => $this->meta ?? [],
             'updated_at'           => $this->updated_at,
             'created_at'           => $this->created_at,
         ];

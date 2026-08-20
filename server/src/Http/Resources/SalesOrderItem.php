@@ -18,6 +18,7 @@ class SalesOrderItem extends FleetbaseResource
         return [
             'id'                   => $this->public_id,
             'uuid'                 => $this->uuid,
+            'public_id'            => $this->public_id,
             'sales_order_uuid'     => $this->sales_order_uuid,
             'product_uuid'         => $this->product_uuid,
             'variant_uuid'         => $this->variant_uuid,

@@ -45,6 +45,8 @@ class Inventory extends FleetbaseResource
             'uom'                   => $this->uom,
             'comments'              => $this->comments,
             'expiry_date_at'        => $this->expiry_date_at,
+            'manufactured_date_at'  => $this->manufactured_date_at,
+            'meta'                  => $this->meta ?? [],
             'received_at'           => $this->received_at,
             'last_counted_at'       => $this->last_counted_at,
             'updated_at'            => $this->updated_at,

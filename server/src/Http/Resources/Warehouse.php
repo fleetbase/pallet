@@ -46,6 +46,11 @@ class Warehouse extends FleetbaseResource
 
             // Place / address fields (proxied from the linked Place)
             'place_uuid'             => $this->when(Http::isInternalRequest(), $this->place_uuid),
+            'manager_uuid'           => $this->manager_uuid,
+            'manager'                => $this->whenLoaded('manager', fn () => $this->manager ? [
+                'uuid' => $this->manager->uuid,
+                'name' => $this->manager->name,
+            ] : null),
             'place'                  => $this->whenLoaded('place', $place),
             'address'                => $this->address,
             'address_html'           => $this->when(Http::isInternalRequest(), $place?->address_html),

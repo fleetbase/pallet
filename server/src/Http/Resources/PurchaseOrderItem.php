@@ -18,6 +18,7 @@ class PurchaseOrderItem extends FleetbaseResource
         return [
             'id'                   => $this->public_id,
             'uuid'                 => $this->uuid,
+            'public_id'            => $this->public_id,
             'purchase_order_uuid'  => $this->purchase_order_uuid,
             'product_uuid'         => $this->product_uuid,
             'variant_uuid'         => $this->variant_uuid,
