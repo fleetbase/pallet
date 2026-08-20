@@ -310,6 +310,11 @@ columns:
   customer-ref: Customer Ref
   po-number: PO Number
   so-number: SO Number
+  received: Received
+  fulfilled: Fulfilled
+  outstanding: Outstanding
+  unit-price: Unit Price
+  total: Total
 
 # Row and toolbar actions
 actions:
@@ -437,6 +442,7 @@ supplier:
 
 # Purchase Order translations
 purchase-order:
+  no-line-items: No line items on this purchase order.
   sections:
     details: Details
     line-items: Line Items
@@ -493,6 +499,7 @@ purchase-order:
 
 # Sales Order translations
 sales-order:
+  no-line-items: No line items on this sales order.
   sections:
     details: Details
     line-items: Line Items
