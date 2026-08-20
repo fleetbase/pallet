@@ -486,6 +486,8 @@ class Inventory extends Model
                 (SELECT GROUP_CONCAT(DISTINCT pallet_batches.batch_number) FROM pallet_batches WHERE pallet_batches.uuid = pallet_inventories.batch_uuid) as batch_numbers,
                 SUM(pallet_inventories.quantity) as total_quantity,
                 SUM(pallet_inventories.available_quantity) as total_available_quantity,
+                SUM(pallet_inventories.reserved_quantity) as total_reserved_quantity,
+                MIN(pallet_inventories.status) as summary_status,
                 MAX(pallet_inventories.min_quantity) as minimum_quantity,
                 MAX(pallet_inventories.expiry_date_at) as latest_expiry_date_at
             ')
