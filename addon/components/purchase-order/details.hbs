@@ -35,7 +35,9 @@
     </ContentPanel>
     <ContentPanel @title={{t "purchase-order.sections.line-items"}} @open={{true}} @wrapperClass="bordered-top" @panelBodyWrapperClass="px-0i">
         {{#if @resource.items.length}}
-            <table class="w-full text-sm">
+            {{! The details panel is narrow, so the item table scrolls rather than clipping its pricing columns. }}
+            <div class="overflow-x-auto">
+            <table class="w-full text-sm whitespace-nowrap">
                 <thead>
                     <tr class="border-b border-gray-200 dark:border-gray-700 text-left text-xs uppercase text-gray-500">
                         <th class="px-4 py-3">{{t "columns.product"}}</th>
@@ -63,6 +65,7 @@
                     {{/each}}
                 </tbody>
             </table>
+            </div>
         {{else}}
             <div class="px-4 py-6 text-sm text-gray-500 dark:text-gray-400">{{t "purchase-order.no-line-items"}}</div>
         {{/if}}
