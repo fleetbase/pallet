@@ -72,6 +72,21 @@ abstract class TestCase extends TestbenchTestCase
         $app['config']->set('activitylog.enabled', false);
     }
 
+    /**
+     * The full PalletServiceProvider cannot boot on the SQLite lane, so its
+     * loadRoutesFrom() never runs and no Pallet route is registered. Load the route
+     * file directly instead — the consumable API's prefix and middleware are part of
+     * its contract, and without this there is nothing to assert them against.
+     */
+    protected function defineRoutes($router): void
+    {
+        // routes.php calls the fleetbaseRoutes() macro, which arrives as a core
+        // expansion — register those first or the require fails on the first call.
+        self::registerCoreExpansions();
+
+        require __DIR__ . '/../src/routes.php';
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -262,6 +277,21 @@ abstract class TestCase extends TestbenchTestCase
                 $table->string('public_id', 191)->nullable()->index();
                 $table->string('company_uuid', 191)->nullable()->index();
                 $table->string('name')->nullable();
+                $table->timestamps();
+                $table->softDeletes();
+            },
+            // Authorization directives are consulted on every listing via
+            // HasApiModelBehavior::applyDirectivesToQuery(). Pallet defines none, but
+            // the query still runs, so the table has to exist for a listing to be
+            // testable end to end.
+            'directives' => function ($table) {
+                $table->increments('id');
+                $table->string('uuid', 191)->nullable()->index();
+                $table->string('permission_uuid', 191)->nullable()->index();
+                $table->string('subject_uuid', 191)->nullable()->index();
+                $table->string('subject_type', 191)->nullable();
+                $table->string('key')->nullable();
+                $table->text('value')->nullable();
                 $table->timestamps();
                 $table->softDeletes();
             },

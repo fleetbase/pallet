@@ -17,6 +17,35 @@ Route::prefix(config('pallet.api.routing.prefix', 'pallet'))->namespace('Fleetba
     function ($router) {
         /*
         |--------------------------------------------------------------------------
+        | Consumable Pallet API Routes
+        |--------------------------------------------------------------------------
+        |
+        | End-user API routes that the SDK and customer applications interface with.
+        | These authenticate with an organization API credential via `fleetbase.api`,
+        | address records by public id, and are versioned independently of the
+        | console's internal routes.
+        |
+        | NOTE: company scoping on these routes comes from PalletFilter, not from
+        | Filter::apply()'s queryForPublic() hook — that hook is gated behind
+        | Http::isPublicRequest(), which only matches URIs beginning `v1/` and so
+        | never fires for Pallet's package-prefixed `pallet/v1/...` routes.
+        */
+        $router->group(
+            ['prefix' => 'v1', 'middleware' => ['fleetbase.api'], 'namespace' => 'Api\v1'],
+            function ($router) {
+                $router->group(['prefix' => 'products'], function ($router) {
+                    $router->post('/', 'ProductController@create');
+                    $router->get('/', 'ProductController@query');
+                    $router->get('{id}', 'ProductController@find');
+                    $router->put('{id}', 'ProductController@update');
+                    $router->patch('{id}', 'ProductController@update');
+                    $router->delete('{id}', 'ProductController@delete');
+                });
+            }
+        );
+
+        /*
+        |--------------------------------------------------------------------------
         | Internal API Routes
         |--------------------------------------------------------------------------
         |
