@@ -1,3 +1,8 @@
+# pnpm <10 rejects a workspace file without `packages`, which broke any
+# `pnpm run` invoked by an older pnpm ("packages field missing or empty")
+packages:
+  - '.'
+
 allowBuilds:
   '@fortawesome/fontawesome-common-types': false
   '@fortawesome/fontawesome-svg-core': false
