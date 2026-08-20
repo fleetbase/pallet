@@ -26,6 +26,19 @@ export default class PurchaseOrdersIndexEditController extends Controller {
     @tracked overlay;
 
     /**
+     * The panel header's action buttons. The template binds this; without it the
+     * edit panel renders no way back to the record's details.
+     */
+    get actionButtons() {
+        return [
+            {
+                icon: 'eye',
+                fn: () => this.onViewDetails(this.model),
+            },
+        ];
+    }
+
+    /**
      * When exiting the overlay.
      *
      * @return {Transition}

@@ -23,6 +23,19 @@ export default class InventoryIndexDetailsController extends Controller {
     @tracked queryParams = ['view'];
 
     /**
+     * The panel header's action buttons. The template binds this; without it the
+     * details panel renders no way to reach the record's edit form.
+     */
+    get actionButtons() {
+        return [
+            {
+                icon: 'pencil',
+                fn: () => this.onEdit(this.model),
+            },
+        ];
+    }
+
+    /**
      * Transitions back to the "inventory.index" route.
      *
      * @method
