@@ -21,5 +21,16 @@
         {{#if @resource.is_lot_tracked}}
             <Badge @status="info" @hideStatusDot={{true}}>Lot tracked</Badge>
         {{/if}}
+        <Layout::Resource::Panel::HeaderActions
+            @resource={{@resource}}
+            @modelName={{@modelName}}
+            @saveTask={{@saveTask}}
+            @saveOptions={{@saveOptions}}
+            @saveDisabled={{@saveDisabled}}
+            @pojoResource={{@pojoResource}}
+            @authSchema={{@authSchema}}
+            @actionButtons={{@actionButtons}}
+            @onPressCancel={{@onPressCancel}}
+        />
     </div>
 </div>

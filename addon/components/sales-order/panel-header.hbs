@@ -7,5 +7,16 @@
     </div>
     <div class="flex flex-row items-center space-x-2">
         <Badge @status={{@resource.status}}>{{smart-humanize @resource.status}}</Badge>
+        <Layout::Resource::Panel::HeaderActions
+            @resource={{@resource}}
+            @modelName={{@modelName}}
+            @saveTask={{@saveTask}}
+            @saveOptions={{@saveOptions}}
+            @saveDisabled={{@saveDisabled}}
+            @pojoResource={{@pojoResource}}
+            @authSchema={{@authSchema}}
+            @actionButtons={{@actionButtons}}
+            @onPressCancel={{@onPressCancel}}
+        />
     </div>
 </div>

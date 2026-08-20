@@ -9,5 +9,16 @@
         {{#if @resource.is_3pl}}
             <Badge @status="info" @hideStatusDot={{true}}>3PL</Badge>
         {{/if}}
+        <Layout::Resource::Panel::HeaderActions
+            @resource={{@resource}}
+            @modelName={{@modelName}}
+            @saveTask={{@saveTask}}
+            @saveOptions={{@saveOptions}}
+            @saveDisabled={{@saveDisabled}}
+            @pojoResource={{@pojoResource}}
+            @authSchema={{@authSchema}}
+            @actionButtons={{@actionButtons}}
+            @onPressCancel={{@onPressCancel}}
+        />
     </div>
 </div>

@@ -11,5 +11,16 @@
         {{#if @resource.lot_number}}
             <Badge @status="info" @hideStatusDot={{true}}>Lot: {{@resource.lot_number}}</Badge>
         {{/if}}
+        <Layout::Resource::Panel::HeaderActions
+            @resource={{@resource}}
+            @modelName={{@modelName}}
+            @saveTask={{@saveTask}}
+            @saveOptions={{@saveOptions}}
+            @saveDisabled={{@saveDisabled}}
+            @pojoResource={{@pojoResource}}
+            @authSchema={{@authSchema}}
+            @actionButtons={{@actionButtons}}
+            @onPressCancel={{@onPressCancel}}
+        />
     </div>
 </div>

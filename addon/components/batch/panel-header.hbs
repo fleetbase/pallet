@@ -9,5 +9,16 @@
         {{#if @resource.expiry_date_at}}
             <Badge @status="warning" @hideStatusDot={{true}}>Expires: {{format-date @resource.expiry_date_at}}</Badge>
         {{/if}}
+        <Layout::Resource::Panel::HeaderActions
+            @resource={{@resource}}
+            @modelName={{@modelName}}
+            @saveTask={{@saveTask}}
+            @saveOptions={{@saveOptions}}
+            @saveDisabled={{@saveDisabled}}
+            @pojoResource={{@pojoResource}}
+            @authSchema={{@authSchema}}
+            @actionButtons={{@actionButtons}}
+            @onPressCancel={{@onPressCancel}}
+        />
     </div>
 </div>
