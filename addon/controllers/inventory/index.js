@@ -255,6 +255,40 @@ export default class InventoryIndexController extends Controller {
     }
 
     /**
+     * Toolbar buttons for the inventory table.
+     *
+     * @var {Array}
+     */
+    get actionButtons() {
+        return [
+            {
+                icon: 'refresh',
+                onClick: () => this.hostRouter.refresh(),
+                helpText: this.intl.t('common.refresh'),
+            },
+            {
+                text: this.intl.t('common.new'),
+                type: 'primary',
+                icon: 'plus',
+                onClick: this.createInventory,
+            },
+            {
+                text: this.intl.t('inventory.screens.new-adjustment'),
+                icon: 'sliders',
+                wrapperClass: 'hidden md:flex',
+                onClick: this.makeStockAdjustment,
+            },
+            {
+                text: this.intl.t('common.export'),
+                icon: 'long-arrow-up',
+                iconClass: 'rotate-icon-45',
+                wrapperClass: 'hidden md:flex',
+                onClick: this.exportProcuts,
+            },
+        ];
+    }
+
+    /**
      * Toggles dialog to export `inventory`
      *
      * @void

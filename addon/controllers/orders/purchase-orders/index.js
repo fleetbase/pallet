@@ -276,6 +276,34 @@ export default class PurchaseOrdersIndexController extends Controller {
     }
 
     /**
+     * Toolbar buttons for the table.
+     *
+     * @var {Array}
+     */
+    get actionButtons() {
+        return [
+            {
+                icon: 'refresh',
+                onClick: () => this.hostRouter.refresh(),
+                helpText: this.intl.t('common.refresh'),
+            },
+            {
+                text: this.intl.t('common.new'),
+                type: 'primary',
+                icon: 'plus',
+                onClick: this.createPurchaseOrder,
+            },
+            {
+                text: this.intl.t('common.export'),
+                icon: 'long-arrow-up',
+                iconClass: 'rotate-icon-45',
+                wrapperClass: 'hidden md:flex',
+                onClick: this.exportPurchaseOrders,
+            },
+        ];
+    }
+
+    /**
      * Export purchase orders
      *
      * @void
