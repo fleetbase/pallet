@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import { action } from '@ember/object';
+import { action, get } from '@ember/object';
 import { task } from 'ember-concurrency';
 import contextComponentCallback from '@fleetbase/ember-core/utils/context-component-callback';
 import applyContextComponentArguments from '@fleetbase/ember-core/utils/apply-context-component-arguments';
@@ -74,7 +74,12 @@ export default class StockAdjustmentFormPanelComponent extends Component {
     }
 
     get hasProductVariants() {
-        return Boolean(this.stockAdjustment.product?.has_variants);
+        // `product` is a belongsTo proxy, and Ember asserts on direct property
+        // access against one. saveTask reads this getter, so the throw aborted
+        // the whole save: no request was sent and nothing surfaced to the user.
+        const product = this.stockAdjustment.product;
+
+        return Boolean(product && get(product, 'has_variants'));
     }
 
     getRecordUuid(record) {
