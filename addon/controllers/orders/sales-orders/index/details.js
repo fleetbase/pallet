@@ -23,6 +23,17 @@ export default class SalesOrdersIndexDetailsController extends Controller {
     @tracked queryParams = ['view'];
 
     /**
+     * The panel renders a TabNavigation over these; without them the details
+     * body had no tabs and no outlet content at all.
+     */
+    @tracked tabs = [
+        {
+            route: 'orders.sales-orders.index.details.index',
+            label: 'Overview',
+        },
+    ];
+
+    /**
      * The panel header's action buttons. The template binds this; without it the
      * details panel renders no way to reach the record's edit form.
      */
