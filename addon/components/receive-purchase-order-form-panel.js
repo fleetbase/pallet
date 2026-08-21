@@ -213,8 +213,12 @@ export default class ReceivePurchaseOrderFormPanelComponent extends Component {
                 this.args.onPressCancel();
             }
         } catch (error) {
-            const message = error?.payload?.error || error?.message || 'Failed to receive purchase order.';
-            this.notifications.serverError({ payload: { errors: [message] } });
+            // same miswrapping as the fulfil panel: serverError reads `errors` off the
+            // object it is given, so nesting it under `payload` reduced every failure
+            // to the generic "Oops! Something went wrong with your request."
+            const message = error?.error || error?.payload?.error || error?.message || 'Failed to receive purchase order.';
+
+            this.notifications.serverError({ errors: [message] });
         }
     }
 

@@ -170,7 +170,10 @@ export default class FulfillSalesOrderFormPanelComponent extends Component {
         }
 
         try {
-            const response = yield this.fetch.post(`sales-orders/${salesOrder.public_id}/fulfill`, { items }, { namespace: 'pallet/int/v1' });
+            // rawError so the whole body reaches the catch: the fetch service otherwise
+            // rejects with a bare Error built from `error`, and the insufficient_stock
+            // detail the endpoint sends is thrown away before anyone can show it
+            const response = yield this.fetch.post(`sales-orders/${salesOrder.public_id}/fulfill`, { items }, { namespace: 'pallet/int/v1', rawError: true });
 
             // Reload the SO record from the store to reflect updated status and items
             yield salesOrder.reload();
@@ -185,18 +188,38 @@ export default class FulfillSalesOrderFormPanelComponent extends Component {
                 this.args.onPressCancel();
             }
         } catch (error) {
-            const payload = error?.payload;
-            if (payload?.insufficient_stock) {
-                // Show a detailed insufficient stock error
-                const lines = payload.insufficient_stock.map(
-                    (s) => `Product ${s.product_uuid}${s.variant_uuid ? ` / Variant ${s.variant_uuid}` : ''}: requested ${s.requested}, available ${s.available}`
-                );
-                this.notifications.serverError({ payload: { errors: [payload.error, ...lines] } });
-            } else {
-                const message = payload?.error || error?.message || 'Failed to fulfill sales order.';
-                this.notifications.serverError({ payload: { errors: [message] } });
+            // notifications.serverError reads `errors` off the object it is given.
+            // These calls nested it under `payload`, so every failure here — including
+            // a precise "requested 500, available 118" from the server — surfaced as
+            // the generic "Oops! Something went wrong with your request."
+            const shortfalls = error?.insufficient_stock ?? error?.payload?.insufficient_stock;
+
+            if (shortfalls) {
+                const lines = shortfalls.map((s) => `${this.describeShortfallItem(s)}: requested ${s.requested}, available ${s.available}`);
+
+                return this.notifications.serverError({ errors: [error.error ?? 'Insufficient stock for one or more items.', ...lines] });
             }
+
+            const message = error?.error || error?.payload?.error || error?.message || 'Failed to fulfill sales order.';
+
+            this.notifications.serverError({ errors: [message] });
         }
+    }
+
+    /**
+     * The endpoint identifies a shortfall by uuid, which means nothing to a reader.
+     * Resolve it back to the line item's product name where we can.
+     */
+    describeShortfallItem(shortfall) {
+        const item = (this.salesOrder?.items ?? []).find((i) => i.uuid === shortfall.item_uuid);
+        const name = item?.product?.name ?? item?.name;
+        const variant = item?.variant?.display_name ?? item?.variant?.name;
+
+        if (name) {
+            return variant ? `${name} (${variant})` : name;
+        }
+
+        return `Product ${shortfall.product_uuid}`;
     }
 
     /**
