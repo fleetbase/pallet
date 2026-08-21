@@ -51,7 +51,10 @@ class Inventory extends Model
      * @var array
      */
     protected $fillable = [
-        'supplier',
+        // there is no `supplier` column — only supplier_uuid. The console's
+        // inventory serializer embeds the supplier relation, so every update sent a
+        // `supplier` key, this let it through to the UPDATE, and MySQL answered
+        // "Unknown column 'supplier' in 'field list'" for every save.
         'supplier_uuid',
         'company_uuid',
         'created_by_uuid',

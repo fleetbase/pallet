@@ -297,6 +297,8 @@ abstract class TestCase extends TestbenchTestCase
                 $table->string('business_id', 191)->nullable();
                 $table->string('type', 191)->nullable();
                 $table->string('status', 191)->nullable();
+                $table->json('callbacks')->nullable();
+                $table->text('notes')->nullable();
                 $table->json('meta')->nullable();
                 $table->timestamps();
                 $table->softDeletes();
