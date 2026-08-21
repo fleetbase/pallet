@@ -5,3 +5,12 @@
 <Layout::Section::Container>
     {{outlet}}
 </Layout::Section::Container>
+
+{{!
+    Nothing rendered the context panel, so every contextPanel.focus() call set
+    state on a service with no view attached. The two that are reachable from a
+    live screen are Receive Goods and Fulfill Order — the operations that actually
+    move stock — and both were dead buttons: no panel, no error, nothing at all.
+    Storefront mounts it here in exactly the same way.
+}}
+<ContextPanel />
