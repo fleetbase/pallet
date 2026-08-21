@@ -14,11 +14,27 @@ export default class CellProductInfoComponent extends Component {
 
     /**
      * An inventory row keeps its product_uuid when the product is deleted, and the
-     * relation then resolves to nothing. Only the modelPath case can be missing —
-     * on the products list the row *is* the product.
+     * relation then resolves to nothing.
+     *
+     * `product` cannot be truth-tested directly: the relationship is async, so it
+     * is a PromiseObject that stays truthy even when its content is null. Test the
+     * resolved record instead. Only the modelPath case can be missing — on the
+     * products list the row *is* the product.
      */
     get isMissingProduct() {
-        return typeof this.args.column?.modelPath === 'string' && !this.product;
+        if (typeof this.args.column?.modelPath !== 'string') {
+            return false;
+        }
+
+        // a row that never referenced a product is not the same as a broken one
+        if (!get(this.args.row ?? {}, 'product_uuid')) {
+            return false;
+        }
+
+        const product = this.product;
+        const resolved = product ? (get(product, 'content') ?? product) : null;
+
+        return !resolved || !get(resolved, 'uuid');
     }
 
     /**
