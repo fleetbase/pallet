@@ -236,3 +236,28 @@ test('an audit entry names its subject by public id and short type', function ()
         ->and(array_key_exists('auditable_uuid', $body))->toBeFalse()
         ->and(array_key_exists('auditable_type', $body))->toBeFalse();
 });
+
+/*
+ * old_values, new_values and meta are snapshots of the audited model, so they carry
+ * whatever it held — a purchase-order receipt summary alone contributes item_uuid,
+ * product_uuid, variant_uuid and inventory_uuid. The original test here checked only
+ * top-level keys and missed all of it.
+ */
+test('an audit entry leaks no internal id at any depth', function () {
+    [, $product, $warehouse] = publicAdjustmentFixture();
+    submitAdjustment('add', 3, $product, $warehouse);
+
+    $entries = Fleetbase\Pallet\Models\Audit::queryWithRequest(
+        publicApiRequest('audits', 'GET', [], AuditController::class)
+    );
+
+    expect($entries)->not->toBeEmpty();
+
+    foreach ($entries as $entry) {
+        $request = publicApiRequest('audits/' . $entry->public_id);
+        $body    = resourceArray((new AuditController())->find($entry->public_id, $request), $request);
+        $leaked  = internalIdKeysIn($body);
+
+        expect($leaked)->toBe([], 'audit ' . $entry->public_id . ' exposes ' . implode(', ', $leaked));
+    }
+});

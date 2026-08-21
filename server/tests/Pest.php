@@ -47,3 +47,37 @@ function resourceArray($resource, Request $request): array
 {
     return json_decode(json_encode($resource->toArray($request)), true);
 }
+
+/**
+ * Every uuid-shaped key anywhere in a consumable payload, at any depth.
+ *
+ * The per-resource tests originally checked only top-level keys. That is why the
+ * audit resource could leak product_uuid, warehouse_uuid, inventory_uuid and more
+ * inside old_values/new_values/meta while the suite stayed green — the Postman
+ * collection's runtime check, which regexes the whole serialised body, is what
+ * actually caught it.
+ */
+function internalIdKeysIn($value, string $path = ''): array
+{
+    if (is_object($value)) {
+        $value = (array) $value;
+    }
+
+    if (!is_array($value)) {
+        return [];
+    }
+
+    $found = [];
+
+    foreach ($value as $key => $item) {
+        $here = $path === '' ? (string) $key : $path . '.' . $key;
+
+        if (is_string($key) && (str_ends_with($key, '_uuid') || $key === 'uuid')) {
+            $found[] = $here;
+        }
+
+        $found = array_merge($found, internalIdKeysIn($item, $here));
+    }
+
+    return $found;
+}
