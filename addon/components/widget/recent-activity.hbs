@@ -35,7 +35,7 @@
                         <p class="text-xs text-gray-400 mt-0.5">
                             {{n-a event.performedBy.name}}
                             &middot;
-                            <TimeAgo @date={{event.created_at}} />
+                            <span title={{event.created_at}}>{{format-date-fns event.created_at "MMM d, HH:mm"}}</span>
                         </p>
                     </div>
                 </div>
