@@ -132,3 +132,37 @@ test('a warehouse created with a street still gets its place', function () {
     expect($warehouse)->not->toBeNull()
         ->and($warehouse->place_uuid)->not->toBeNull();
 });
+
+/*
+ * `status` and `is_active` both answer "is this warehouse in service" and nothing
+ * kept them in step. The create form offered a status select and an Active
+ * checkbox side by side, and the unchecked checkbox won: a warehouse created
+ * with status "active" came back reporting is_active false on the same panel
+ * that showed its status as Active.
+ */
+test('is_active follows status rather than being written independently', function () {
+    $company = (string) Illuminate\Support\Str::uuid();
+    session(['company' => $company]);
+
+    $request = Request::create('/pallet/int/v1/warehouses', 'POST', [
+        'warehouse' => [
+            'name'      => 'Derived Flag Warehouse',
+            'status'    => 'active',
+            'is_active' => false,
+        ],
+    ]);
+    $request->setLaravelSession(app('session.store'));
+    $request->session()->put('company', $company);
+
+    (new WarehouseController())->createRecord($request);
+
+    $warehouse = Warehouse::where('name', 'Derived Flag Warehouse')->first();
+
+    expect($warehouse)->not->toBeNull()
+        ->and($warehouse->status)->toBe('active')
+        ->and($warehouse->is_active)->toBeTrue('an active warehouse cannot also be inactive');
+
+    $warehouse->update(['status' => 'maintenance']);
+
+    expect($warehouse->fresh()->is_active)->toBeFalse('only "active" means in service');
+});

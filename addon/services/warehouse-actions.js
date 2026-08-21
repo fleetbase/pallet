@@ -8,7 +8,9 @@ export default class WarehouseActionsService extends ResourceActionService {
         this.initialize('warehouse', {
             modelNamePath: 'name',
             defaultAttributes: {
-                type: 'pallet-warehouse',
+                // 'pallet-warehouse' is the type stamped on the linked Place, not a
+                // warehouse type — the form's own select never offered it
+                type: 'standard',
                 status: 'active',
                 meta: {},
             },

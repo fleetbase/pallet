@@ -68,9 +68,6 @@
                     <Input @value={{this.warehouse.email}} @type="email" class="w-full form-input" placeholder="warehouse@company.com" />
                 </InputGroup>
                 <InputGroup @wrapperClass="col-span-2">
-                    <Checkbox @value={{this.warehouse.is_active}} @onChange={{fn (mut this.warehouse.is_active)}} @label="Active" />
-                </InputGroup>
-                <InputGroup @wrapperClass="col-span-2">
                     <Checkbox @value={{this.warehouse.is_default}} @onChange={{fn (mut this.warehouse.is_default)}} @label="Set as default warehouse" />
                 </InputGroup>
             </ContentPanel>

@@ -71,7 +71,7 @@ class Warehouse extends Model
         'email',
         'manager_uuid',
         'total_docks',
-        'is_active',
+        // `is_active` is deliberately not fillable — setStatusAttribute derives it
         'is_default',
         'meta',
     ];
@@ -105,6 +105,21 @@ class Warehouse extends Model
      * @var array
      */
     protected $with = ['place', 'sections', 'zones', 'docks'];
+
+    /**
+     * `status` and `is_active` both answer "is this warehouse in service", and
+     * nothing kept them in step: the create form offered a status select and an
+     * Active checkbox side by side, so a new warehouse came back reporting
+     * status "active" and is_active false on the very same details panel.
+     *
+     * `status` is the richer field — it distinguishes inactive from maintenance —
+     * so it is the source of truth and is_active follows it.
+     */
+    public function setStatusAttribute($status): void
+    {
+        $this->attributes['status']    = $status;
+        $this->attributes['is_active'] = $status === 'active';
+    }
 
     /**
      * The company that owns this warehouse.
