@@ -125,6 +125,19 @@ abstract class TestCase extends TestbenchTestCase
                 $platform->registerDoctrineTypeMapping($spatialType, 'text');
             }
         }
+
+        // Writing a Place emits ST_GeomFromText(...) as raw SQL. SQLite has no such
+        // function, so any code path that saves a location died with "no such
+        // function" rather than being testable at all. Stub the spatial functions
+        // to store and return the WKT text — enough to assert that a row was or was
+        // not written, which is what these tests are about. Anything that depends on
+        // real geometry semantics belongs in the MySQL lane.
+        $pdo = DB::connection()->getPdo();
+
+        if (method_exists($pdo, 'sqliteCreateFunction')) {
+            $pdo->sqliteCreateFunction('ST_GeomFromText', fn ($wkt = null) => $wkt, -1);
+            $pdo->sqliteCreateFunction('ST_AsText', fn ($geom = null) => $geom, -1);
+        }
     }
 
     /**
@@ -192,12 +205,28 @@ abstract class TestCase extends TestbenchTestCase
                 $table->timestamps();
                 $table->softDeletes();
             },
+            // Pallet writes a Place when a warehouse is given an address, so the shim
+            // needs the columns it actually writes — with only name/uuid present the
+            // insert failed and the warehouse create silently produced nothing.
             'places' => function ($table) {
                 $table->increments('id');
                 $table->string('uuid', 191)->nullable()->index();
                 $table->string('public_id', 191)->nullable()->index();
                 $table->string('company_uuid', 191)->nullable()->index();
+                $table->string('created_by_uuid', 191)->nullable()->index();
+                $table->string('_key', 191)->nullable();
                 $table->string('name')->nullable();
+                $table->string('type')->nullable();
+                $table->string('street1')->nullable();
+                $table->string('street2')->nullable();
+                $table->string('city')->nullable();
+                $table->string('province')->nullable();
+                $table->string('postal_code')->nullable();
+                $table->string('country')->nullable();
+                $table->string('neighborhood')->nullable();
+                $table->string('district')->nullable();
+                $table->string('building')->nullable();
+                $table->text('location')->nullable();
                 $table->json('meta')->nullable();
                 $table->timestamps();
                 $table->softDeletes();

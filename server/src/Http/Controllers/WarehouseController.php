@@ -65,7 +65,15 @@ class WarehouseController extends PalletResourceController
                         'location'     => $request->input('warehouse.location'),
                     ]);
                 }
-                if (!empty($placeData)) {
+                // `name` is always present, so array_filter never leaves $placeData
+                // empty and a Place was created even when no address was entered.
+                // Utils::getAddressStringForPlace lists `name` first among the address
+                // parts and uppercases each one, so the warehouses list rendered its
+                // own name, shouted, in the ADDRESS column. Only create a place when
+                // something that is actually an address was supplied.
+                $hasAddress = (bool) array_diff_key($placeData, ['name' => null]);
+
+                if ($hasAddress) {
                     // places.location is NOT NULL with no default, and array_filter
                     // strips a null location — supply the Fleetbase default point
                     $placeData['location'] = $placeData['location'] ?? new SpatialPoint(0, 0);
@@ -161,19 +169,21 @@ class WarehouseController extends PalletResourceController
                         'location'     => $request->input('warehouse.location'),
                     ]);
                 }
-                if (!empty($placeData)) {
-                    if ($warehouse->place_uuid) {
-                        Place::where('uuid', $warehouse->place_uuid)->update($placeData);
-                    } else {
-                        // see createRecord: location is NOT NULL with no default
-                        $placeData['location'] = $placeData['location'] ?? new SpatialPoint(0, 0);
-                        $place                 = Place::create(array_merge($placeData, [
-                            'company_uuid'    => session('company'),
-                            'created_by_uuid' => session('user'),
-                            'type'            => 'pallet-warehouse',
-                        ]));
-                        $input['place_uuid'] = $place->uuid;
-                    }
+                // Same guard as createRecord: a name on its own is not an address.
+                // An existing place still gets its name kept in step.
+                $hasAddress = (bool) array_diff_key($placeData, ['name' => null]);
+
+                if ($warehouse->place_uuid) {
+                    Place::where('uuid', $warehouse->place_uuid)->update($placeData);
+                } elseif ($hasAddress) {
+                    // see createRecord: location is NOT NULL with no default
+                    $placeData['location'] = $placeData['location'] ?? new SpatialPoint(0, 0);
+                    $place                 = Place::create(array_merge($placeData, [
+                        'company_uuid'    => session('company'),
+                        'created_by_uuid' => session('user'),
+                        'type'            => 'pallet-warehouse',
+                    ]));
+                    $input['place_uuid'] = $place->uuid;
                 }
             }, function ($request, $warehouse) {
                 $docks = $request->array('warehouse.docks', []);

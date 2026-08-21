@@ -85,3 +85,50 @@ test('the stock items count survives the list query, not just a direct find', fu
         ->and((int) $listed->inventories_count)->toBe(2)
         ->and((new WarehouseResource($listed))->toArray(Request::create('/'))['stock_items'])->toBe(2);
 });
+
+/*
+ * A warehouse created with no address was still given a Place, because the place
+ * payload always carries the warehouse name and the emptiness check could therefore
+ * never fail. Utils::getAddressStringForPlace lists `name` first among the address
+ * parts and uppercases each one, so the warehouses list rendered the warehouse's own
+ * name, shouted, in its ADDRESS column.
+ */
+test('a warehouse created without an address gets no place', function () {
+    $company = (string) Illuminate\Support\Str::uuid();
+    session(['company' => $company]);
+
+    $request = Request::create('/pallet/int/v1/warehouses', 'POST', [
+        'warehouse' => ['name' => 'No Address Warehouse', 'code' => 'NOADDR-' . uniqid()],
+    ]);
+    $request->setLaravelSession(app('session.store'));
+    $request->session()->put('company', $company);
+
+    (new WarehouseController())->createRecord($request);
+
+    $warehouse = Warehouse::where('name', 'No Address Warehouse')->first();
+
+    expect($warehouse)->not->toBeNull()
+        ->and($warehouse->place_uuid)->toBeNull('a name is not an address; no place should have been created');
+});
+
+test('a warehouse created with a street still gets its place', function () {
+    $company = (string) Illuminate\Support\Str::uuid();
+    session(['company' => $company]);
+
+    $request = Request::create('/pallet/int/v1/warehouses', 'POST', [
+        'warehouse' => [
+            'name'    => 'Addressed Warehouse',
+            'code'    => 'ADDR-' . uniqid(),
+            'street1' => '1 Logistics Way',
+        ],
+    ]);
+    $request->setLaravelSession(app('session.store'));
+    $request->session()->put('company', $company);
+
+    (new WarehouseController())->createRecord($request);
+
+    $warehouse = Warehouse::where('name', 'Addressed Warehouse')->first();
+
+    expect($warehouse)->not->toBeNull()
+        ->and($warehouse->place_uuid)->not->toBeNull();
+});
