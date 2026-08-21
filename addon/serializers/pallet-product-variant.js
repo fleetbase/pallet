@@ -15,9 +15,14 @@ export default class PalletProductVariantSerializer extends ApplicationSerialize
         return payloadModelName(CATALOG_PAYLOAD_MODEL_NAMES, key, super.modelNameFromPayloadKey(key));
     }
 
+    /**
+     * Same parent-embedding loop as warehouse-zone: the product serializer embeds
+     * `variants`, so embedding `product` back from the variant made product →
+     * variants → product recurse until the stack gave out.
+     */
     get attrs() {
         return {
-            product: { embedded: 'always' },
+            product: { serialize: 'ids', deserialize: 'records' },
         };
     }
 }

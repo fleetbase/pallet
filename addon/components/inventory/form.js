@@ -1,7 +1,6 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import { format } from 'date-fns';
 
 export default class InventoryFormComponent extends Component {
     @tracked statusOptions = [
@@ -19,20 +18,10 @@ export default class InventoryFormComponent extends Component {
      * column and the Expired Stock view could never match anything.
      *
      * Reading it back had the same fault, so the field also came up blank when
-     * editing stock that already had an expiry recorded.
+     * editing stock that already had an expiry recorded — the inventory model
+     * already exposes an `expiryDate` computed in the yyyy-MM-dd a date input
+     * wants, which is what the template now binds.
      */
-    get expiryDateValue() {
-        const value = this.args.resource?.expiry_date_at;
-
-        if (!value) {
-            return '';
-        }
-
-        const date = value instanceof Date ? value : new Date(value);
-
-        return isNaN(date.getTime()) ? '' : format(date, 'yyyy-MM-dd');
-    }
-
     @action setExpiryDate(event) {
         const { value } = event.target;
         const date = value ? new Date(value) : null;

@@ -18,7 +18,9 @@ export default class PickListSerializer extends ApplicationSerializer.extend(Emb
     get attrs() {
         return {
             warehouse: { embedded: 'always' },
-            wave: { embedded: 'always' },
+            // the wave serializer embeds pickLists; embedding the wave back closes
+            // the same loop that broke warehouse-zone and product variants
+            wave: { serialize: 'ids', deserialize: 'records' },
             assignedTo: { embedded: 'always' },
             items: { embedded: 'always' },
         };

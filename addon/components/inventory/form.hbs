@@ -119,7 +119,7 @@
             </InputGroup>
 
             <InputGroup @name={{t "inventory.fields.expiry-date"}}>
-                <input value={{this.expiryDateValue}} type="date" class="form-input w-full" {{on "change" this.setExpiryDate}} disabled={{cannot-write @resource}} />
+                <input value={{@resource.expiryDate}} type="date" class="form-input w-full" {{on "change" this.setExpiryDate}} disabled={{cannot-write @resource}} />
             </InputGroup>
         </div>
     </ContentPanel>
