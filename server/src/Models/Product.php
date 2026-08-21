@@ -270,13 +270,21 @@ class Product extends Model
      */
     public function guardAgainstOrphanedStock(): void
     {
-        $onHand = $this->inventories()->sum('quantity');
+        // batches carry their own quantities, so a product can read as empty on the
+        // inventory table while a batch still says it holds a hundred units
+        $onHand = (int) $this->inventories()->sum('quantity') + (int) $this->batches()->sum('quantity');
 
         if ($onHand > 0) {
             throw new \Exception('Cannot delete "' . $this->name . '" while it still holds ' . $onHand . ' units of stock. Adjust the stock to zero first.');
         }
 
+        // Only the product's own records go. Order items, stock transactions,
+        // adjustments, cycle count items and pick list items also carry a
+        // product_uuid, but those are history and deleting a product must not
+        // rewrite it.
         $this->inventories()->delete();
+        $this->batches()->delete();
+        $this->variants()->delete();
     }
 
     /**

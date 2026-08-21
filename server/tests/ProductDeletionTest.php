@@ -87,3 +87,53 @@ test('bulk delete removes products that hold no stock', function () {
         ->and(Product::where('uuid', $second->uuid)->first())->toBeNull()
         ->and(Inventory::where('product_uuid', $first->uuid)->count())->toBe(0);
 });
+
+/*
+ * The first cut of the cascade only took inventory, so deleting a product left its
+ * batches behind pointing at nothing — the same orphan class, one table over. The
+ * Batches screen rendered them with an empty product column.
+ */
+test('deleting a product takes its batches and variants with it', function () {
+    $company = (string) Str::uuid();
+    $product = makeProduct('Batched Product', $company);
+
+    $batch = \Fleetbase\Pallet\Models\Batch::create([
+        'company_uuid' => $company,
+        'product_uuid' => $product->uuid,
+        'batch_number' => 'B-' . uniqid(),
+        'quantity'     => 0,
+    ]);
+
+    $variant = \Fleetbase\Pallet\Models\ProductVariant::create([
+        'company_uuid' => $company,
+        'product_uuid' => $product->uuid,
+        'name'         => 'Large',
+    ]);
+
+    $product->delete();
+
+    expect(\Fleetbase\Pallet\Models\Batch::where('uuid', $batch->uuid)->first())->toBeNull('a batch must not outlive its product')
+        ->and(\Fleetbase\Pallet\Models\ProductVariant::where('uuid', $variant->uuid)->first())->toBeNull('nor a variant');
+});
+
+/*
+ * A product can read as empty on the inventory table while a batch still says it
+ * holds stock; the guard has to look at both or it will delete real quantities.
+ */
+test('stock recorded only against a batch still blocks the delete', function () {
+    $company = (string) Str::uuid();
+    $product = makeProduct('Batch Only Stock', $company);
+
+    Inventory::create(['company_uuid' => $company, 'product_uuid' => $product->uuid, 'quantity' => 0]);
+
+    $batch = \Fleetbase\Pallet\Models\Batch::create([
+        'company_uuid' => $company,
+        'product_uuid' => $product->uuid,
+        'batch_number' => 'B-' . uniqid(),
+        'quantity'     => 100,
+    ]);
+
+    expect(fn () => $product->delete())->toThrow(\Exception::class, 'still holds 100 units');
+
+    expect(\Fleetbase\Pallet\Models\Batch::where('uuid', $batch->uuid)->first())->not->toBeNull();
+});
