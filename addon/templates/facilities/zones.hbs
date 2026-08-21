@@ -16,7 +16,7 @@
                     @onChange={{this.setWarehouse}}
                     as |model|
                 >
-                    {{n-a model.name model.address}}
+                    {{n-a (or model.name model.address)}}
                 </ModelSelect>
             </InputGroup>
 

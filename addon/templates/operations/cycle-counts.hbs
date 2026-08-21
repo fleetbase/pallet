@@ -16,7 +16,7 @@
                     @onChange={{this.setCycleCountWarehouse}}
                     as |model|
                 >
-                    {{n-a model.name model.address}}
+                    {{n-a (or model.name model.address)}}
                 </ModelSelect>
             </InputGroup>
 
@@ -31,7 +31,7 @@
                     @onChange={{this.setCycleCountZone}}
                     as |model|
                 >
-                    {{n-a model.name model.public_id}}
+                    {{n-a (or model.name model.public_id)}}
                 </ModelSelect>
             </InputGroup>
 
@@ -68,7 +68,7 @@
                         <td class="px-4 py-3 font-medium">{{n-a count.count_number}}</td>
                         <td class="px-4 py-3">{{n-a count.warehouse.name}}</td>
                         <td class="px-4 py-3">{{n-a count.zone.name}}</td>
-                        <td class="px-4 py-3">{{n-a count.assignedTo.name count.assignedTo.email}}</td>
+                        <td class="px-4 py-3">{{n-a (or count.assignedTo.name count.assignedTo.email)}}</td>
                         <td class="px-4 py-3"><Badge @status="info">{{n-a count.status}}</Badge></td>
                         <td class="px-4 py-3 text-right">{{n-a count.accuracy_percentage}}</td>
                         <td class="px-4 py-3">

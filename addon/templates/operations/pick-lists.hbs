@@ -16,7 +16,7 @@
                     @onChange={{this.setPickListWarehouse}}
                     as |model|
                 >
-                    {{n-a model.name model.address}}
+                    {{n-a (or model.name model.address)}}
                 </ModelSelect>
             </InputGroup>
 
@@ -31,7 +31,7 @@
                     @onChange={{this.setPickListWave}}
                     as |model|
                 >
-                    {{n-a model.wave_number model.public_id}}
+                    {{n-a (or model.wave_number model.public_id)}}
                 </ModelSelect>
             </InputGroup>
 
@@ -61,7 +61,7 @@
                         @triggerClass="form-select form-input"
                         as |pickList|
                     >
-                        {{n-a pickList.pick_list_number pickList.public_id}}
+                        {{n-a (or pickList.pick_list_number pickList.public_id)}}
                     </PowerSelect>
                 </div>
             </InputGroup>
@@ -92,7 +92,7 @@
                         @disabled={{not this.newPickItem.product.has_variants}}
                         as |variant|
                     >
-                        {{n-a variant.display_name variant.name}}
+                        {{n-a (or variant.display_name variant.name)}}
                     </PowerSelect>
                 </div>
             </InputGroup>
@@ -156,8 +156,8 @@
                     <tr class="border-b border-gray-100 dark:border-gray-800">
                         <td class="px-4 py-3 font-medium">{{n-a pickList.pick_list_number}}</td>
                         <td class="px-4 py-3">{{n-a pickList.warehouse.name}}</td>
-                        <td class="px-4 py-3">{{n-a pickList.wave.wave_number pickList.wave.public_id}}</td>
-                        <td class="px-4 py-3">{{n-a pickList.assignedTo.name pickList.assignedTo.email}}</td>
+                        <td class="px-4 py-3">{{n-a (or pickList.wave.wave_number pickList.wave.public_id)}}</td>
+                        <td class="px-4 py-3">{{n-a (or pickList.assignedTo.name pickList.assignedTo.email)}}</td>
                         <td class="px-4 py-3">{{n-a pickList.type}}</td>
                         <td class="px-4 py-3"><Badge @status="info">{{n-a pickList.status}}</Badge></td>
                         <td class="px-4 py-3 text-right">{{n-a pickList.completion_percentage}}</td>

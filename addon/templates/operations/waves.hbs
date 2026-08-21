@@ -16,7 +16,7 @@
                     @onChange={{this.setWaveWarehouse}}
                     as |model|
                 >
-                    {{n-a model.name model.address}}
+                    {{n-a (or model.name model.address)}}
                 </ModelSelect>
             </InputGroup>
 
@@ -62,7 +62,7 @@
                             <div class="flex max-w-xs flex-col gap-1">
                                 {{#each wave.pickLists as |pickList|}}
                                     <div class="truncate text-xs text-gray-600 dark:text-gray-300">
-                                        {{n-a pickList.pick_list_number pickList.public_id}} · {{n-a pickList.status}}
+                                        {{n-a (or pickList.pick_list_number pickList.public_id)}} · {{n-a pickList.status}}
                                     </div>
                                 {{else}}
                                     <span class="text-xs text-gray-400">No pick lists</span>

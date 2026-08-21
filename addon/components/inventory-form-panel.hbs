@@ -57,7 +57,7 @@
                             @triggerClass="form-select form-input"
                             as |variant|
                         >
-                            {{n-a variant.display_name variant.name}}
+                            {{n-a (or variant.display_name variant.name)}}
                         </PowerSelect>
                     </InputGroup>
                 {{/if}}
@@ -86,7 +86,7 @@
                         @onChange={{this.setWarehouse}}
                         as |model|
                     >
-                        {{n-a model.name model.address}}
+                        {{n-a (or model.name model.address)}}
                     </ModelSelect>
                 </InputGroup>
                 <InputGroup @name="Status">
@@ -140,7 +140,7 @@
                         @onChange={{this.setBinLocation}}
                         as |model|
                     >
-                        {{n-a model.bin_number model.barcode}}
+                        {{n-a (or model.bin_number model.barcode)}}
                     </ModelSelect>
                 </InputGroup>
                 <InputGroup @name="Unit of Measure" @type="text" @value={{this.inventory.uom}} />

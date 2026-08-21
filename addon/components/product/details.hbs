@@ -126,7 +126,7 @@
                 {{#each @resource.variants as |variant|}}
                     <div class="pallet-product-variant-row">
                         <span>
-                            <strong>{{n-a variant.display_name variant.name}}</strong>
+                            <strong>{{n-a (or variant.display_name variant.name)}}</strong>
                             <small>{{n-a variant.optionSummary "No options"}}</small>
                         </span>
                         <span>

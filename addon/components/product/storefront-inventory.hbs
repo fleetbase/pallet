@@ -114,7 +114,7 @@
                 <tbody>
                     {{#each @product.variants as |variant|}}
                         <tr class="border-b border-gray-100 dark:border-gray-800">
-                            <td class="py-2 pr-2 font-medium">{{n-a variant.display_name variant.name}}</td>
+                            <td class="py-2 pr-2 font-medium">{{n-a (or variant.display_name variant.name)}}</td>
                             <td class="py-2 px-2 text-gray-500">
                                 <Input
                                     @value={{variant.storefront_variant_uuid}}

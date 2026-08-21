@@ -31,7 +31,7 @@
                         @disabled={{not this.newReservation.product.has_variants}}
                         as |variant|
                     >
-                        {{n-a variant.display_name variant.name}}
+                        {{n-a (or variant.display_name variant.name)}}
                     </PowerSelect>
                 </div>
             </InputGroup>
@@ -47,7 +47,7 @@
                     @onChange={{this.setReservationWarehouse}}
                     as |model|
                 >
-                    {{n-a model.name model.address}}
+                    {{n-a (or model.name model.address)}}
                 </ModelSelect>
             </InputGroup>
 

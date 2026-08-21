@@ -70,7 +70,7 @@
                                         <td class="px-4 py-3 font-medium text-gray-800 dark:text-gray-100">
                                             {{n-a item.product.name}}
                                             {{#if item.variant}}
-                                                <span class="block text-gray-500 font-normal">{{n-a item.variant.display_name item.variant.name}}</span>
+                                                <span class="block text-gray-500 font-normal">{{n-a (or item.variant.display_name item.variant.name)}}</span>
                                             {{/if}}
                                             {{#if item.sku}}
                                                 <span class="block text-gray-400 font-normal">{{item.sku}}</span>

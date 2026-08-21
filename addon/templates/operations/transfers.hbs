@@ -16,7 +16,7 @@
                     @onChange={{this.setFromWarehouse}}
                     as |model|
                 >
-                    {{n-a model.name model.address}}
+                    {{n-a (or model.name model.address)}}
                 </ModelSelect>
             </InputGroup>
 
@@ -31,7 +31,7 @@
                     @onChange={{this.setToWarehouse}}
                     as |model|
                 >
-                    {{n-a model.name model.address}}
+                    {{n-a (or model.name model.address)}}
                 </ModelSelect>
             </InputGroup>
 
@@ -61,7 +61,7 @@
                         @disabled={{not this.newTransfer.product.has_variants}}
                         as |variant|
                     >
-                        {{n-a variant.display_name variant.name}}
+                        {{n-a (or variant.display_name variant.name)}}
                     </PowerSelect>
                 </div>
             </InputGroup>
@@ -99,7 +99,7 @@
                             <div class="flex max-w-xs flex-col gap-1">
                                 {{#each transfer.items as |item|}}
                                     <div class="truncate text-xs text-gray-600 dark:text-gray-300">
-                                        {{n-a item.product.name}} {{#if item.variant}}· {{n-a item.variant.display_name item.variant.name}}{{/if}}
+                                        {{n-a item.product.name}} {{#if item.variant}}· {{n-a (or item.variant.display_name item.variant.name)}}{{/if}}
                                     </div>
                                 {{else}}
                                     <span class="text-xs text-gray-400">No items</span>

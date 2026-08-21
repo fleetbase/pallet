@@ -54,7 +54,7 @@
                     {{#each @resource.items as |item|}}
                         <tr class="border-b border-gray-100 dark:border-gray-800">
                             <td class="px-4 py-3 font-medium">{{n-a item.product.name}}</td>
-                            <td class="px-4 py-3">{{n-a item.sku item.product.sku}}</td>
+                            <td class="px-4 py-3">{{n-a (or item.sku item.product.sku)}}</td>
                             <td class="px-4 py-3"><Badge @status={{item.status}}>{{smart-humanize item.status}}</Badge></td>
                             <td class="px-4 py-3 text-right">{{item.quantity}}</td>
                             <td class="px-4 py-3 text-right">{{item.quantity_fulfilled}}</td>
