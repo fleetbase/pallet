@@ -9,6 +9,13 @@ export default class OperationsWavesController extends Controller {
     @service notifications;
     @service store;
 
+    /**
+     * The vocabulary Wave::boot() documents and normalises to. The form offered a
+     * free-text box, so anything typed there became a type the domain does not
+     * recognise — the same fault already fixed on zones and bin locations.
+     */
+    waveTypes = ['standard', 'express', 'bulk'];
+
     @tracked newWave = { type: 'standard', priority: 5 };
 
     resetNewWave() {
@@ -17,6 +24,10 @@ export default class OperationsWavesController extends Controller {
 
     getRecordUuid(record) {
         return record?.uuid ?? record?.id;
+    }
+
+    @action setType(type) {
+        this.newWave = { ...this.newWave, type };
     }
 
     @action setWaveWarehouse(warehouse) {

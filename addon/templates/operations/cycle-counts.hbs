@@ -36,7 +36,7 @@
             </InputGroup>
 
             <InputGroup @name={{t "operations.common.type"}}>
-                <Input @value={{this.newCycleCount.type}} class="w-full form-input" placeholder="standard" />
+                <Select class="w-full form-input form-select" @options={{this.cycleCountTypes}} @value={{this.newCycleCount.type}} @onSelect={{this.setType}} @humanize={{true}} />
             </InputGroup>
 
             <InputGroup @name={{t "operations.common.scheduled"}}>
@@ -123,7 +123,13 @@
                                                         {{#if (eq item.status "counted")}}
                                                             <span class="text-xs text-gray-400">Counted</span>
                                                         {{else}}
-                                                            <Button @icon="calculator" @type="primary" @size="xs" @text={{t "operations.cycle-counts.record"}} @onClick={{fn this.recordCycleCountItem item}} />
+                                                            <Button
+                                                                @icon="calculator"
+                                                                @type="primary"
+                                                                @size="xs"
+                                                                @text={{t "operations.cycle-counts.record"}}
+                                                                @onClick={{fn this.recordCycleCountItem item}}
+                                                            />
                                                         {{/if}}
                                                     </td>
                                                 </tr>

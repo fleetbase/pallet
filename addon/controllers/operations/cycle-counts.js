@@ -10,6 +10,13 @@ export default class OperationsCycleCountsController extends Controller {
     @service notifications;
     @service store;
 
+    /**
+     * The vocabulary CycleCount::boot() documents and normalises to. The form offered a
+     * free-text box, so anything typed there became a type the domain does not
+     * recognise — the same fault already fixed on zones and bin locations.
+     */
+    cycleCountTypes = ['standard', 'full', 'spot', 'abc'];
+
     @tracked newCycleCount = { type: 'standard' };
 
     resetNewCycleCount() {
@@ -22,6 +29,10 @@ export default class OperationsCycleCountsController extends Controller {
 
     get currentUserUuid() {
         return this.currentUser.user?.uuid ?? this.currentUser.user?.id ?? this.currentUser.uuid ?? this.currentUser.id;
+    }
+
+    @action setType(type) {
+        this.newCycleCount = { ...this.newCycleCount, type };
     }
 
     @action setCycleCountWarehouse(warehouse) {

@@ -10,6 +10,13 @@ export default class OperationsPickListsController extends Controller {
     @service notifications;
     @service store;
 
+    /**
+     * The vocabulary PickList::boot() documents and normalises to. The form offered a
+     * free-text box, so anything typed there became a type the domain does not
+     * recognise — the same fault already fixed on zones and bin locations.
+     */
+    pickListTypes = ['discrete', 'batch', 'zone', 'wave'];
+
     @tracked newPickList = { type: 'discrete', priority: 5 };
     @tracked newPickItem = { quantity_requested: 1 };
 
@@ -27,6 +34,10 @@ export default class OperationsPickListsController extends Controller {
 
     get currentUserUuid() {
         return this.currentUser.user?.uuid ?? this.currentUser.user?.id ?? this.currentUser.uuid ?? this.currentUser.id;
+    }
+
+    @action setType(type) {
+        this.newPickList = { ...this.newPickList, type };
     }
 
     @action setPickListWarehouse(warehouse) {

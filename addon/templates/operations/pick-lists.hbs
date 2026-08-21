@@ -36,7 +36,7 @@
             </InputGroup>
 
             <InputGroup @name={{t "operations.common.type"}}>
-                <Input @value={{this.newPickList.type}} class="w-full form-input" placeholder="discrete" />
+                <Select class="w-full form-input form-select" @options={{this.pickListTypes}} @value={{this.newPickList.type}} @onSelect={{this.setType}} @humanize={{true}} />
             </InputGroup>
 
             <InputGroup @name={{t "operations.common.priority"}}>
@@ -208,7 +208,13 @@
                                                         {{#if (eq item.status "picked")}}
                                                             <span class="text-xs text-gray-400">Picked</span>
                                                         {{else}}
-                                                            <Button @icon="check" @type="success" @size="xs" @text={{t "operations.pick-lists.picked"}} @onClick={{fn this.markPickListItemPicked item}} />
+                                                            <Button
+                                                                @icon="check"
+                                                                @type="success"
+                                                                @size="xs"
+                                                                @text={{t "operations.pick-lists.picked"}}
+                                                                @onClick={{fn this.markPickListItemPicked item}}
+                                                            />
                                                         {{/if}}
                                                     </td>
                                                 </tr>

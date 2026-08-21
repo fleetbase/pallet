@@ -21,7 +21,7 @@
             </InputGroup>
 
             <InputGroup @name={{t "operations.common.type"}}>
-                <Input @value={{this.newWave.type}} class="w-full form-input" placeholder="standard" />
+                <Select class="w-full form-input form-select" @options={{this.waveTypes}} @value={{this.newWave.type}} @onSelect={{this.setType}} @humanize={{true}} />
             </InputGroup>
 
             <InputGroup @name={{t "operations.common.priority"}}>
@@ -62,7 +62,9 @@
                             <div class="flex max-w-xs flex-col gap-1">
                                 {{#each wave.pickLists as |pickList|}}
                                     <div class="truncate text-xs text-gray-600 dark:text-gray-300">
-                                        {{n-a (or pickList.pick_list_number pickList.public_id)}} · {{n-a pickList.status}}
+                                        {{n-a (or pickList.pick_list_number pickList.public_id)}}
+                                        ·
+                                        {{n-a pickList.status}}
                                     </div>
                                 {{else}}
                                     <span class="text-xs text-gray-400">No pick lists</span>
