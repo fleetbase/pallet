@@ -31,7 +31,12 @@ function warehouseResourcePayload(int $inventoryRows): array
         ]);
     }
 
-    return (new WarehouseResource(Warehouse::find($warehouse->uuid)))->toArray(Request::create('/'));
+    // Go through the same query shape the controller uses. A bare find() would only
+    // carry the count while the model declared a global $withCount, which it must not
+    // — see MetricsTest, 'no pallet model declares a global withCount'.
+    $record = Warehouse::withCount('inventories')->where('uuid', $warehouse->uuid)->first();
+
+    return (new WarehouseResource($record))->toArray(Request::create('/'));
 }
 
 test('a warehouse reports how many stock items it holds', function () {

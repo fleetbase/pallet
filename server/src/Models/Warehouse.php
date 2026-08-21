@@ -107,12 +107,6 @@ class Warehouse extends Model
     protected $with = ['place', 'sections', 'zones', 'docks'];
 
     /**
-     * The warehouse list renders a stock-items count, which needs to come from a
-     * single counted query rather than loading every inventory row per warehouse.
-     */
-    protected $withCount = ['inventories'];
-
-    /**
      * The company that owns this warehouse.
      */
     public function company(): BelongsTo

@@ -144,3 +144,40 @@ test('reorder risk lists products at or below their reorder point', function () 
     expect($risk['available_stock'])->toBe(4)
         ->and($risk['shortage'])->toBe(21);
 });
+
+/*
+ * A model-level $withCount applies to EVERY query on that model, including the
+ * GROUP BY aggregates the metrics endpoints build. Eloquent prepends `table.*` and
+ * the count subquery to the select list, and MySQL's only_full_group_by then
+ * rejects the whole statement — warehouse-utilization returned a 500 in the console
+ * for exactly this reason while this suite stayed green, because SQLite does not
+ * enforce that rule.
+ *
+ * The counts the console needs are requested explicitly by the controllers that
+ * want them, which is also the only form that survives searchBuilder()'s
+ * select(['*']). Declaring one on a model is therefore never the right fix.
+ */
+test('no pallet model declares a global withCount', function () {
+    foreach (glob(__DIR__ . '/../src/Models/*.php') as $file) {
+        $name  = basename($file, '.php');
+        $class = 'Fleetbase\\Pallet\\Models\\' . $name;
+
+        if (!class_exists($class)) {
+            continue;
+        }
+
+        $reflection = new ReflectionClass($class);
+
+        if (!$reflection->hasProperty('withCount')) {
+            continue;
+        }
+
+        $property = $reflection->getProperty('withCount');
+        $property->setAccessible(true);
+
+        expect($property->getValue(new $class()))->toBe(
+            [],
+            $name . ' declares a global $withCount, which breaks any GROUP BY aggregate over it under only_full_group_by'
+        );
+    }
+});
