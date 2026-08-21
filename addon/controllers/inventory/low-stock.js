@@ -151,6 +151,7 @@ export default class InventoryLowStockController extends Controller {
         {
             label: this.intl.t('columns.quantity'),
             valuePath: 'quantity',
+            cellComponent: 'cell/count',
             width: '120px',
         },
         {

@@ -152,6 +152,7 @@ export default class InventoryExpiredStockController extends Controller {
         {
             label: this.intl.t('columns.quantity'),
             valuePath: 'quantity',
+            cellComponent: 'cell/count',
             width: '120px',
         },
         {

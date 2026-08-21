@@ -163,6 +163,7 @@ export default class PurchaseOrdersIndexController extends Controller {
         {
             label: this.intl.t('columns.items'),
             valuePath: 'item_count',
+            cellComponent: 'cell/count',
             width: '70px',
             resizable: false,
             sortable: false,

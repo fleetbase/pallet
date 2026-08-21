@@ -1,0 +1,6 @@
+{{!
+    ember-ui's base cell renders {{or @value "-"}}, and zero is falsy — so a warehouse holding no stock, or an order with no line items, read as "unknown" rather than as none. For a count
+that is exactly the wrong way round. }}
+<div class="relative" aria-label={{this.display}}>
+    <span class={{@column.cellClassNames}}>{{this.display}}</span>
+</div>
