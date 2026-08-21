@@ -13,6 +13,13 @@ export default class ProductActionsService extends ResourceActionService {
             fetchOptions: {
                 namespace: 'pallet/int/v1',
             },
+            // crud.bulkDelete derives its path from the model name, so `pallet-product`
+            // becomes `pallet-products/bulk-delete` and 404s. The route is `products`,
+            // which is what the adapter's pathForType already strips the prefix to
+            // reach; the service just does not consult it.
+            bulkDeleteOptions: {
+                actionPath: 'products/bulk-delete',
+            },
             permissionPrefix: 'pallet',
             mountPrefix: 'console.pallet',
         });
