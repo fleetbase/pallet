@@ -367,6 +367,8 @@ product:
 
 # Inventory translations
 inventory:
+  product-unavailable: Product unavailable
+  product-unavailable-hint: The product this stock belongs to has been deleted.
   screens:
     batches-title: Batches
     batches-list: Inventory Batches

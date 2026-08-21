@@ -13,6 +13,15 @@ export default class CellProductInfoComponent extends Component {
     }
 
     /**
+     * An inventory row keeps its product_uuid when the product is deleted, and the
+     * relation then resolves to nothing. Only the modelPath case can be missing —
+     * on the products list the row *is* the product.
+     */
+    get isMissingProduct() {
+        return typeof this.args.column?.modelPath === 'string' && !this.product;
+    }
+
+    /**
      * `product` may be a relationship proxy (when the column resolves a
      * belongsTo via modelPath), and Ember asserts on direct property access
      * against a proxy — which threw mid-render and truncated the whole row.

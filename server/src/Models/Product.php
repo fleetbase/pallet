@@ -251,6 +251,74 @@ class Product extends Model
             $model->created_by_uuid ??= session('user');
             $model->status ??= 'active';
         });
+
+        static::deleting(function ($model) {
+            $model->guardAgainstOrphanedStock();
+        });
+    }
+
+    /**
+     * Products soft-delete, so deleting one left its inventory rows behind, live
+     * and still listed — the relation simply resolved to nothing and the inventory
+     * screen rendered the row as "Untitled product". Phantom stock in a warehouse
+     * system is worse than a refused delete, so:
+     *
+     *   - refuse outright while any of that inventory still holds stock, and
+     *   - otherwise take the empty inventory rows down with the product.
+     *
+     * @throws \Exception when the product still holds stock
+     */
+    public function guardAgainstOrphanedStock(): void
+    {
+        $onHand = $this->inventories()->sum('quantity');
+
+        if ($onHand > 0) {
+            throw new \Exception('Cannot delete "' . $this->name . '" while it still holds ' . $onHand . ' units of stock. Adjust the stock to zero first.');
+        }
+
+        $this->inventories()->delete();
+    }
+
+    /**
+     * bulkRemove() mass-deletes through the query builder, which does not fire
+     * model events — so the deleting hook above never ran for the console's own
+     * bulk delete, the one path that actually produced the orphans. Walk the
+     * records so both paths behave the same.
+     */
+    public function bulkRemove($ids = [])
+    {
+        return DB::transaction(function () use ($ids) {
+            $count = 0;
+
+            foreach ($this->resolveRecordsForBulkRemoval($ids) as $product) {
+                $product->delete();
+                $count++;
+            }
+
+            return $count;
+        });
+    }
+
+    /**
+     * The same selection bulkRemove() makes in core, including its company scope.
+     */
+    protected function resolveRecordsForBulkRemoval($ids = [])
+    {
+        $query = $this->where(function ($q) use ($ids) {
+            $publicIdColumn = $this->getQualifiedPublicId();
+
+            $q->whereIn($this->getQualifiedKeyName(), $ids);
+            if ($this->isColumn($publicIdColumn)) {
+                $q->orWhereIn($publicIdColumn, $ids);
+            }
+        });
+
+        $companyUuid = session('company');
+        if ($companyUuid && $this->isColumn('company_uuid')) {
+            $query->where($this->qualifyColumn('company_uuid'), $companyUuid);
+        }
+
+        return $query->get();
     }
 
     public function getActivitylogOptions(): LogOptions
