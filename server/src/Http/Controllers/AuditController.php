@@ -2,7 +2,7 @@
 
 namespace Fleetbase\Pallet\Http\Controllers;
 
-use Fleetbase\Pallet\Http\Resources\Audit as AuditResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\Audit as AuditResource;
 use Fleetbase\Pallet\Models\Audit;
 use Fleetbase\Pallet\Models\AuditEventType;
 use Fleetbase\Support\Http;

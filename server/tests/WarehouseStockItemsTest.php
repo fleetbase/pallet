@@ -1,7 +1,7 @@
 <?php
 
 use Fleetbase\Pallet\Http\Controllers\WarehouseController;
-use Fleetbase\Pallet\Http\Resources\Warehouse as WarehouseResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\Warehouse as WarehouseResource;
 use Fleetbase\Pallet\Models\Inventory;
 use Fleetbase\Pallet\Models\Product;
 use Fleetbase\Pallet\Models\Warehouse;

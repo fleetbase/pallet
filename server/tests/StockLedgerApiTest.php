@@ -1,7 +1,7 @@
 <?php
 
 use Fleetbase\Pallet\Http\Filter\StockTransactionFilter;
-use Fleetbase\Pallet\Http\Resources\StockTransaction as StockTransactionResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\StockTransaction as StockTransactionResource;
 use Fleetbase\Pallet\Models\Inventory;
 use Fleetbase\Pallet\Models\Product;
 use Fleetbase\Pallet\Models\StockTransaction;

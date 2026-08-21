@@ -3,7 +3,7 @@
 namespace Fleetbase\Pallet\Http\Controllers;
 
 use Fleetbase\Exceptions\FleetbaseRequestValidationException;
-use Fleetbase\Pallet\Http\Resources\BinLocation as BinLocationResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\BinLocation as BinLocationResource;
 use Fleetbase\Pallet\Models\BinLocation;
 use Fleetbase\Pallet\Models\Warehouse;
 use Fleetbase\Pallet\Models\WarehouseZone;

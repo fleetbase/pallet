@@ -3,7 +3,7 @@
 namespace Fleetbase\Pallet\Http\Controllers;
 
 use Fleetbase\Http\Controllers\Controller;
-use Fleetbase\Pallet\Http\Resources\PurchaseOrderItem as PurchaseOrderItemResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\PurchaseOrderItem as PurchaseOrderItemResource;
 use Fleetbase\Pallet\Models\Product;
 use Fleetbase\Pallet\Models\ProductVariant;
 use Fleetbase\Pallet\Models\PurchaseOrder;

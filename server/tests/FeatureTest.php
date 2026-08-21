@@ -1,8 +1,8 @@
 <?php
 
 use Fleetbase\Pallet\Http\Controllers\StorefrontInventoryController;
-use Fleetbase\Pallet\Http\Resources\Product as ProductResource;
-use Fleetbase\Pallet\Http\Resources\ProductVariant as ProductVariantResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\Product as ProductResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\ProductVariant as ProductVariantResource;
 use Fleetbase\Pallet\Models\BinLocation;
 use Fleetbase\Pallet\Models\CycleCount;
 use Fleetbase\Pallet\Models\Inventory;
@@ -183,7 +183,7 @@ test('inventory reservation resources expose generic order uuid for storefront r
         ],
     ]);
 
-    $resource = (new Fleetbase\Pallet\Http\Resources\InventoryReservation($reservation))->toArray(request());
+    $resource = (new Fleetbase\Pallet\Http\Resources\Internal\v1\InventoryReservation($reservation))->toArray(request());
 
     expect($resource['order_uuid'])->toBe('storefront-order-123');
     expect($resource['storefront_checkout_uuid'])->toBe('checkout-123');

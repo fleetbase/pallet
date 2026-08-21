@@ -4,7 +4,7 @@ namespace Fleetbase\Pallet\Http\Controllers;
 
 use Fleetbase\Exceptions\FleetbaseRequestValidationException;
 use Fleetbase\FleetOps\Models\Contact;
-use Fleetbase\Pallet\Http\Resources\SalesOrder as SalesOrderResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\SalesOrder as SalesOrderResource;
 use Fleetbase\Pallet\Models\Inventory;
 use Fleetbase\Pallet\Models\SalesOrder;
 use Fleetbase\Pallet\Models\SalesOrderItem;

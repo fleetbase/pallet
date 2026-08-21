@@ -1,10 +1,10 @@
 <?php
 
-use Fleetbase\Pallet\Http\Resources\WarehouseAisle as AisleResource;
-use Fleetbase\Pallet\Http\Resources\WarehouseBin as BinResource;
-use Fleetbase\Pallet\Http\Resources\WarehouseDock as DockResource;
-use Fleetbase\Pallet\Http\Resources\WarehouseRack as RackResource;
-use Fleetbase\Pallet\Http\Resources\WarehouseSection as SectionResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\WarehouseAisle as AisleResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\WarehouseBin as BinResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\WarehouseDock as DockResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\WarehouseRack as RackResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\WarehouseSection as SectionResource;
 use Fleetbase\Pallet\Models\Warehouse;
 use Fleetbase\Pallet\Models\WarehouseAisle;
 use Fleetbase\Pallet\Models\WarehouseBin;

@@ -4,7 +4,7 @@ namespace Fleetbase\Pallet\Http\Controllers;
 
 use Fleetbase\Exceptions\FleetbaseRequestValidationException;
 use Fleetbase\Models\Category;
-use Fleetbase\Pallet\Http\Resources\Product as ProductResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\Product as ProductResource;
 use Fleetbase\Pallet\Models\Product;
 use Fleetbase\Pallet\Models\ProductVariant;
 use Fleetbase\Pallet\Models\Supplier;

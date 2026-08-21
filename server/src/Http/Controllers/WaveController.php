@@ -2,7 +2,7 @@
 
 namespace Fleetbase\Pallet\Http\Controllers;
 
-use Fleetbase\Pallet\Http\Resources\Wave as WaveResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\Wave as WaveResource;
 use Fleetbase\Pallet\Models\Warehouse;
 use Fleetbase\Pallet\Models\Wave;
 use Fleetbase\Support\Http;

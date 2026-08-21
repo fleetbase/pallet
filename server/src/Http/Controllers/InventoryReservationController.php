@@ -2,7 +2,7 @@
 
 namespace Fleetbase\Pallet\Http\Controllers;
 
-use Fleetbase\Pallet\Http\Resources\InventoryReservation as InventoryReservationResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\InventoryReservation as InventoryReservationResource;
 use Fleetbase\Pallet\Models\Inventory;
 use Fleetbase\Pallet\Models\InventoryReservation;
 use Fleetbase\Pallet\Models\Product;

@@ -2,7 +2,7 @@
 
 namespace Fleetbase\Pallet\Http\Controllers;
 
-use Fleetbase\Pallet\Http\Resources\PickList as PickListResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\PickList as PickListResource;
 use Fleetbase\Pallet\Models\PickList;
 use Fleetbase\Pallet\Models\SalesOrder;
 use Fleetbase\Pallet\Models\Warehouse;

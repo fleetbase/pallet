@@ -3,9 +3,9 @@
 namespace Fleetbase\Pallet\Http\Controllers;
 
 use Fleetbase\Http\Controllers\Controller;
-use Fleetbase\Pallet\Http\Resources\InventoryReservation as InventoryReservationResource;
-use Fleetbase\Pallet\Http\Resources\Product as ProductResource;
-use Fleetbase\Pallet\Http\Resources\ProductVariant as ProductVariantResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\InventoryReservation as InventoryReservationResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\Product as ProductResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\ProductVariant as ProductVariantResource;
 use Fleetbase\Pallet\Models\Inventory;
 use Fleetbase\Pallet\Models\InventoryReservation;
 use Fleetbase\Pallet\Models\Product;

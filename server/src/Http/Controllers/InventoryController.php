@@ -3,7 +3,7 @@
 namespace Fleetbase\Pallet\Http\Controllers;
 
 use Fleetbase\Exceptions\FleetbaseRequestValidationException;
-use Fleetbase\Pallet\Http\Resources\IndexInventory;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\IndexInventory;
 use Fleetbase\Pallet\Models\Batch;
 use Fleetbase\Pallet\Models\BinLocation;
 use Fleetbase\Pallet\Models\Inventory;

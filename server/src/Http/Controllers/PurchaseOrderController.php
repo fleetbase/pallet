@@ -3,7 +3,7 @@
 namespace Fleetbase\Pallet\Http\Controllers;
 
 use Fleetbase\Exceptions\FleetbaseRequestValidationException;
-use Fleetbase\Pallet\Http\Resources\PurchaseOrder as PurchaseOrderResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\PurchaseOrder as PurchaseOrderResource;
 use Fleetbase\Pallet\Models\BinLocation;
 use Fleetbase\Pallet\Models\Inventory;
 use Fleetbase\Pallet\Models\PurchaseOrder;

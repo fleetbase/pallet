@@ -1,6 +1,6 @@
 <?php
 
-namespace Fleetbase\Pallet\Http\Resources;
+namespace Fleetbase\Pallet\Http\Resources\Internal\v1;
 
 use Fleetbase\Http\Resources\FleetbaseResource;
 use Fleetbase\Support\Http;

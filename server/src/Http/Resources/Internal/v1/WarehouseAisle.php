@@ -1,9 +1,9 @@
 <?php
 
-namespace Fleetbase\Pallet\Http\Resources;
+namespace Fleetbase\Pallet\Http\Resources\Internal\v1;
 
 use Fleetbase\Http\Resources\FleetbaseResource;
-use Fleetbase\Pallet\Http\Resources\WarehouseRack as WarehouseRackResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\WarehouseRack as WarehouseRackResource;
 use Fleetbase\Support\Http;
 
 class WarehouseAisle extends FleetbaseResource

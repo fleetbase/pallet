@@ -2,7 +2,7 @@
 
 namespace Fleetbase\Pallet\Http\Controllers;
 
-use Fleetbase\Pallet\Http\Resources\CycleCountItem as CycleCountItemResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\CycleCountItem as CycleCountItemResource;
 use Fleetbase\Pallet\Models\CycleCountItem;
 use Illuminate\Http\Request;
 

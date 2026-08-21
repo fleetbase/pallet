@@ -2,7 +2,7 @@
 
 namespace Fleetbase\Pallet\Http\Controllers;
 
-use Fleetbase\Pallet\Http\Resources\StockTransfer as StockTransferResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\StockTransfer as StockTransferResource;
 use Fleetbase\Pallet\Models\StockTransfer;
 use Fleetbase\Pallet\Models\Warehouse;
 use Fleetbase\Support\Http;

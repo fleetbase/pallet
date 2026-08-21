@@ -1,6 +1,6 @@
 <?php
 
-use Fleetbase\Pallet\Http\Resources\IndexInventory;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\IndexInventory;
 use Fleetbase\Pallet\Models\Inventory;
 use Fleetbase\Pallet\Models\Product;
 use Fleetbase\Pallet\Models\Warehouse;

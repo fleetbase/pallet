@@ -2,7 +2,7 @@
 
 namespace Fleetbase\Pallet\Http\Controllers;
 
-use Fleetbase\Pallet\Http\Resources\CycleCount as CycleCountResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\CycleCount as CycleCountResource;
 use Fleetbase\Pallet\Models\CycleCount;
 use Fleetbase\Pallet\Models\Warehouse;
 use Fleetbase\Pallet\Models\WarehouseZone;

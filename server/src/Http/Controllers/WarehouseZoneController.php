@@ -3,7 +3,7 @@
 namespace Fleetbase\Pallet\Http\Controllers;
 
 use Fleetbase\Exceptions\FleetbaseRequestValidationException;
-use Fleetbase\Pallet\Http\Resources\WarehouseZone as WarehouseZoneResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\WarehouseZone as WarehouseZoneResource;
 use Fleetbase\Pallet\Models\Warehouse;
 use Fleetbase\Pallet\Models\WarehouseZone;
 use Fleetbase\Support\Http;

@@ -1,11 +1,11 @@
 <?php
 
-namespace Fleetbase\Pallet\Http\Resources;
+namespace Fleetbase\Pallet\Http\Resources\Internal\v1;
 
 use Fleetbase\Http\Resources\FleetbaseResource;
 use Fleetbase\Support\Http;
 
-class SalesOrder extends FleetbaseResource
+class PurchaseOrder extends FleetbaseResource
 {
     /**
      * Transform the resource into an array.
@@ -30,9 +30,6 @@ class SalesOrder extends FleetbaseResource
             'assigned_to'                  => $this->whenLoaded('assignedTo', $this->assignedTo),
             'point_of_contact_uuid'        => $this->point_of_contact_uuid,
             'point_of_contact'             => $this->whenLoaded('pointOfContact', $this->pointOfContact),
-            'customer_uuid'                => $this->customer_uuid,
-            'customer'                     => $this->whenLoaded('customer', $this->customer),
-            'customer_type'                => $this->customer_type,
             'status'                       => $this->status,
             'comments'                     => $this->comments,
             'description'                  => $this->description,
@@ -41,10 +38,10 @@ class SalesOrder extends FleetbaseResource
             'customer_reference_code'      => $this->customer_reference_code,
             'currency'                     => $this->currency,
             'meta'                         => $this->meta ?? [],
-            'order_date_at'                => $this->order_date_at,
+            'order_date_at'                => $this->order_created_at,
             'expected_delivery_at'         => $this->expected_delivery_at,
             // Line items — always included so the frontend can render the items tab
-            'items'                     => SalesOrderItem::collection($this->whenLoaded('items', $this->items ?? [])),
+            'items'                     => PurchaseOrderItem::collection($this->whenLoaded('items', $this->items ?? [])),
             'item_count'                => $this->item_count,
             'total_value'               => $this->total_value,
             'updated_at'                => $this->updated_at,

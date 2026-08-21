@@ -1,11 +1,11 @@
 <?php
 
-namespace Fleetbase\Pallet\Http\Resources;
+namespace Fleetbase\Pallet\Http\Resources\Internal\v1;
 
 use Fleetbase\Http\Resources\FleetbaseResource;
 use Fleetbase\Support\Http;
 
-class WarehouseSection extends FleetbaseResource
+class WarehouseBin extends FleetbaseResource
 {
     /**
      * Transform the resource into an array.
@@ -21,11 +21,11 @@ class WarehouseSection extends FleetbaseResource
             'uuid'                 => $this->when(Http::isInternalRequest(), $this->uuid),
             'public_id'            => $this->when(Http::isInternalRequest(), $this->public_id),
             'warehouse_uuid'       => $this->warehouse_uuid,
-            'name'                 => $this->name,
-            'description'          => $this->description,
-            'area'                 => $this->area,
+            'rack_uuid'            => $this->rack_uuid,
+            'bin_number'           => $this->bin_number,
+            'size'                 => $this->size,
+            'max_weight'           => $this->max_weight,
             'meta'                 => $this->meta ?? [],
-            'aisles'               => WarehouseAisle::collection($this->aisles),
             'updated_at'           => $this->updated_at,
             'created_at'           => $this->created_at,
         ];

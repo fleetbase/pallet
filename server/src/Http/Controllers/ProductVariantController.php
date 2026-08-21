@@ -2,7 +2,7 @@
 
 namespace Fleetbase\Pallet\Http\Controllers;
 
-use Fleetbase\Pallet\Http\Resources\ProductVariant as ProductVariantResource;
+use Fleetbase\Pallet\Http\Resources\Internal\v1\ProductVariant as ProductVariantResource;
 use Fleetbase\Pallet\Models\Product;
 use Fleetbase\Pallet\Models\ProductVariant;
 use Illuminate\Http\Request;
