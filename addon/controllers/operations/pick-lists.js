@@ -48,6 +48,14 @@ export default class OperationsPickListsController extends Controller {
         };
     }
 
+    @action setPickListSalesOrder(salesOrder) {
+        this.newPickList = {
+            ...this.newPickList,
+            salesOrder,
+            sales_order_uuid: this.getRecordUuid(salesOrder),
+        };
+    }
+
     @action setPickListWave(wave) {
         this.newPickList = {
             ...this.newPickList,
@@ -104,6 +112,7 @@ export default class OperationsPickListsController extends Controller {
             const pickList = this.store.createRecord('pick-list', {
                 warehouse_uuid: this.newPickList.warehouse_uuid,
                 wave_uuid: this.newPickList.wave_uuid,
+                sales_order_uuid: this.newPickList.sales_order_uuid,
                 type: this.newPickList.type ?? 'discrete',
                 priority,
                 notes: this.newPickList.notes,

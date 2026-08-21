@@ -193,6 +193,8 @@ operations:
     picked: Picked
     wave: Wave
     wave-placeholder: Optional wave
+    sales-order: Sales Order
+    sales-order-placeholder: Order to pick for
     bin: Bin
     bin-placeholder: Optional bin
     inventory: Inventory

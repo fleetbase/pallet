@@ -4,7 +4,7 @@
 
 <Layout::Section::Body class="overflow-y-scroll h-full p-4">
     <ContentPanel @title={{t "operations.pick-lists.create"}} @open={{true}} @wrapperClass="bordered-classic mb-4">
-        <div class="grid grid-cols-1 gap-3 text-xs lg:grid-cols-5">
+        <div class="grid grid-cols-1 gap-3 text-xs lg:grid-cols-6">
             <InputGroup @name={{t "operations.common.warehouse"}}>
                 <ModelSelect
                     @modelName="warehouse"
@@ -32,6 +32,26 @@
                     as |model|
                 >
                     {{n-a (or model.wave_number model.public_id)}}
+                </ModelSelect>
+            </InputGroup>
+
+            {{!
+                Wave::release() only allocates pick lists that carry a sales_order_uuid,
+                so without this field every pick list created here was invisible to a
+                wave: releasing allocated nothing and reserved nothing.
+            }}
+            <InputGroup @name={{t "operations.pick-lists.sales-order"}}>
+                <ModelSelect
+                    @modelName="sales-order"
+                    @selectedModel={{this.newPickList.salesOrder}}
+                    @placeholder={{t "operations.pick-lists.sales-order-placeholder"}}
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{this.setPickListSalesOrder}}
+                    as |model|
+                >
+                    {{n-a (or model.order_number model.public_id)}}
                 </ModelSelect>
             </InputGroup>
 
