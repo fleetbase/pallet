@@ -4,6 +4,7 @@ namespace Fleetbase\Pallet\Http\Controllers;
 
 use Fleetbase\Exceptions\FleetbaseRequestValidationException;
 use Fleetbase\Models\Category;
+use Fleetbase\Pallet\Http\Requests\Internal\v1\CreateProductRequest;
 use Fleetbase\Pallet\Http\Resources\Internal\v1\Product as ProductResource;
 use Fleetbase\Pallet\Models\Product;
 use Fleetbase\Pallet\Models\ProductVariant;
@@ -14,6 +15,15 @@ use Illuminate\Http\Request;
 
 class ProductController extends PalletResourceController
 {
+    /**
+     * Validation for console writes. validateRequest() only applies a request class
+     * when this property is set, so without it internal creates were unvalidated and
+     * an empty submission produced a record with no name.
+     */
+    public $createRequest = CreateProductRequest::class;
+
+    public $updateRequest = CreateProductRequest::class;
+
     /**
      * The resource to query.
      *

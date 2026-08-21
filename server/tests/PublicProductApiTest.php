@@ -222,3 +222,47 @@ test('the same sku is allowed for a different company', function () {
 
     expect(resourceArray($resource, $request)['sku'])->toBe('SHARED-1');
 });
+
+/*
+ * The console's create path was entirely unvalidated: validateRequest() only applies a
+ * request class when the controller sets $createRequest, and no Pallet controller did.
+ * Clicking Create with an untouched form produced a product with no name, rendered as
+ * "Untitled product", and a supplier with no name at all, rendered as a bare dash.
+ */
+test('the console create path rejects a product with no name', function () {
+    $company = (string) Str::uuid();
+    asCompany($company);
+
+    $controller = new Fleetbase\Pallet\Http\Controllers\ProductController();
+
+    expect($controller->createRequest)->not->toBeNull();
+
+    // Built from an actual POST: the rule is requiredIf(isMethod('POST')), which a
+    // bare-constructed FormRequest reports as false. validateRequest() uses
+    // createFrom($request), so this mirrors the real path.
+    $post      = Illuminate\Http\Request::create('/', 'POST');
+    $rules     = $controller->createRequest::createFrom($post)->rules();
+    $validator = Illuminate\Support\Facades\Validator::make([], $rules);
+
+    expect($validator->fails())->toBeTrue()
+        ->and($validator->errors()->first('name'))->not->toBeEmpty();
+});
+
+test('the console create path rejects a supplier with no name', function () {
+    $company = (string) Str::uuid();
+    asCompany($company);
+
+    $controller = new Fleetbase\Pallet\Http\Controllers\SupplierController();
+
+    expect($controller->createRequest)->not->toBeNull();
+
+    // Built from an actual POST: the rule is requiredIf(isMethod('POST')), which a
+    // bare-constructed FormRequest reports as false. validateRequest() uses
+    // createFrom($request), so this mirrors the real path.
+    $post      = Illuminate\Http\Request::create('/', 'POST');
+    $rules     = $controller->createRequest::createFrom($post)->rules();
+    $validator = Illuminate\Support\Facades\Validator::make([], $rules);
+
+    expect($validator->fails())->toBeTrue()
+        ->and($validator->errors()->first('name'))->not->toBeEmpty();
+});
