@@ -44,7 +44,7 @@
             </div>
             <div class="field-info-container">
                 <div class="field-name">{{t "warehouse.fields.type"}}</div>
-                <div class="field-value">{{n-a @resource.type}}</div>
+                <div class="field-value">{{smart-humanize (n-a @resource.type)}}</div>
             </div>
             <div class="field-info-container">
                 <div class="field-name">{{t "warehouse.fields.status"}}</div>
@@ -54,7 +54,7 @@
                     {{else if (eq @resource.status "inactive")}}
                         <Badge @status="error">{{t "common.inactive"}}</Badge>
                     {{else}}
-                        <Badge @status="warning">{{n-a @resource.status}}</Badge>
+                        <Badge @status="warning">{{smart-humanize (n-a @resource.status)}}</Badge>
                     {{/if}}
                 </div>
             </div>

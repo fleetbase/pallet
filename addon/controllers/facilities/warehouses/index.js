@@ -165,6 +165,9 @@ export default class WarehousesIndexController extends Controller {
                 valuePath: 'stock_items',
                 width: '120px',
                 cellComponent: 'table/cell/anchor',
+                // the anchor cell falls back on any falsy value, so a warehouse
+                // holding no stock read as an em dash rather than as zero
+                anchorText: '0',
                 resizable: true,
                 sortable: true,
                 filterable: false,
