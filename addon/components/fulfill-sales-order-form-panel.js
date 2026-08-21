@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
+import { action, get } from '@ember/object';
 import { task } from 'ember-concurrency-decorators';
 
 /**
@@ -214,15 +214,23 @@ export default class FulfillSalesOrderFormPanelComponent extends Component {
      * Resolve it back to the line item's product name where we can.
      */
     describeShortfallItem(shortfall) {
-        const item = (this.salesOrder?.items ?? []).find((i) => i.uuid === shortfall.item_uuid);
-        const name = item?.product?.name ?? item?.name;
-        const variant = item?.variant?.display_name ?? item?.variant?.name;
+        // the panel keys its own state by item.id, and the endpoint answers with
+        // item_uuid, so match either; and read the relations through get(), since an
+        // async belongsTo hands back a proxy that plain property access misses
+        const item = (this.salesOrder?.items ?? []).find((i) => i.uuid === shortfall.item_uuid || i.id === shortfall.item_uuid);
 
-        if (name) {
-            return variant ? `${name} (${variant})` : name;
+        if (!item) {
+            return `Product ${shortfall.product_uuid}`;
         }
 
-        return `Product ${shortfall.product_uuid}`;
+        const name = get(item, 'product.name') ?? get(item, 'name');
+        const variant = get(item, 'variant.display_name') ?? get(item, 'variant.name');
+
+        if (!name) {
+            return `Product ${shortfall.product_uuid}`;
+        }
+
+        return variant ? `${name} (${variant})` : name;
     }
 
     /**
