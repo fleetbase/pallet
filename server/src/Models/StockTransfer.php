@@ -250,6 +250,10 @@ class StockTransfer extends Model
 
         $result = DB::transaction(function () {
             foreach ($this->items as $item) {
+                if ((int) $item->quantity - (int) $item->quantity_received <= 0) {
+                    continue;
+                }
+
                 $inventory = Inventory::firstOrCreate(
                     [
                         'product_uuid'   => $item->product_uuid,
@@ -265,7 +269,18 @@ class StockTransfer extends Model
                     ]
                 );
 
-                $inventory->add($item->quantity_received ?? $item->quantity, 'transferred');
+                // `?? $item->quantity` never fired: both controllers that create a
+                // transfer item write quantity_received as 0, not null, and 0 ?? x is
+                // 0. So a completed transfer deducted the full quantity at the source
+                // and added nothing at the destination — the stock simply vanished.
+                $receiving = (int) $item->quantity - (int) $item->quantity_received;
+
+                if ($receiving <= 0) {
+                    continue;
+                }
+
+                $inventory->add($receiving, 'transferred');
+                $item->recordReceived((int) $item->quantity_received + $receiving);
             }
 
             $this->status      = 'completed';
