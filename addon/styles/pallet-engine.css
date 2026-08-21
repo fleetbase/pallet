@@ -218,9 +218,10 @@ body[data-theme='dark'] .pallet-dashboard-widget tbody tr:hover {
     }
 }
 
-.pallet-kpi-tile {
-    background-image: linear-gradient(135deg, rgb(15 23 42 / 3%) 0%, rgb(15 23 42 / 0%) 66%);
-}
+/* The tile surface stays the neutral card the rest of the console uses — see
+   ember-ui's stat-widget. Accent colour is kept, but only on the icon, where it
+   carries the meaning (red for low stock, amber for expiring) without giving
+   eight tiles eight competing backgrounds. */
 
 .pallet-kpi-tile:hover {
     transform: translateY(-1px);
@@ -307,20 +308,9 @@ body[data-theme='dark'] .pallet-kpi-footer {
     color: #9ca3af;
 }
 
-.pallet-kpi-accent-blue {
-    border-color: rgb(59 130 246 / 28%);
-    background-image: linear-gradient(135deg, rgb(59 130 246 / 11%) 0%, rgb(59 130 246 / 0%) 64%);
-}
-
 .pallet-kpi-accent-blue .pallet-kpi-icon {
     color: #2563eb;
     background-color: rgb(37 99 235 / 12%);
-}
-
-.pallet-kpi-accent-green,
-.pallet-kpi-accent-emerald {
-    border-color: rgb(16 185 129 / 28%);
-    background-image: linear-gradient(135deg, rgb(16 185 129 / 11%) 0%, rgb(16 185 129 / 0%) 64%);
 }
 
 .pallet-kpi-accent-green .pallet-kpi-icon,
@@ -329,32 +319,15 @@ body[data-theme='dark'] .pallet-kpi-footer {
     background-color: rgb(16 185 129 / 12%);
 }
 
-.pallet-kpi-accent-amber,
-.pallet-kpi-accent-orange {
-    border-color: rgb(245 158 11 / 32%);
-    background-image: linear-gradient(135deg, rgb(245 158 11 / 13%) 0%, rgb(245 158 11 / 0%) 64%);
-}
-
 .pallet-kpi-accent-amber .pallet-kpi-icon,
 .pallet-kpi-accent-orange .pallet-kpi-icon {
     color: #d97706;
     background-color: rgb(245 158 11 / 14%);
 }
 
-.pallet-kpi-accent-red {
-    border-color: rgb(244 63 94 / 30%);
-    background-image: linear-gradient(135deg, rgb(244 63 94 / 11%) 0%, rgb(244 63 94 / 0%) 64%);
-}
-
 .pallet-kpi-accent-red .pallet-kpi-icon {
     color: #e11d48;
     background-color: rgb(244 63 94 / 12%);
-}
-
-.pallet-kpi-accent-indigo,
-.pallet-kpi-accent-purple {
-    border-color: rgb(99 102 241 / 28%);
-    background-image: linear-gradient(135deg, rgb(99 102 241 / 11%) 0%, rgb(99 102 241 / 0%) 64%);
 }
 
 .pallet-kpi-accent-indigo .pallet-kpi-icon,
