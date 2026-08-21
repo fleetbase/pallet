@@ -71,8 +71,8 @@
                         <td class="px-4 py-3 font-medium">{{n-a location.bin_number}}</td>
                         <td class="px-4 py-3">{{n-a location.warehouse.name}}</td>
                         <td class="px-4 py-3">{{n-a location.zone.name}}</td>
-                        <td class="px-4 py-3">{{n-a location.type}}</td>
-                        <td class="px-4 py-3"><Badge @status={{if (eq location.status "active") "success" "default"}}>{{n-a location.status}}</Badge></td>
+                        <td class="px-4 py-3">{{smart-humanize (n-a location.type)}}</td>
+                        <td class="px-4 py-3"><Badge @status={{if (eq location.status "active") "success" "default"}}>{{smart-humanize (n-a location.status)}}</Badge></td>
                         <td class="px-4 py-3 text-right">{{n-a location.available_capacity}}</td>
                     </tr>
                 {{else}}
