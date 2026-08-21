@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { format } from 'date-fns';
 
 export default class InventoryFormComponent extends Component {
     @tracked statusOptions = [
@@ -10,9 +11,38 @@ export default class InventoryFormComponent extends Component {
         { label: 'Reserved', value: 'reserved' },
     ];
 
+    /**
+     * `expiryDate` is not an attribute on the batch model — only `expiry_date_at`
+     * is — so this wrote to a property Ember Data does not serialize and the expiry
+     * was silently discarded on save. Every batch and every inventory row came back
+     * with a null expiry, which is why the batches list showed an empty EXPIRY
+     * column and the Expired Stock view could never match anything.
+     *
+     * Reading it back had the same fault, so the field also came up blank when
+     * editing stock that already had an expiry recorded.
+     */
+    get expiryDateValue() {
+        const value = this.args.resource?.expiry_date_at;
+
+        if (!value) {
+            return '';
+        }
+
+        const date = value instanceof Date ? value : new Date(value);
+
+        return isNaN(date.getTime()) ? '' : format(date, 'yyyy-MM-dd');
+    }
+
     @action setExpiryDate(event) {
+        const { value } = event.target;
+        const date = value ? new Date(value) : null;
+
+        // the expired-stock views check the inventory's own expiry
+        this.args.resource.expiry_date_at = date;
+
+        // and the batches list reads the batch's, so both have to be written
         if (this.args.resource.batch) {
-            this.args.resource.batch.expiryDate = event.target.value;
+            this.args.resource.batch.expiry_date_at = date;
         }
     }
 
