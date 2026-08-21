@@ -3,6 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { task } from 'ember-concurrency';
+import { format } from 'date-fns';
 import contextComponentCallback from '@fleetbase/ember-core/utils/context-component-callback';
 import applyContextComponentArguments from '@fleetbase/ember-core/utils/apply-context-component-arguments';
 
@@ -191,11 +192,37 @@ export default class InventoryFormPanelComponent extends Component {
         this.inventory.batch.set('batch_number', currentDate);
     }
 
+    /**
+     * The input read `batch.expiryDate`, which is not an attribute on the batch
+     * model at all, so the field came up blank even when editing stock that had an
+     * expiry recorded. A `type="date"` input also only accepts yyyy-MM-dd.
+     */
+    get expiryDateValue() {
+        const value = this.inventory?.expiry_date_at;
+
+        if (!value) {
+            return '';
+        }
+
+        const date = value instanceof Date ? value : new Date(value);
+
+        return isNaN(date.getTime()) ? '' : format(date, 'yyyy-MM-dd');
+    }
+
     @action setExpiryDate(event) {
         const {
             target: { value },
         } = event;
 
-        this.inventory.set('expiry_date_at', new Date(value));
+        const date = value ? new Date(value) : null;
+
+        this.inventory.set('expiry_date_at', date);
+
+        // the field lives in the Batch panel and the batches list reads the batch's
+        // own expiry_date_at — writing only the inventory left that column empty
+        // for every row ever created here
+        if (this.inventory.batch) {
+            this.inventory.batch.set('expiry_date_at', date);
+        }
     }
 }
