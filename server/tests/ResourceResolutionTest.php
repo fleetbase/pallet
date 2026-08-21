@@ -33,28 +33,45 @@ function internalRequestFor(string $uri): Request
 }
 
 /**
- * Every model that has both an internal and a consumable resource.
+ * Every consumable resource, which is the side that can hijack the console.
+ *
+ * Enumerating from Internal\v1 instead — the obvious-looking direction — cannot see
+ * the failure at all: a consumable resource with no internal twin is simply absent
+ * from that list and gets skipped. That is exactly how the suppliers screen broke
+ * after this test was already passing. Pallet never had an internal Supplier
+ * resource, resolution had always fallen through to the generic FleetbaseResource,
+ * and adding Http\Resources\v1\Supplier put a class in front of that fallback.
  */
-function modelsWithBothResources(): array
+function consumableResources(): array
 {
-    $both = [];
+    $resources = [];
 
-    foreach (glob(__DIR__ . '/../src/Http/Resources/Internal/v1/*.php') as $file) {
+    foreach (glob(__DIR__ . '/../src/Http/Resources/v1/*.php') as $file) {
         $name = basename($file, '.php');
 
-        if (!file_exists(__DIR__ . '/../src/Http/Resources/v1/' . $name . '.php')) {
+        if ($name === 'DeletedResource') {
             continue;
         }
 
-        $model = 'Fleetbase\\Pallet\\Models\\' . $name;
-
-        if (class_exists($model)) {
-            $both[$name] = $model;
-        }
+        $resources[] = $name;
     }
 
-    return $both;
+    return $resources;
 }
+
+test('every consumable resource has an internal twin', function () {
+    $resources = consumableResources();
+
+    expect($resources)->not->toBeEmpty();
+
+    foreach ($resources as $name) {
+        $internal = __DIR__ . '/../src/Http/Resources/Internal/v1/' . $name . '.php';
+
+        expect(file_exists($internal))->toBeTrue(
+            $name . ' has a consumable resource but no Internal\\v1 twin, so internal requests will resolve the consumable shape and Ember Data will reject the payload'
+        );
+    }
+});
 
 /*
  * NOTE: there is no in-process test of the resolver itself. Find::httpResourceForModel
@@ -67,16 +84,24 @@ function modelsWithBothResources(): array
  * What these tests pin instead is the layout that makes a cold resolution correct.
  */
 test('the internal resource exposes the identifiers Ember Data needs', function () {
-    foreach (modelsWithBothResources() as $name => $model) {
+    foreach (consumableResources() as $name) {
         $source = file_get_contents(__DIR__ . '/../src/Http/Resources/Internal/v1/' . $name . '.php');
 
-        expect(str_contains($source, "'uuid'"))->toBeTrue($name . ' internal resource must emit uuid')
-            ->and(str_contains($source, "'public_id'"))->toBeTrue($name . ' internal resource must emit public_id');
+        // A resource that does not override toArray() inherits FleetbaseResource's
+        // pass-through, which emits the model's attributes wholesale — uuid and
+        // public_id included. Only an explicit toArray() can drop them, so only that
+        // case needs checking.
+        if (!str_contains($source, 'function toArray')) {
+            continue;
+        }
+
+        expect(str_contains($source, "'uuid'"))->toBeTrue($name . ' internal resource overrides toArray but does not emit uuid')
+            ->and(str_contains($source, "'public_id'"))->toBeTrue($name . ' internal resource overrides toArray but does not emit public_id');
     }
 });
 
 test('the consumable resource still withholds them', function () {
-    foreach (modelsWithBothResources() as $name => $_) {
+    foreach (consumableResources() as $name) {
         $source = file_get_contents(__DIR__ . '/../src/Http/Resources/v1/' . $name . '.php');
 
         expect(str_contains($source, "'uuid'          =>") || str_contains($source, "'uuid' =>"))->toBeFalse(
