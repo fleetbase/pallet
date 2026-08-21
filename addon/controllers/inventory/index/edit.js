@@ -2,27 +2,15 @@ import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { task } from 'ember-concurrency';
 
 export default class InventoryIndexEditController extends Controller {
-    /**
-     * Inject the `hostRouter` service
-     *
-     * @memberof ManagementInventorysIndexEditController
-     */
     @service hostRouter;
-
-    /**
-     * Inject the `hostRouter` service
-     *
-     * @memberof ManagementInventorysIndexEditController
-     */
+    @service intl;
+    @service notifications;
     @service modalsManager;
+    @service events;
 
-    /**
-     * The overlay component context.
-     *
-     * @memberof ManagementInventorysIndexEditController
-     */
     @tracked overlay;
 
     /**
@@ -33,91 +21,60 @@ export default class InventoryIndexEditController extends Controller {
         return [
             {
                 icon: 'eye',
-                fn: () => this.onViewDetails(this.model),
+                fn: this.view,
             },
         ];
     }
 
     /**
-     * When exiting the overlay.
-     *
-     * @return {Transition}
-     * @memberof ManagementInventorysIndexEditController
+     * The template bound @saveTask={{this.save}} and @onPressCancel={{this.cancel}}
+     * but neither existed here, so the panel rendered no save button at all: you
+     * could open the edit form, change anything you liked, and have no way to keep
+     * it. Mirrors the warehouse edit controller, which is the working example.
      */
-    @action transitionBack(inventory) {
-        if (inventory.hasDirtyAttributes) {
-            return this.confirmContinueWithUnsavedChanges(inventory, {
-                confirm: () => {
-                    inventory.rollbackAttributes();
-                    return this.hostRouter.transitionTo('console.pallet.inventory.index');
-                },
-            });
+    @task *save(inventory) {
+        try {
+            yield inventory.save();
+            this.events.trackResourceUpdated(inventory);
+            this.overlay?.close();
+
+            yield this.hostRouter.transitionTo('console.pallet.inventory.index.details', inventory);
+            this.notifications.success(
+                this.intl.t('common.resource-updated-success', {
+                    resource: 'Inventory',
+                    resourceName: inventory.get('product.name') ?? inventory.public_id,
+                })
+            );
+        } catch (error) {
+            this.notifications.serverError(error);
+        }
+    }
+
+    @action cancel() {
+        if (this.model.hasDirtyAttributes) {
+            return this.confirmContinueWithUnsavedChanges(this.model, 'console.pallet.inventory.index');
         }
 
         return this.hostRouter.transitionTo('console.pallet.inventory.index');
     }
 
-    /**
-     * Set the overlay component context object.
-     *
-     * @param {OverlayContext} overlay
-     * @memberof ManagementInventorysIndexEditController
-     */
-    @action setOverlayContext(overlay) {
-        this.overlay = overlay;
-    }
-
-    /**
-     * When inventory details button is clicked in overlay.
-     *
-     * @param {InventoryModel} inventory
-     * @return {Promise}
-     * @memberof ManagementInventorysIndexEditController
-     */
-    @action onViewDetails(inventory) {
-        // check if inventory record has been edited and prompt for confirmation
-        if (inventory.hasDirtyAttributes) {
-            return this.confirmContinueWithUnsavedChanges(inventory);
+    @action view() {
+        if (this.model.hasDirtyAttributes) {
+            return this.confirmContinueWithUnsavedChanges(this.model, 'console.pallet.inventory.index.details');
         }
 
-        return this.hostRouter.transitionTo('console.pallet.inventory.index.details', inventory);
+        return this.hostRouter.transitionTo('console.pallet.inventory.index.details', this.model);
     }
 
-    /**
-     * Trigger a route refresh and focus the new inventory created.
-     *
-     * @param {InventoryModel} inventory
-     * @return {Promise}
-     * @memberof ManagementInventorysIndexEditController
-     */
-    @action onAfterSave(inventory) {
-        if (this.overlay) {
-            this.overlay.close();
-        }
-
-        this.hostRouter.refresh();
-        return this.hostRouter.transitionTo('console.pallet.inventory.index.details', inventory);
-    }
-
-    /**
-     * Prompts the user to confirm if they wish to continue with unsaved changes.
-     *
-     * @method
-     * @param {InventoryModel} inventory - The inventory object with unsaved changes.
-     * @param {Object} [options={}] - Additional options for configuring the modal.
-     * @returns {Promise} A promise that resolves when the user confirms, and transitions to a new route.
-     * @memberof ManagementInventorysIndexEditController
-     */
-    confirmContinueWithUnsavedChanges(inventory, options = {}) {
+    confirmContinueWithUnsavedChanges(inventory, routeName) {
         return this.modalsManager.confirm({
-            title: 'Continue Without Saving?',
-            body: 'Unsaved changes to this inventory will be lost. Click continue to proceed.',
-            acceptButtonText: 'Continue without saving',
-            confirm: () => {
+            title: this.intl.t('common.continue-without-saving'),
+            body: this.intl.t('common.continue-without-saving-prompt', { resource: 'Inventory' }),
+            acceptButtonText: this.intl.t('common.continue'),
+            confirm: async () => {
                 inventory.rollbackAttributes();
-                return this.hostRouter.transitionTo('console.pallet.inventory.index.details', inventory);
+                await this.hostRouter.transitionTo(routeName, inventory);
             },
-            ...options,
         });
     }
 }

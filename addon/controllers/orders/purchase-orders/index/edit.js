@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { task } from 'ember-concurrency';
 
 export default class PurchaseOrdersIndexEditController extends Controller {
     /**
@@ -17,6 +18,9 @@ export default class PurchaseOrdersIndexEditController extends Controller {
      * @memberof PurchaseOrdersIndexEditController
      */
     @service modalsManager;
+    @service events;
+    @service notifications;
+    @service intl;
 
     /**
      * The overlay component context.
@@ -44,6 +48,39 @@ export default class PurchaseOrdersIndexEditController extends Controller {
      * @return {Transition}
      * @memberof PurchaseOrdersIndexEditController
      */
+
+    /**
+     * The template bound @saveTask={{this.save}} and @onPressCancel={{this.cancel}}
+     * but neither existed here, so the panel rendered no save button at all: you
+     * could open the edit form, change anything you liked, and have no way to keep
+     * it.
+     */
+    @task *save(purchaseOrder) {
+        try {
+            yield purchaseOrder.save();
+            this.events.trackResourceUpdated(purchaseOrder);
+            this.overlay?.close();
+
+            yield this.hostRouter.transitionTo('console.pallet.orders.purchase-orders.index.details', purchaseOrder);
+            this.notifications.success(
+                this.intl.t('common.resource-updated-success', {
+                    resource: 'Purchase Order',
+                    resourceName: purchaseOrder.order_number ?? purchaseOrder.public_id,
+                })
+            );
+        } catch (error) {
+            this.notifications.serverError(error);
+        }
+    }
+
+    @action cancel() {
+        if (this.model.hasDirtyAttributes) {
+            return this.confirmContinueWithUnsavedChanges(this.model, 'console.pallet.orders.purchase-orders.index');
+        }
+
+        return this.hostRouter.transitionTo('console.pallet.orders.purchase-orders.index');
+    }
+
     @action transitionBack(purchaseOrder) {
         if (purchaseOrder.hasDirtyAttributes) {
             return this.confirmContinueWithUnsavedChanges(purchaseOrder, {
@@ -109,6 +146,17 @@ export default class PurchaseOrdersIndexEditController extends Controller {
      * @memberof PurchaseOrdersIndexEditController
      */
     confirmContinueWithUnsavedChanges(purchaseOrder, options = {}) {
+        // cancel() passes a route name rather than a modal options hash
+        if (typeof options === 'string') {
+            const routeName = options;
+            options = {
+                confirm: async () => {
+                    purchaseOrder.rollbackAttributes();
+                    await this.hostRouter.transitionTo(routeName, purchaseOrder);
+                },
+            };
+        }
+
         return this.modalsManager.confirm({
             title: 'Continue Without Saving?',
             body: 'Unsaved changes to this purchase-order will be lost. Click continue to proceed.',
