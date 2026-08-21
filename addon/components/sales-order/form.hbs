@@ -2,7 +2,10 @@
     <ContentPanel @title={{t "sales-order.sections.details"}} @open={{true}} @wrapperClass="bordered-top">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 text-xs no-input-group-padding">
             <InputGroup @name={{t "sales-order.fields.order-number"}} @wrapperClass="col-span-2">
-                <Input @value={{@resource.order_number}} @type="text" class="w-full form-input" placeholder={{t "sales-order.fields.order-number"}} disabled={{cannot-write @resource}} />
+                {{! `order_number` is the resource's alias for the system-generated
+                    public_id — there is no such column and it is not fillable, so this
+                    was an editable box whose value could never be saved. Show it. }}
+                <Input @value={{@resource.order_number}} @type="text" class="w-full form-input" placeholder={{t "sales-order.fields.order-number"}} disabled={{true}} readonly />
             </InputGroup>
             <InputGroup @name={{t "sales-order.fields.customer"}}>
                 <ModelSelect
