@@ -195,9 +195,12 @@ export default class FulfillSalesOrderFormPanelComponent extends Component {
             const shortfalls = error?.insufficient_stock ?? error?.payload?.insufficient_stock;
 
             if (shortfalls) {
+                // serverError only ever renders errors[0], so the per-line breakdown has
+                // to travel in the same string — the numbers are the whole point of it
                 const lines = shortfalls.map((s) => `${this.describeShortfallItem(s)}: requested ${s.requested}, available ${s.available}`);
+                const headline = error.error ?? 'Insufficient stock for one or more items.';
 
-                return this.notifications.serverError({ errors: [error.error ?? 'Insufficient stock for one or more items.', ...lines] });
+                return this.notifications.serverError({ errors: [`${headline} ${lines.join('; ')}`] });
             }
 
             const message = error?.error || error?.payload?.error || error?.message || 'Failed to fulfill sales order.';
