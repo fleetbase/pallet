@@ -185,3 +185,40 @@ test('the consumable routes are registered behind the api credential middleware'
         expect(in_array('fleetbase.api', $route->gatherMiddleware(), true))->toBeTrue($route->uri() . ' must require an API credential');
     }
 });
+
+/*
+ * pallet_products carries a unique(company_uuid, sku). Before this was validated the
+ * insert reached MySQL and the API answered 500 with a 1.2MB stack trace — found by
+ * running the Postman collection twice, since its fixture SKU is fixed.
+ */
+test('a duplicate sku is rejected as a validation error, not a server error', function () {
+    $company = (string) Str::uuid();
+    asCompany($company);
+
+    Product::create(['company_uuid' => $company, 'name' => 'First', 'sku' => 'DUP-1']);
+
+    $request = publicApiRequest('products', 'POST', ['name' => 'Second', 'sku' => 'DUP-1']);
+
+    $rules     = Fleetbase\Pallet\Http\Requests\CreateProductRequest::createFrom($request)->rules();
+    $validator = Illuminate\Support\Facades\Validator::make(['name' => 'Second', 'sku' => 'DUP-1'], $rules);
+
+    expect($validator->fails())->toBeTrue()
+        ->and($validator->errors()->first('sku'))->not->toBeEmpty();
+});
+
+test('the same sku is allowed for a different company', function () {
+    $companyA = (string) Str::uuid();
+    $companyB = (string) Str::uuid();
+
+    asCompany($companyA);
+    Product::create(['company_uuid' => $companyA, 'name' => 'Theirs', 'sku' => 'SHARED-1']);
+
+    asCompany($companyB);
+    $request = publicApiRequest('products', 'POST', ['name' => 'Ours', 'sku' => 'SHARED-1']);
+
+    $resource = (new ProductController())->create(
+        Fleetbase\Pallet\Http\Requests\CreateProductRequest::createFrom($request)
+    );
+
+    expect(resourceArray($resource, $request)['sku'])->toBe('SHARED-1');
+});

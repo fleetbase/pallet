@@ -20,7 +20,18 @@ class CreateProductRequest extends FleetbaseRequest
     {
         return [
             'name'                   => [Rule::requiredIf($this->isMethod('POST')), 'string', 'max:255'],
-            'sku'                    => 'nullable|string|max:255',
+            // pallet_products carries a unique(company_uuid, sku). Without this rule the
+            // insert reaches MySQL and answers 500 with a stack trace, where a caller
+            // supplying a duplicate SKU deserves a 422 saying so.
+            'sku'                    => [
+                'nullable',
+                'string',
+                'max:255',
+                Rule::unique('pallet_products', 'sku')
+                    ->where('company_uuid', session('company'))
+                    ->whereNull('deleted_at')
+                    ->ignore($this->ignoredPublicId(), 'public_id'),
+            ],
             'barcode'                => 'nullable|string|max:255',
             'internal_id'            => 'nullable|string|max:255',
             'description'            => 'nullable|string',
@@ -49,5 +60,23 @@ class CreateProductRequest extends FleetbaseRequest
             'category'               => 'nullable|string',
             'meta'                   => 'nullable|array',
         ];
+    }
+
+    /**
+     * The record being updated, so its own value does not collide with itself.
+     * Route::parameter() is used rather than route('id') because a create request
+     * has no such parameter and the latter throws when the route lacks it.
+     */
+    protected function ignoredPublicId(): ?string
+    {
+        $route = $this->route();
+
+        // hasParameters() guards an unbound route: parameters() throws on one, which
+        // a manually constructed request (tests, internal dispatch) will always hit.
+        if (!$route || !$route->hasParameters()) {
+            return null;
+        }
+
+        return $route->parameter('id');
     }
 }

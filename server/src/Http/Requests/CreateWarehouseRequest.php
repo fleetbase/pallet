@@ -16,7 +16,15 @@ class CreateWarehouseRequest extends FleetbaseRequest
     {
         return [
             'name'            => [Rule::requiredIf($this->isMethod('POST')), 'string', 'max:255'],
-            'code'            => 'nullable|string|max:255',
+            // warehouses.code is unique across the whole table, not per company.
+            'code'            => [
+                'nullable',
+                'string',
+                'max:255',
+                Rule::unique('pallet_warehouses', 'code')
+                    ->whereNull('deleted_at')
+                    ->ignore($this->ignoredPublicId(), 'public_id'),
+            ],
             'type'            => 'nullable|string|max:255',
             'status'          => 'nullable|string|max:255',
             'capacity'        => 'nullable|numeric|min:0',
@@ -30,5 +38,23 @@ class CreateWarehouseRequest extends FleetbaseRequest
             'is_default'      => 'nullable|boolean',
             'meta'            => 'nullable|array',
         ];
+    }
+
+    /**
+     * The record being updated, so its own value does not collide with itself.
+     * Route::parameter() is used rather than route('id') because a create request
+     * has no such parameter and the latter throws when the route lacks it.
+     */
+    protected function ignoredPublicId(): ?string
+    {
+        $route = $this->route();
+
+        // hasParameters() guards an unbound route: parameters() throws on one, which
+        // a manually constructed request (tests, internal dispatch) will always hit.
+        if (!$route || !$route->hasParameters()) {
+            return null;
+        }
+
+        return $route->parameter('id');
     }
 }
