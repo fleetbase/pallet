@@ -27,6 +27,7 @@ export default class AuditModel extends Model {
     @attr('string') subject_uuid;
     @attr('string') subject_type;
     @attr('string') subject_label;
+    @attr('string') subject_reference;
 
     /** @relationships */
     @belongsTo('user') performedBy;

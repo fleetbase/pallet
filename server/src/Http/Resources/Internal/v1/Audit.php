@@ -44,6 +44,7 @@ class Audit extends FleetbaseResource
             'subject_uuid'      => $this->auditable_uuid,
             'subject_type'      => $this->auditable_type,
             'subject_label'     => $this->subject_label,
+            'subject_reference' => $this->subject_reference,
             'description'       => $this->action,
 
             // Event classification

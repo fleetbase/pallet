@@ -134,7 +134,7 @@ export default class AuditsIndexController extends Controller {
         },
         {
             label: this.intl.t('audit.columns.subject-id'),
-            valuePath: 'auditable_uuid',
+            valuePath: 'subject_reference',
             width: '200px',
             resizable: true,
             sortable: false,

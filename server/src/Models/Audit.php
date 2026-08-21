@@ -218,6 +218,28 @@ class Audit extends Model
      * Get a human-readable label for the auditable subject type.
      * Extracts the short class name from the fully-qualified auditable_type.
      */
+    /**
+     * A reference a person can actually match to a record.
+     *
+     * The audit list showed the raw auditable_uuid under a column headed "Subject
+     * ID", which tells a reader nothing about which order or count they are looking
+     * at. Every event this module logs already carries a readable number in its meta
+     * — order_number, wave_number, count_number, transfer_number — so prefer that
+     * and keep the uuid only as a last resort.
+     */
+    public function getSubjectReferenceAttribute(): ?string
+    {
+        foreach (['order_number', 'transfer_number', 'count_number', 'wave_number', 'pick_list_number', 'public_id'] as $key) {
+            $value = data_get($this->meta, $key);
+
+            if (is_string($value) && $value !== '') {
+                return $value;
+            }
+        }
+
+        return $this->auditable_uuid;
+    }
+
     public function getSubjectLabelAttribute(): ?string
     {
         if (!$this->auditable_type) {
