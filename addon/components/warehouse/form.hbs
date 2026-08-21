@@ -10,6 +10,32 @@
             <InputGroup @name={{t "common.email"}}>
                 <Input @value={{@resource.email}} @type="email" class="w-full form-input" placeholder={{t "common.email"}} disabled={{cannot-write @resource}} />
             </InputGroup>
+            <InputGroup @name={{t "warehouse.fields.code"}}>
+                <Input @value={{@resource.code}} @type="text" class="w-full form-input" placeholder={{t "warehouse.fields.code"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+            <InputGroup @name={{t "warehouse.fields.type"}}>
+                <Select
+                    class="w-full form-input form-select"
+                    @options={{this.typeOptions}}
+                    @value={{@resource.type}}
+                    @onSelect={{fn (mut @resource.type)}}
+                    @humanize={{true}}
+                    @disabled={{cannot-write @resource}}
+                />
+            </InputGroup>
+            <InputGroup @name={{t "warehouse.fields.status"}}>
+                <Select
+                    class="w-full form-input form-select"
+                    @options={{this.statusOptions}}
+                    @value={{@resource.status}}
+                    @onSelect={{fn (mut @resource.status)}}
+                    @humanize={{true}}
+                    @disabled={{cannot-write @resource}}
+                />
+            </InputGroup>
+            <InputGroup>
+                <Checkbox @value={{@resource.is_default}} @onChange={{fn (mut @resource.is_default)}} @disabled={{cannot-write @resource}} @label={{t "warehouse.fields.is-default"}} />
+            </InputGroup>
             <InputGroup @name={{t "common.description"}} @wrapperClass="col-span-2">
                 <Textarea @value={{@resource.meta.description}} class="w-full form-input" placeholder={{t "common.description"}} disabled={{cannot-write @resource}} />
             </InputGroup>
@@ -45,12 +71,16 @@
                 <Input @value={{@resource.capacity}} @type="number" class="w-full form-input" placeholder={{t "warehouse.fields.capacity"}} disabled={{cannot-write @resource}} />
             </InputGroup>
             <InputGroup @name={{t "warehouse.fields.current-utilization"}}>
-                <Input @value={{@resource.current_utilization}} @type="number" class="w-full form-input" placeholder={{t "warehouse.fields.current-utilization"}} disabled={{cannot-write @resource}} />
+                <Input
+                    @value={{@resource.current_utilization}}
+                    @type="number"
+                    class="w-full form-input"
+                    placeholder={{t "warehouse.fields.current-utilization"}}
+                    disabled={{cannot-write @resource}}
+                />
             </InputGroup>
-            <InputGroup @name={{t "warehouse.fields.is-3pl"}}>
-                <Checkbox @checked={{@resource.is_3pl}} @onChange={{fn (mut @resource.is_3pl)}} @disabled={{cannot-write @resource}}>
-                    {{t "warehouse.fields.third-party-logistics"}}
-                </Checkbox>
+            <InputGroup>
+                <Checkbox @value={{@resource.is_3pl}} @onChange={{fn (mut @resource.is_3pl)}} @disabled={{cannot-write @resource}} @label={{t "warehouse.fields.third-party-logistics"}} />
             </InputGroup>
         </div>
     </ContentPanel>

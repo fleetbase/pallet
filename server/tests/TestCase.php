@@ -227,6 +227,7 @@ abstract class TestCase extends TestbenchTestCase
                 $table->string('district')->nullable();
                 $table->string('building')->nullable();
                 $table->text('location')->nullable();
+                $table->boolean('is_3pl')->default(false);
                 $table->json('meta')->nullable();
                 $table->timestamps();
                 $table->softDeletes();

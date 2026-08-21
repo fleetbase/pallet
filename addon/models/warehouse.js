@@ -47,6 +47,7 @@ export default class WarehouseModel extends Model {
     @attr('string') neighborhood;
     @attr('string') district;
     @attr('string') building;
+    @attr('boolean') is_3pl;
     @attr('string') country;
     @attr('string') country_name;
     @attr('number') latitude;

@@ -62,6 +62,7 @@ class WarehouseController extends PalletResourceController
                         'neighborhood' => $request->input('warehouse.neighborhood'),
                         'district'     => $request->input('warehouse.district'),
                         'building'     => $request->input('warehouse.building'),
+                        'is_3pl'       => $request->input('warehouse.is_3pl'),
                         'location'     => $request->input('warehouse.location'),
                     ]);
                 }
@@ -71,7 +72,7 @@ class WarehouseController extends PalletResourceController
                 // parts and uppercases each one, so the warehouses list rendered its
                 // own name, shouted, in the ADDRESS column. Only create a place when
                 // something that is actually an address was supplied.
-                $hasAddress = (bool) array_diff_key($placeData, ['name' => null]);
+                $hasAddress = (bool) array_diff_key($placeData, ['name' => null, 'is_3pl' => null]);
 
                 if ($hasAddress) {
                     // places.location is NOT NULL with no default, and array_filter
@@ -82,6 +83,15 @@ class WarehouseController extends PalletResourceController
                         'created_by_uuid' => session('user'),
                         'type'            => 'pallet-warehouse',
                     ]));
+
+                    // Pallet added is_3pl to `places`, but the upstream Place model
+                    // does not list it as fillable, so Place::create() silently drops
+                    // it. Set it after the fact rather than mass-assigning it.
+                    if (array_key_exists('is_3pl', $placeData)) {
+                        $place->is_3pl = (bool) $placeData['is_3pl'];
+                        $place->save();
+                    }
+
                     $input['place_uuid'] = $place->uuid;
                 }
             }, function ($request, $warehouse) {
@@ -166,12 +176,13 @@ class WarehouseController extends PalletResourceController
                         'neighborhood' => $request->input('warehouse.neighborhood'),
                         'district'     => $request->input('warehouse.district'),
                         'building'     => $request->input('warehouse.building'),
+                        'is_3pl'       => $request->input('warehouse.is_3pl'),
                         'location'     => $request->input('warehouse.location'),
                     ]);
                 }
                 // Same guard as createRecord: a name on its own is not an address.
                 // An existing place still gets its name kept in step.
-                $hasAddress = (bool) array_diff_key($placeData, ['name' => null]);
+                $hasAddress = (bool) array_diff_key($placeData, ['name' => null, 'is_3pl' => null]);
 
                 if ($warehouse->place_uuid) {
                     Place::where('uuid', $warehouse->place_uuid)->update($placeData);
@@ -183,6 +194,15 @@ class WarehouseController extends PalletResourceController
                         'created_by_uuid' => session('user'),
                         'type'            => 'pallet-warehouse',
                     ]));
+
+                    // Pallet added is_3pl to `places`, but the upstream Place model
+                    // does not list it as fillable, so Place::create() silently drops
+                    // it. Set it after the fact rather than mass-assigning it.
+                    if (array_key_exists('is_3pl', $placeData)) {
+                        $place->is_3pl = (bool) $placeData['is_3pl'];
+                        $place->save();
+                    }
+
                     $input['place_uuid'] = $place->uuid;
                 }
             }, function ($request, $warehouse) {

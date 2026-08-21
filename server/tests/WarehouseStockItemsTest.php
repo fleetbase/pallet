@@ -166,3 +166,54 @@ test('is_active follows status rather than being written independently', functio
 
     expect($warehouse->fresh()->is_active)->toBeFalse('only "active" means in service');
 });
+
+/*
+ * The create form and the panel header both read `is_3pl` off the warehouse, but
+ * it is a column on the linked Place and nothing proxied it — so the checkbox
+ * wrote to an attribute that did not exist and the 3PL badge could never show.
+ */
+test('the third-party-logistics flag round-trips through the linked place', function () {
+    $company = (string) Illuminate\Support\Str::uuid();
+    session(['company' => $company]);
+
+    $request = Request::create('/pallet/int/v1/warehouses', 'POST', [
+        'warehouse' => [
+            'name'    => '3PL Warehouse',
+            'street1' => '9 Contract Road',
+            'is_3pl'  => true,
+        ],
+    ]);
+    $request->setLaravelSession(app('session.store'));
+    $request->session()->put('company', $company);
+
+    (new WarehouseController())->createRecord($request);
+
+    $warehouse = Warehouse::where('name', '3PL Warehouse')->first();
+
+    expect($warehouse)->not->toBeNull()
+        ->and($warehouse->place)->not->toBeNull()
+        ->and((bool) $warehouse->place->is_3pl)->toBeTrue();
+});
+
+/*
+ * `is_3pl` is a property of the operator, not an address, so it must not on its
+ * own be enough to conjure a Place — that is what put the warehouse's own name,
+ * shouted, in the address column in the first place.
+ */
+test('the third-party-logistics flag alone does not create a place', function () {
+    $company = (string) Illuminate\Support\Str::uuid();
+    session(['company' => $company]);
+
+    $request = Request::create('/pallet/int/v1/warehouses', 'POST', [
+        'warehouse' => ['name' => 'Bare 3PL Warehouse', 'is_3pl' => true],
+    ]);
+    $request->setLaravelSession(app('session.store'));
+    $request->session()->put('company', $company);
+
+    (new WarehouseController())->createRecord($request);
+
+    $warehouse = Warehouse::where('name', 'Bare 3PL Warehouse')->first();
+
+    expect($warehouse)->not->toBeNull()
+        ->and($warehouse->place_uuid)->toBeNull();
+});

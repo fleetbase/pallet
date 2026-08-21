@@ -63,6 +63,7 @@ class Warehouse extends FleetbaseResource
             'neighborhood'           => $place?->neighborhood,
             'district'               => $place?->district,
             'building'               => $place?->building,
+            'is_3pl'                 => (bool) $place?->is_3pl,
             'country'                => $place?->country,
             'country_name'           => $this->when(Http::isInternalRequest(), $place?->country_name),
             'latitude'               => $place?->latitude ?? null,
