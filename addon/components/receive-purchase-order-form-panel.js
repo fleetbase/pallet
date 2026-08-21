@@ -114,6 +114,10 @@ export default class ReceivePurchaseOrderFormPanelComponent extends Component {
      * @param {Object} item
      * @returns {Object}
      */
+    // Called from the template as (getReceiptEntry item), which passes the
+    // method as a value — without @action it arrives unbound, `this` is
+    // undefined, and the panel threw while rendering and vanished.
+    @action
     getReceiptEntry(item) {
         return this.receiptData[item.id] || {};
     }

@@ -104,6 +104,10 @@ export default class FulfillSalesOrderFormPanelComponent extends Component {
      * @param {Object} item
      * @returns {Object}
      */
+    // Called from the template as (getFulfillmentEntry item), which passes the
+    // method as a value — without @action it arrives unbound, `this` is
+    // undefined, and the panel threw while rendering and vanished.
+    @action
     getFulfillmentEntry(item) {
         return this.fulfillmentData[item.id] || {};
     }
