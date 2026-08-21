@@ -455,7 +455,6 @@ body[data-theme='dark'] .pallet-widget-subtitle {
     color: #9ca3af;
 }
 
-.pallet-widget-body,
 .pallet-widget-scroll-body {
     display: flex;
     min-height: 0;
@@ -463,10 +462,6 @@ body[data-theme='dark'] .pallet-widget-subtitle {
     flex: 1 1 auto;
     flex-direction: column;
     padding: 0.85rem;
-}
-
-.pallet-widget-body {
-    overflow: hidden;
 }
 
 .pallet-widget-scroll-body {
