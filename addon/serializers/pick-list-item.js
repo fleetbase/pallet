@@ -23,4 +23,15 @@ export default class PickListItemSerializer extends ApplicationSerializer.extend
             binLocation: { embedded: 'always' },
         };
     }
+
+    /**
+     * Every Pallet resource emits its relations snake_case (`from_warehouse`,
+     * `assigned_to`, `bin_location`) while the models declare them camelCase, and
+     * ember-core's ApplicationSerializer calls this hook without ever defining it.
+     * Nothing bridged the two, so these relations never populated: the transfers
+     * list showed a dash for both FROM and TO on a transfer that has them.
+     */
+    keyForRelationship(key) {
+        return underscore(key);
+    }
 }
