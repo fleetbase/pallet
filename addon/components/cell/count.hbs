@@ -1,6 +1,11 @@
-{{!
-    ember-ui's base cell renders {{or @value "-"}}, and zero is falsy — so a warehouse holding no stock, or an order with no line items, read as "unknown" rather than as none. For a count
-that is exactly the wrong way round. }}
+{{!--
+    ember-ui's base cell renders {{or @value "-"}}, and zero is falsy — so a
+    warehouse holding no stock, or an order with no line items, read as "unknown"
+    rather than as none. For a count that is exactly the wrong way round.
+
+    Long-form comment deliberately: a {{! }} comment ends at its first }}, and
+    this one quotes a helper, so the short form spilled the rest into the cell.
+--}}
 <div class="relative" aria-label={{this.display}}>
     <span class={{@column.cellClassNames}}>{{this.display}}</span>
 </div>
