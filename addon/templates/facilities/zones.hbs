@@ -1,5 +1,5 @@
 <Layout::Section::Header @title={{t "facilities.zones.title"}}>
-    <div class="text-sm text-gray-500 dark:text-gray-300">Manage storage, receiving, staging, quarantine, and outbound zones across warehouses.</div>
+    <div class="text-sm text-gray-500 dark:text-gray-300">Manage general, receiving, shipping, staging, returns, and cold storage zones across warehouses.</div>
 </Layout::Section::Header>
 
 <Layout::Section::Body class="overflow-y-scroll h-full p-4">
@@ -29,7 +29,7 @@
             </InputGroup>
 
             <InputGroup @name={{t "operations.common.type"}}>
-                <Input @value={{this.newZone.type}} class="w-full form-input" placeholder="storage" />
+                <Select class="w-full form-input form-select" @options={{this.zoneTypes}} @value={{this.newZone.type}} @onSelect={{this.setType}} @humanize={{true}} />
             </InputGroup>
 
             <InputGroup @name={{t "facilities.zones.capacity"}}>
@@ -47,9 +47,11 @@
             <thead>
                 <tr class="border-b border-gray-200 dark:border-gray-700 text-left text-xs uppercase text-gray-500">
                     <th class="px-4 py-3">Zone</th>
+                    <th class="px-4 py-3">Code</th>
                     <th class="px-4 py-3">Warehouse</th>
                     <th class="px-4 py-3">Type</th>
                     <th class="px-4 py-3">Status</th>
+                    <th class="px-4 py-3 text-right">Capacity</th>
                     <th class="px-4 py-3 text-right">Utilization</th>
                 </tr>
             </thead>
@@ -57,13 +59,15 @@
                 {{#each @model as |zone|}}
                     <tr class="border-b border-gray-100 dark:border-gray-800">
                         <td class="px-4 py-3 font-medium">{{n-a zone.name}}</td>
+                        <td class="px-4 py-3">{{n-a zone.code}}</td>
                         <td class="px-4 py-3">{{n-a zone.warehouse.name}}</td>
-                        <td class="px-4 py-3">{{n-a zone.type}}</td>
-                        <td class="px-4 py-3"><Badge @status={{if (eq zone.status "active") "success" "default"}}>{{n-a zone.status}}</Badge></td>
-                        <td class="px-4 py-3 text-right">{{n-a zone.utilization_percentage}}</td>
+                        <td class="px-4 py-3">{{smart-humanize (n-a zone.type)}}</td>
+                        <td class="px-4 py-3"><Badge @status={{if (eq zone.status "active") "success" "default"}}>{{smart-humanize (n-a zone.status)}}</Badge></td>
+                        <td class="px-4 py-3 text-right">{{n-a zone.capacity}}</td>
+                        <td class="px-4 py-3 text-right">{{zone.utilization_percentage}}%</td>
                     </tr>
                 {{else}}
-                    <tr><td colspan="5" class="px-4 py-8 text-center text-gray-500">No zones yet.</td></tr>
+                    <tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">No zones yet.</td></tr>
                 {{/each}}
             </tbody>
         </table>

@@ -8,14 +8,26 @@ export default class FacilitiesZonesController extends Controller {
     @service notifications;
     @service store;
 
-    @tracked newZone = { type: 'storage', status: 'active' };
+    /**
+     * The vocabulary WarehouseZone::boot() documents and normalises to. The form
+     * used to be a free-text box defaulting to 'storage', which is not one of
+     * these — so every zone created through the console carried a type the domain
+     * does not recognise.
+     */
+    zoneTypes = ['general', 'receiving', 'shipping', 'staging', 'returns', 'cold_storage'];
+
+    @tracked newZone = { type: 'general', status: 'active' };
 
     getRecordUuid(record) {
         return record?.uuid ?? record?.id;
     }
 
     resetNewZone() {
-        this.newZone = { type: 'storage', status: 'active' };
+        this.newZone = { type: 'general', status: 'active' };
+    }
+
+    @action setType(type) {
+        this.newZone = { ...this.newZone, type };
     }
 
     @action setWarehouse(warehouse) {
@@ -40,9 +52,11 @@ export default class FacilitiesZonesController extends Controller {
                 warehouse_uuid: this.newZone.warehouse_uuid,
                 name: this.newZone.name,
                 code: this.newZone.code,
-                type: this.newZone.type ?? 'storage',
+                type: this.newZone.type ?? 'general',
                 status: this.newZone.status ?? 'active',
-                capacity: Number(this.newZone.capacity ?? 0),
+                // capacity is nullable — a blank box means unknown, and coercing it
+                // to 0 asserts the zone has no room at all
+                capacity: this.newZone.capacity ? Number(this.newZone.capacity) : null,
                 temperature_controlled: Boolean(this.newZone.temperature_controlled),
             });
 

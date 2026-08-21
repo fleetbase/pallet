@@ -40,7 +40,7 @@
             </InputGroup>
 
             <InputGroup @name={{t "operations.common.type"}}>
-                <Input @value={{this.newLocation.type}} class="w-full form-input" placeholder="storage" />
+                <Select class="w-full form-input form-select" @options={{this.binTypes}} @value={{this.newLocation.type}} @onSelect={{this.setType}} @humanize={{true}} />
             </InputGroup>
 
             <InputGroup @name={{t "facilities.zones.capacity"}}>
