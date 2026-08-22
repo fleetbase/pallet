@@ -58,8 +58,16 @@ under a small uppercase heading spanning the grid:
 </div>
 ```
 
-`mt-1` on the first group in a panel, `mt-3` on subsequent ones. See
-`addon/components/vehicle/details.hbs` and `maintenance-schedule/details.hbs`.
+**But do not copy that recipe verbatim.** ember-ui already sets `.field-name` to
+`text-[11px] tracking-wide uppercase font-semibold` (`addon/styles/layout/next.css`),
+so a heading styled the same way is pixel-identical to the labels beneath it and
+the grouping reads as noise. Measured in the console: heading and label came back
+identical on every property. Use `pallet-field-group-heading` — heavier, darker,
+ruled off — which is the tier FleetOps' recipe was reaching for.
+
+For the fields themselves prefer `field-info-container field-vertical-container
+dashed-bottom`: label left, value right, one line each. That is what FleetOps'
+`order/details/detail.hbs` uses, and it halves the height of a stacked list.
 
 A panel with more than about six fields should be grouped. An ungrouped wall of
 label/value pairs is what makes a screen read as unfinished.
