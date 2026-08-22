@@ -534,10 +534,18 @@ body[data-theme='dark'] .pallet-widget-subtitle {
     padding: 0.85rem;
 }
 
+/**
+ * Five of the eight dashboard widgets hold more rows than fit, and the last
+ * visible row was cut clean in half at the panel edge — which reads as a
+ * rendering fault rather than as "scroll for more". Fading the final few pixels
+ * makes the cut deliberate. The thin scrollbar is easy to miss on a trackpad,
+ * where it only appears mid-scroll.
+ */
 .pallet-widget-scroll-body {
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: thin;
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 14px), transparent 100%);
 }
 
 .pallet-widget-scroll-body::-webkit-scrollbar {
