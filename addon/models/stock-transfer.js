@@ -1,4 +1,6 @@
 import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
+import { computed } from '@ember/object';
+import { format as formatDate, isValid as isValidDate } from 'date-fns';
 
 export default class StockTransferModel extends Model {
     @attr('string') uuid;
@@ -22,4 +24,32 @@ export default class StockTransferModel extends Model {
     @attr() meta;
     @attr('date') created_at;
     @attr('date') updated_at;
+
+    /**
+     * The list used to render one line per item, so a transfer of four products
+     * was a four-line row. One product reads as itself; more than one reads as a
+     * count, and the detail is a click away.
+     */
+    @computed('items.@each.product') get itemsSummary() {
+        const items = this.items ?? [];
+        const count = items.length;
+
+        if (count === 0) {
+            return null;
+        }
+
+        if (count === 1) {
+            return items[0]?.product?.name ?? null;
+        }
+
+        return `${count} products`;
+    }
+
+    @computed('created_at') get createdAt() {
+        if (!isValidDate(this.created_at)) {
+            return null;
+        }
+
+        return formatDate(this.created_at, 'PP HH:mm');
+    }
 }

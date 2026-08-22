@@ -172,6 +172,11 @@ operations:
     destination-placeholder: Destination warehouse
     ship: Ship
     receive: Receive
+    actions-menu: Transfer Actions
+    no-actions: No actions available
+    columns:
+      transfer: Transfer
+      items: Items
   waves:
     title: Waves
     description: Group fulfillment work into picking waves.

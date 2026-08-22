@@ -4,7 +4,18 @@ import { inject as service } from '@ember/service';
 export default class OperationsTransfersRoute extends Route {
     @service store;
 
-    model() {
-        return this.store.query('stock-transfer', { limit: 50, sort: '-created_at', with: ['fromWarehouse', 'toWarehouse', 'items.product', 'items.variant'] });
+    queryParams = {
+        page: { refreshModel: true },
+        limit: { refreshModel: true },
+        sort: { refreshModel: true },
+        query: { refreshModel: true },
+        status: { refreshModel: true },
+    };
+
+    model(params) {
+        return this.store.query('stock-transfer', {
+            ...params,
+            with: ['fromWarehouse', 'toWarehouse', 'items.product', 'items.variant'],
+        });
     }
 }
