@@ -126,42 +126,62 @@ export default class InventoryIndexController extends Controller {
      */
     @tracked columns = [
         {
+            // ember-ui's shared identity cell: one truncated line plus up to three
+            // meta chips, on a 20px avatar. The bespoke cell/product-info it replaces
+            // stacked a title, a meta line, a description and three badges, which made
+            // every row ~109px tall and fitted five on a screen.
             label: this.intl.t('columns.product'),
             valuePath: 'product.name',
+            labelPath: 'product.name',
+            identifierPath: 'product.sku',
+            mediaPath: 'product.photo_url',
+            metaPaths: [{ path: 'batch.batch_number', style: 'badge' }],
+            imageSizeClass: 'h-5 w-5',
+            showStatusDot: false,
+            cellComponent: 'table/cell/resource-identity',
             action: this.viewInventory,
-            width: '170px',
-            cellComponent: 'cell/product-info',
-            modelPath: 'product',
+            width: '240px',
             resizable: true,
             sortable: true,
             filterable: true,
+            filterParam: 'product',
             filterComponent: 'filter/string',
         },
         {
-            label: this.intl.t('columns.product-sku'),
-            valuePath: 'product.sku',
-            cellComponent: 'click-to-copy',
-            width: '120px',
+            // the list showed two identical "Steel Shelving Bracket" rows holding 46
+            // and 18 units with nothing to tell them apart — stock is meaningless
+            // without the place it is held
+            label: this.intl.t('operations.common.warehouse'),
+            valuePath: 'warehouse.name',
+            cellComponent: 'table/cell/base',
+            width: '180px',
             resizable: true,
-            sortable: true,
-            filterable: true,
-            filterComponent: 'filter/string',
+            sortable: false,
+            filterable: false,
         },
         {
             label: this.intl.t('columns.quantity'),
             valuePath: 'quantity',
             cellComponent: 'cell/count',
-            width: '120px',
-        },
-        {
-            label: this.intl.t('columns.batch'),
-            valuePath: 'batch.batch_number',
-            width: '120px',
-            cellComponent: 'click-to-copy',
+            width: '90px',
             resizable: true,
             sortable: true,
-            filterable: true,
-            filterComponent: 'filter/string',
+        },
+        {
+            label: this.intl.t('inventory.fields.reserved'),
+            valuePath: 'reserved_quantity',
+            cellComponent: 'cell/count',
+            width: '90px',
+            resizable: true,
+            sortable: false,
+        },
+        {
+            label: this.intl.t('inventory.fields.available'),
+            valuePath: 'available_quantity',
+            cellComponent: 'cell/count',
+            width: '90px',
+            resizable: true,
+            sortable: false,
         },
         {
             label: this.intl.t('common.status'),

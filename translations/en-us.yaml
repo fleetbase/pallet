@@ -390,8 +390,19 @@ inventory:
   sections:
     details: Details
     location: Location
+    stock: Stock
     tracking: Tracking
+  groups:
+    identity: Identity
+    on-hand: On Hand
+    thresholds: Thresholds
+    valuation: Valuation
+    identifiers: Identifiers
+    dates: Dates
   fields:
+    variant: Variant
+    reserved: Reserved
+    available: Available
     available-quantity: Available Quantity
     batch-number: Batch Number
     bin-location: Bin Location
@@ -408,6 +419,7 @@ inventory:
     select-bin: Select Bin Location
     select-product: Select Product
     select-supplier: Select Supplier
+    select-variant: Select Variant
     select-warehouse: Select Warehouse
     select-zone: Select Zone
     serial-number: Serial Number

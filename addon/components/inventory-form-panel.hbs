@@ -4,7 +4,7 @@
     @noBackdrop={{true}}
     @fullHeight={{true}}
     @isResizable={{or this.isResizable @isResizable}}
-    @width={{or this.width @width "600px"}}
+    @width={{or this.width @width "920px"}}
 >
     <Overlay::Header
         @title={{if this.inventory.public_id this.inventory.name "Add Inventory"}}
@@ -30,130 +30,14 @@
         </div>
     </Overlay::Header>
 
-    <Overlay::Body @wrapperClass="new-service-rate-overlay-body px-4 space-y-4 pt-4" @increaseInnerBodyHeightBy={{1000}}>
-        <div class="flex-1 space-y-4">
-            <ContentPanel @title="Details" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
-                <InputGroup @name="Product">
-                    <ModelSelect
-                        @modelName="pallet-product"
-                        @selectedModel={{this.inventory.product}}
-                        @placeholder="Select Product"
-                        @triggerClass="form-select form-input"
-                        @infiniteScroll={{false}}
-                        @renderInPlace={{true}}
-                        @onChange={{this.defaultProductSupplier}}
-                        as |model|
-                    >
-                        {{model.name}}
-                    </ModelSelect>
-                </InputGroup>
-                {{#if this.inventory.product.has_variants}}
-                    <InputGroup @name="Variant">
-                        <PowerSelect
-                            @options={{this.inventory.product.variants}}
-                            @selected={{find-by "uuid" this.inventory.variant_uuid this.inventory.product.variants}}
-                            @onChange={{this.setVariant}}
-                            @placeholder="Select Variant"
-                            @triggerClass="form-select form-input"
-                            as |variant|
-                        >
-                            {{n-a (or variant.display_name variant.name)}}
-                        </PowerSelect>
-                    </InputGroup>
-                {{/if}}
-                <InputGroup @name="Supplier">
-                    <ModelSelect
-                        @modelName="supplier"
-                        @selectedModel={{this.inventory.supplier}}
-                        @placeholder="Select Supplier"
-                        @triggerClass="form-select form-input"
-                        @infiniteScroll={{false}}
-                        @renderInPlace={{true}}
-                        @onChange={{this.setSupplier}}
-                        as |model|
-                    >
-                        {{model.name}}
-                    </ModelSelect>
-                </InputGroup>
-                <InputGroup @name="Warehouse">
-                    <ModelSelect
-                        @modelName="warehouse"
-                        @selectedModel={{this.inventory.warehouse}}
-                        @placeholder="Select Warehouse"
-                        @triggerClass="form-select form-input"
-                        @infiniteScroll={{false}}
-                        @renderInPlace={{true}}
-                        @onChange={{this.setWarehouse}}
-                        as |model|
-                    >
-                        {{n-a (or model.name model.address)}}
-                    </ModelSelect>
-                </InputGroup>
-                <InputGroup @name="Status">
-                    <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
-                        <PowerSelect
-                            @options={{this.statusOptions}}
-                            @selected={{this.inventory.status}}
-                            @onChange={{fn (mut this.inventory.status)}}
-                            @placeholder="Select inventory status"
-                            @triggerClass="form-select form-input"
-                            as |status|
-                        >
-                            {{smart-humanize status}}
-                        </PowerSelect>
-                    </div>
-                </InputGroup>
-                <InputGroup @name="Quantity" @type="number" @value={{this.inventory.quantity}} />
-                <InputGroup @name="Minimum Quantity" @type="number" @value={{this.inventory.min_quantity}} />
-                <InputGroup @name="Maximum Quantity" @type="number" @value={{this.inventory.max_quantity}} />
-                <InputGroup @name="Reorder Point" @type="number" @value={{this.inventory.reorder_point}} />
-            </ContentPanel>
-            <ContentPanel @title="Batch" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
-                <InputGroup @name="Batch Number" @type="text" @value={{this.inventory.batch.batch_number}} />
-                <InputGroup @name="Expiry Date">
-                    <input value={{this.expiryDateValue}} type="date" class="form-input w-full" {{on "change" this.setExpiryDate}} />
-                </InputGroup>
-            </ContentPanel>
-            <ContentPanel @title="Location" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
-                <InputGroup @name="Zone">
-                    <ModelSelect
-                        @modelName="warehouse-zone"
-                        @selectedModel={{this.inventory.zone}}
-                        @placeholder="Select Zone"
-                        @triggerClass="form-select form-input"
-                        @infiniteScroll={{false}}
-                        @renderInPlace={{true}}
-                        @onChange={{this.setZone}}
-                        as |model|
-                    >
-                        {{model.name}}
-                    </ModelSelect>
-                </InputGroup>
-                <InputGroup @name="Bin Location">
-                    <ModelSelect
-                        @modelName="bin-location"
-                        @selectedModel={{this.inventory.binLocation}}
-                        @placeholder="Select Bin"
-                        @triggerClass="form-select form-input"
-                        @infiniteScroll={{false}}
-                        @renderInPlace={{true}}
-                        @onChange={{this.setBinLocation}}
-                        as |model|
-                    >
-                        {{n-a (or model.bin_number model.barcode)}}
-                    </ModelSelect>
-                </InputGroup>
-                <InputGroup @name="Unit of Measure" @type="text" @value={{this.inventory.uom}} />
-                <InputGroup @name="Unit Cost">
-                    <MoneyInput
-                        class="w-full"
-                        @value={{this.inventory.unit_cost}}
-                        @currency={{this.inventory.currency}}
-                        @canSelectCurrency={{true}}
-                        @onCurrencyChange={{fn (mut this.inventory.currency)}}
-                    />
-                </InputGroup>
-            </ContentPanel>
-        </div>
+    {{!
+        The create overlay used to carry its own copy of the whole inventory form:
+        hardcoded English labels, no permission checks, no lot or serial number, and
+        a status list borrowed from fuel reports ("draft", "pending-approval") that
+        inventory has never used. It now renders the same form the edit view does,
+        the way product-form-panel already did.
+    }}
+    <Overlay::Body @wrapperClass="new-service-rate-overlay-body px-4 pt-4" @increaseInnerBodyHeightBy={{700}}>
+        <Inventory::Form @resource={{this.inventory}} />
     </Overlay::Body>
 </Overlay>

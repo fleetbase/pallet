@@ -3,7 +3,6 @@ import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { task } from 'ember-concurrency';
-import { format } from 'date-fns';
 import contextComponentCallback from '@fleetbase/ember-core/utils/context-component-callback';
 import applyContextComponentArguments from '@fleetbase/ember-core/utils/apply-context-component-arguments';
 
@@ -40,12 +39,6 @@ export default class InventoryFormPanelComponent extends Component {
     @tracked context;
 
     /**
-     * Fuel Report status
-     * @type {Array}
-     */
-    @tracked statusOptions = ['draft', 'pending-approval', 'approved', 'rejected', 'revised', 'submitted', 'in-review', 'confirmed', 'processed', 'archived', 'cancelled'];
-
-    /**
      * Constructs the component and applies initial state.
      */
     constructor() {
@@ -72,12 +65,8 @@ export default class InventoryFormPanelComponent extends Component {
         contextComponentCallback(this, 'onLoad', ...arguments);
     }
 
-    getRecordUuid(record) {
-        return record?.uuid ?? record?.id;
-    }
-
     /**
-     * Saves the fuel report changes.
+     * Saves the inventory changes.
      *
      * @action
      * @returns {Promise<any>}
@@ -101,7 +90,7 @@ export default class InventoryFormPanelComponent extends Component {
     }
 
     /**
-     * View the details of the fuel-report.
+     * View the details of the inventory record.
      *
      * @action
      */
@@ -123,65 +112,6 @@ export default class InventoryFormPanelComponent extends Component {
         return contextComponentCallback(this, 'onPressCancel', this.inventory);
     }
 
-    @action setVariant(variant) {
-        this.inventory.variant = variant;
-        this.inventory.variant_uuid = this.getRecordUuid(variant);
-    }
-
-    @action defaultProductSupplier(selectedProduct) {
-        this.inventory.product = selectedProduct;
-        this.inventory.product_uuid = this.getRecordUuid(selectedProduct);
-        this.inventory.variant = null;
-        this.inventory.variant_uuid = null;
-
-        // most products have no supplier; findRecord(null) throws
-        const supplierUuid = selectedProduct?.supplier_uuid;
-
-        if (!supplierUuid) {
-            this.inventory.setProperties({ supplier: null, supplier_uuid: null });
-
-            return;
-        }
-
-        this.store
-            .findRecord('supplier', supplierUuid)
-            .then((supplier) => {
-                this.inventory.setProperties({
-                    product: selectedProduct,
-                    supplier: supplier,
-                    supplier_uuid: this.getRecordUuid(supplier),
-                });
-            })
-            .catch((error) => {
-                this.notifications.serverError(error);
-            });
-    }
-
-    @action setSupplier(supplier) {
-        this.inventory.supplier = supplier;
-        this.inventory.supplier_uuid = this.getRecordUuid(supplier);
-    }
-
-    @action setWarehouse(warehouse) {
-        this.inventory.warehouse = warehouse;
-        this.inventory.warehouse_uuid = this.getRecordUuid(warehouse);
-        this.inventory.binLocation = null;
-        this.inventory.bin_location_uuid = null;
-        this.inventory.zone = null;
-        this.inventory.zone_uuid = null;
-    }
-
-    @action setBinLocation(binLocation) {
-        this.inventory.binLocation = binLocation;
-        this.inventory.bin_location_uuid = this.getRecordUuid(binLocation);
-        this.inventory.zone_uuid = binLocation?.zone_uuid ?? this.inventory.zone_uuid;
-    }
-
-    @action setZone(zone) {
-        this.inventory.zone = zone;
-        this.inventory.zone_uuid = this.getRecordUuid(zone);
-    }
-
     @action setDefaultBatchValues() {
         const currentDate = new Date().toISOString().split('T')[0];
 
@@ -190,39 +120,5 @@ export default class InventoryFormPanelComponent extends Component {
         }
 
         this.inventory.batch.set('batch_number', currentDate);
-    }
-
-    /**
-     * The input read `batch.expiryDate`, which is not an attribute on the batch
-     * model at all, so the field came up blank even when editing stock that had an
-     * expiry recorded. A `type="date"` input also only accepts yyyy-MM-dd.
-     */
-    get expiryDateValue() {
-        const value = this.inventory?.expiry_date_at;
-
-        if (!value) {
-            return '';
-        }
-
-        const date = value instanceof Date ? value : new Date(value);
-
-        return isNaN(date.getTime()) ? '' : format(date, 'yyyy-MM-dd');
-    }
-
-    @action setExpiryDate(event) {
-        const {
-            target: { value },
-        } = event;
-
-        const date = value ? new Date(value) : null;
-
-        this.inventory.set('expiry_date_at', date);
-
-        // the field lives in the Batch panel and the batches list reads the batch's
-        // own expiry_date_at — writing only the inventory left that column empty
-        // for every row ever created here
-        if (this.inventory.batch) {
-            this.inventory.batch.set('expiry_date_at', date);
-        }
     }
 }
