@@ -1,4 +1,25 @@
 /**
+ * ember-ui gives .next-content-overlay-panel-body `min-height: 100%`, and the
+ * panel is a plain block, so in a panel that also has an Overlay::Footer the body
+ * alone claims the full height and the footer spills past the bottom. Measured on
+ * the fulfil sheet: panel 884px, header 57 + body 884 + footer 66 = 1007, so the
+ * primary action sat at y=1014 in a 941px viewport — off-screen.
+ *
+ * Overlay::Footer renders a bare {{yield}} with no class of its own, so there is
+ * nothing to select on; the two panels that have one opt in via @overlayClass.
+ */
+.pallet-overlay-has-footer .next-content-overlay-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+/* matches ember-ui's own four-class chain, or min-height: 100% wins */
+.next-content-overlay.pallet-overlay-has-footer > .next-content-overlay-panel-container > .next-content-overlay-panel .next-content-overlay-panel-body {
+    min-height: 0;
+    flex: 1 1 auto;
+}
+
+/**
  * ember-ui reserves room for the floating pagination bar with
  * `.next-table-wrapper table > tbody:after { height: 153px }`. The selector is
  * `table > tbody`, so it also lands on a sub-table nested inside an expanded

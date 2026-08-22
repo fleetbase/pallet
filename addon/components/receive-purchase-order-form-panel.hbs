@@ -1,4 +1,4 @@
-<Overlay @position="right" @noBackdrop={{true}} @fullHeight={{true}} @isResizable={{true}} @width="720px">
+<Overlay @position="right" @noBackdrop={{true}} @fullHeight={{true}} @isResizable={{true}} @width="1100px" @overlayClass="pallet-overlay-has-footer">
     <Overlay::Header @title="Receive Purchase Order" @status={{this.purchaseOrder.public_id}} @hideStatusDot={{true}} @createdAt={{this.purchaseOrder.createdAt}}>
         <:actions>
             <Button @type="default" @icon="times" @helpText="Close" @onClick={{this.onPressCancel}} />
@@ -6,7 +6,13 @@
         </:actions>
     </Overlay::Header>
 
-    <Overlay::Body @increaseInnerBodyHeightBy={{1000}}>
+    {{!
+        No @increaseInnerBodyHeightBy here. It inflates the body's inner wrapper by
+        that many pixels, and these two panels are the only ones in the module that
+        pair it with an Overlay::Footer — so the primary action sat at y=1014 in a
+        941px viewport, below the fold, with 450px of empty space above it.
+    }}
+    <Overlay::Body>
         <div class="p-4 space-y-4">
 
             {{! PO Summary }}
@@ -42,7 +48,7 @@
             {{! Receive Items }}
             <ContentPanel @title="Receive Items" @open={{true}} @pad={{false}} @panelBodyClass="bg-white dark:bg-gray-900">
                 {{#unless this.hasWarehouseContext}}
-                    <div class="px-4 py-3 text-xs text-yellow-800 bg-yellow-50 border-b border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-700 dark:text-yellow-200">
+                    <div class="px-3 py-2 text-xs text-yellow-800 bg-yellow-50 border-b border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-700 dark:text-yellow-200">
                         <FaIcon @icon="triangle-exclamation" class="mr-1" />
                         Select a warehouse on this order before receiving stock.
                     </div>
@@ -57,22 +63,22 @@
                         <table class="min-w-full text-xs">
                             <thead class="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                                 <tr>
-                                    <th class="px-4 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Product</th>
-                                    <th class="px-4 py-2 text-right font-medium text-gray-500 dark:text-gray-400">Ordered</th>
-                                    <th class="px-4 py-2 text-right font-medium text-gray-500 dark:text-gray-400">Received</th>
-                                    <th class="px-4 py-2 text-right font-medium text-gray-500 dark:text-gray-400">Outstanding</th>
-                                    <th class="px-4 py-2 text-right font-medium text-gray-500 dark:text-gray-400 w-24">Receive Now</th>
-                                    <th class="px-4 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Zone</th>
-                                    <th class="px-4 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Bin</th>
-                                    <th class="px-4 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Lot #</th>
-                                    <th class="px-4 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Expiry</th>
-                                    <th class="px-4 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Notes</th>
+                                    <th class="px-3 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Product</th>
+                                    <th class="px-3 py-2 text-right font-medium text-gray-500 dark:text-gray-400">Ordered</th>
+                                    <th class="px-3 py-2 text-right font-medium text-gray-500 dark:text-gray-400">Received</th>
+                                    <th class="px-3 py-2 text-right font-medium text-gray-500 dark:text-gray-400">Outstanding</th>
+                                    <th class="px-3 py-2 text-right font-medium text-gray-500 dark:text-gray-400 w-24">Receive Now</th>
+                                    <th class="px-3 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Zone</th>
+                                    <th class="px-3 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Bin</th>
+                                    <th class="px-3 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Lot #</th>
+                                    <th class="px-3 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Expiry</th>
+                                    <th class="px-3 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Notes</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
                                 {{#each this.receivableItems as |item|}}
                                     <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                                        <td class="px-4 py-3 font-medium text-gray-800 dark:text-gray-100">
+                                        <td class="px-3 py-2 font-medium text-gray-800 dark:text-gray-100">
                                             {{n-a item.product.name}}
                                             {{#if item.variant}}
                                                 <span class="block text-gray-500 font-normal">{{n-a (or item.variant.display_name item.variant.name)}}</span>
@@ -81,16 +87,16 @@
                                                 <span class="block text-gray-400 font-normal">{{item.sku}}</span>
                                             {{/if}}
                                         </td>
-                                        <td class="px-4 py-3 text-right text-gray-600 dark:text-gray-300">
+                                        <td class="px-3 py-2 text-right text-gray-600 dark:text-gray-300">
                                             {{item.quantity}}
                                         </td>
-                                        <td class="px-4 py-3 text-right text-gray-600 dark:text-gray-300">
+                                        <td class="px-3 py-2 text-right text-gray-600 dark:text-gray-300">
                                             {{item.quantity_received}}
                                         </td>
-                                        <td class="px-4 py-3 text-right font-medium text-orange-600 dark:text-orange-400">
+                                        <td class="px-3 py-2 text-right font-medium text-orange-600 dark:text-orange-400">
                                             {{item.outstanding_quantity}}
                                         </td>
-                                        <td class="px-4 py-3">
+                                        <td class="px-3 py-2">
                                             <Input
                                                 @type="number"
                                                 @value={{(get (this.getReceiptEntry item) "quantity_received")}}
@@ -101,7 +107,7 @@
                                                 {{on "input" (fn this.updateReceiptField item "quantity_received")}}
                                             />
                                         </td>
-                                        <td class="px-4 py-3 min-w-40">
+                                        <td class="px-3 py-2 min-w-40">
                                             <ModelSelect
                                                 @modelName="warehouse-zone"
                                                 @selectedModel={{(get (this.getReceiptEntry item) "zone")}}
@@ -115,7 +121,7 @@
                                                 {{n-a (or zone.name zone.public_id)}}
                                             </ModelSelect>
                                         </td>
-                                        <td class="px-4 py-3 min-w-40">
+                                        <td class="px-3 py-2 min-w-40">
                                             <ModelSelect
                                                 @modelName="bin-location"
                                                 @selectedModel={{(get (this.getReceiptEntry item) "binLocation")}}
@@ -129,7 +135,7 @@
                                                 {{n-a (or binLocation.bin_number binLocation.barcode)}}
                                             </ModelSelect>
                                         </td>
-                                        <td class="px-4 py-3">
+                                        <td class="px-3 py-2">
                                             <Input
                                                 @value={{(get (this.getReceiptEntry item) "lot_number")}}
                                                 class="form-input w-full text-xs"
@@ -137,7 +143,7 @@
                                                 {{on "input" (fn this.updateReceiptField item "lot_number")}}
                                             />
                                         </td>
-                                        <td class="px-4 py-3">
+                                        <td class="px-3 py-2">
                                             <Input
                                                 @type="date"
                                                 @value={{(get (this.getReceiptEntry item) "expiry_date")}}
@@ -145,7 +151,7 @@
                                                 {{on "input" (fn this.updateReceiptField item "expiry_date")}}
                                             />
                                         </td>
-                                        <td class="px-4 py-3">
+                                        <td class="px-3 py-2">
                                             <Input
                                                 @value={{(get (this.getReceiptEntry item) "notes")}}
                                                 class="form-input w-full text-xs"

@@ -1,4 +1,4 @@
-<Overlay @position="right" @noBackdrop={{true}} @fullHeight={{true}} @isResizable={{true}} @width="720px">
+<Overlay @position="right" @noBackdrop={{true}} @fullHeight={{true}} @isResizable={{true}} @width="1100px" @overlayClass="pallet-overlay-has-footer">
     <Overlay::Header @title="Fulfill Sales Order" @status={{this.salesOrder.public_id}} @hideStatusDot={{true}} @createdAt={{this.salesOrder.createdAt}}>
         <:actions>
             <Button @type="default" @icon="times" @helpText="Close" @onClick={{this.onPressCancel}} />
@@ -6,7 +6,13 @@
         </:actions>
     </Overlay::Header>
 
-    <Overlay::Body @increaseInnerBodyHeightBy={{1000}}>
+    {{!
+        No @increaseInnerBodyHeightBy here. It inflates the body's inner wrapper by
+        that many pixels, and these two panels are the only ones in the module that
+        pair it with an Overlay::Footer — so the primary action sat at y=1014 in a
+        941px viewport, below the fold, with 450px of empty space above it.
+    }}
+    <Overlay::Body>
         <div class="p-4 space-y-4">
 
             {{! SO Summary }}
@@ -57,20 +63,20 @@
                         <table class="min-w-full text-xs">
                             <thead class="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                                 <tr>
-                                    <th class="px-4 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Product</th>
-                                    <th class="px-4 py-2 text-right font-medium text-gray-500 dark:text-gray-400">Ordered</th>
-                                    <th class="px-4 py-2 text-right font-medium text-gray-500 dark:text-gray-400">Fulfilled</th>
-                                    <th class="px-4 py-2 text-right font-medium text-gray-500 dark:text-gray-400">Outstanding</th>
-                                    <th class="px-4 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Inventory</th>
-                                    <th class="px-4 py-2 text-right font-medium text-gray-500 dark:text-gray-400 w-24">Fulfill Now</th>
-                                    <th class="px-4 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Notes</th>
-                                    <th class="px-4 py-2 text-center font-medium text-gray-500 dark:text-gray-400">Status</th>
+                                    <th class="px-3 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Product</th>
+                                    <th class="px-3 py-2 text-right font-medium text-gray-500 dark:text-gray-400">Ordered</th>
+                                    <th class="px-3 py-2 text-right font-medium text-gray-500 dark:text-gray-400">Fulfilled</th>
+                                    <th class="px-3 py-2 text-right font-medium text-gray-500 dark:text-gray-400">Outstanding</th>
+                                    <th class="px-3 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Inventory</th>
+                                    <th class="px-3 py-2 text-right font-medium text-gray-500 dark:text-gray-400 w-24">Fulfill Now</th>
+                                    <th class="px-3 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Notes</th>
+                                    <th class="px-3 py-2 text-center font-medium text-gray-500 dark:text-gray-400">Status</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
                                 {{#each this.fulfillableItems as |item|}}
                                     <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                                        <td class="px-4 py-3 font-medium text-gray-800 dark:text-gray-100">
+                                        <td class="px-3 py-2 font-medium text-gray-800 dark:text-gray-100">
                                             {{n-a item.product.name}}
                                             {{#if item.variant}}
                                                 <span class="block text-gray-500 font-normal">{{n-a (or item.variant.display_name item.variant.name)}}</span>
@@ -79,16 +85,16 @@
                                                 <span class="block text-gray-400 font-normal">{{item.sku}}</span>
                                             {{/if}}
                                         </td>
-                                        <td class="px-4 py-3 text-right text-gray-600 dark:text-gray-300">
+                                        <td class="px-3 py-2 text-right text-gray-600 dark:text-gray-300">
                                             {{item.quantity}}
                                         </td>
-                                        <td class="px-4 py-3 text-right text-gray-600 dark:text-gray-300">
+                                        <td class="px-3 py-2 text-right text-gray-600 dark:text-gray-300">
                                             {{item.quantity_fulfilled}}
                                         </td>
-                                        <td class="px-4 py-3 text-right font-medium text-orange-600 dark:text-orange-400">
+                                        <td class="px-3 py-2 text-right font-medium text-orange-600 dark:text-orange-400">
                                             {{item.outstanding_quantity}}
                                         </td>
-                                        <td class="px-4 py-3 min-w-48">
+                                        <td class="px-3 py-2 min-w-48">
                                             <ModelSelect
                                                 @modelName="inventory"
                                                 @selectedModel={{(get (this.getFulfillmentEntry item) "inventory")}}
@@ -102,7 +108,7 @@
                                                 {{n-a inventory.lot_number inventory.serial_number inventory.public_id}}
                                             </ModelSelect>
                                         </td>
-                                        <td class="px-4 py-3">
+                                        <td class="px-3 py-2">
                                             <Input
                                                 @type="number"
                                                 @value={{(get (this.getFulfillmentEntry item) "quantity_fulfilled")}}
@@ -113,7 +119,7 @@
                                                 {{on "input" (fn this.updateFulfillmentField item "quantity_fulfilled")}}
                                             />
                                         </td>
-                                        <td class="px-4 py-3">
+                                        <td class="px-3 py-2">
                                             <Input
                                                 @value={{(get (this.getFulfillmentEntry item) "notes")}}
                                                 class="form-input w-full text-xs"
@@ -121,7 +127,7 @@
                                                 {{on "input" (fn this.updateFulfillmentField item "notes")}}
                                             />
                                         </td>
-                                        <td class="px-4 py-3 text-center">
+                                        <td class="px-3 py-2 text-center">
                                             <Badge @status={{item.status}} />
                                         </td>
                                     </tr>

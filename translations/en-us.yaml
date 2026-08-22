@@ -519,6 +519,8 @@ purchase-order:
     details: Details
     line-items: Line Items
     receive: Receive Goods
+  groups:
+    fulfilment: Fulfilment
   fields:
     expected-delivery: Expected Delivery Date
     order-number: Order Number
@@ -577,6 +579,8 @@ sales-order:
     details: Details
     line-items: Line Items
     fulfill: Fulfill Order
+  groups:
+    fulfilment: Fulfilment
   fields:
     customer: Customer
     expected-shipment: Expected Shipment Date
