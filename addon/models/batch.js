@@ -47,4 +47,20 @@ export default class BatchModel extends Model {
         }
         return formatDate(this.updated_at, 'PPP p');
     }
+
+    @computed('manufacture_date_at') get manufacturedAt() {
+        if (!isValidDate(this.manufacture_date_at)) {
+            return null;
+        }
+
+        return formatDate(this.manufacture_date_at, 'PP');
+    }
+
+    @computed('expiry_date_at') get expiresAt() {
+        if (!isValidDate(this.expiry_date_at)) {
+            return null;
+        }
+
+        return formatDate(this.expiry_date_at, 'PP');
+    }
 }

@@ -138,6 +138,7 @@ common:
   import: Import
   actions: Actions
   created-at: Created At
+  type: Type
   updated-at: Updated At
   clear_filters: Clear Filters
   no-records: No records found
@@ -403,6 +404,11 @@ inventory:
     new-adjustment: New Adjustment
     low-stock-list: Low Stock Inventory
     expired-stock-list: Expired Stock Inventory
+  adjustments:
+    reason: Reason
+    delta: Delta
+    before: Before
+    after: After
   sections:
     details: Details
     location: Location
@@ -425,6 +431,7 @@ inventory:
     expiry-date: Expiry Date
     last-counted: Last Counted
     lot-number: Lot Number
+    manufactured: Manufactured
     max-quantity: Max Quantity
     min-quantity: Min Quantity
     product: Product

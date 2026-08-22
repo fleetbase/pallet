@@ -1,34 +1,16 @@
-<Layout::Section::Header @title={{t "inventory.screens.batches-title"}}>
-    <div class="text-sm text-gray-500 dark:text-gray-300">Track batch, lot, and expiry context for traceable inventory.</div>
-</Layout::Section::Header>
-
-<Layout::Section::Body class="overflow-y-scroll h-full p-4">
-    <ContentPanel @title={{t "inventory.screens.batches-list"}} @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
-        <table class="w-full text-sm">
-            <thead>
-                <tr class="border-b border-gray-200 dark:border-gray-700 text-left text-xs uppercase text-gray-500">
-                    <th class="px-4 py-3">Batch</th>
-                    <th class="px-4 py-3">Product</th>
-                    <th class="px-4 py-3">Variant</th>
-                    <th class="px-4 py-3 text-right">Quantity</th>
-                    <th class="px-4 py-3">Manufactured</th>
-                    <th class="px-4 py-3">Expiry</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each @model as |batch|}}
-                    <tr class="border-b border-gray-100 dark:border-gray-800">
-                        <td class="px-4 py-3 font-medium">{{n-a batch.batch_number}}</td>
-                        <td class="px-4 py-3">{{n-a batch.product.name}}</td>
-                        <td class="px-4 py-3">{{n-a batch.variant.display_name}}</td>
-                        <td class="px-4 py-3 text-right">{{format-number batch.quantity}}</td>
-                        <td class="px-4 py-3">{{format-date batch.manufacture_date_at}}</td>
-                        <td class="px-4 py-3">{{format-date batch.expiry_date_at}}</td>
-                    </tr>
-                {{else}}
-                    <tr><td colspan="6" class="px-4 py-8 text-center text-gray-500">No batches yet.</td></tr>
-                {{/each}}
-            </tbody>
-        </table>
-    </ContentPanel>
-</Layout::Section::Body>
+{{!
+    Was a ContentPanel wrapping a raw <table> with px-4 py-3 cells and no
+    controller at all — so no search, sorting, pagination, column picker or bulk
+    select. Same conversion as the operations screens.
+}}
+<Layout::Resource::Tabular
+    @title={{t "inventory.screens.batches-list"}}
+    @searchQuery={{this.query}}
+    @onSearch={{perform this.search}}
+    @data={{@model}}
+    @columns={{this.columns}}
+    @page={{this.page}}
+    @onPageChange={{fn (mut this.page)}}
+    @setupTable={{fn (mut this.table)}}
+    @controller={{this}}
+/>
