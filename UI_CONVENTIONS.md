@@ -15,15 +15,15 @@ Paths below are relative to `packages/fleetops` or to the installed
 Pallet has repeatedly built its own version of a component that already exists.
 Before writing markup, check `@fleetbase/ember-ui/addon/components`.
 
-| Need | Use | Do not |
-| --- | --- | --- |
-| A list screen | `Layout::Resource::Tabular` | `ContentPanel` wrapping a raw `<table>` |
-| Primary identity column | `Table::Cell::ResourceIdentity` | a bespoke `*-cell` component |
-| An ID column | `click-to-copy` — the most-used cell in FleetOps (33 uses) | plain text |
-| Status | `Table::Cell::Status` / `Badge` | a hand-styled span |
-| Row actions | `Table::Cell::Dropdown` | inline buttons per row |
-| A numeric column | `cell/count` (Pallet-local; ember-ui's base cell prints `-` for `0`) | `table/cell/base` |
-| An enumeration input | `Select` with `@humanize={{true}}` | a free-text `Input` |
+| Need                    | Use                                                                  | Do not                                  |
+| ----------------------- | -------------------------------------------------------------------- | --------------------------------------- |
+| A list screen           | `Layout::Resource::Tabular`                                          | `ContentPanel` wrapping a raw `<table>` |
+| Primary identity column | `Table::Cell::ResourceIdentity`                                      | a bespoke `*-cell` component            |
+| An ID column            | `click-to-copy` — the most-used cell in FleetOps (33 uses)           | plain text                              |
+| Status                  | `Table::Cell::Status` / `Badge`                                      | a hand-styled span                      |
+| Row actions             | `Table::Cell::Dropdown`                                              | inline buttons per row                  |
+| A numeric column        | `cell/count` (Pallet-local; ember-ui's base cell prints `-` for `0`) | `table/cell/base`                       |
+| An enumeration input    | `Select` with `@humanize={{true}}`                                   | a free-text `Input`                     |
 
 `Table::Cell::ResourceIdentity` accepts `labelPath`, `mediaUrl`, `status`, `size` and
 renders the avatar, label and status dot for you — see
@@ -53,7 +53,7 @@ This is the single most visible thing Pallet was missing. FleetOps groups fields
 under a small uppercase heading spanning the grid:
 
 ```hbs
-<div class="col-span-2 text-[11px] uppercase tracking-wide text-gray-500 font-semibold mt-1">
+<div class='col-span-2 text-[11px] uppercase tracking-wide text-gray-500 font-semibold mt-1'>
     Vehicle Identification
 </div>
 ```
@@ -95,7 +95,7 @@ Prefer hiding an optional field to printing a placeholder:
 
 ```hbs
 {{#if @resource.default_assignee.name}}
-    <div class="field-info-container">…</div>
+    <div class='field-info-container'>…</div>
 {{/if}}
 ```
 
@@ -114,15 +114,14 @@ if `b` is itself nullable the result is empty, not a dash. Write `{{n-a (or a b)
 From `vehicle/form.hbs`:
 
 ```hbs
-<div class="form-wrapper" ...attributes>
-    <ContentPanel @title={{t "common.details"}} @open={{true}} @wrapperClass="bordered-top">
-        <div class="grid grid-cols-1 gap-2 lg:grid-cols-2 lg:gap-2 no-input-group-padding text-xs">
-            <div class="col-span-1 lg:col-span-2 text-[11px] uppercase tracking-wide text-gray-500 font-semibold mt-1">
+<div class='form-wrapper' ...attributes>
+    <ContentPanel @title={{t 'common.details'}} @open={{true}} @wrapperClass='bordered-top'>
+        <div class='grid grid-cols-1 gap-2 lg:grid-cols-2 lg:gap-2 no-input-group-padding text-xs'>
+            <div class='col-span-1 lg:col-span-2 text-[11px] uppercase tracking-wide text-gray-500 font-semibold mt-1'>
                 Group Name
             </div>
-            <InputGroup @name={{t "common.name"}}>
-                <Input @value={{@resource.name}} @type="text" class="w-full form-input"
-                       placeholder={{t "common.name"}} disabled={{cannot-write @resource}} />
+            <InputGroup @name={{t 'common.name'}}>
+                <Input @value={{@resource.name}} @type='text' class='w-full form-input' placeholder={{t 'common.name'}} disabled={{cannot-write @resource}} />
             </InputGroup>
         </div>
     </ContentPanel>
