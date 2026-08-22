@@ -49,7 +49,7 @@ class SalesOrder extends Model
      *
      * @var array
      */
-    protected $searchableColumns = ['customer_type', 'status', 'reference_code', 'reference_url', 'description', 'comments'];
+    protected $searchableColumns = ['order_number', 'customer_type', 'status', 'reference_code', 'reference_url', 'description', 'comments'];
 
     /**
      * The attributes that are mass assignable.
@@ -59,6 +59,7 @@ class SalesOrder extends Model
     protected $fillable = [
         'uuid',
         'public_id',
+        'order_number',
         'company_uuid',
         'created_by_uuid',
         'transaction_uuid',
@@ -225,7 +226,7 @@ class SalesOrder extends Model
             'fulfilled',
             null,
             [
-                'order_number'    => $this->public_id,
+                'order_number'    => $this->order_number,
                 'customer_uuid'   => $this->customer_uuid,
                 'supplier_uuid'   => $this->supplier_uuid,
                 'fulfilled_items' => $fulfilledItems,
@@ -254,7 +255,7 @@ class SalesOrder extends Model
             'partially_fulfilled',
             null,
             [
-                'order_number'    => $this->public_id,
+                'order_number'    => $this->order_number,
                 'customer_uuid'   => $this->customer_uuid,
                 'supplier_uuid'   => $this->supplier_uuid,
                 'fulfilled_items' => $fulfilledItems,
@@ -271,6 +272,14 @@ class SalesOrder extends Model
         static::creating(function ($model) {
             $model->created_at    = now();
             $model->order_date_at = now();
+
+            // every other numbered record in the module carries its own series —
+            // transfers TR-, waves WAVE-, cycle counts CC-, pick lists PL-. Orders
+            // had none, so the resource synthesised one from public_id and the
+            // detail panel printed the same string in two adjacent fields.
+            if (!$model->order_number) {
+                $model->order_number = 'SO-' . strtoupper(uniqid());
+            }
         });
     }
 

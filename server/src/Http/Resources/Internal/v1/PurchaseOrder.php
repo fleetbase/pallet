@@ -20,7 +20,7 @@ class PurchaseOrder extends FleetbaseResource
             'id'                           => $this->when(Http::isInternalRequest(), $this->id, $this->public_id),
             'uuid'                         => $this->when(Http::isInternalRequest(), $this->uuid),
             'public_id'                    => $this->when(Http::isInternalRequest(), $this->public_id),
-            'order_number'                 => $this->public_id,
+            'order_number'                 => $this->order_number,
             'supplier_uuid'                => $this->supplier_uuid,
             'supplier'                     => $this->whenLoaded('supplier', $this->supplier),
             'warehouse_uuid'               => $this->warehouse_uuid,

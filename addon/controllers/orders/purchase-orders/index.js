@@ -132,8 +132,11 @@ export default class PurchaseOrdersIndexController extends Controller {
      */
     @tracked columns = [
         {
+            // the list identified an order by its record id because there was no
+            // order number to show; there is one now, and the id keeps its own
+            // column behind the picker for when someone needs it
             label: this.intl.t('columns.po-number'),
-            valuePath: 'public_id',
+            valuePath: 'order_number',
             width: '140px',
             cellComponent: 'table/cell/anchor',
             action: this.viewPurchaseOrder,
@@ -142,6 +145,15 @@ export default class PurchaseOrdersIndexController extends Controller {
             filterable: true,
             hidden: false,
             filterComponent: 'filter/string',
+        },
+        {
+            label: this.intl.t('common.id'),
+            valuePath: 'public_id',
+            width: '160px',
+            cellComponent: 'click-to-copy',
+            resizable: true,
+            sortable: true,
+            hidden: true,
         },
         {
             label: this.intl.t('columns.supplier'),

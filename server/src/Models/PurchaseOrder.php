@@ -49,7 +49,7 @@ class PurchaseOrder extends Model
      *
      * @var array
      */
-    protected $searchableColumns = ['reference_code', 'reference_url', 'description', 'comments', 'currency', 'status'];
+    protected $searchableColumns = ['order_number', 'reference_code', 'reference_url', 'description', 'comments', 'currency', 'status'];
 
     /**
      * The attributes that are mass assignable.
@@ -59,6 +59,7 @@ class PurchaseOrder extends Model
     protected $fillable = [
         'uuid',
         'public_id',
+        'order_number',
         'company_uuid',
         'created_by_uuid',
         'supplier_uuid',
@@ -218,7 +219,7 @@ class PurchaseOrder extends Model
             'received',
             null,
             [
-                'order_number'   => $this->public_id,
+                'order_number'   => $this->order_number,
                 'supplier_uuid'  => $this->supplier_uuid,
                 'received_items' => $receivedItems,
             ]
@@ -246,7 +247,7 @@ class PurchaseOrder extends Model
             'partially_received',
             null,
             [
-                'order_number'   => $this->public_id,
+                'order_number'   => $this->order_number,
                 'supplier_uuid'  => $this->supplier_uuid,
                 'received_items' => $receivedItems,
             ]
@@ -262,6 +263,14 @@ class PurchaseOrder extends Model
         static::creating(function ($model) {
             $model->created_at       = now();
             $model->order_created_at = now();
+
+            // every other numbered record in the module carries its own series —
+            // transfers TR-, waves WAVE-, cycle counts CC-, pick lists PL-. Orders
+            // had none, so the resource synthesised one from public_id and the
+            // detail panel printed the same string in two adjacent fields.
+            if (!$model->order_number) {
+                $model->order_number = 'PO-' . strtoupper(uniqid());
+            }
         });
     }
 

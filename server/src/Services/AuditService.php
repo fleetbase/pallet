@@ -154,7 +154,7 @@ class AuditService
             'received',
             null,
             [
-                'order_number'    => $purchaseOrder->public_id,
+                'order_number'    => $purchaseOrder->order_number,
                 'supplier_uuid'   => $purchaseOrder->supplier_uuid,
                 'received_items'  => $receivedItems,
             ]
@@ -175,7 +175,7 @@ class AuditService
             'fulfilled',
             null,
             [
-                'order_number'    => $salesOrder->public_id,
+                'order_number'    => $salesOrder->order_number,
                 'customer_uuid'   => $salesOrder->customer_uuid,
                 'fulfilled_items' => $fulfilledItems,
             ]
