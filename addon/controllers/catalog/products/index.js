@@ -277,10 +277,13 @@ export default class ProductsIndexController extends Controller {
                 hidden: true,
             },
             {
+                // cell/product-traceability rendered four flags as separate inline
+                // spans, two lines deep. They are one fact — how this product has
+                // to be handled — so the model joins them onto one line.
                 label: 'Traceability',
-                valuePath: 'is_lot_tracked',
-                width: '170px',
-                cellComponent: 'cell/product-traceability',
+                valuePath: 'traceabilitySummary',
+                width: '150px',
+                cellComponent: 'table/cell/base',
                 resizable: true,
                 sortable: false,
             },
@@ -295,10 +298,13 @@ export default class ProductsIndexController extends Controller {
                 filterComponent: 'filter/string',
             },
             {
+                // cell/product-storefront stacked a Linked/Unlinked badge over an
+                // abbreviated storefront id — and that id is already its own
+                // column below, so the cell was duplicating it two lines deep.
                 label: 'Storefront',
                 valuePath: 'storefrontLinkStatus',
-                width: '160px',
-                cellComponent: 'cell/product-storefront',
+                width: '120px',
+                cellComponent: 'table/cell/status',
                 resizable: true,
                 sortable: false,
             },

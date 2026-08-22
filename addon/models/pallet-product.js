@@ -120,6 +120,34 @@ export default class PalletProductModel extends Model {
         return this.storefrontOutOfStock ? 'out-of-stock' : 'available';
     }
 
+    /**
+     * cell/product-traceability rendered these four flags as separate inline
+     * spans, which is what made the column two lines tall. They are one fact —
+     * how this product has to be handled — so they read as one line, and a
+     * product with no special handling says so rather than showing a dash.
+     */
+    get traceabilitySummary() {
+        const flags = [];
+
+        if (this.is_serialized) {
+            flags.push('Serialized');
+        }
+
+        if (this.is_lot_tracked) {
+            flags.push('Lot');
+        }
+
+        if (this.is_perishable) {
+            flags.push('Perishable');
+        }
+
+        if (this.requires_quality_check) {
+            flags.push('QC');
+        }
+
+        return flags.length ? flags.join(' · ') : 'Standard';
+    }
+
     get storefrontLinkStatus() {
         return this.storefront_product_uuid ? 'linked' : 'unlinked';
     }
