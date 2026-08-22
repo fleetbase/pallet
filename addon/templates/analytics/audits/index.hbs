@@ -1,7 +1,10 @@
+{{!
+    The audit trail is append-only, so this screen passes no @onPressNew and no
+    bulk-delete options — that, not a @canCreate flag, is how Tabular hides them.
+}}
 <Layout::Resource::Tabular
     @resource="audit"
     @title={{t "audit.title"}}
-    @searchPlaceholder={{t "audit.search_placeholder"}}
     @searchQuery={{this.query}}
     @onSearch={{perform this.search}}
     @data={{@model}}
@@ -10,8 +13,6 @@
     @onPageChange={{fn (mut this.page)}}
     @setupTable={{fn (mut this.table)}}
     @controller={{this}}
-    @canCreate={{false}}
-    @canDelete={{false}}
 >
     <:subheader>
         <div class="flex items-center space-x-2">

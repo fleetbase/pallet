@@ -99,16 +99,16 @@
         <ContentPanel @title="Pricing & value" @open={{true}} @wrapperClass="bordered-top pallet-product-editor-panel" @panelBodyWrapperClass="pallet-product-editor-panel__body">
             <div class="pallet-product-field-grid">
                 <InputGroup @name="Unit cost">
-                    <MoneyInput class="w-full" @value={{@resource.unit_cost}} @currency={{@resource.currency}} @canSelectCurrency={{true}} @onCurrencyChange={{fn (mut @resource.currency)}} @disabled={{cannot-write @resource}} />
+                    <MoneyInput class="w-full" @value={{@resource.unit_cost}} @currency={{@resource.currency}} @canSelectCurrency={{true}} @onCurrencyChange={{fn (mut @resource.currency)}} disabled={{cannot-write @resource}} />
                 </InputGroup>
                 <InputGroup @name="Unit price">
-                    <MoneyInput class="w-full" @value={{@resource.unit_price}} @currency={{@resource.currency}} @canSelectCurrency={{true}} @onCurrencyChange={{fn (mut @resource.currency)}} @disabled={{cannot-write @resource}} />
+                    <MoneyInput class="w-full" @value={{@resource.unit_price}} @currency={{@resource.currency}} @canSelectCurrency={{true}} @onCurrencyChange={{fn (mut @resource.currency)}} disabled={{cannot-write @resource}} />
                 </InputGroup>
                 <InputGroup @name="Sale price">
-                    <MoneyInput class="w-full" @value={{@resource.sale_price}} @currency={{@resource.currency}} @canSelectCurrency={{true}} @onCurrencyChange={{fn (mut @resource.currency)}} @disabled={{cannot-write @resource}} />
+                    <MoneyInput class="w-full" @value={{@resource.sale_price}} @currency={{@resource.currency}} @canSelectCurrency={{true}} @onCurrencyChange={{fn (mut @resource.currency)}} disabled={{cannot-write @resource}} />
                 </InputGroup>
                 <InputGroup @name="Declared value">
-                    <MoneyInput class="w-full" @value={{@resource.declared_value}} @currency={{@resource.currency}} @canSelectCurrency={{true}} @onCurrencyChange={{fn (mut @resource.currency)}} @disabled={{cannot-write @resource}} />
+                    <MoneyInput class="w-full" @value={{@resource.declared_value}} @currency={{@resource.currency}} @canSelectCurrency={{true}} @onCurrencyChange={{fn (mut @resource.currency)}} disabled={{cannot-write @resource}} />
                 </InputGroup>
             </div>
         </ContentPanel>
@@ -167,8 +167,8 @@
                             <Input @value={{this.editingVariant.barcode}} class="form-input" placeholder="Barcode" />
                             <Input @value={{this.editingVariant.storefront_variant_uuid}} class="form-input" placeholder="Storefront variant UUID" />
                             <Input @value={{this.editingVariant.option_values_text}} class="form-input lg:col-span-2" placeholder="Color=Black, Pack=12" />
-                            <MoneyInput @value={{this.editingVariant.unit_cost}} @currency={{@resource.currency}} @disabled={{cannot-write @resource}} />
-                            <MoneyInput @value={{this.editingVariant.unit_price}} @currency={{@resource.currency}} @disabled={{cannot-write @resource}} />
+                            <MoneyInput @value={{this.editingVariant.unit_cost}} @currency={{@resource.currency}} disabled={{cannot-write @resource}} />
+                            <MoneyInput @value={{this.editingVariant.unit_price}} @currency={{@resource.currency}} disabled={{cannot-write @resource}} />
                             <div class="pallet-product-variant-editor__actions">
                                 <Button @icon="check" @type="primary" @size="sm" @onClick={{this.saveVariant}} />
                                 <Button @icon="times" @type="default" @size="sm" @onClick={{this.cancelEditingVariant}} />
@@ -183,8 +183,8 @@
                             <Input @value={{this.newVariant.barcode}} class="form-input" placeholder="Barcode" />
                             <Input @value={{this.newVariant.storefront_variant_uuid}} class="form-input" placeholder="Storefront variant UUID" />
                             <Input @value={{this.newVariant.option_values_text}} class="form-input lg:col-span-2" placeholder="Color=Black, Pack=12" />
-                            <MoneyInput @value={{this.newVariant.unit_cost}} @currency={{@resource.currency}} @disabled={{cannot-write @resource}} />
-                            <MoneyInput @value={{this.newVariant.unit_price}} @currency={{@resource.currency}} @disabled={{cannot-write @resource}} />
+                            <MoneyInput @value={{this.newVariant.unit_cost}} @currency={{@resource.currency}} disabled={{cannot-write @resource}} />
+                            <MoneyInput @value={{this.newVariant.unit_price}} @currency={{@resource.currency}} disabled={{cannot-write @resource}} />
                             <div class="pallet-product-variant-editor__actions">
                                 <Button @icon="plus" @type="primary" @size="sm" @onClick={{this.addVariant}} />
                                 <Button @icon="times" @type="default" @size="sm" @onClick={{this.cancelAddingVariant}} />

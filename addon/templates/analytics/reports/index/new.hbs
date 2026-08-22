@@ -6,7 +6,7 @@
     @onPressCancel={{transition-to "analytics.reports.index"}}
     @onOverlayReady={{fn (mut this.overlay)}}
     @width="800px"
-    @authScheme="iam"
+    @authSchema="iam"
 >
     <ReportBuilder @report={{this.report}} @extension="pallet" />
     <Spacer @height="300px" />

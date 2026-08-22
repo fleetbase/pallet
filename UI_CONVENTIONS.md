@@ -147,6 +147,22 @@ Check the component's own source before assuming an argument name.
   arrives unbound and `this` is undefined.
 - A `{{! }}` comment ends at its first `}}`. If the comment quotes a helper, use
   `{{!-- --}}`.
+- `Overlay::Header` renders its title, status badge and createdAt **only when it
+  has no default block**. Buttons go in the `actions` named block; putting them
+  in the default block replaces the whole left section and the title vanishes.
+- `MoneyInput` does not read `@disabled`. Its inner `<Input>` takes
+  `...attributes`, so write `disabled={{cannot-write @resource}}` — no `@`.
+- `Select` reads `@disabled` **once, in its constructor**, and never updates it.
+- `Layout::Resource::Panel` reads `@authSchema`, not `@authScheme`.
+- `Layout::Resource::Tabular` has no `@canCreate`, `@canDelete`,
+  `@searchPlaceholder` or `@resource`. The New button renders only when
+  `@onPressNew` is passed — omitting it is how you hide it.
+- Also silently ignored where Pallet passes them: `CountryName @showFlag`,
+  `FileUpload @for` / `@multiple`, `CoordinatesInput @onInit`,
+  `PhoneInput @autocomplete`.
+
+Every entry above came from reading the component's own source. An argument the
+component never reads is worse than no argument: it reads as a working control.
 
 ---
 
