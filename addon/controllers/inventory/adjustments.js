@@ -25,9 +25,16 @@ export default class InventoryAdjustmentsController extends Controller {
      */
     @tracked columns = [
         {
+            // an adjustment is an immutable audit row and outlives what it points
+            // at; four rows here reference a product soft-deleted a day later, and
+            // rendering them as a line of dashes reads as an incomplete record
+            // rather than one whose subject is gone
             label: this.intl.t('inventory.fields.product'),
             valuePath: 'product.name',
-            cellComponent: 'table/cell/base',
+            uuidPath: 'product_uuid',
+            relationPath: 'product',
+            missingLabel: this.intl.t('inventory.product-unavailable'),
+            cellComponent: 'cell/related-record',
             width: '200px',
             resizable: true,
             sortable: false,
@@ -35,7 +42,11 @@ export default class InventoryAdjustmentsController extends Controller {
         {
             label: this.intl.t('inventory.fields.variant'),
             valuePath: 'variant.display_name',
-            cellComponent: 'table/cell/base',
+            uuidPath: 'variant_uuid',
+            relationPath: 'variant',
+            namePath: 'display_name',
+            missingLabel: this.intl.t('inventory.variant-unavailable'),
+            cellComponent: 'cell/related-record',
             width: '150px',
             resizable: true,
             sortable: false,
@@ -43,7 +54,10 @@ export default class InventoryAdjustmentsController extends Controller {
         {
             label: this.intl.t('inventory.fields.warehouse'),
             valuePath: 'warehouse.name',
-            cellComponent: 'table/cell/base',
+            uuidPath: 'warehouse_uuid',
+            relationPath: 'warehouse',
+            missingLabel: this.intl.t('inventory.warehouse-unavailable'),
+            cellComponent: 'cell/related-record',
             width: '170px',
             resizable: true,
             sortable: false,

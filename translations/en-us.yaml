@@ -396,6 +396,8 @@ product:
 inventory:
   product-unavailable: Product unavailable
   product-unavailable-hint: The product this stock belongs to has been deleted.
+  variant-unavailable: Variant unavailable
+  warehouse-unavailable: Warehouse unavailable
   screens:
     batches-title: Batches
     batches-list: Inventory Batches

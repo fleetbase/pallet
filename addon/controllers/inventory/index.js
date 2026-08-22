@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action, get } from '@ember/object';
 import { getOwner } from '@ember/application';
+import relatedRecordLabel from '../../utils/related-record-label';
 import { isBlank } from '@ember/utils';
 import { task, timeout } from 'ember-concurrency';
 
@@ -135,24 +136,6 @@ export default class InventoryIndexController extends Controller {
     }
 
     /**
-     * An inventory row keeps its product_uuid when the product is deleted, and the
-     * relation then resolves to nothing. The relationship is async, so the proxy
-     * stays truthy even with null content — test the resolved record instead.
-     * Without this the row would render a nameless product rather than saying the
-     * product is gone.
-     */
-    productLabel(row) {
-        const product = get(row ?? {}, 'product');
-        const resolved = product ? (get(product, 'content') ?? product) : null;
-
-        if (get(row ?? {}, 'product_uuid') && !get(resolved ?? {}, 'uuid')) {
-            return this.intl.t('inventory.product-unavailable');
-        }
-
-        return get(resolved ?? {}, 'name');
-    }
-
-    /**
      * All columns applicable for orders
      *
      * @var {Array}
@@ -165,7 +148,14 @@ export default class InventoryIndexController extends Controller {
             // every row ~109px tall and fitted five on a screen.
             label: this.intl.t('columns.product'),
             valuePath: 'product.name',
-            labelValue: (row) => this.productLabel(row),
+            // an inventory row keeps its product_uuid when the product is deleted;
+            // say so rather than rendering a nameless row
+            labelValue: (row) =>
+                relatedRecordLabel(row, {
+                    uuidPath: 'product_uuid',
+                    relationPath: 'product',
+                    missingLabel: this.intl.t('inventory.product-unavailable'),
+                }),
             identifierPath: 'product.sku',
             // resolved per row rather than by path: the placeholder comes from the
             // host config, which is not readable while the class fields initialise
