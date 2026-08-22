@@ -4,6 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import { action, get } from '@ember/object';
 import { getOwner } from '@ember/application';
 import relatedRecordLabel from '../../utils/related-record-label';
+import placeholderImage from '../../utils/placeholder-image';
 import { isBlank } from '@ember/utils';
 import { task, timeout } from 'ember-concurrency';
 
@@ -124,15 +125,9 @@ export default class InventoryIndexController extends Controller {
     /**
      * Products routinely have no photo, and an <img> with no src draws the
      * browser's broken-image glyph in every row.
-     *
-     * `getOwner` inside a mounted engine resolves the engine's own config, which
-     * is why Pallet declares defaultValues of its own — the console's copy is not
-     * visible from in here.
      */
     get placeholderImage() {
-        const config = getOwner(this)?.resolveRegistration?.('config:environment');
-
-        return get(config ?? {}, 'defaultValues.placeholderImage');
+        return placeholderImage(getOwner(this));
     }
 
     /**

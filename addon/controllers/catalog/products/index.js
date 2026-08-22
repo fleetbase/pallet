@@ -3,6 +3,9 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { isBlank } from '@ember/utils';
 import { task, timeout } from 'ember-concurrency';
+import { get } from '@ember/object';
+import { getOwner } from '@ember/application';
+import placeholderImage from '../../../utils/placeholder-image';
 
 export default class ProductsIndexController extends Controller {
     @service productActions;
@@ -181,13 +184,25 @@ export default class ProductsIndexController extends Controller {
         };
     }
 
+    get placeholderImage() {
+        return placeholderImage(getOwner(this));
+    }
+
     get columns() {
         return [
             {
+                // ember-ui's shared identity cell. On this screen the row *is* the
+                // product, so there is no deleted-relation case to guard — unlike
+                // the inventory lists, where the row merely points at one.
                 label: 'Product',
                 valuePath: 'name',
-                width: '320px',
-                cellComponent: 'cell/product-info',
+                labelPath: 'name',
+                identifierPath: 'sku',
+                mediaUrl: (row) => get(row, 'photo_url') || this.placeholderImage,
+                imageSizeClass: 'h-5 w-5',
+                showStatusDot: false,
+                width: '280px',
+                cellComponent: 'table/cell/resource-identity',
                 action: this.productActions.transition.view,
                 resizable: true,
                 sortable: true,
@@ -195,22 +210,71 @@ export default class ProductsIndexController extends Controller {
                 filterComponent: 'filter/string',
             },
             {
+                // cell/product-stock packed a badge and three boxed mini-stats into
+                // one 190px cell, which clipped its own labels to "Availabl" and
+                // "Reserve" and made every row 79px tall. Three numeric columns and
+                // a badge say the same thing on one line, and each one sorts.
                 label: 'Stock',
                 valuePath: 'storefrontInventoryStatus',
-                width: '190px',
-                cellComponent: 'cell/product-stock',
+                width: '110px',
+                cellComponent: 'table/cell/status',
                 resizable: true,
                 sortable: false,
             },
             {
-                label: 'Price & Value',
+                label: 'Available',
+                valuePath: 'storefrontAvailableQuantity',
+                width: '90px',
+                cellComponent: 'cell/count',
+                resizable: true,
+                sortable: false,
+            },
+            {
+                label: 'Reserved',
+                valuePath: 'storefrontReservedQuantity',
+                width: '90px',
+                cellComponent: 'cell/count',
+                resizable: true,
+                sortable: false,
+                hidden: true,
+            },
+            {
+                label: 'Total',
+                valuePath: 'storefrontTotalQuantity',
+                width: '90px',
+                cellComponent: 'cell/count',
+                resizable: true,
+                sortable: false,
+            },
+            {
+                // likewise cell/product-price stacked price, cost and declared
+                // value on three lines in a 170px cell
+                label: 'Price',
                 valuePath: 'unit_price',
-                width: '170px',
-                cellComponent: 'cell/product-price',
+                width: '100px',
+                cellComponent: 'table/cell/currency',
                 resizable: true,
                 sortable: true,
                 filterable: true,
                 filterComponent: 'filter/string',
+            },
+            {
+                label: 'Cost',
+                valuePath: 'unit_cost',
+                width: '100px',
+                cellComponent: 'table/cell/currency',
+                resizable: true,
+                sortable: false,
+                hidden: true,
+            },
+            {
+                label: 'Declared Value',
+                valuePath: 'declared_value',
+                width: '120px',
+                cellComponent: 'table/cell/currency',
+                resizable: true,
+                sortable: false,
+                hidden: true,
             },
             {
                 label: 'Traceability',

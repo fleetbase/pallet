@@ -1,9 +1,12 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
+import { action, get } from '@ember/object';
 import { isBlank } from '@ember/utils';
 import { task, timeout } from 'ember-concurrency';
+import { getOwner } from '@ember/application';
+import relatedRecordLabel from '../../utils/related-record-label';
+import placeholderImage from '../../utils/placeholder-image';
 
 export default class InventoryExpiredStockController extends Controller {
     @service intl;
@@ -126,14 +129,31 @@ export default class InventoryExpiredStockController extends Controller {
      *
      * @var {Array}
      */
+    get placeholderImage() {
+        return placeholderImage(getOwner(this));
+    }
+
     @tracked columns = [
         {
+            // ember-ui's shared identity cell, as on the inventory list. The
+            // bespoke cell/product-info it replaces stacked a title, a meta line,
+            // a description and three placeholder badges into every row; the SKU
+            // it used to need a column of its own for is an identifier chip here.
             label: this.intl.t('columns.product'),
             valuePath: 'product.name',
+            labelValue: (row) =>
+                relatedRecordLabel(row, {
+                    uuidPath: 'product_uuid',
+                    relationPath: 'product',
+                    missingLabel: this.intl.t('inventory.product-unavailable'),
+                }),
+            identifierPath: 'product.sku',
+            mediaUrl: (row) => get(row, 'product.photo_url') || this.placeholderImage,
+            imageSizeClass: 'h-5 w-5',
+            showStatusDot: false,
             action: this.viewInventory,
-            width: '170px',
-            cellComponent: 'cell/product-info',
-            modelPath: 'product',
+            width: '240px',
+            cellComponent: 'table/cell/resource-identity',
             resizable: true,
             sortable: true,
             filterable: true,
@@ -144,6 +164,7 @@ export default class InventoryExpiredStockController extends Controller {
             valuePath: 'product.sku',
             cellComponent: 'click-to-copy',
             width: '120px',
+            hidden: true,
             resizable: true,
             sortable: true,
             filterable: true,
