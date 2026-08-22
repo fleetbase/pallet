@@ -7,9 +7,7 @@
     }}
     <ContentPanel @title={{t "inventory.sections.details"}} @open={{true}} @wrapperClass="bordered-top">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 text-xs no-input-group-padding">
-            <div class="col-span-1 lg:col-span-2 text-[11px] uppercase tracking-wide text-gray-500 font-semibold mt-1">
-                {{t "inventory.groups.identity"}}
-            </div>
+            <div class="pallet-field-group-heading col-span-1 lg:col-span-2">{{t "inventory.groups.identity"}}</div>
             <InputGroup @name={{t "inventory.fields.product"}} @wrapperClass="col-span-1 lg:col-span-2">
                 <ModelSelect
                     @modelName="pallet-product"
@@ -79,9 +77,7 @@
                 </div>
             </InputGroup>
 
-            <div class="col-span-1 lg:col-span-2 text-[11px] uppercase tracking-wide text-gray-500 font-semibold mt-3">
-                {{t "inventory.sections.location"}}
-            </div>
+            <div class="pallet-field-group-heading col-span-1 lg:col-span-2">{{t "inventory.sections.location"}}</div>
             <InputGroup @name={{t "inventory.fields.warehouse"}}>
                 <ModelSelect
                     @modelName="warehouse"
@@ -134,9 +130,7 @@
 
     <ContentPanel @title={{t "inventory.sections.stock"}} @open={{true}} @wrapperClass="bordered-top">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 text-xs no-input-group-padding">
-            <div class="col-span-1 lg:col-span-2 text-[11px] uppercase tracking-wide text-gray-500 font-semibold mt-1">
-                {{t "inventory.groups.on-hand"}}
-            </div>
+            <div class="pallet-field-group-heading col-span-1 lg:col-span-2">{{t "inventory.groups.on-hand"}}</div>
             <InputGroup @name={{t "inventory.fields.quantity"}}>
                 <Input @value={{@resource.quantity}} @type="number" class="w-full form-input" placeholder={{t "inventory.fields.quantity"}} disabled={{cannot-write @resource}} />
             </InputGroup>
@@ -145,9 +139,7 @@
                 <Input @value={{@resource.uom}} @type="text" class="w-full form-input" placeholder={{t "inventory.fields.uom"}} disabled={{cannot-write @resource}} />
             </InputGroup>
 
-            <div class="col-span-1 lg:col-span-2 text-[11px] uppercase tracking-wide text-gray-500 font-semibold mt-3">
-                {{t "inventory.groups.thresholds"}}
-            </div>
+            <div class="pallet-field-group-heading col-span-1 lg:col-span-2">{{t "inventory.groups.thresholds"}}</div>
             <InputGroup @name={{t "inventory.fields.min-quantity"}}>
                 <Input @value={{@resource.min_quantity}} @type="number" class="w-full form-input" placeholder={{t "inventory.fields.min-quantity"}} disabled={{cannot-write @resource}} />
             </InputGroup>
@@ -160,9 +152,7 @@
                 <Input @value={{@resource.reorder_point}} @type="number" class="w-full form-input" placeholder={{t "inventory.fields.reorder-point"}} disabled={{cannot-write @resource}} />
             </InputGroup>
 
-            <div class="col-span-1 lg:col-span-2 text-[11px] uppercase tracking-wide text-gray-500 font-semibold mt-3">
-                {{t "inventory.groups.valuation"}}
-            </div>
+            <div class="pallet-field-group-heading col-span-1 lg:col-span-2">{{t "inventory.groups.valuation"}}</div>
             <InputGroup @name={{t "inventory.fields.unit-cost"}}>
                 <MoneyInput
                     class="w-full"
@@ -178,9 +168,7 @@
 
     <ContentPanel @title={{t "inventory.sections.tracking"}} @open={{false}} @wrapperClass="bordered-top">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 text-xs no-input-group-padding">
-            <div class="col-span-1 lg:col-span-2 text-[11px] uppercase tracking-wide text-gray-500 font-semibold mt-1">
-                {{t "inventory.groups.identifiers"}}
-            </div>
+            <div class="pallet-field-group-heading col-span-1 lg:col-span-2">{{t "inventory.groups.identifiers"}}</div>
             <InputGroup @name={{t "inventory.fields.batch-number"}}>
                 <Input @value={{@resource.batch.batch_number}} @type="text" class="w-full form-input" placeholder={{t "inventory.fields.batch-number"}} disabled={{cannot-write @resource}} />
             </InputGroup>
@@ -193,9 +181,7 @@
                 <Input @value={{@resource.serial_number}} @type="text" class="w-full form-input" placeholder={{t "inventory.fields.serial-number"}} disabled={{cannot-write @resource}} />
             </InputGroup>
 
-            <div class="col-span-1 lg:col-span-2 text-[11px] uppercase tracking-wide text-gray-500 font-semibold mt-3">
-                {{t "inventory.groups.dates"}}
-            </div>
+            <div class="pallet-field-group-heading col-span-1 lg:col-span-2">{{t "inventory.groups.dates"}}</div>
             <InputGroup @name={{t "inventory.fields.expiry-date"}}>
                 <input value={{@resource.expiryDate}} type="date" class="form-input w-full" {{on "change" this.setExpiryDate}} disabled={{cannot-write @resource}} />
             </InputGroup>

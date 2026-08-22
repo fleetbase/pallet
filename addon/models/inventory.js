@@ -24,6 +24,8 @@ export default class InventoryModel extends Model {
     @belongsTo('warehouse') warehouse;
     @belongsTo('supplier') supplier;
     @belongsTo('batch') batch;
+    @belongsTo('warehouse-zone') zone;
+    @belongsTo('bin-location') binLocation;
 
     /** @attributes */
     @attr('string') status;

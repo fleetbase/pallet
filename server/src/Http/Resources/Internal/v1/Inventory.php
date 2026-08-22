@@ -32,6 +32,8 @@ class Inventory extends FleetbaseResource
             'variant'               => $this->whenLoaded('variant', fn () => new ProductVariant($this->variant)),
             'batch'                 => $this->whenLoaded('batch', new Batch($this->batch)),
             'warehouse'             => $this->whenLoaded('warehouse', new Warehouse($this->warehouse)),
+            'zone'                  => $this->whenLoaded('zone', fn () => new WarehouseZone($this->zone)),
+            'bin_location'          => $this->whenLoaded('binLocation', fn () => new BinLocation($this->binLocation)),
             'status'                => $this->status,
             'quantity'              => (int) $this->quantity,
             'reserved_quantity'     => (int) $this->reserved_quantity,

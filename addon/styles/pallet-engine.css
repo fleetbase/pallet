@@ -1,3 +1,33 @@
+/**
+ * Group heading inside a detail or form panel.
+ *
+ * ember-ui's .field-name is already 11px uppercase semibold, so the FleetOps
+ * habit of setting a group heading with the same recipe makes the heading
+ * indistinguishable from the labels under it. This one is heavier, darker and
+ * ruled off, so the grouping actually reads as a level above the fields.
+ */
+.pallet-field-group-heading {
+    margin: 1rem 0 0.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 0.25rem;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #111827;
+}
+
+.pallet-field-group-heading:first-child {
+    margin-top: 0;
+}
+
+[data-theme='dark'] .pallet-field-group-heading,
+body[data-theme='dark'] .pallet-field-group-heading {
+    border-bottom-color: #1f2937;
+    color: #e5e7eb;
+}
+
 .pallet-dashboard-page {
     display: flex;
     flex: 0 0 auto;

@@ -7,11 +7,16 @@ export default class InventoryFormComponent extends Component {
     @service store;
     @service notifications;
 
+    /**
+     * Nothing reads inventory.status as a stock state — availability is derived
+     * from the quantities (see is_out_of_stock and MetricsController). The four
+     * options this offered (in_stock, out_of_stock, on_order, reserved) are never
+     * written by anything, so every record's status is 'active' and the select
+     * came up empty on every edit. The vocabulary itself is still Ron's call.
+     */
     @tracked statusOptions = [
-        { label: 'In Stock', value: 'in_stock' },
-        { label: 'Out of Stock', value: 'out_of_stock' },
-        { label: 'On Order', value: 'on_order' },
-        { label: 'Reserved', value: 'reserved' },
+        { label: 'Active', value: 'active' },
+        { label: 'Inactive', value: 'inactive' },
     ];
 
     /**
