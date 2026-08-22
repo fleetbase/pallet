@@ -1,3 +1,10 @@
+{{!
+    "No records found" over a bare table is the wrong message on these two
+    screens: an empty low-stock or expired-stock view is good news, not an absent
+    record set, and it should say which. The pagination bar is also suppressed
+    when there is nothing to page — ember-ui's Pagination renders "Showing 1 to 1
+    of 0 results" against an empty set.
+}}
 <Layout::Section::Header @title={{t "inventory.screens.low-stock-list"}} @searchQuery={{this.query}} @onSearch={{perform this.search}}>
     <FiltersPicker
         @columns={{this.columns}}
@@ -17,10 +24,13 @@
         @selectable={{true}}
         @canSelectAll={{true}}
         @onSetup={{fn (mut this.table)}}
-        @pagination={{true}}
+        @pagination={{gt @model.meta.total 0}}
         @paginationMeta={{@model.meta}}
         @page={{this.page}}
         @onPageChange={{fn (mut this.page)}}
+        @emptyStateIcon="circle-check"
+        @emptyStateTitle={{t "inventory.empty.low-stock-title"}}
+        @emptyStateDescription={{t "inventory.empty.low-stock-description"}}
         @tfootVerticalOffset="53"
         @tfootVerticalOffsetElements=".next-view-section-subheader"
     />

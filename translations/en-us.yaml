@@ -420,6 +420,11 @@ inventory:
   product-unavailable-hint: The product this stock belongs to has been deleted.
   variant-unavailable: Variant unavailable
   warehouse-unavailable: Warehouse unavailable
+  empty:
+    low-stock-title: Nothing is running low
+    low-stock-description: No inventory is at or below its reorder point.
+    expired-stock-title: Nothing has expired
+    expired-stock-description: No inventory has passed its expiry date.
   screens:
     batches-title: Batches
     batches-list: Inventory Batches
