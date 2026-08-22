@@ -409,6 +409,41 @@ body[data-theme='dark'] .pallet-kpi-icon {
     background-color: rgb(59 130 246 / 18%);
 }
 
+/**
+ * The two rules above paint every KPI icon the same blue in dark mode, and they
+ * are declared after the accent rules, so all eight tiles collapsed to blue —
+ * the accents only ever showed in light mode, which is not the mode the console
+ * runs in. These carry the accent through; the extra class puts them ahead of
+ * the blanket rules on specificity rather than source order.
+ */
+[data-theme='dark'] .pallet-kpi-accent-blue .pallet-kpi-icon {
+    color: #93c5fd;
+    background-color: rgb(59 130 246 / 18%);
+}
+
+[data-theme='dark'] .pallet-kpi-accent-green .pallet-kpi-icon,
+[data-theme='dark'] .pallet-kpi-accent-emerald .pallet-kpi-icon {
+    color: #6ee7b7;
+    background-color: rgb(16 185 129 / 18%);
+}
+
+[data-theme='dark'] .pallet-kpi-accent-amber .pallet-kpi-icon,
+[data-theme='dark'] .pallet-kpi-accent-orange .pallet-kpi-icon {
+    color: #fcd34d;
+    background-color: rgb(245 158 11 / 18%);
+}
+
+[data-theme='dark'] .pallet-kpi-accent-red .pallet-kpi-icon {
+    color: #fda4af;
+    background-color: rgb(244 63 94 / 18%);
+}
+
+[data-theme='dark'] .pallet-kpi-accent-indigo .pallet-kpi-icon,
+[data-theme='dark'] .pallet-kpi-accent-purple .pallet-kpi-icon {
+    color: #a5b4fc;
+    background-color: rgb(99 102 241 / 18%);
+}
+
 .pallet-widget-header {
     display: flex;
     min-height: 3.25rem;
@@ -535,9 +570,7 @@ body[data-theme='dark'] .pallet-widget-scroll-body::-webkit-scrollbar-thumb {
     text-align: center;
 }
 
-.pallet-widget-body .space-y-3,
 .pallet-widget-scroll-body .space-y-3,
-.pallet-widget-body .space-y-2,
 .pallet-widget-scroll-body .space-y-2 {
     display: flex;
     flex-direction: column;
@@ -545,44 +578,35 @@ body[data-theme='dark'] .pallet-widget-scroll-body::-webkit-scrollbar-thumb {
     min-height: 0;
 }
 
-.pallet-widget-body .space-y-3 > *,
 .pallet-widget-scroll-body .space-y-3 > *,
-.pallet-widget-body .space-y-2 > *,
 .pallet-widget-scroll-body .space-y-2 > * {
     margin-top: 0 !important;
 }
 
-.pallet-widget-body .rounded-md,
 .pallet-widget-scroll-body .rounded-md {
     min-width: 0;
 }
 
-.pallet-widget-body .rounded-md,
 .pallet-widget-scroll-body .rounded-md,
-.pallet-widget-body .border,
 .pallet-widget-scroll-body .border {
     border-color: #e5e7eb;
     background-color: #f8fafc;
 }
 
-.pallet-widget-body .rounded-md,
 .pallet-widget-scroll-body .rounded-md {
     box-shadow: inset 0 1px 0 rgb(255 255 255 / 60%);
 }
 
-.pallet-widget-body .text-sm,
 .pallet-widget-scroll-body .text-sm {
     font-size: 0.78rem;
     line-height: 1.25;
 }
 
-.pallet-widget-body .text-xs,
 .pallet-widget-scroll-body .text-xs {
     font-size: 0.69rem;
     line-height: 1.2;
 }
 
-.pallet-widget-body .divide-y > *,
 .pallet-widget-scroll-body .divide-y > * {
     min-width: 0;
 }
@@ -1459,24 +1483,16 @@ body[data-theme='dark'] .pallet-storefront-inventory .field-info-container,
     background-color: #111827;
 }
 
-[data-theme='dark'] .pallet-widget-body .border-gray-100,
 [data-theme='dark'] .pallet-widget-scroll-body .border-gray-100,
-.dark .pallet-widget-body .border-gray-100,
 .dark .pallet-widget-scroll-body .border-gray-100 {
     border-color: #374151;
 }
 
-.dark .pallet-widget-body .rounded-md,
 .dark .pallet-widget-scroll-body .rounded-md,
-.dark .pallet-widget-body .border,
 .dark .pallet-widget-scroll-body .border,
-.dark .pallet-widget-body .border-gray-100,
 .dark .pallet-widget-scroll-body .border-gray-100,
-body[data-theme='dark'] .pallet-widget-body .rounded-md,
 body[data-theme='dark'] .pallet-widget-scroll-body .rounded-md,
-body[data-theme='dark'] .pallet-widget-body .border,
 body[data-theme='dark'] .pallet-widget-scroll-body .border,
-body[data-theme='dark'] .pallet-widget-body .border-gray-100,
 body[data-theme='dark'] .pallet-widget-scroll-body .border-gray-100 {
     border-color: #374151;
     background-color: #111827;
