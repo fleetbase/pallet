@@ -1,4 +1,15 @@
 /**
+ * ember-ui reserves room for the floating pagination bar with
+ * `.next-table-wrapper table > tbody:after { height: 153px }`. The selector is
+ * `table > tbody`, so it also lands on a sub-table nested inside an expanded
+ * row: the pick sheet and the count sheet each rendered 153px of empty space
+ * below a single item. Only the outer table needs the spacer.
+ */
+.next-table-wrapper table.sub-table > tbody::after {
+    height: 0;
+}
+
+/**
  * Group heading inside a detail or form panel.
  *
  * ember-ui's .field-name is already 11px uppercase semibold, so the FleetOps

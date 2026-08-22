@@ -4,10 +4,17 @@ import { inject as service } from '@ember/service';
 export default class OperationsPickListsRoute extends Route {
     @service store;
 
-    model() {
+    queryParams = {
+        page: { refreshModel: true },
+        limit: { refreshModel: true },
+        sort: { refreshModel: true },
+        query: { refreshModel: true },
+        status: { refreshModel: true },
+    };
+
+    model(params) {
         return this.store.query('pick-list', {
-            limit: 50,
-            sort: '-created_at',
+            ...params,
             with: ['warehouse', 'wave', 'assignedTo', 'items.product', 'items.variant', 'items.inventory', 'items.binLocation'],
         });
     }

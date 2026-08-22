@@ -226,6 +226,16 @@ operations:
     bin-placeholder: Optional bin
     inventory: Inventory
     inventory-placeholder: Optional inventory
+    actions-menu: Pick List Actions
+    no-actions: No actions available
+    no-items: No items on this pick list.
+    columns:
+      pick-list: Pick List
+      assigned-to: Assigned To
+      progress: Progress
+      item: Item
+      requested: Requested
+      picked: Picked
   reservations:
     title: Reservations
     description: Review reserved inventory and allocation state.
