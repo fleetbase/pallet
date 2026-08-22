@@ -13,7 +13,7 @@
         @createdAt={{this.purchaseOrder.createdAt}}
         @titleWrapperClass="leading-5"
     >
-        <div class="flex flex-1 justify-end">
+        <:actions>
             <Button
                 @icon={{if this.purchaseOrder.id "save" "check"}}
                 @type="primary"
@@ -27,7 +27,7 @@
                 <Button @type="default" @icon="file-invoice" @helpText="View purchase order details" @onClick={{this.onViewDetails}} @wrapperClass="mr-2" />
             {{/if}}
             <Button @type="default" @icon="times" @helpText={{if this.purchaseOrder.id "Cancel edit purchase order" "Cancel new purchase order"}} @onClick={{this.onPressCancel}} />
-        </div>
+        </:actions>
     </Overlay::Header>
 
     <Overlay::Body @wrapperClass="new-service-rate-overlay-body px-4 space-y-4 pt-4" @increaseInnerBodyHeightBy={{1000}}>

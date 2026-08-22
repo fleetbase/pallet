@@ -1,6 +1,9 @@
 <Overlay @position="right" @noBackdrop={{true}} @fullHeight={{true}} @isResizable={{true}} @width="720px">
     <Overlay::Header @title="Receive Purchase Order" @status={{this.purchaseOrder.public_id}} @hideStatusDot={{true}} @createdAt={{this.purchaseOrder.createdAt}}>
-        <Button @type="default" @icon="times" @helpText="Close" @onClick={{this.onPressCancel}} />
+        <:actions>
+            <Button @type="default" @icon="times" @helpText="Close" @onClick={{this.onPressCancel}} />
+
+        </:actions>
     </Overlay::Header>
 
     <Overlay::Body @increaseInnerBodyHeightBy={{1000}}>

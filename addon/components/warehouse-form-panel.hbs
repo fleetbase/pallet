@@ -13,7 +13,7 @@
         @createdAt={{this.warehouse.createdAt}}
         @titleWrapperClass="leading-5"
     >
-        <div class="flex flex-1 justify-end">
+        <:actions>
             <Button
                 @icon={{if this.warehouse.id "save" "check"}}
                 @type="primary"
@@ -24,7 +24,7 @@
                 @disabled={{this.saveTask.isRunning}}
             />
             <Button @type="default" @icon="times" @helpText={{if this.warehouse.id "Cancel edit warehouse" "Cancel new warehouse"}} @onClick={{this.onPressCancel}} />
-        </div>
+        </:actions>
     </Overlay::Header>
 
     <Overlay::Body @wrapperClass="new-service-rate-overlay-body px-4 space-y-4 pt-4" @increaseInnerBodyHeightBy={{1000}}>

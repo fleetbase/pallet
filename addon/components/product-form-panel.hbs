@@ -13,7 +13,7 @@
         @createdAt={{this.product.createdAt}}
         @titleWrapperClass="leading-5"
     >
-        <div class="flex flex-1 justify-end">
+        <:actions>
             <Button
                 @icon={{if this.product.id "save" "check"}}
                 @type="primary"
@@ -27,7 +27,7 @@
                 <Button @type="default" @icon="box-archive" @helpText="View product details" @onClick={{this.onViewDetails}} @wrapperClass="mr-2" />
             {{/if}}
             <Button @type="default" @icon="times" @helpText={{if this.product.id "Cancel edit product" "Cancel add product"}} @onClick={{this.onPressCancel}} />
-        </div>
+        </:actions>
     </Overlay::Header>
 
     <Overlay::Body @wrapperClass="new-service-rate-overlay-body px-4 pt-4" @increaseInnerBodyHeightBy={{700}}>

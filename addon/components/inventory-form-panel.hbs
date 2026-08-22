@@ -13,7 +13,7 @@
         @createdAt={{this.inventory.createdAt}}
         @titleWrapperClass="leading-5"
     >
-        <div class="flex flex-1 justify-end">
+        <:actions>
             <Button
                 @icon={{if this.inventory.id "save" "check"}}
                 @type="primary"
@@ -27,7 +27,7 @@
                 <Button @type="default" @icon="inventory" @helpText="View inventory details" @onClick={{this.onViewDetails}} @wrapperClass="mr-2" />
             {{/if}}
             <Button @type="default" @icon="times" @helpText={{if this.inventory.id "Cancel edit inventory" "Cancel add inventory"}} @onClick={{this.onPressCancel}} />
-        </div>
+        </:actions>
     </Overlay::Header>
 
     {{!
