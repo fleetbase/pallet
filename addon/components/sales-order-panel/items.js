@@ -45,6 +45,23 @@ export default class SalesOrderPanelItemsComponent extends Component {
     }
 
     /**
+     * item_count and total_value are computed server-side, so they stayed stale the
+     * moment a line was added or removed — the panel read "0 item(s)" with a line
+     * plainly listed beneath it. Deriving them from the live items keeps the summary
+     * honest without refetching the order, which would discard any unsaved edits to
+     * the order itself.
+     */
+    get itemCount() {
+        return this.items.length;
+    }
+
+    get totalValue() {
+        const total = this.items.reduce((sum, item) => sum + Number(item.quantity ?? 0) * Number(item.unit_price ?? 0), 0);
+
+        return total > 0 ? Number(total.toFixed(2)) : 0;
+    }
+
+    /**
      * Returns the items for this sales order.
      *
      * @type {Array}

@@ -60,6 +60,25 @@
             </InputGroup>
         </div>
     </ContentPanel>
+    {{!
+        Line items had no editor anywhere in the console: you could create an order
+        but never say what was on it, and every line in the data got there through
+        the API. This component already implemented the whole editor and was
+        rendered nowhere.
+
+        Only for a saved order — the endpoint is nested under the order's own id,
+        so there is nothing to post against until it exists.
+    }}
+    {{#if @resource.id}}
+        <PurchaseOrderPanel::Items @purchaseOrder={{@resource}} @wrapperClass="bordered-top" />
+    {{else}}
+        <ContentPanel @title={{t "purchase-order.sections.line-items"}} @open={{true}} @wrapperClass="bordered-top">
+            <div class="px-4 py-6 text-sm text-gray-500 dark:text-gray-400">
+                {{t "purchase-order.save-before-line-items"}}
+            </div>
+        </ContentPanel>
+    {{/if}}
+
     <CustomField::Yield @subject={{@resource}} @wrapperClass="bordered-top" />
     <ContentPanel @title={{t "common.metadata"}} @open={{true}} @wrapperClass="bordered-top">
         <MetadataEditor @value={{@resource.meta}} @onChange={{fn (mut @resource.meta)}} />

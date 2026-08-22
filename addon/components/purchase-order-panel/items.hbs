@@ -2,10 +2,12 @@
     <ContentPanel @title="Line Items" @open={{true}} @pad={{false}} @panelBodyClass="bg-white dark:bg-gray-900">
         {{! Summary row }}
         <div class="flex items-center justify-between px-4 py-2 border-b border-gray-100 dark:border-gray-700 text-xs text-gray-500 dark:text-gray-400">
-            <span>{{@purchaseOrder.item_count}} item(s)</span>
-            {{#if @purchaseOrder.total_value}}
+            <span>{{this.itemCount}} item(s)</span>
+            {{#if this.totalValue}}
                 <span class="font-medium text-gray-700 dark:text-gray-200">
-                    Total: {{@purchaseOrder.currency}} {{@purchaseOrder.total_value}}
+                    Total:
+                    {{@purchaseOrder.currency}}
+                    {{this.totalValue}}
                 </span>
             {{/if}}
         </div>
@@ -98,8 +100,18 @@
                             </td>
                             <td class="px-4 py-2">
                                 <div class="flex items-center gap-1 justify-end">
-                                    <Button @icon="pen" @type="default" @size="xs" @onClick={{fn this.startEditingItem item}} @helpText="Edit item" />
-                                    <Button @icon="trash" @type="danger" @size="xs" @onClick={{fn this.removeItem item}} @helpText="Remove item" />
+                                    {{! the server refuses both of these on a closed order, and refuses
+                                         a delete once stock has received against the line; disable them
+                                         here so the console does not offer what it cannot do }}
+                                    <Button @icon="pen" @type="default" @size="xs" @onClick={{fn this.startEditingItem item}} @disabled={{this.isReadOnly}} @helpText="Edit item" />
+                                    <Button
+                                        @icon="trash"
+                                        @type="danger"
+                                        @size="xs"
+                                        @onClick={{fn this.removeItem item}}
+                                        @disabled={{or this.isReadOnly item.quantity_received}}
+                                        @helpText="Remove item"
+                                    />
                                 </div>
                             </td>
                         </tr>
@@ -167,14 +179,7 @@
         {{! Add item button }}
         {{#unless this.isAddingItem}}
             <div class="px-4 py-2 border-t border-gray-100 dark:border-gray-700">
-                <Button
-                    @icon="plus"
-                    @type="default"
-                    @size="sm"
-                    @text="Add Line Item"
-                    @onClick={{this.startAddingItem}}
-                    @disabled={{this.isReadOnly}}
-                />
+                <Button @icon="plus" @type="default" @size="sm" @text="Add Line Item" @onClick={{this.startAddingItem}} @disabled={{this.isReadOnly}} />
             </div>
         {{/unless}}
     </ContentPanel>

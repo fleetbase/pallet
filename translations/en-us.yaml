@@ -446,6 +446,7 @@ supplier:
 
 # Purchase Order translations
 purchase-order:
+  save-before-line-items: Save this purchase order first, then add its line items here.
   no-line-items: No line items on this purchase order.
   sections:
     details: Details
@@ -503,6 +504,7 @@ purchase-order:
 
 # Sales Order translations
 sales-order:
+  save-before-line-items: Save this sales order first, then add its line items here.
   no-line-items: No line items on this sales order.
   sections:
     details: Details
