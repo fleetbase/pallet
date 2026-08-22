@@ -1,7 +1,8 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
+import { action, get } from '@ember/object';
+import { getOwner } from '@ember/application';
 import { isBlank } from '@ember/utils';
 import { task, timeout } from 'ember-concurrency';
 
@@ -120,6 +121,38 @@ export default class InventoryIndexController extends Controller {
     @tracked product;
 
     /**
+     * Products routinely have no photo, and an <img> with no src draws the
+     * browser's broken-image glyph in every row.
+     *
+     * `getOwner` inside a mounted engine resolves the engine's own config, which
+     * is why Pallet declares defaultValues of its own — the console's copy is not
+     * visible from in here.
+     */
+    get placeholderImage() {
+        const config = getOwner(this)?.resolveRegistration?.('config:environment');
+
+        return get(config ?? {}, 'defaultValues.placeholderImage');
+    }
+
+    /**
+     * An inventory row keeps its product_uuid when the product is deleted, and the
+     * relation then resolves to nothing. The relationship is async, so the proxy
+     * stays truthy even with null content — test the resolved record instead.
+     * Without this the row would render a nameless product rather than saying the
+     * product is gone.
+     */
+    productLabel(row) {
+        const product = get(row ?? {}, 'product');
+        const resolved = product ? (get(product, 'content') ?? product) : null;
+
+        if (get(row ?? {}, 'product_uuid') && !get(resolved ?? {}, 'uuid')) {
+            return this.intl.t('inventory.product-unavailable');
+        }
+
+        return get(resolved ?? {}, 'name');
+    }
+
+    /**
      * All columns applicable for orders
      *
      * @var {Array}
@@ -132,9 +165,11 @@ export default class InventoryIndexController extends Controller {
             // every row ~109px tall and fitted five on a screen.
             label: this.intl.t('columns.product'),
             valuePath: 'product.name',
-            labelPath: 'product.name',
+            labelValue: (row) => this.productLabel(row),
             identifierPath: 'product.sku',
-            mediaPath: 'product.photo_url',
+            // resolved per row rather than by path: the placeholder comes from the
+            // host config, which is not readable while the class fields initialise
+            mediaUrl: (row) => get(row, 'product.photo_url') || this.placeholderImage,
             metaPaths: [{ path: 'batch.batch_number', style: 'badge' }],
             imageSizeClass: 'h-5 w-5',
             showStatusDot: false,
