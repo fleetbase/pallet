@@ -1,96 +1,66 @@
-<Layout::Section::Header @title={{t "operations.waves.title"}}>
-    <div class="text-sm text-gray-500 dark:text-gray-300">Coordinate grouped warehouse execution for outbound work.</div>
-</Layout::Section::Header>
+{{!
+    Was a ContentPanel wrapping a raw <table>: 65px rows of px-4 py-3, one line
+    per pick list so a wave with six of them was a six-line row, the literal words
+    "No actions" in the last column, and no search, sorting, pagination, column
+    picker or bulk select. Same conversion as operations/transfers.
 
-<Layout::Section::Body class="overflow-y-scroll h-full p-4">
-    <ContentPanel @title={{t "operations.waves.create"}} @open={{true}} @wrapperClass="bordered-classic mb-4">
-        <div class="grid grid-cols-1 gap-3 text-xs lg:grid-cols-5">
-            <InputGroup @name={{t "operations.common.warehouse"}}>
-                <ModelSelect
-                    @modelName="warehouse"
-                    @selectedModel={{this.newWave.warehouse}}
-                    @placeholder={{t "operations.common.warehouse"}}
-                    @triggerClass="form-select form-input"
-                    @infiniteScroll={{false}}
-                    @renderInPlace={{true}}
-                    @onChange={{this.setWaveWarehouse}}
-                    as |model|
-                >
-                    {{n-a (or model.name model.address)}}
-                </ModelSelect>
-            </InputGroup>
+    The screen's description used to be passed as a block to
+    Layout::Section::Header, whose only yield sits inside the actions wormhole —
+    so a sentence of prose was rendering where the buttons go. Dropped, as on
+    transfers; FleetOps resource lists do not carry one.
+}}
+<Layout::Resource::Tabular
+    @title={{t "operations.waves.title"}}
+    @searchQuery={{this.query}}
+    @onSearch={{perform this.search}}
+    @data={{@model}}
+    @columns={{this.columns}}
+    @page={{this.page}}
+    @onPageChange={{fn (mut this.page)}}
+    @setupTable={{fn (mut this.table)}}
+    @controller={{this}}
+    @onPressNew={{this.startCreatingWave}}
+/>
 
-            <InputGroup @name={{t "operations.common.type"}}>
-                <Select class="w-full form-input form-select" @options={{this.waveTypes}} @value={{this.newWave.type}} @onSelect={{this.setType}} @humanize={{true}} />
-            </InputGroup>
+{{#if this.isCreatingWave}}
+    <Overlay @position="right" @noBackdrop={{true}} @fullHeight={{true}} @isResizable={{true}} @width="720px">
+        <Overlay::Header @title={{t "operations.waves.create"}} @hideStatusDot={{true}}>
+            <:actions>
+                <Button @icon="check" @type="primary" @text={{t "common.create"}} @onClick={{this.createWave}} @wrapperClass="mr-2" />
+                <Button @type="default" @icon="times" @helpText={{t "common.cancel"}} @onClick={{this.cancelCreatingWave}} />
+            </:actions>
+        </Overlay::Header>
 
-            <InputGroup @name={{t "operations.common.priority"}}>
-                <Input @value={{this.newWave.priority}} @type="number" class="w-full form-input" />
-            </InputGroup>
+        <Overlay::Body @wrapperClass="px-4 pt-4" @increaseInnerBodyHeightBy={{700}}>
+            <div class="grid grid-cols-1 gap-2 text-xs lg:grid-cols-2 no-input-group-padding">
+                <InputGroup @name={{t "operations.common.warehouse"}}>
+                    <ModelSelect
+                        @modelName="warehouse"
+                        @selectedModel={{this.newWave.warehouse}}
+                        @placeholder={{t "operations.common.warehouse"}}
+                        @triggerClass="form-select form-input"
+                        @infiniteScroll={{false}}
+                        @renderInPlace={{true}}
+                        @onChange={{this.setWaveWarehouse}}
+                        as |model|
+                    >
+                        {{n-a (or model.name model.address)}}
+                    </ModelSelect>
+                </InputGroup>
 
-            <InputGroup @name={{t "operations.common.scheduled"}}>
-                <Input @value={{this.newWave.scheduled_at}} @type="datetime-local" class="w-full form-input" />
-            </InputGroup>
+                <InputGroup @name={{t "operations.common.type"}}>
+                    <Select class="w-full form-input form-select" @options={{this.waveTypes}} @value={{this.newWave.type}} @onSelect={{this.setType}} @humanize={{true}} />
+                </InputGroup>
 
-            <div class="flex items-end">
-                <Button @icon="plus" @type="primary" @text={{t "common.create"}} @onClick={{this.createWave}} @wrapperClass="w-full" />
+                <InputGroup @name={{t "operations.common.priority"}}>
+                    <Input @value={{this.newWave.priority}} @type="number" class="w-full form-input" />
+                </InputGroup>
+
+                <InputGroup @name={{t "operations.common.scheduled"}}>
+                    <Input @value={{this.newWave.scheduled_at}} @type="datetime-local" class="w-full form-input" />
+                </InputGroup>
+
             </div>
-        </div>
-    </ContentPanel>
-
-    <ContentPanel @title={{t "operations.waves.title"}} @open={{true}} @wrapperClass="bordered-classic" @panelBodyWrapperClass="px-0i py-0i">
-        <table class="w-full text-sm">
-            <thead>
-                <tr class="border-b border-gray-200 dark:border-gray-700 text-left text-xs uppercase text-gray-500">
-                    <th class="px-4 py-3">Wave</th>
-                    <th class="px-4 py-3">Warehouse</th>
-                    <th class="px-4 py-3">Type</th>
-                    <th class="px-4 py-3">Status</th>
-                    <th class="px-4 py-3">Pick Lists</th>
-                    <th class="px-4 py-3 text-right">Progress</th>
-                    <th class="px-4 py-3 text-right">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each @model as |wave|}}
-                    <tr class="border-b border-gray-100 dark:border-gray-800">
-                        <td class="px-4 py-3 font-medium">{{n-a wave.wave_number}}</td>
-                        <td class="px-4 py-3">{{n-a wave.warehouse.name}}</td>
-                        <td class="px-4 py-3">{{n-a wave.type}}</td>
-                        <td class="px-4 py-3"><Badge @status="info">{{n-a wave.status}}</Badge></td>
-                        <td class="px-4 py-3">
-                            <div class="flex max-w-xs flex-col gap-1">
-                                {{#each wave.pickLists as |pickList|}}
-                                    <div class="truncate text-xs text-gray-600 dark:text-gray-300">
-                                        {{n-a (or pickList.pick_list_number pickList.public_id)}}
-                                        ·
-                                        {{n-a pickList.status}}
-                                    </div>
-                                {{else}}
-                                    <span class="text-xs text-gray-400">No pick lists</span>
-                                {{/each}}
-                            </div>
-                        </td>
-                        <td class="px-4 py-3 text-right">{{wave.completed_pick_lists}} / {{wave.total_pick_lists}}</td>
-                        <td class="px-4 py-3">
-                            <div class="flex items-center justify-end gap-2">
-                                {{#if (eq wave.status "pending")}}
-                                    <Button @icon="play" @type="primary" @size="xs" @text={{t "operations.common.start"}} @onClick={{fn this.startWave wave}} />
-                                    <Button @icon="paper-plane" @type="default" @size="xs" @text={{t "operations.waves.release"}} @onClick={{fn this.releaseWave wave}} />
-                                {{else if (eq wave.status "released")}}
-                                    <Button @icon="play" @type="primary" @size="xs" @text={{t "operations.common.start"}} @onClick={{fn this.startWave wave}} />
-                                {{else if (eq wave.status "in_progress")}}
-                                    <Button @icon="check" @type="success" @size="xs" @text={{t "operations.common.complete"}} @onClick={{fn this.completeWave wave}} />
-                                {{else}}
-                                    <span class="text-xs text-gray-400">No actions</span>
-                                {{/if}}
-                            </div>
-                        </td>
-                    </tr>
-                {{else}}
-                    <tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">No waves yet.</td></tr>
-                {{/each}}
-            </tbody>
-        </table>
-    </ContentPanel>
-</Layout::Section::Body>
+        </Overlay::Body>
+    </Overlay>
+{{/if}}

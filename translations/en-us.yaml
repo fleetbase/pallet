@@ -182,6 +182,12 @@ operations:
     description: Group fulfillment work into picking waves.
     create: Create Wave
     release: Release
+    actions-menu: Wave Actions
+    no-actions: No actions available
+    columns:
+      wave: Wave
+      pick-lists: Pick Lists
+      progress: Progress
   cycle-counts:
     title: Cycle Counts
     description: Run and review inventory count workflows.
