@@ -1,14 +1,145 @@
 import Controller from '@ember/controller';
-import { action } from '@ember/object';
+import { action, get } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import { isBlank } from '@ember/utils';
+import { task, timeout } from 'ember-concurrency';
 
 export default class OperationsCycleCountsController extends Controller {
     @service currentUser;
     @service fetch;
     @service hostRouter;
+    @service intl;
     @service notifications;
     @service store;
+
+    queryParams = ['page', 'limit', 'sort', 'query', 'status'];
+
+    @tracked page = 1;
+    @tracked limit;
+    @tracked sort = '-created_at';
+    @tracked query;
+    @tracked status;
+    @tracked isCreatingCycleCount = false;
+
+    /**
+     * The count sheet — the nested items table where quantities are typed — is
+     * genuinely the working surface here, so unlike the other operations screens
+     * this one drives Table directly for @canExpand. Layout::Resource::Tabular
+     * cannot host it: its only block replaces the Table.
+     */
+    @tracked columns = [
+        {
+            label: this.intl.t('operations.cycle-counts.columns.count'),
+            valuePath: 'count_number',
+            cellComponent: 'click-to-copy',
+            width: '170px',
+            resizable: true,
+            sortable: true,
+        },
+        {
+            label: this.intl.t('operations.common.warehouse'),
+            valuePath: 'warehouse.name',
+            cellComponent: 'table/cell/base',
+            width: '170px',
+            resizable: true,
+            sortable: false,
+        },
+        {
+            label: this.intl.t('operations.cycle-counts.zone'),
+            valuePath: 'zone.name',
+            cellComponent: 'table/cell/base',
+            width: '140px',
+            resizable: true,
+            sortable: false,
+        },
+        {
+            label: this.intl.t('operations.cycle-counts.columns.assigned-to'),
+            valuePath: 'assignedTo.name',
+            cellComponent: 'table/cell/base',
+            width: '150px',
+            resizable: true,
+            sortable: false,
+        },
+        {
+            label: this.intl.t('common.status'),
+            valuePath: 'status',
+            cellComponent: 'table/cell/status',
+            width: '130px',
+            resizable: true,
+            sortable: true,
+        },
+        {
+            label: this.intl.t('operations.cycle-counts.columns.accuracy'),
+            valuePath: 'accuracy_percentage',
+            cellComponent: 'cell/count',
+            width: '100px',
+            resizable: true,
+            sortable: false,
+        },
+        {
+            label: '',
+            cellComponent: 'table/cell/dropdown',
+            ddButtonText: false,
+            ddButtonIcon: 'ellipsis-h',
+            ddButtonIconPrefix: 'fas',
+            ddMenuLabel: this.intl.t('operations.cycle-counts.actions-menu'),
+            cellClassNames: 'overflow-visible',
+            wrapperClass: 'flex items-center justify-end mx-2',
+            width: '70px',
+            actions: [
+                {
+                    label: this.intl.t('operations.common.start'),
+                    icon: 'play',
+                    fn: this.startCycleCount,
+                    isVisible: (count) => get(count, 'status') === 'pending',
+                },
+                {
+                    label: this.intl.t('operations.common.complete'),
+                    icon: 'check',
+                    fn: this.completeCycleCount,
+                    isVisible: (count) => get(count, 'status') === 'in_progress',
+                },
+                {
+                    label: this.intl.t('operations.common.approve'),
+                    icon: 'thumbs-up',
+                    fn: this.approveCycleCount,
+                    isVisible: (count) => get(count, 'status') === 'completed',
+                },
+                {
+                    label: this.intl.t('operations.cycle-counts.no-actions'),
+                    disabled: true,
+                    isVisible: (count) => ['approved', 'cancelled'].includes(get(count, 'status')),
+                },
+            ],
+            sortable: false,
+            filterable: false,
+            resizable: false,
+            searchable: false,
+        },
+    ];
+
+    @task({ restartable: true }) *search({ target: { value } }) {
+        if (isBlank(value)) {
+            this.query = null;
+            return;
+        }
+
+        if (this.page > 1) {
+            this.page = 1;
+        }
+
+        yield timeout(250);
+        this.query = value;
+    }
+
+    @action startCreatingCycleCount() {
+        this.isCreatingCycleCount = true;
+    }
+
+    @action cancelCreatingCycleCount() {
+        this.isCreatingCycleCount = false;
+    }
 
     /**
      * The vocabulary CycleCount::boot() documents and normalises to. The form offered a
@@ -69,6 +200,7 @@ export default class OperationsCycleCountsController extends Controller {
             });
             await cycleCount.save();
             this.notifications.success('Cycle count created.');
+            this.isCreatingCycleCount = false;
             this.resetNewCycleCount();
             this.hostRouter.refresh();
         } catch (error) {

@@ -163,6 +163,7 @@ operations:
     start: Start
     complete: Complete
     approve: Approve
+    location: Location
   transfers:
     title: Transfers
     description: Track stock movement between warehouses from request through receipt.
@@ -197,6 +198,17 @@ operations:
     zone: Zone
     zone-placeholder: Optional zone
     record: Record
+    actions-menu: Cycle Count Actions
+    no-actions: No actions available
+    no-items: No items on this count.
+    columns:
+      count: Count
+      assigned-to: Assigned To
+      accuracy: Accuracy
+      item: Item
+      expected: Expected
+      counted: Counted
+      variance: Variance
   pick-lists:
     title: Pick Lists
     description: Manage picking work for outbound orders.
