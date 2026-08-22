@@ -127,6 +127,7 @@ common:
   'yes': Yes
   save: Save
   cancel: Cancel
+  close: Close
   delete: Delete
   edit: Edit
   view: View
@@ -229,6 +230,10 @@ operations:
     line: Line
     lookup: Lookup
     clear: Clear
+    actions-menu: Reservation Actions
+    no-actions: No actions available
+    columns:
+      context: Storefront Context
 
 # Dashboard widgets
 widgets:

@@ -1,4 +1,5 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
+import { computed } from '@ember/object';
 
 export default class InventoryReservationModel extends Model {
     @attr('string') uuid;
@@ -34,4 +35,14 @@ export default class InventoryReservationModel extends Model {
     @attr() meta;
     @attr('date') created_at;
     @attr('date') updated_at;
+
+    /**
+     * The list stacked checkout, cart, line and key on four lines in one cell, so
+     * every row was four lines tall whether or not the reservation came from a
+     * storefront at all. The key identifies the context on its own; the rest are
+     * their own hidden columns for when someone needs them.
+     */
+    @computed('storefront_reservation_key', 'storefront_checkout_uuid', 'storefront_cart_uuid') get storefrontContextLabel() {
+        return this.storefront_reservation_key ?? this.storefront_checkout_uuid ?? this.storefront_cart_uuid ?? null;
+    }
 }

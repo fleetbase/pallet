@@ -1,17 +1,208 @@
 import Controller from '@ember/controller';
-import { action } from '@ember/object';
+import { action, get } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import { isBlank } from '@ember/utils';
+import { task, timeout } from 'ember-concurrency';
 
 export default class OperationsReservationsController extends Controller {
     @service fetch;
     @service hostRouter;
+    @service intl;
     @service notifications;
     @service store;
+
+    queryParams = ['page', 'limit', 'sort', 'query', 'status'];
+
+    @tracked page = 1;
+    @tracked limit;
+    @tracked sort = '-created_at';
+    @tracked query;
+    @tracked status;
+    @tracked table;
 
     @tracked newReservation = { type: 'hard', quantity: 1 };
     @tracked storefrontContext = {};
     @tracked contextReservations = null;
+    @tracked isCreatingReservation = false;
+    @tracked isLookingUpContext = false;
+
+    /**
+     * Was a hand-rolled <table> whose Storefront Context cell stacked checkout,
+     * cart, line and key on four lines, so every row was four lines tall whether
+     * the reservation came from a storefront or not. Those are their own columns
+     * now, hidden until someone picks them.
+     */
+    @tracked columns = [
+        {
+            label: this.intl.t('operations.common.product'),
+            valuePath: 'product.name',
+            cellComponent: 'table/cell/base',
+            width: '200px',
+            resizable: true,
+            sortable: false,
+        },
+        {
+            label: this.intl.t('operations.common.variant'),
+            valuePath: 'variant.display_name',
+            cellComponent: 'table/cell/base',
+            width: '150px',
+            resizable: true,
+            sortable: false,
+        },
+        {
+            label: this.intl.t('operations.common.warehouse'),
+            valuePath: 'warehouse.name',
+            cellComponent: 'table/cell/base',
+            width: '170px',
+            resizable: true,
+            sortable: false,
+        },
+        {
+            label: this.intl.t('common.status'),
+            valuePath: 'status',
+            cellComponent: 'table/cell/status',
+            width: '120px',
+            resizable: true,
+            sortable: true,
+            filterable: true,
+            filterParam: 'status',
+            filterComponent: 'filter/select',
+            filterOptions: ['active', 'released', 'fulfilled', 'expired'],
+        },
+        {
+            label: this.intl.t('operations.common.quantity'),
+            valuePath: 'quantity',
+            cellComponent: 'cell/count',
+            width: '90px',
+            resizable: true,
+            sortable: true,
+        },
+        {
+            label: this.intl.t('operations.reservations.columns.context'),
+            valuePath: 'storefrontContextLabel',
+            cellComponent: 'click-to-copy',
+            width: '160px',
+            resizable: true,
+            sortable: false,
+        },
+        {
+            label: this.intl.t('operations.reservations.checkout'),
+            valuePath: 'storefront_checkout_uuid',
+            cellComponent: 'click-to-copy',
+            width: '160px',
+            resizable: true,
+            sortable: false,
+            hidden: true,
+        },
+        {
+            label: this.intl.t('operations.reservations.cart'),
+            valuePath: 'storefront_cart_uuid',
+            cellComponent: 'click-to-copy',
+            width: '160px',
+            resizable: true,
+            sortable: false,
+            hidden: true,
+        },
+        {
+            label: this.intl.t('operations.reservations.line'),
+            valuePath: 'storefront_line_uuid',
+            cellComponent: 'click-to-copy',
+            width: '160px',
+            resizable: true,
+            sortable: false,
+            hidden: true,
+        },
+        {
+            label: this.intl.t('operations.reservations.expires'),
+            valuePath: 'expires_at',
+            cellComponent: 'table/cell/base',
+            width: '150px',
+            resizable: true,
+            sortable: true,
+            hidden: true,
+        },
+        {
+            label: '',
+            cellComponent: 'table/cell/dropdown',
+            ddButtonText: false,
+            ddButtonIcon: 'ellipsis-h',
+            ddButtonIconPrefix: 'fas',
+            ddMenuLabel: this.intl.t('operations.reservations.actions-menu'),
+            cellClassNames: 'overflow-visible',
+            wrapperClass: 'flex items-center justify-end mx-2',
+            width: '70px',
+            actions: [
+                {
+                    label: this.intl.t('operations.reservations.release'),
+                    icon: 'unlock',
+                    fn: this.releaseReservation,
+                    isVisible: (reservation) => get(reservation, 'is_active'),
+                },
+                {
+                    label: this.intl.t('operations.reservations.fulfill'),
+                    icon: 'check',
+                    fn: this.fulfillReservation,
+                    isVisible: (reservation) => get(reservation, 'is_active'),
+                },
+                {
+                    label: this.intl.t('operations.reservations.no-actions'),
+                    disabled: true,
+                    isVisible: (reservation) => !get(reservation, 'is_active'),
+                },
+            ],
+            sortable: false,
+            filterable: false,
+            resizable: false,
+            searchable: false,
+        },
+    ];
+
+    /**
+     * The storefront lookup is a support tool, not a warehouse task — it belongs
+     * behind a header action rather than as a second always-open panel competing
+     * with the list for the top of the screen.
+     */
+    get actionButtons() {
+        return [
+            {
+                type: 'default',
+                icon: 'magnifying-glass',
+                text: this.intl.t('operations.reservations.lookup'),
+                onClick: this.startContextLookup,
+            },
+        ];
+    }
+
+    @task({ restartable: true }) *search({ target: { value } }) {
+        if (isBlank(value)) {
+            this.query = null;
+            return;
+        }
+
+        if (this.page > 1) {
+            this.page = 1;
+        }
+
+        yield timeout(250);
+        this.query = value;
+    }
+
+    @action startCreatingReservation() {
+        this.isCreatingReservation = true;
+    }
+
+    @action cancelCreatingReservation() {
+        this.isCreatingReservation = false;
+    }
+
+    @action startContextLookup() {
+        this.isLookingUpContext = true;
+    }
+
+    @action closeContextLookup() {
+        this.isLookingUpContext = false;
+    }
 
     get reservations() {
         return this.contextReservations ?? this.model;
@@ -84,6 +275,7 @@ export default class OperationsReservationsController extends Controller {
             });
             await reservation.save();
             this.notifications.success('Reservation created and stock reserved.');
+            this.isCreatingReservation = false;
             this.resetNewReservation();
             this.hostRouter.refresh();
         } catch (error) {
