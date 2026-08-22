@@ -9,6 +9,8 @@ resource:
   sales-orders: Sales Orders
   suppliers: Suppliers
   warehouses: Warehouses
+  zones: Zones
+  bin-locations: Bin Locations
   audits: Audit Trail
   reports: Reports
   report: Report
@@ -281,6 +283,11 @@ facilities:
     create: Create Bin Location
     bin: Bin
     zone-placeholder: Optional zone
+    barcode: Barcode
+    priority: Priority
+    available: Available
+    is-pickable: Pickable
+    is-replenishable: Replenishable
   zones:
     title: Zones
     list-title: Warehouse Zones
@@ -288,6 +295,7 @@ facilities:
     zone: Zone
     code: Code
     capacity: Capacity
+    temperature-controlled: Temperature Controlled
 
 # Shared record status words
 status:

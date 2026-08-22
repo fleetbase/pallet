@@ -32,8 +32,24 @@ export default buildRoutes(function () {
                 this.route('edit', { path: '/edit/:public_id' });
             });
         });
-        this.route('locations');
-        this.route('zones');
+        this.route('locations', function () {
+            this.route('index', { path: '/' }, function () {
+                this.route('new');
+                this.route('details', { path: '/:public_id' }, function () {
+                    this.route('index', { path: '/' });
+                });
+                this.route('edit', { path: '/edit/:public_id' });
+            });
+        });
+        this.route('zones', function () {
+            this.route('index', { path: '/' }, function () {
+                this.route('new');
+                this.route('details', { path: '/:public_id' }, function () {
+                    this.route('index', { path: '/' });
+                });
+                this.route('edit', { path: '/edit/:public_id' });
+            });
+        });
     });
     this.route('inventory', function () {
         this.route('low-stock');

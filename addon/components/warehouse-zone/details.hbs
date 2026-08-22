@@ -1,0 +1,58 @@
+<div class="overflow-y-scroll h-full">
+    <ContentPanel @title={{t "warehouse.sections.details"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 text-xs">
+            <div class="field-info-container">
+                <div class="field-name">{{t "common.id"}}</div>
+                <div class="field-value">{{n-a @resource.public_id}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "common.name"}}</div>
+                <div class="field-value">{{n-a @resource.name}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "facilities.zones.code"}}</div>
+                <div class="field-value">{{n-a @resource.code}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "operations.common.warehouse"}}</div>
+                <div class="field-value">{{n-a @resource.warehouse.name}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "operations.common.type"}}</div>
+                <div class="field-value">{{smart-humanize (n-a @resource.type)}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "warehouse.fields.status"}}</div>
+                <div class="field-value">
+                    {{#if (eq @resource.status "active")}}
+                        <Badge @status="success">{{t "common.active"}}</Badge>
+                    {{else if (eq @resource.status "inactive")}}
+                        <Badge @status="error">{{t "common.inactive"}}</Badge>
+                    {{else}}
+                        <Badge @status="warning">{{smart-humanize (n-a @resource.status)}}</Badge>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "facilities.zones.capacity"}}</div>
+                <div class="field-value">{{n-a @resource.capacity}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "warehouse.fields.utilization"}}</div>
+                <div class="field-value">{{@resource.utilization_percentage}}%</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "facilities.zones.temperature-controlled"}}</div>
+                <div class="field-value">{{#if @resource.temperature_controlled}}<Badge @status="success">{{t "common.yes"}}</Badge>{{else}}<Badge @status="default">{{t
+                                "common.no"
+                            }}</Badge>{{/if}}</div>
+            </div>
+        </div>
+    </ContentPanel>
+
+    <CustomField::Yield @subject={{@resource}} @viewMode={{true}} @wrapperClass="bordered-top" />
+
+    <ContentPanel @title={{t "common.metadata"}} @open={{true}} @wrapperClass="bordered-top" @panelBodyWrapperClass={{unless (is-object-empty @resource.meta) "px-0i" ""}}>
+        <MetadataViewer @metadata={{@resource.meta}} />
+    </ContentPanel>
+</div>
