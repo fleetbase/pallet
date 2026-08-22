@@ -161,6 +161,17 @@ Check the component's own source before assuming an argument name.
   `FileUpload @for` / `@multiple`, `CoordinatesInput @onInit`,
   `PhoneInput @autocomplete`.
 
+**Blocks are as easy to get wrong as arguments, and fail just as silently.** Audit
+both. Three module-wide defects came from blocks alone:
+
+- `Overlay::Header` renders its left section — title, status, createdAt — only
+  when it has **no default block**. Buttons belong in `<:actions>`.
+- `Layout::Resource::Tabular` has no `subheader` block. Its only block *replaces
+  the table*. Anything else goes above the component.
+- `Layout::Section::Header`'s only `{{yield}}` sits inside the actions wormhole,
+  so a block passed to it renders where the buttons go, not under the title. Use
+  `@subtitle`, or leave it out — FleetOps resource lists carry no description.
+
 Every entry above came from reading the component's own source. An argument the
 component never reads is worse than no argument: it reads as a working control.
 
