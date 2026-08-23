@@ -146,13 +146,17 @@ export default class PurchaseOrdersIndexEditController extends Controller {
      * @memberof PurchaseOrdersIndexEditController
      */
     confirmContinueWithUnsavedChanges(purchaseOrder, options = {}) {
-        // cancel() passes a route name rather than a modal options hash
+        // cancel() passes a route name rather than a modal options hash. That route
+        // is the list, which has no dynamic segment — passing the record to it threw
+        // "More context objects were passed than there are dynamic segments", so the
+        // modal closed, rollbackAttributes() had already discarded the edits, and the
+        // transition never ran. Cancel lost your work and left you on the form.
         if (typeof options === 'string') {
             const routeName = options;
             options = {
                 confirm: async () => {
                     purchaseOrder.rollbackAttributes();
-                    await this.hostRouter.transitionTo(routeName, purchaseOrder);
+                    await this.hostRouter.transitionTo(routeName);
                 },
             };
         }

@@ -405,9 +405,11 @@ product:
     is-perishable: Perishable
     is-serialized: Serialized
     lot-tracked: Track Lot Numbers
+    make-primary: Make Primary
     name-placeholder: Product name
     no-images: No images.
     no-variants: Tracked as a single SKU.
+    option-values: Options
     perishable: Perishable
     perishable-item: Perishable Item
     reorder-point: Reorder Point
@@ -416,11 +418,13 @@ product:
     requires-quality-check: Requires Quality Check
     reserved-stock: Reserved Stock
     sale-price: Sale Price
+    save-first: Save the product first — variants and images attach to the saved record.
     select-category: Select Category
     select-supplier: Select Supplier
     serialized: Serialized
     shelf-life-days: Shelf Life (Days)
     sku: SKU
+    storefront-variant: Storefront Variant
     supplier: Supplier
     total-stock: Total Stock
     track-lot-numbers: Track Lot Numbers
@@ -428,6 +432,11 @@ product:
     tracking: Tracking
     unit-cost: Unit Cost
     unit-price: Unit Price
+    variant-name: Variant Name
+  actions:
+    add-variant: Add Variant
+    select-files: Select Files
+    upload-images: Upload Images
 
 # Inventory translations
 inventory:

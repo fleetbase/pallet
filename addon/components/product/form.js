@@ -50,49 +50,41 @@ export default class ProductFormComponent extends Component {
         return (this.args.resource?.files?.length ?? 0) > 0;
     }
 
-    get stockStatusLabel() {
-        if (this.args.resource?.is_out_of_stock) {
-            return 'Out of stock';
-        }
-
-        if (this.isLowStock) {
-            return 'Low stock';
-        }
-
-        return 'Available';
-    }
-
-    get availableStock() {
-        return Number(this.args.resource?.available_stock ?? 0);
-    }
-
-    get reservedStock() {
-        return Number(this.args.resource?.reserved_stock ?? 0);
-    }
-
-    get totalStock() {
-        return Number(this.args.resource?.total_stock ?? 0);
-    }
-
-    get stockStatusBadge() {
-        if (this.args.resource?.is_out_of_stock) {
-            return 'danger';
-        }
-
-        if (this.isLowStock) {
-            return 'warning';
-        }
-
-        return 'success';
-    }
-
-    get isLowStock() {
-        const reorderPoint = Number(this.args.resource?.reorder_point ?? 0);
-        return reorderPoint > 0 && this.availableStock <= reorderPoint;
-    }
-
     getRecordUuid(record) {
         return record?.uuid ?? record?.id;
+    }
+
+    /**
+     * MoneyInput and UnitInput echo the value they were handed back through their
+     * change handler. Four MoneyInputs and three UnitInputs share one `currency`
+     * and one `dimensions_unit` here, so with `fn (mut ...)` the second instance
+     * wrote the property the first had already read in the same render, and Ember
+     * asserted: "You attempted to update `currency` ... but it had already been
+     * used previously in the same computation." Writing only on a real change
+     * breaks that loop.
+     */
+    @action setCurrency(currency) {
+        if (!this.args.resource || this.args.resource.currency === currency) {
+            return;
+        }
+
+        this.args.resource.currency = currency;
+    }
+
+    @action setDimensionsUnit(unit) {
+        if (!this.args.resource || this.args.resource.dimensions_unit === unit) {
+            return;
+        }
+
+        this.args.resource.dimensions_unit = unit;
+    }
+
+    @action setWeightUnit(unit) {
+        if (!this.args.resource || this.args.resource.weight_unit === unit) {
+            return;
+        }
+
+        this.args.resource.weight_unit = unit;
     }
 
     @action setStatus(option) {

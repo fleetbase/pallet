@@ -50,20 +50,27 @@ export default class ZonesIndexEditController extends Controller {
 
     @action view() {
         if (this.model.hasDirtyAttributes) {
-            return this.confirmContinueWithUnsavedChanges(this.model, 'console.pallet.facilities.zones.index.details');
+            return this.confirmContinueWithUnsavedChanges(this.model, 'console.pallet.facilities.zones.index.details', this.model);
         }
 
         return this.hostRouter.transitionTo('console.pallet.facilities.zones.index.details', this.model);
     }
 
-    confirmContinueWithUnsavedChanges(record, routeName) {
+    /**
+     * The list route has no dynamic segment, so passing the record to it threw
+     * "More context objects were passed than there are dynamic segments" — the
+     * modal closed, rollbackAttributes() had already discarded the edits, and the
+     * transition never ran. Cancel lost your work and left you on the form.
+     * Models are passed explicitly now, and only where the route takes one.
+     */
+    confirmContinueWithUnsavedChanges(record, routeName, ...models) {
         return this.modalsManager.confirm({
             title: this.intl.t('common.continue-without-saving'),
             body: this.intl.t('common.continue-without-saving-prompt', { resource: 'Zone' }),
             acceptButtonText: this.intl.t('common.continue'),
             confirm: async () => {
                 record.rollbackAttributes();
-                await this.hostRouter.transitionTo(routeName, record);
+                await this.hostRouter.transitionTo(routeName, ...models);
             },
         });
     }
