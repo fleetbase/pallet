@@ -20,6 +20,39 @@
 }
 
 /**
+ * The same shape as the rule above, for the panels that have no footer.
+ *
+ * With @fullHeight, ember-ui gives BOTH the panel and its body `height: 100%`.
+ * The panel is a plain block, so the body starts below the header and then runs
+ * a full panel-height further down: measured on the product panel, panel 57-941
+ * but body 105-989, so the last 48px sat below the window and the bottom panel
+ * could not be scrolled to at all. Every Pallet resource panel opts in with
+ * class="pallet-overlay-fill", which lands on .next-content-overlay-panel via
+ * Overlay's ...attributes.
+ */
+.next-content-overlay.full-height > .next-content-overlay-panel-container > .next-content-overlay-panel.pallet-overlay-fill {
+    display: flex;
+    flex-direction: column;
+}
+
+/* one class deeper than ember-ui's own chain, or its height: 100% wins */
+.next-content-overlay.full-height > .next-content-overlay-panel-container > .next-content-overlay-panel.pallet-overlay-fill .next-content-overlay-panel-body {
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+}
+
+.next-content-overlay.full-height
+    > .next-content-overlay-panel-container
+    > .next-content-overlay-panel.pallet-overlay-fill
+    .next-content-overlay-panel-body
+    .next-content-overlay-panel-body-inner-wrapper {
+    min-height: 0;
+    max-height: none;
+}
+
+/**
  * ember-ui reserves room for the floating pagination bar with
  * `.next-table-wrapper table > tbody:after { height: 153px }`. The selector is
  * `table > tbody`, so it also lands on a sub-table nested inside an expanded
