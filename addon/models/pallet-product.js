@@ -148,6 +148,30 @@ export default class PalletProductModel extends Model {
         return flags.length ? flags.join(' · ') : 'Standard';
     }
 
+    /**
+     * product/details assembled these inline, so a product with nothing measured
+     * rendered "0 x 0 x 0 -" and "0 -". Composed here they collapse to null and
+     * the detail panel drops the row instead of printing zeroes as if they were
+     * recorded measurements.
+     */
+    get dimensionsSummary() {
+        if (!this.length && !this.width && !this.height) {
+            return null;
+        }
+
+        const unit = this.dimensions_unit ? ` ${this.dimensions_unit}` : '';
+
+        return `${this.length ?? 0} \u00d7 ${this.width ?? 0} \u00d7 ${this.height ?? 0}${unit}`;
+    }
+
+    get weightSummary() {
+        if (!this.weight) {
+            return null;
+        }
+
+        return this.weight_unit ? `${this.weight} ${this.weight_unit}` : `${this.weight}`;
+    }
+
     get storefrontLinkStatus() {
         return this.storefront_product_uuid ? 'linked' : 'unlinked';
     }

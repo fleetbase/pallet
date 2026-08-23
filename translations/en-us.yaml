@@ -383,7 +383,19 @@ product:
     dimensions: Dimensions
     inventory-info: Inventory Information
     inventory-settings: Inventory Settings
+    measurements: Measurements & Tracking
+    media: Media
     pricing: Pricing
+    stock: Stock
+    storefront: Storefront
+    variants: Variants
+  groups:
+    handling: Handling
+    identity: Identity
+    on-hand: On Hand
+    organization: Organization
+    physical: Physical
+    thresholds: Thresholds
   fields:
     available-stock: Available Stock
     barcode: Barcode
@@ -394,12 +406,15 @@ product:
     is-serialized: Serialized
     lot-tracked: Track Lot Numbers
     name-placeholder: Product name
+    no-images: No images.
+    no-variants: Tracked as a single SKU.
     perishable: Perishable
     perishable-item: Perishable Item
     reorder-point: Reorder Point
     reorder-quantity: Reorder Quantity
     requires-qc: Requires QC
     requires-quality-check: Requires Quality Check
+    reserved-stock: Reserved Stock
     sale-price: Sale Price
     select-category: Select Category
     select-supplier: Select Supplier
