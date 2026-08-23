@@ -51,6 +51,17 @@ export default class PalletProductModel extends Model {
     @attr('number') reserved_stock;
     @attr('boolean') is_out_of_stock;
     @attr('raw') inventory_summary;
+
+    /*
+     * The API has always sent the eager-loaded category object (Product::$with
+     * includes it, and the resource emits it under `category`), but nothing on
+     * this model declared it, so Ember Data dropped it from every payload and
+     * `category.name` was permanently undefined. The old detail panel hid that
+     * behind a hardcoded "Uncategorized". It is `raw` rather than a belongsTo
+     * because there is no category model registered in the engine, and it is not
+     * in the backend's $fillable, so echoing it back on save is a no-op.
+     */
+    @attr('raw') category;
     @attr('string') status;
     @attr('string') slug;
     @attr('string') photo_url;
