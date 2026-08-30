@@ -49,13 +49,15 @@
     bulk-delete options — that, not a @canCreate flag, is how Tabular hides them.
 }}
 {{!
-    Tabular with a block: the block replaces its Table but keeps the search and filter
-    chrome around it, which is how this screen gets expandable rows without losing the
-    header it already had.
+    The expandable before/after diff belongs here — §G's must-never is a raw JSON blob in
+    the row — and Audit::Diff is written and committed for it. It is not wired up yet:
+    the build that first introduced components/audit/ failed on a Broccoli symlink, and
+    the dev server has been serving a cache that omits that directory ever since. The
+    component does not resolve, so the row threw on expand.
 
-    §G's must-never is showing before and after as a raw JSON blob in the row. The diff
-    is a field-by-field table in the expanded row instead, and only the fields that
-    actually changed appear in it.
+    Rather than leave the screen broken, the table is back to Tabular's own until the
+    dev server is restarted and the directory is picked up. Re-adding it is this block
+    plus the <Table> that was here — see the commit that removed it.
 }}
 <Layout::Resource::Tabular
     @resource="audit"
@@ -68,25 +70,6 @@
     @onPageChange={{fn (mut this.page)}}
     @setupTable={{fn (mut this.table)}}
     @controller={{this}}
->
-    <Table
-        @rows={{@model}}
-        @columns={{this.columns}}
-        @canExpand={{true}}
-        @selectable={{false}}
-        @pagination={{true}}
-        @paginationMeta={{@model.meta}}
-        @page={{this.page}}
-        @onPageChange={{fn (mut this.page)}}
-        as |Table|
-    >
-        <Table.head />
-        <Table.body as |body|>
-            <body.expanded-row as |audit|>
-                <Audit::Diff @resource={{audit}} />
-            </body.expanded-row>
-        </Table.body>
-    </Table>
-</Layout::Resource::Tabular>
+ />
 
 {{outlet}}
