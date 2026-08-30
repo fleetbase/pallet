@@ -69,7 +69,7 @@ export default class ZonesIndexController extends Controller {
                 filterComponent: 'filter/string',
             },
             {
-                label: this.intl.t('warehouse.fields.code'),
+                label: this.intl.t('common.code'),
                 valuePath: 'code',
                 width: '110px',
                 cellComponent: 'table/cell/base',
@@ -135,6 +135,7 @@ export default class ZonesIndexController extends Controller {
                 valuePath: 'createdAt',
                 sortParam: 'created_at',
                 width: '140px',
+                hidden: true,
                 cellComponent: 'table/cell/base',
                 resizable: true,
                 sortable: true,

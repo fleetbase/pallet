@@ -99,6 +99,7 @@ navigation:
     description: Review warehouse and inventory audit events.
 
 common:
+  code: Code
   active: Active
   address: Address
   city: City
