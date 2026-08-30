@@ -500,6 +500,9 @@ class Inventory extends Model
                 SUM(pallet_inventories.quantity) as total_quantity,
                 SUM(pallet_inventories.available_quantity) as total_available_quantity,
                 SUM(pallet_inventories.reserved_quantity) as total_reserved_quantity,
+                SUM(pallet_inventories.in_transit) as total_in_transit,
+                SUM(pallet_inventories.on_order) as total_on_order,
+                SUM(pallet_inventories.quarantined) as total_quarantined,
                 MIN(pallet_inventories.status) as summary_status,
                 MAX(pallet_inventories.min_quantity) as minimum_quantity,
                 MAX(pallet_inventories.expiry_date_at) as latest_expiry_date_at

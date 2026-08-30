@@ -1,5 +1,6 @@
 <?php
 
+use Fleetbase\Pallet\Http\Resources\Internal\v1\IndexInventory as IndexInventoryResource;
 use Fleetbase\Pallet\Http\Resources\Internal\v1\Inventory as InventoryResource;
 use Fleetbase\Pallet\Http\Resources\Internal\v1\StockTransaction as StockTransactionResource;
 use Fleetbase\Pallet\Models\Inventory;
@@ -97,4 +98,30 @@ test('the stock transaction resource exposes balance_after', function () {
 
     expect($payload)->toHaveKey('balance_after')
         ->and($payload['balance_after'])->toBe(42);
+});
+
+test('the LIST resource exposes the new slots too, not just the detail resource', function () {
+    // The list screen reads IndexInventory + summarizeByProduct, not the Inventory
+    // resource. Patching only the detail resource left every list row undefined —
+    // caught in the browser, not by the first pass of these tests.
+    $company = (string) Str::uuid();
+    session(['company' => $company]);
+    $product = (string) Str::uuid();
+
+    foreach ([['in_transit' => 4, 'on_order' => 10, 'quarantined' => 2], ['in_transit' => 6, 'on_order' => 5, 'quarantined' => 3]] as $slots) {
+        Inventory::create(array_merge([
+            'company_uuid' => $company,
+            'product_uuid' => $product,
+            'quantity'     => 25,
+            'status'       => 'active',
+        ], $slots));
+    }
+
+    $row     = Inventory::where('pallet_inventories.company_uuid', $company)->summarizeByProduct()->first();
+    $payload = (new IndexInventoryResource($row))->toArray(Request::create('/'));
+
+    expect($payload)->toHaveKeys(['in_transit', 'on_order', 'quarantined'])
+        ->and($payload['in_transit'])->toBe(10)
+        ->and($payload['on_order'])->toBe(15)
+        ->and($payload['quarantined'])->toBe(5);
 });
