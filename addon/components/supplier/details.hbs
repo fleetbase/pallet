@@ -34,7 +34,17 @@
         </div>
     </ContentPanel>
     <CustomField::Yield @subject={{@resource}} @viewMode={{true}} @wrapperClass="bordered-top" />
-    <ContentPanel @title={{t "common.metadata"}} @open={{true}} @wrapperClass="bordered-top" @panelBodyWrapperClass={{unless (is-object-empty @resource.meta) "px-0i" ""}}>
+    {{! What have we ordered from them, and what do they supply. Both collapsed and
+        loaded on open — most visits to a supplier want neither. }}
+    <ContentPanel @title={{t "supplier.sections.purchase-orders"}} @open={{false}} @wrapperClass="bordered-top" @panelBodyWrapperClass="px-0i">
+        <Supplier::PurchaseOrders @resource={{@resource}} />
+    </ContentPanel>
+
+    <ContentPanel @title={{t "supplier.sections.products"}} @open={{false}} @wrapperClass="bordered-top" @panelBodyWrapperClass="px-0i">
+        <Supplier::Products @resource={{@resource}} />
+    </ContentPanel>
+
+    <ContentPanel @title={{t "common.metadata"}} @open={{false}} @wrapperClass="bordered-top" @panelBodyWrapperClass={{unless (is-object-empty @resource.meta) "px-0i" ""}}>
         <MetadataViewer @metadata={{@resource.meta}} />
     </ContentPanel>
 </div>

@@ -12,4 +12,14 @@ namespace Fleetbase\Pallet\Http\Filter;
  */
 class PurchaseOrderFilter extends PalletFilter
 {
+    /**
+     * Scope purchase orders to one supplier.
+     *
+     * The supplier detail panel answers "what have we ordered from them"; without this
+     * the listing could not be narrowed to a supplier at all.
+     */
+    public function supplier(?string $supplierUuid)
+    {
+        $this->builder->where('supplier_uuid', $supplierUuid);
+    }
 }

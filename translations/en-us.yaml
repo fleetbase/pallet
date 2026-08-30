@@ -558,8 +558,13 @@ warehouse:
 
 # Supplier translations
 supplier:
+  empty:
+    no-products: No products are supplied by this supplier.
+    no-purchase-orders: No purchase orders have been raised with this supplier.
   sections:
     details: Details
+    products: Products Supplied
+    purchase-orders: Purchase Orders
   fields:
     name: Supplier Name
     select-type: Select Supplier Type

@@ -66,6 +66,23 @@ class ProductFilter extends PalletFilter
         $this->builder->searchWhere('weight', $weight);
     }
 
+    /**
+     * Scope products to one supplier.
+     *
+     * `supplier` was already declared in the model's $filterParams, but no method
+     * existed to act on it, so the parameter was accepted and silently ignored — the
+     * listing came back unfiltered and looked like the supplier stocked everything.
+     */
+    public function supplier(?string $supplierUuid)
+    {
+        $this->builder->where('supplier_uuid', $supplierUuid);
+    }
+
+    public function category(?string $categoryUuid)
+    {
+        $this->builder->where('category_uuid', $categoryUuid);
+    }
+
     public function createdAt($createdAt)
     {
         $createdAt = Utils::dateRange($createdAt);
