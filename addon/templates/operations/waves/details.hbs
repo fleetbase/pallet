@@ -1,0 +1,24 @@
+{{!
+    A wave document, on the shape the two order documents and the transfer established.
+
+    Header notes, all learned by measuring: the status pill argument is @badge (@status
+    is ignored), there is no subtitle because the subheader is grid-template-columns
+    1fr 3fr and the title column is a fixed quarter of the width, and the title is
+    nowrap because the badge takes a further 110px of that quarter.
+}}
+<Layout::Container>
+    <Layout::Section>
+        <Layout::Section::Header @title={{@model.wave_number}} @badge={{@model.status}} @titleClass="whitespace-nowrap">
+            {{#each this.actionButtons as |button|}}
+                <Button @icon={{button.icon}} @type={{or button.type "default"}} @text={{button.text}} @disabled={{button.disabled}} @onClick={{button.fn}} @wrapperClass="ml-2" />
+            {{/each}}
+            <Button @icon="list" @type="default" @text={{t "operations.waves.back-to-list"}} @onClick={{transition-to "operations.waves.index"}} @wrapperClass="ml-2" />
+        </Layout::Section::Header>
+
+        <Layout::Section::Body>
+            <div class="space-y-3 p-4">
+                {{outlet}}
+            </div>
+        </Layout::Section::Body>
+    </Layout::Section>
+</Layout::Container>

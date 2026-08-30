@@ -204,6 +204,23 @@ operations:
     release: Release
     actions-menu: Wave Actions
     no-actions: No actions available
+    released: Wave released. Pick lists have been generated.
+    back-to-list: All Waves
+    scheduled-at: Scheduled
+    started-at: Started
+    completed-at: Completed
+    no-pick-lists: This wave has no pick lists yet. Release it to generate them.
+    sections:
+      details: Details
+      progress: Picking Progress
+      pick-lists: Pick Lists
+    groups:
+      scheduling: Scheduling
+    fields:
+      lists-complete: Lists Complete
+      lines: Lines
+      picked: Picked
+      outstanding: Outstanding
     columns:
       wave: Wave
       pick-lists: Pick Lists

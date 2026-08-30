@@ -40,7 +40,8 @@ export default class OperationsWavesController extends Controller {
         {
             label: this.intl.t('operations.waves.columns.wave'),
             valuePath: 'wave_number',
-            cellComponent: 'click-to-copy',
+            cellComponent: 'table/cell/anchor',
+            action: this.viewWave,
             width: '150px',
             resizable: true,
             sortable: true,
@@ -113,6 +114,11 @@ export default class OperationsWavesController extends Controller {
             width: '70px',
             actions: [
                 {
+                    label: this.intl.t('actions.view-details'),
+                    icon: 'eye',
+                    fn: this.viewWave,
+                },
+                {
                     label: this.intl.t('operations.common.start'),
                     icon: 'play',
                     fn: this.startWave,
@@ -155,6 +161,14 @@ export default class OperationsWavesController extends Controller {
 
         yield timeout(250);
         this.query = value;
+    }
+
+    /**
+     * Opens the wave document. The row menu previously held only lifecycle actions, so
+     * there was no way to read a wave's pick lists at all.
+     */
+    @action viewWave(wave) {
+        return this.hostRouter.transitionTo('console.pallet.operations.waves.details', wave.public_id);
     }
 
     @action startCreatingWave() {

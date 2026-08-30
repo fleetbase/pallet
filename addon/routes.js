@@ -113,7 +113,12 @@ export default buildRoutes(function () {
         });
         this.route('cycle-counts');
         this.route('pick-lists');
-        this.route('waves');
+        this.route('waves', function () {
+            this.route('index', { path: '/' });
+            this.route('details', { path: '/:public_id' }, function () {
+                this.route('index', { path: '/' });
+            });
+        });
         this.route('reservations');
     });
     this.route('analytics', function () {
