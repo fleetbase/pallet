@@ -57,7 +57,7 @@ export default class ZonesIndexController extends Controller {
     get columns() {
         return [
             {
-                label: 'Zone',
+                label: this.intl.t('common.name'),
                 valuePath: 'name',
                 width: '180px',
                 cellComponent: 'table/cell/anchor',
@@ -69,7 +69,7 @@ export default class ZonesIndexController extends Controller {
                 filterComponent: 'filter/string',
             },
             {
-                label: 'Code',
+                label: this.intl.t('warehouse.fields.code'),
                 valuePath: 'code',
                 width: '110px',
                 cellComponent: 'table/cell/base',
@@ -80,7 +80,7 @@ export default class ZonesIndexController extends Controller {
                 filterComponent: 'filter/string',
             },
             {
-                label: 'Warehouse',
+                label: this.intl.t('operations.common.warehouse'),
                 valuePath: 'warehouse.name',
                 width: '220px',
                 cellComponent: 'table/cell/anchor',
@@ -90,7 +90,7 @@ export default class ZonesIndexController extends Controller {
                 filterable: false,
             },
             {
-                label: 'Type',
+                label: this.intl.t('common.type'),
                 valuePath: 'type',
                 width: '130px',
                 cellComponent: 'table/cell/base',
@@ -102,7 +102,7 @@ export default class ZonesIndexController extends Controller {
                 filterComponent: 'filter/string',
             },
             {
-                label: 'Status',
+                label: this.intl.t('common.status'),
                 valuePath: 'status',
                 width: '110px',
                 cellComponent: 'table/cell/status',
@@ -113,7 +113,7 @@ export default class ZonesIndexController extends Controller {
                 filterComponent: 'filter/string',
             },
             {
-                label: 'Capacity',
+                label: this.intl.t('warehouse.fields.capacity'),
                 valuePath: 'capacity',
                 width: '100px',
                 cellComponent: 'cell/count',
@@ -122,7 +122,7 @@ export default class ZonesIndexController extends Controller {
                 filterable: false,
             },
             {
-                label: 'Utilization',
+                label: this.intl.t('warehouse.fields.utilisation-percentage'),
                 valuePath: 'utilization_percentage',
                 width: '110px',
                 cellComponent: 'cell/percentage',
@@ -131,8 +131,8 @@ export default class ZonesIndexController extends Controller {
                 filterable: false,
             },
             {
-                label: 'Created At',
-                valuePath: 'created_at',
+                label: this.intl.t('common.created-at'),
+                valuePath: 'createdAt',
                 sortParam: 'created_at',
                 width: '140px',
                 cellComponent: 'table/cell/base',

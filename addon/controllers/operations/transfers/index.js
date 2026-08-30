@@ -74,7 +74,7 @@ export default class OperationsTransfersController extends Controller {
             label: this.intl.t('operations.transfers.columns.items'),
             valuePath: 'itemsSummary',
             cellComponent: 'table/cell/base',
-            width: '180px',
+            width: '150px',
             resizable: true,
             sortable: false,
         },
