@@ -67,6 +67,9 @@ class Inventory extends Model
         'quantity',
         'reserved_quantity',
         'available_quantity',
+        'in_transit',
+        'on_order',
+        'quarantined',
         'min_quantity',
         'max_quantity',
         'reorder_point',
@@ -95,6 +98,9 @@ class Inventory extends Model
         'quantity'            => 'integer',
         'reserved_quantity'   => 'integer',
         'available_quantity'  => 'integer',
+        'in_transit'          => 'integer',
+        'on_order'            => 'integer',
+        'quarantined'         => 'integer',
         'min_quantity'        => 'integer',
         'max_quantity'        => 'integer',
         'reorder_point'       => 'integer',
@@ -443,6 +449,10 @@ class Inventory extends Model
             'inventory_uuid'          => $this->uuid,
             'transaction_type'        => $type,
             'quantity'                => $quantity,
+            // The on-hand figure this movement left behind, so a ledger row can
+            // answer "why is this number what it is" without replaying every
+            // prior transaction for the record.
+            'balance_after'           => (int) $this->quantity,
             'transaction_date_at'     => now(),
             'transaction_created_at'  => now(),
             'source_uuid'             => $this->uuid,

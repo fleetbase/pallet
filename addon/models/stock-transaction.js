@@ -28,6 +28,8 @@ export default class StockTransactionModel extends Model {
     /** @attributes */
     @attr('string') transaction_type;
     @attr('number') quantity;
+    /* On-hand after the movement — the ledger's "why is this number what it is". */
+    @attr('number') balance_after;
     @attr('raw') meta;
 
     /** @dates */

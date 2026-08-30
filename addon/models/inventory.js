@@ -36,6 +36,16 @@ export default class InventoryModel extends Model {
     @attr('number') quantity;
     @attr('number') reserved_quantity;
     @attr('number') available_quantity;
+    /*
+     * The three slots that complete the quantity set. A warehouse quantity is a set,
+     * not a number — on-hand alone answers "what is on the shelf" but not "can I
+     * promise this". available_quantity deliberately stays on-hand minus reserved;
+     * quarantined is tracked but not deducted, because changing that formula changes
+     * stock maths the reserve/commit chain is tested against.
+     */
+    @attr('number') in_transit;
+    @attr('number') on_order;
+    @attr('number') quarantined;
     @attr('number') min_quantity;
     @attr('number') max_quantity;
     @attr('number') reorder_point;

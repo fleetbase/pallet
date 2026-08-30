@@ -68,6 +68,7 @@ class StockTransaction extends Model
         'inventory_uuid',
         'transaction_type',
         'quantity',
+        'balance_after',
         'transaction_date_at',
         'source_uuid',
         'source_type',
@@ -86,6 +87,7 @@ class StockTransaction extends Model
     protected $casts = [
         'meta'                   => Json::class,
         'quantity'               => 'integer',
+        'balance_after'          => 'integer',
         'transaction_date_at'    => 'datetime',
         'transaction_created_at' => 'datetime',
     ];

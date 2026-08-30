@@ -24,6 +24,7 @@ class StockTransaction extends FleetbaseResource
             // What moved, and by how much
             'transaction_type'       => $this->transaction_type,
             'quantity'               => (int) $this->quantity,
+            'balance_after'          => $this->balance_after === null ? null : (int) $this->balance_after,
 
             // What it moved against
             'product_uuid'           => $this->product_uuid,
