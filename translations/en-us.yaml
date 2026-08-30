@@ -475,23 +475,26 @@ inventory:
     identifiers: Identifiers
     dates: Dates
   fields:
-    variant: Variant
-    reserved: Reserved
-    available: Available
     available-quantity: Available Quantity
+    available: Available
     batch-number: Batch Number
     bin-location: Bin Location
     expiry-date: Expiry Date
+    in-transit: In Transit
     last-counted: Last Counted
     lot-number: Lot Number
     manufactured: Manufactured
     max-quantity: Max Quantity
     min-quantity: Min Quantity
+    on-hand: On Hand
+    on-order: On Order
     product: Product
     quantity: Quantity
+    quarantined: Quarantined
     received-at: Received At
     reorder-point: Reorder Point
     reserved-quantity: Reserved Quantity
+    reserved: Reserved
     select-bin: Select Bin Location
     select-product: Select Product
     select-supplier: Select Supplier
@@ -502,6 +505,7 @@ inventory:
     supplier: Supplier
     unit-cost: Unit Cost
     uom: Unit of Measure
+    variant: Variant
     warehouse: Warehouse
     zone: Zone
 

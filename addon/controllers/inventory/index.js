@@ -180,7 +180,22 @@ export default class InventoryIndexController extends Controller {
             filterable: false,
         },
         {
-            label: this.intl.t('columns.quantity'),
+            // Stock is held in a bin, not a building. The relation has always been
+            // loaded on this request (with[]=binLocation) and never surfaced, so the
+            // list could say which warehouse but not where inside it.
+            label: this.intl.t('inventory.fields.bin-location'),
+            valuePath: 'binLocation.bin_number',
+            cellComponent: 'table/cell/base',
+            width: '120px',
+            resizable: true,
+            sortable: false,
+            filterable: false,
+        },
+        {
+            // SCREENS.md §D, must-never: never show `quantity` unlabelled. It is the
+            // on-hand figure, and a warehouse reads "Quantity" as whichever slot it
+            // happens to care about — the column has to say which one it is.
+            label: this.intl.t('inventory.fields.on-hand'),
             valuePath: 'quantity',
             cellComponent: 'cell/count',
             width: '90px',
@@ -202,6 +217,15 @@ export default class InventoryIndexController extends Controller {
             width: '90px',
             resizable: true,
             sortable: false,
+        },
+        {
+            label: this.intl.t('inventory.fields.min-quantity'),
+            valuePath: 'min_quantity',
+            cellComponent: 'cell/count',
+            width: '90px',
+            resizable: true,
+            sortable: false,
+            hidden: true,
         },
         {
             label: this.intl.t('common.status'),
