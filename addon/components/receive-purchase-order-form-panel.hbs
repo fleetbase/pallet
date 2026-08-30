@@ -1,5 +1,5 @@
 <Overlay @position="right" @noBackdrop={{true}} @fullHeight={{true}} @isResizable={{true}} @width="1100px" @overlayClass="pallet-overlay-has-footer">
-    <Overlay::Header @title={{t "purchase-order.receive.title"}} @status={{or this.purchaseOrder.order_number this.purchaseOrder.public_id}} @hideStatusDot={{true}} @createdAt={{this.purchaseOrder.createdAt}}>
+    <Overlay::Header @title={{t "purchase-order.receive.title"}} @status={{or this.purchaseOrder.order_number this.purchaseOrder.public_id}} @hideStatusDot={{true}} @disableBadgeHumanize={{true}} @createdAt={{this.purchaseOrder.createdAt}}>
         <:actions>
             <Button @type="default" @icon="times" @helpText="Close" @onClick={{this.onPressCancel}} />
 
