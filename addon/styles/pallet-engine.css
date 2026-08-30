@@ -1119,3 +1119,32 @@ body[data-theme='dark'] .pallet-movement-chart,
         max-width: 16rem;
     }
 }
+
+/*
+ * Pin the row-action column to the right edge of every Pallet list.
+ *
+ * The tables size their columns to content, so a warehouse named "Singapore
+ * Distribution Center" is 209px whatever the column declares. Across the module that
+ * pushed nine lists past their container — warehouses by 663px, stock adjustments by
+ * 787px — and the column that fell off the edge was always the last one, which is the
+ * row-action menu. The list still scrolled, but the only control on the row was out of
+ * reach until you scrolled sideways to find it.
+ *
+ * Four lists were fixed by trimming declared widths. That works and it does not hold:
+ * the declared width is a floor, so one longer supplier name puts the menu back off the
+ * edge. Pinning the column fixes every list at once and survives any content.
+ *
+ * Scoped to `console-pallet-*`, the per-route class the console puts on <main>. Pallet's
+ * stylesheet is bundled into the host app rather than namespaced, so an unscoped
+ * `.next-table-wrapper` rule here would restyle Fleet-Ops and Storefront tables too.
+ *
+ * No background is declared: these cells already carry their own opaque one, so the
+ * scrolled content does not show through, and inventing a colour here would be a second
+ * source of truth for it.
+ */
+main[class*='console-pallet-'] .next-table-wrapper thead th:last-child,
+main[class*='console-pallet-'] .next-table-wrapper tbody td:last-child {
+    position: sticky;
+    right: 0;
+    z-index: 2;
+}
