@@ -1,5 +1,5 @@
 <Overlay @position="right" @noBackdrop={{true}} @fullHeight={{true}} @isResizable={{true}} @width="1100px" @overlayClass="pallet-overlay-has-footer">
-    <Overlay::Header @title="Receive Purchase Order" @status={{this.purchaseOrder.public_id}} @hideStatusDot={{true}} @createdAt={{this.purchaseOrder.createdAt}}>
+    <Overlay::Header @title={{t "purchase-order.receive.title"}} @status={{or this.purchaseOrder.order_number this.purchaseOrder.public_id}} @hideStatusDot={{true}} @createdAt={{this.purchaseOrder.createdAt}}>
         <:actions>
             <Button @type="default" @icon="times" @helpText="Close" @onClick={{this.onPressCancel}} />
 
@@ -19,8 +19,8 @@
             <ContentPanel @title="Order Summary" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-900">
                 <div class="grid grid-cols-3 gap-3 text-xs dark:text-gray-100">
                     <div class="field-info-container">
-                        <div class="field-name">PO Number</div>
-                        <div class="field-value font-medium">{{n-a this.purchaseOrder.public_id}}</div>
+                        <div class="field-name">{{t "purchase-order.receive.po-number"}}</div>
+                        <div class="field-value font-medium">{{n-a this.purchaseOrder.order_number}}</div>
                     </div>
                     <div class="field-info-container">
                         <div class="field-name">Supplier</div>
