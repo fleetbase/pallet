@@ -1141,9 +1141,17 @@ body[data-theme='dark'] .pallet-movement-chart,
  * No background is declared: these cells already carry their own opaque one, so the
  * scrolled content does not show through, and inventing a colour here would be a second
  * source of truth for it.
+ *
+ * Matched on `.overflow-visible`, which is the class every one of the module's sixteen
+ * dropdown columns sets, rather than on last-child alone. A list without row actions —
+ * stock adjustments is the one — ends in an ordinary data column, and pinning that
+ * floated the date over the reason text beside it. The rule should pin a control, not
+ * whatever happens to be last.
+ *
+ * The header is deliberately not pinned with it: `th` carries no such class, and a
+ * header cell pinned while its column's body cells are not would drift out of line.
  */
-main[class*='console-pallet-'] .next-table-wrapper thead th:last-child,
-main[class*='console-pallet-'] .next-table-wrapper tbody td:last-child {
+main[class*='console-pallet-'] .next-table-wrapper tbody td.overflow-visible:last-child {
     position: sticky;
     right: 0;
     z-index: 2;
