@@ -152,7 +152,12 @@ class SeedStarterReports extends Command
             return null;
         }
 
-        $schema  = $registry->getTableSchema($definition['table']);
+        // getTable()->toArray(), not getTableSchema(). The latter wraps the table in
+        // {table, columns, relationships, auto_join_columns}, which has no `name` or
+        // `label` at the top level — saving that shape left the builder's data source
+        // trigger blank even though the columns resolved. toArray() is what the builder
+        // itself stores.
+        $schema  = $registry->getTable($definition['table'])->toArray();
         $columns = collect($schema['columns'] ?? []);
 
         $selected = collect($definition['columns'])
