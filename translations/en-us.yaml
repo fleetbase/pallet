@@ -444,6 +444,11 @@ inventory:
   product-unavailable-hint: The product this stock belongs to has been deleted.
   variant-unavailable: Variant unavailable
   warehouse-unavailable: Warehouse unavailable
+  ledger:
+    balance-after: Balance After
+    change: Change
+    empty: No stock movements recorded against this record yet.
+    when: When
   empty:
     low-stock-title: Nothing is running low
     low-stock-description: No inventory is at or below its reorder point.
@@ -464,6 +469,7 @@ inventory:
     after: After
   sections:
     details: Details
+    ledger: Stock Movements
     location: Location
     stock: Stock
     tracking: Tracking

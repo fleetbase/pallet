@@ -1,0 +1,38 @@
+{{!
+    Fires on insert rather than with the record: the panel is collapsed by default,
+    so most visits never need this request.
+}}
+<div class="text-xs" ...attributes {{did-insert (perform this.load)}}>
+    {{#if this.load.isRunning}}
+        <div class="py-2 text-gray-400">{{t "common.loading"}}</div>
+    {{else if this.load.lastSuccessful.value.length}}
+        <table class="w-full text-xs dark:text-gray-100">
+            <thead>
+                <tr class="border-b border-gray-200 text-left whitespace-nowrap text-gray-500 uppercase dark:border-gray-700">
+                    <th class="px-3 py-2 font-medium">{{t "inventory.ledger.when"}}</th>
+                    <th class="px-3 py-2 font-medium">{{t "common.type"}}</th>
+                    <th class="px-3 py-2 text-right font-medium">{{t "inventory.ledger.change"}}</th>
+                    <th class="px-3 py-2 text-right font-medium">{{t "inventory.ledger.balance-after"}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each this.load.lastSuccessful.value as |movement|}}
+                    <tr class="border-b border-gray-100 dark:border-gray-800">
+                        <td class="px-3 py-2 whitespace-nowrap">{{n-a (format-date movement.transaction_date_at)}}</td>
+                        <td class="px-3 py-2">{{smart-humanize movement.transaction_type}}</td>
+                        {{! Signed, so a receipt and an issue are told apart at a glance. }}
+                        {{! Only `gt` is used: `lt` is not a helper this app resolves, and an
+                            unresolved helper fails at runtime rather than at lint. }}
+                        <td class="px-3 py-2 text-right tabular-nums {{if (gt movement.quantity 0) 'text-emerald-500' 'text-red-500'}}">
+                            {{if (gt movement.quantity 0) "+"}}{{format-number movement.quantity}}
+                        </td>
+                        {{! Null means unknown, not zero — rows predating the column cannot have it recomputed. }}
+                        <td class="px-3 py-2 text-right tabular-nums">{{n-a movement.balance_after}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    {{else}}
+        <div class="py-1 text-gray-400">{{t "inventory.ledger.empty"}}</div>
+    {{/if}}
+</div>

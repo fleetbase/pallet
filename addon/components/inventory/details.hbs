@@ -77,6 +77,26 @@
                 <div class="field-name">{{t "inventory.fields.available-quantity"}}</div>
                 <div class="field-value tabular-nums">{{format-number @resource.available_quantity}}</div>
             </div>
+            {{! The rest of the set. Guarded rather than always shown: a warehouse with no
+                transfers or open POs should not read three permanent zeroes. }}
+            {{#if @resource.in_transit}}
+                <div class="field-info-container field-vertical-container dashed-bottom">
+                    <div class="field-name">{{t "inventory.fields.in-transit"}}</div>
+                    <div class="field-value tabular-nums">{{format-number @resource.in_transit}}</div>
+                </div>
+            {{/if}}
+            {{#if @resource.on_order}}
+                <div class="field-info-container field-vertical-container dashed-bottom">
+                    <div class="field-name">{{t "inventory.fields.on-order"}}</div>
+                    <div class="field-value tabular-nums">{{format-number @resource.on_order}}</div>
+                </div>
+            {{/if}}
+            {{#if @resource.quarantined}}
+                <div class="field-info-container field-vertical-container dashed-bottom">
+                    <div class="field-name">{{t "inventory.fields.quarantined"}}</div>
+                    <div class="field-value tabular-nums">{{format-number @resource.quarantined}}</div>
+                </div>
+            {{/if}}
             {{#if @resource.uom}}
                 <div class="field-info-container field-vertical-container dashed-bottom">
                     <div class="field-name">{{t "inventory.fields.uom"}}</div>
@@ -140,6 +160,12 @@
                 <div class="field-value">{{n-a (format-date @resource.last_counted_at)}}</div>
             </div>
         </div>
+    </ContentPanel>
+
+    {{! SCREENS.md §D must-never: never require leaving the panel to see why a number is
+        what it is. Every quantity above is the sum of these movements. }}
+    <ContentPanel @title={{t "inventory.sections.ledger"}} @open={{false}} @wrapperClass="bordered-top" @panelBodyWrapperClass="px-0i">
+        <Inventory::Ledger @resource={{@resource}} />
     </ContentPanel>
 
     <CustomField::Yield @subject={{@resource}} @viewMode={{true}} @wrapperClass="bordered-top" />
