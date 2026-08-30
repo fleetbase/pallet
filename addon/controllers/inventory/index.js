@@ -219,6 +219,37 @@ export default class InventoryIndexController extends Controller {
             sortable: false,
         },
         {
+            // The three slots that complete the set. On-hand alone answers "what is on
+            // the shelf"; these answer "can I promise it". Hidden by default because
+            // most warehouses run without transfers or open POs, and an all-zero column
+            // is noise — the column picker surfaces them where they earn their place.
+            label: this.intl.t('inventory.fields.in-transit'),
+            valuePath: 'in_transit',
+            cellComponent: 'cell/count',
+            width: '90px',
+            resizable: true,
+            sortable: false,
+            hidden: true,
+        },
+        {
+            label: this.intl.t('inventory.fields.on-order'),
+            valuePath: 'on_order',
+            cellComponent: 'cell/count',
+            width: '90px',
+            resizable: true,
+            sortable: false,
+            hidden: true,
+        },
+        {
+            label: this.intl.t('inventory.fields.quarantined'),
+            valuePath: 'quarantined',
+            cellComponent: 'cell/count',
+            width: '90px',
+            resizable: true,
+            sortable: false,
+            hidden: true,
+        },
+        {
             label: this.intl.t('inventory.fields.min-quantity'),
             valuePath: 'min_quantity',
             cellComponent: 'cell/count',
