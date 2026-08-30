@@ -116,6 +116,12 @@ export default buildRoutes(function () {
             this.route('details', { path: '/:public_id' }, function () {
                 this.route('index', { path: '/' });
             });
+            /*
+             * The count sheet is a sibling of `details`, not a child of it: it is its own
+             * full-width working screen, and as a child it would render inside the
+             * document's header and panel wrapper.
+             */
+            this.route('count', { path: '/:public_id/count' });
         });
         this.route('pick-lists', function () {
             this.route('index', { path: '/' });

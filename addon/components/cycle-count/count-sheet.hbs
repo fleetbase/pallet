@@ -1,0 +1,109 @@
+<div class="flex h-full flex-col" ...attributes>
+    {{!
+        Scan bar, sticky at the top. §9's must-never is losing scan focus, so this field
+        keeps it: a match highlights the row and moves the cursor to its input, and
+        Enter in the count input hands focus straight back here.
+    }}
+    <div class="sticky top-0 z-10 border-b border-gray-200 bg-white px-4 py-3 dark:border-gray-700 dark:bg-gray-900">
+        <div class="flex flex-row items-center space-x-4">
+            <div class="flex-1">
+                <Input
+                    @value={{this.scan}}
+                    @type="text"
+                    placeholder={{t "operations.cycle-counts.count.scan-placeholder"}}
+                    aria-label={{t "operations.cycle-counts.count.scan-placeholder"}}
+                    class="w-full form-input"
+                    disabled={{not this.isOpen}}
+                    {{on "keydown" this.onScan}}
+                    {{did-insert this.registerScanField}}
+                />
+            </div>
+            <div class="whitespace-nowrap text-xs text-gray-500 dark:text-gray-400">
+                {{t "operations.cycle-counts.count.progress" counted=this.summary.counted lines=this.summary.lines}}
+            </div>
+        </div>
+        {{#if this.lastError}}
+            <div class="mt-2 text-xs text-amber-600 dark:text-amber-300">{{this.lastError}}</div>
+        {{/if}}
+        {{#unless this.isOpen}}
+            <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">{{t "operations.cycle-counts.count.not-open"}}</div>
+        {{/unless}}
+    </div>
+
+    <div class="flex-1 overflow-y-auto">
+        {{!
+            No EXPECTED column, and no VARIANCE column either. Variance is counted minus
+            expected, so showing it beside the counted quantity would give expected away
+            by subtraction — blind counting in name only. Both appear on the document
+            once the count is completed.
+        }}
+        <table class="w-full text-xs dark:text-gray-100">
+            <thead>
+                <tr class="whitespace-nowrap border-b border-gray-200 text-left uppercase text-gray-500 dark:border-gray-700">
+                    <th class="px-4 py-2">{{t "operations.common.location"}}</th>
+                    <th class="w-1/2 px-4 py-2">{{t "columns.product"}}</th>
+                    <th class="px-4 py-2">{{t "common.status"}}</th>
+                    <th class="w-40 px-4 py-2 text-right">{{t "operations.cycle-counts.columns.counted"}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each this.rows as |row|}}
+                    <tr class="border-b border-gray-100 dark:border-gray-800 {{if row.isFocused 'bg-blue-50 dark:bg-blue-900'}}">
+                        <td class="px-4 py-2 font-mono">{{n-a row.item.binLocation.bin_number}}</td>
+                        <td class="px-4 py-2">
+                            <div class="truncate font-medium text-gray-700 dark:text-gray-200">{{n-a row.item.product.name}}</div>
+                            <div class="truncate text-gray-400">{{n-a (or row.item.lot_number row.item.product.sku)}}</div>
+                        </td>
+                        <td class="px-4 py-2"><Badge @status={{row.item.status}}>{{smart-humanize row.item.status}}</Badge></td>
+                        <td class="px-4 py-2">
+                            <div class="flex flex-row items-center justify-end space-x-2">
+                                <Input
+                                    @value={{row.entered}}
+                                    @type="number"
+                                    data-count-input={{row.uuid}}
+                                    placeholder={{t "operations.cycle-counts.columns.counted"}}
+                                    aria-label={{t "operations.cycle-counts.columns.counted"}}
+                                    class="w-24 text-right form-input"
+                                    disabled={{not this.isOpen}}
+                                    {{on "input" (fn this.setEntry row.uuid)}}
+                                    {{on "focus" (fn this.focusRow row.uuid)}}
+                                />
+                                <Button
+                                    @icon="check"
+                                    @type="default"
+                                    @size="sm"
+                                    @helpText={{if row.isCounted (t "operations.cycle-counts.count.recount") (t "operations.cycle-counts.count.record")}}
+                                    @disabled={{not this.isOpen}}
+                                    @isLoading={{this.recordLine.isRunning}}
+                                    @onClick={{perform this.recordLine row}}
+                                />
+                            </div>
+                        </td>
+                    </tr>
+                {{else}}
+                    <tr><td colspan="4" class="px-4 py-6 text-xs text-gray-500 dark:text-gray-400">{{t "operations.cycle-counts.no-items"}}</td></tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+
+    {{!
+        Summary rail. Variance figures are deliberately absent — they are derived from
+        expected, so they belong on the document after submission, not here.
+    }}
+    <div class="border-t border-gray-200 bg-white px-4 py-3 dark:border-gray-700 dark:bg-gray-900">
+        <div class="flex flex-row items-center justify-between">
+            <div class="text-xs text-gray-500 dark:text-gray-400">
+                {{t "operations.cycle-counts.count.summary" counted=this.summary.counted lines=this.summary.lines}}
+            </div>
+            <Button
+                @icon="check"
+                @type="primary"
+                @text={{t "operations.cycle-counts.count.submit"}}
+                @disabled={{not this.canSubmit}}
+                @isLoading={{this.submitCount.isRunning}}
+                @onClick={{perform this.submitCount}}
+            />
+        </div>
+    </div>
+</div>

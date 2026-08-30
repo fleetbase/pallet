@@ -236,6 +236,19 @@ operations:
     no-actions: No actions available
     no-items: No items on this count.
     back-to-list: All Cycle Counts
+    count:
+      title: Count Sheet
+      back-to-count: Count Details
+      scan-placeholder: Scan bin or item
+      progress: '{counted} of {lines} lines counted'
+      summary: '{counted} of {lines} lines counted'
+      record: Record count
+      recount: Recount
+      submit: Submit Count
+      submitted: Count submitted for review.
+      invalid-quantity: Enter a counted quantity of zero or more.
+      no-match: 'Nothing on this sheet matches {term}.'
+      not-open: This count is not in progress, so no quantities can be recorded.
     started-at: Started
     completed-at: Completed
     expected-hidden: Expected quantities are hidden while this count is open, so the figures cannot bias whoever is counting. They appear once the count is completed.
