@@ -360,6 +360,7 @@ columns:
   customer-ref: Customer Ref
   po-number: PO Number
   so-number: SO Number
+  ordered: Ordered
   received: Received
   fulfilled: Fulfilled
   outstanding: Outstanding
@@ -590,14 +591,20 @@ supplier:
 purchase-order:
   save-before-line-items: Save this purchase order first, then add its line items here.
   no-line-items: No line items on this purchase order.
+  over-received: '{quantity} more received than ordered across this order.'
   sections:
     details: Details
+    receiving: Receiving Progress
     line-items: Line Items
     receive: Receive Goods
   groups:
     fulfilment: Fulfilment
   fields:
     expected-delivery: Expected Delivery Date
+    lines-received: Lines Received
+    quantity-ordered: Qty Ordered
+    quantity-received: Qty Received
+    quantity-outstanding: Qty Outstanding
     order-number: Order Number
     select-supplier: Select Supplier
     select-warehouse: Select Warehouse
