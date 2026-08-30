@@ -35,10 +35,14 @@ class InventoryController extends PalletResourceController
         //
         // It is the wrong shape for anything asking where a product's stock actually is:
         // the rows are already collapsed, so a per-warehouse breakdown cannot be read
-        // back out of them. `summarize=0` returns the underlying rows instead, one per
-        // product-and-warehouse, which is what the product panel's Stock by Warehouse
-        // table needs.
-        $summarize = $request->missing('summarize') || $request->boolean('summarize');
+        // back out of them. `by_warehouse=1` returns the underlying rows instead, one
+        // per product and warehouse, which is what the product panel's Stock by
+        // Warehouse table needs.
+        //
+        // A truthy opt-in rather than `summarize=0`: the client adapter prunes falsy
+        // query params, so the zero never reached the server and the default silently
+        // won. A flag whose meaning lives in its presence cannot be dropped that way.
+        $summarize = !$request->boolean('by_warehouse');
 
         $data = $this->model->queryFromRequest($request, function ($query) use ($summarize) {
             // hotfix! fix the selected columns
