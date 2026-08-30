@@ -33,7 +33,6 @@ class PalletReportSchema implements ReportSchema
         $registry->registerTable($this->createProductsTable());
         $registry->registerTable($this->createInventoriesTable());
         $registry->registerTable($this->createWarehousesTable());
-        $registry->registerTable($this->createSuppliersTable());
         $registry->registerTable($this->createPurchaseOrdersTable());
         $registry->registerTable($this->createSalesOrdersTable());
         $registry->registerTable($this->createStockTransactionsTable());
@@ -56,8 +55,8 @@ class PalletReportSchema implements ReportSchema
                 Column::make('sku', 'string')->label('SKU')->searchable()->filterable()->sortable(),
                 Column::make('barcode', 'string')->label('Barcode')->searchable()->filterable(),
                 Column::make('status', 'string')->label('Status')->filterable()->sortable(),
-                Column::make('price', 'decimal')->label('Price')->filterable()->sortable(),
-                Column::make('currency', 'string')->label('Currency')->filterable(),
+                Column::make('unit_price', 'decimal')->label('Unit Price')->filterable()->sortable(),
+                Column::make('unit_cost', 'decimal')->label('Unit Cost')->filterable()->sortable(),
                 Column::make('created_at', 'datetime')->label('Created')->filterable()->sortable(),
             ]);
     }
@@ -78,8 +77,8 @@ class PalletReportSchema implements ReportSchema
                 Column::make('reserved_quantity', 'integer')->label('Reserved')->filterable()->sortable(),
                 Column::make('available_quantity', 'integer')->label('Available')->filterable()->sortable(),
                 Column::make('min_quantity', 'integer')->label('Reorder Point')->filterable()->sortable(),
-                Column::make('batch_number', 'string')->label('Batch')->searchable()->filterable(),
                 Column::make('lot_number', 'string')->label('Lot')->searchable()->filterable(),
+                Column::make('unit_cost', 'decimal')->label('Unit Cost')->filterable()->sortable(),
                 // Expiry exposure is one of §G's starter reports, so this has to be
                 // filterable and sortable rather than merely present.
                 Column::make('expiry_date_at', 'datetime')->label('Expires')->filterable()->sortable(),
@@ -107,24 +106,6 @@ class PalletReportSchema implements ReportSchema
             ]);
     }
 
-    protected function createSuppliersTable(): Table
-    {
-        return Table::make('pallet_suppliers')
-            ->label('Suppliers')
-            ->description('Goods suppliers')
-            ->category('Catalog')
-            ->extension('pallet')
-            ->excludeColumns(['uuid', 'deleted_at', 'meta'])
-            ->maxRows(10000)
-            ->columns([
-                Column::make('public_id', 'string')->label('Supplier ID')->searchable()->filterable()->sortable(),
-                Column::make('name', 'string')->label('Name')->searchable()->filterable()->sortable(),
-                Column::make('code', 'string')->label('Code')->searchable()->filterable(),
-                Column::make('status', 'string')->label('Status')->filterable()->sortable(),
-                Column::make('created_at', 'datetime')->label('Created')->filterable()->sortable(),
-            ]);
-    }
-
     protected function createPurchaseOrdersTable(): Table
     {
         return Table::make('pallet_purchase_orders')
@@ -139,7 +120,7 @@ class PalletReportSchema implements ReportSchema
                 Column::make('order_number', 'string')->label('PO Number')->searchable()->filterable()->sortable(),
                 Column::make('status', 'string')->label('Status')->filterable()->sortable(),
                 Column::make('currency', 'string')->label('Currency')->filterable(),
-                Column::make('order_date_at', 'datetime')->label('Ordered')->filterable()->sortable(),
+                Column::make('order_created_at', 'datetime')->label('Ordered')->filterable()->sortable(),
                 Column::make('expected_delivery_at', 'datetime')->label('Expected')->filterable()->sortable(),
                 Column::make('created_at', 'datetime')->label('Created')->filterable()->sortable(),
             ]);
@@ -157,8 +138,8 @@ class PalletReportSchema implements ReportSchema
             ->columns([
                 Column::make('public_id', 'string')->label('SO ID')->searchable()->filterable()->sortable(),
                 Column::make('order_number', 'string')->label('SO Number')->searchable()->filterable()->sortable(),
+                Column::make('customer_reference_code', 'string')->label('Customer Reference')->searchable()->filterable(),
                 Column::make('status', 'string')->label('Status')->filterable()->sortable(),
-                Column::make('currency', 'string')->label('Currency')->filterable(),
                 Column::make('order_date_at', 'datetime')->label('Ordered')->filterable()->sortable(),
                 Column::make('expected_delivery_at', 'datetime')->label('Expected')->filterable()->sortable(),
                 Column::make('created_at', 'datetime')->label('Created')->filterable()->sortable(),

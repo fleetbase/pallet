@@ -52,7 +52,7 @@ class SeedStarterReports extends Command
                 'title'       => 'Stock valuation',
                 'description' => 'On-hand quantity beside batch and status, to value against unit cost.',
                 'table'       => 'pallet_inventories',
-                'columns'     => ['quantity', 'batch_number', 'lot_number', 'status'],
+                'columns'     => ['quantity', 'unit_cost', 'lot_number', 'status'],
             ],
             [
                 'title'       => 'Movement by product',
@@ -64,7 +64,7 @@ class SeedStarterReports extends Command
                 'title'       => 'Receipt accuracy by supplier',
                 'description' => 'Purchase orders with their status and dates, to compare expected against actual receipt.',
                 'table'       => 'pallet_purchase_orders',
-                'columns'     => ['order_number', 'status', 'order_date_at', 'expected_delivery_at'],
+                'columns'     => ['order_number', 'status', 'order_created_at', 'expected_delivery_at'],
             ],
             [
                 'title'       => 'Count variance history',
@@ -76,7 +76,7 @@ class SeedStarterReports extends Command
                 'title'       => 'Expiry exposure',
                 'description' => 'Stock carrying an expiry date, soonest first.',
                 'table'       => 'pallet_inventories',
-                'columns'     => ['expiry_date_at', 'quantity', 'batch_number', 'lot_number'],
+                'columns'     => ['expiry_date_at', 'quantity', 'lot_number', 'status'],
             ],
         ];
     }
