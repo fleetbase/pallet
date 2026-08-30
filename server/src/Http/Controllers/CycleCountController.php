@@ -3,6 +3,7 @@
 namespace Fleetbase\Pallet\Http\Controllers;
 
 use Fleetbase\Pallet\Http\Resources\Internal\v1\CycleCount as CycleCountResource;
+use Fleetbase\Pallet\Models\AuditEventType;
 use Fleetbase\Pallet\Models\CycleCount;
 use Fleetbase\Pallet\Models\Warehouse;
 use Fleetbase\Pallet\Models\WarehouseZone;
@@ -89,6 +90,48 @@ class CycleCountController extends PalletResourceController
         }
 
         return new CycleCountResource($cycleCount->fresh(['warehouse', 'zone', 'assignedTo', 'items']));
+    }
+
+    /**
+     * Reveal the expected quantities on an open count, and record that it happened.
+     *
+     * Counting is blind: `CycleCountItem`'s resource withholds expected quantity and
+     * variance while the count is in progress, so the figures are not merely hidden in
+     * the interface but absent from the payload.
+     *
+     * A supervisor can still need them — a line that will not reconcile, a suspected
+     * mis-scan. The accepted design decision allows that on one condition: the reveal
+     * is written to the audit trail, which is what keeps the count defensible
+     * afterwards. Anyone reviewing the count can see that the numbers were shown, to
+     * whom and when, and weigh the result accordingly.
+     *
+     * Revealing on a count that is already closed is not an error and is not recorded —
+     * the figures are public by then, and logging it would fill the trail with events
+     * that carry no meaning.
+     */
+    public function revealExpected(Request $request, string $id)
+    {
+        $cycleCount = $this->findCycleCount($id);
+
+        if ($cycleCount->status === 'in_progress') {
+            $cycleCount->logAuditEvent(
+                AuditEventType::CYCLE_COUNT,
+                'Expected Quantities Revealed',
+                'expected_revealed',
+                $request->input('reason'),
+                [
+                    'count_number'   => $cycleCount->count_number,
+                    'warehouse_uuid' => $cycleCount->warehouse_uuid,
+                    'counted_items'  => $cycleCount->counted_items,
+                    'total_items'    => $cycleCount->total_items,
+                ]
+            );
+        }
+
+        // Tells the item resource to include the figures it would otherwise withhold.
+        $request->attributes->set('pallet.expected_visible', true);
+
+        return new CycleCountResource($cycleCount->fresh(['warehouse', 'zone', 'assignedTo', 'items.product', 'items.binLocation']));
     }
 
     protected function findCycleCount(string $id): CycleCount

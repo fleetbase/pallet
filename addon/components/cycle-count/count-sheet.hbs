@@ -22,9 +22,25 @@
             <div class="whitespace-nowrap text-xs text-gray-500 dark:text-gray-400">
                 {{t "operations.cycle-counts.count.progress" counted=this.summary.counted lines=this.summary.lines}}
             </div>
+            {{#unless this.expectedRevealed}}
+                <Button
+                    @icon="eye"
+                    @type="default"
+                    @size="sm"
+                    @text={{t "operations.cycle-counts.count.reveal"}}
+                    @helpText={{t "operations.cycle-counts.count.reveal-help"}}
+                    @disabled={{not this.isOpen}}
+                    @isLoading={{this.revealExpected.isRunning}}
+                    @onClick={{perform this.revealExpected}}
+                />
+            {{/unless}}
         </div>
         {{#if this.lastError}}
             <div class="mt-2 text-xs text-amber-600 dark:text-amber-300">{{this.lastError}}</div>
+        {{/if}}
+        {{#if this.expectedRevealed}}
+            {{! Says so plainly: the reveal is on the record, and the count is no longer blind. }}
+            <div class="mt-2 text-xs text-amber-600 dark:text-amber-300">{{t "operations.cycle-counts.count.revealed-notice"}}</div>
         {{/if}}
         {{#unless this.isOpen}}
             <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">{{t "operations.cycle-counts.count.not-open"}}</div>
@@ -44,6 +60,9 @@
                     <th class="px-4 py-2">{{t "operations.common.location"}}</th>
                     <th class="w-1/2 px-4 py-2">{{t "columns.product"}}</th>
                     <th class="px-4 py-2">{{t "common.status"}}</th>
+                    {{#if this.expectedRevealed}}
+                        <th class="px-4 py-2 text-right">{{t "operations.cycle-counts.columns.expected"}}</th>
+                    {{/if}}
                     <th class="w-40 px-4 py-2 text-right">{{t "operations.cycle-counts.columns.counted"}}</th>
                 </tr>
             </thead>
@@ -56,6 +75,9 @@
                             <div class="truncate text-gray-400">{{n-a (or row.item.lot_number row.item.product.sku)}}</div>
                         </td>
                         <td class="px-4 py-2"><Badge @status={{row.item.status}}>{{smart-humanize row.item.status}}</Badge></td>
+                        {{#if this.expectedRevealed}}
+                            <td class="px-4 py-2 text-right tabular-nums">{{n-a row.expected}}</td>
+                        {{/if}}
                         <td class="px-4 py-2">
                             <div class="flex flex-row items-center justify-end space-x-2">
                                 <input
@@ -84,7 +106,7 @@
                         </td>
                     </tr>
                 {{else}}
-                    <tr><td colspan="4" class="px-4 py-6 text-xs text-gray-500 dark:text-gray-400">{{t "operations.cycle-counts.no-items"}}</td></tr>
+                    <tr><td colspan={{if this.expectedRevealed "5" "4"}} class="px-4 py-6 text-xs text-gray-500 dark:text-gray-400">{{t "operations.cycle-counts.no-items"}}</td></tr>
                 {{/each}}
             </tbody>
         </table>

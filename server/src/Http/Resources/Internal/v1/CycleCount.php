@@ -20,7 +20,16 @@ class CycleCount extends FleetbaseResource
             'warehouse'           => $this->whenLoaded('warehouse', fn () => new Warehouse($this->warehouse)),
             'zone'                => $this->whenLoaded('zone', fn () => new WarehouseZone($this->zone)),
             'assigned_to'         => $this->whenLoaded('assignedTo', $this->assignedTo),
-            'items'               => $this->whenLoaded('items', fn () => CycleCountItem::collection($this->items)),
+            'items'               => $this->whenLoaded('items', function () use ($request) {
+                // The count knows its own status; telling the item resource here saves
+                // every line asking the same question, and keeps blind counting from
+                // costing a query per row.
+                if ($request->attributes->get('pallet.expected_visible') === null) {
+                    $request->attributes->set('pallet.expected_visible', $this->status !== 'in_progress');
+                }
+
+                return CycleCountItem::collection($this->items);
+            }),
             'count_number'        => $this->count_number,
             'type'                => $this->type,
             'status'              => $this->status,

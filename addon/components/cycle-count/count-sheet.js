@@ -17,9 +17,11 @@ import { scheduleOnce } from '@ember/runloop';
  * would have been blind counting in name only. Both appear on the document once the
  * count is completed.
  *
- * There is no supervisor reveal here yet. The decision requires the reveal to be written
- * to the audit trail, and no endpoint records it; an unaudited toggle is the thing the
- * decision guards against, so the sheet stays blind until that endpoint exists.
+ * The supervisor reveal is audited. `reveal-expected` writes to the audit trail before
+ * returning the figures, so anyone reviewing the count afterwards can see that the
+ * numbers were shown and when — which is the condition the decision attaches to
+ * allowing it at all. There is no way to see expected without leaving that record: the
+ * server withholds it from the payload entirely while the count is open.
  *
  * Generator tasks rather than `task(async () => {})` — the async-arrow form is not
  * compiled by Babel in this engine and throws on construction.
@@ -35,6 +37,7 @@ export default class CycleCountSheetComponent extends Component {
     @tracked scan = '';
     @tracked focusedUuid = null;
     @tracked lastError = null;
+    @tracked expectedRevealed = false;
 
     /**
      * Rows in a fixed order, captured once.
@@ -60,6 +63,9 @@ export default class CycleCountSheetComponent extends Component {
             entered: this.entries[item.uuid ?? item.id],
             isCounted: item.status === 'counted',
             isFocused: (item.uuid ?? item.id) === this.focusedUuid,
+            // Undefined until revealed — the server omits it from an open count, so
+            // there is nothing to show and nothing to leak.
+            expected: item.expected_quantity,
         }));
     }
 
@@ -176,6 +182,26 @@ export default class CycleCountSheetComponent extends Component {
 
         event.preventDefault();
         this.recordLine.perform(row);
+    }
+
+    /**
+     * Asks the server for the expected quantities. It records the disclosure in the
+     * audit trail before returning them, so there is no route to seeing these numbers
+     * that does not leave a trace.
+     *
+     * One way only. Hiding them again would suggest the reveal could be taken back,
+     * and it cannot — the audit record stands, and the counter has already seen them.
+     */
+    @task({ drop: true })
+    *revealExpected() {
+        try {
+            yield this.fetch.post(`cycle-counts/${this.args.resource.public_id}/reveal-expected`, {}, { namespace: 'pallet/int/v1' });
+            yield this.args.resource.reload();
+            this.expectedRevealed = true;
+            this.notifications.info(this.intl.t('operations.cycle-counts.count.revealed'));
+        } catch (error) {
+            this.notifications.serverError(error);
+        }
     }
 
     @task({ drop: true })

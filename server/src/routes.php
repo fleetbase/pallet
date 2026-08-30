@@ -310,6 +310,7 @@ Route::prefix(config('pallet.api.routing.prefix', 'pallet'))->namespace('Fleetba
                         $router->post('cycle-counts/{id}/start', 'CycleCountController@start');
                         $router->post('cycle-counts/{id}/complete', 'CycleCountController@complete');
                         $router->post('cycle-counts/{id}/approve', 'CycleCountController@approve');
+                        $router->post('cycle-counts/{id}/reveal-expected', 'CycleCountController@revealExpected');
                         $router->fleetbaseRoutes('cycle-count-items', function ($router, $controller) {
                             $router->delete('bulk-delete', $controller('bulkDelete'));
                         });

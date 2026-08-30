@@ -249,6 +249,10 @@ operations:
       invalid-quantity: Enter a counted quantity of zero or more.
       no-match: 'Nothing on this sheet matches {term}.'
       not-open: This count is not in progress, so no quantities can be recorded.
+      reveal: Show expected
+      reveal-help: Reveals the expected quantities. This is recorded in the audit trail.
+      revealed: Expected quantities revealed. This has been recorded in the audit trail.
+      revealed-notice: Expected quantities are showing. This count is no longer blind, and the disclosure is on the audit trail.
     started-at: Started
     completed-at: Completed
     expected-hidden: Expected quantities are hidden while this count is open, so the figures cannot bias whoever is counting. They appear once the count is completed.
