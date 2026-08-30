@@ -76,7 +76,10 @@ export default class PickListPickScreenComponent extends Component {
     get remaining() {
         const current = this.currentLine;
 
-        return this.route.filter((line) => !line.isDone && line !== current);
+        // By uuid, not identity: `route` rebuilds its line objects on every access, so
+        // the object `currentLine` returned is never the same one this filter sees, and
+        // an identity check left the current line showing in Up next as well.
+        return this.route.filter((line) => !line.isDone && line.uuid !== current?.uuid);
     }
 
     get progress() {
