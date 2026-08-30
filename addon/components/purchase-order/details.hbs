@@ -73,7 +73,9 @@
             </div>
             <div class="field-info-container">
                 <div class="field-name">{{t "purchase-order.fields.quantity-outstanding"}}</div>
-                <div class="field-value tabular-nums {{if this.receiving.outstanding 'text-amber-600 dark:text-amber-300'}}">{{format-number this.receiving.outstanding}}</div>
+                <div class="field-value tabular-nums">
+                    <span class={{if this.receiving.outstanding "text-amber-600 dark:text-amber-300"}}>{{format-number this.receiving.outstanding}}</span>
+                </div>
             </div>
         </div>
         {{#if this.receiving.over}}
