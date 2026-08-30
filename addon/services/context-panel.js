@@ -17,16 +17,6 @@ export default class ContextPanelService extends Service {
      * @type {Object}
      */
     registry = {
-        palletProduct: {
-            viewing: {
-                component: 'product-panel',
-                componentArguments: [{ isResizable: true }, { width: '760px' }],
-            },
-            editing: {
-                component: 'product-form-panel',
-                componentArguments: [{ isResizable: true }, { width: '920px' }],
-            },
-        },
         warehouse: {
             viewing: {
                 component: 'warehouse-panel',
