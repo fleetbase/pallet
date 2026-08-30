@@ -69,3 +69,28 @@ test('the product filter declares a method for every filterable param it adverti
         expect($methods)->toContain($param);
     }
 });
+
+test('docks can be scoped to one warehouse', function () {
+    // The warehouse detail panel lists that building's docks; without a filter method
+    // the listing returned every dock the company owns across every site.
+    $company = (string) Str::uuid();
+    session(['company' => $company]);
+
+    $here      = (string) Str::uuid();
+    $elsewhere = (string) Str::uuid();
+
+    foreach ([$here, $here, $elsewhere] as $warehouse) {
+        Fleetbase\Pallet\Models\WarehouseDock::create([
+            'company_uuid'   => $company,
+            'warehouse_uuid' => $warehouse,
+            'dock_number'    => 'D-' . Str::random(3),
+            'status'         => 'active',
+        ]);
+    }
+
+    $scoped = Fleetbase\Pallet\Models\WarehouseDock::where('company_uuid', $company)
+        ->where('warehouse_uuid', $here)
+        ->get();
+
+    expect($scoped)->toHaveCount(2);
+});

@@ -104,6 +104,7 @@ common:
   city: City
   country: Country
   description: Description
+  create-new-resource: Create a new {resource}
   edit-resource-name: Edit {name}
   email: Email
   height: Height
@@ -532,14 +533,23 @@ inventory:
 
 # Warehouse translations
 warehouse:
+  groups:
+    contact: Contact
+    structure: Structure
+    utilisation: Utilisation
+  empty:
+    no-docks: No loading docks recorded for this warehouse.
   sections:
     address: Address
     capacity: Capacity
     details: Details
+    docks: Loading Docks
   fields:
     capacity: Capacity
     code: Warehouse Code
     current-utilization: Current Utilization
+    direction: Direction
+    dock-number: Dock Number
     email: Email
     floor-area: Floor Area (sqm)
     is-3pl: Third-Party Logistics
@@ -548,12 +558,14 @@ warehouse:
     name: Warehouse Name
     phone: Phone
     status: Status
+    stock-items: Stock Items
     third-party-logistics: Third-Party Logistics (3PL)
     timezone: Timezone
     total-bins: Total Bins
     total-docks: Total Docks
     total-zones: Total Zones
     type: Warehouse Type
+    utilisation-percentage: Utilisation
     utilization: Utilization
 
 # Supplier translations
