@@ -77,7 +77,7 @@ export default class OperationsReservationsController extends Controller {
             label: this.intl.t('operations.reservations.columns.batch'),
             valuePath: 'inventory.batch_number',
             cellComponent: 'table/cell/base',
-            width: '100px',
+            width: '70px',
             resizable: true,
             sortable: false,
         },
