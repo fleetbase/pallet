@@ -38,6 +38,7 @@ export default class CycleCountSheetComponent extends Component {
     @tracked focusedUuid = null;
     @tracked lastError = null;
     @tracked expectedRevealed = false;
+    @tracked revealedExpected = {};
 
     /**
      * Rows in a fixed order, captured once.
@@ -64,8 +65,9 @@ export default class CycleCountSheetComponent extends Component {
             isCounted: item.status === 'counted',
             isFocused: (item.uuid ?? item.id) === this.focusedUuid,
             // Undefined until revealed — the server omits it from an open count, so
-            // there is nothing to show and nothing to leak.
-            expected: item.expected_quantity,
+            // there is nothing to show and nothing to leak. Once revealed it comes from
+            // the reveal response, not the record.
+            expected: this.revealedExpected[item.uuid ?? item.id] ?? item.expected_quantity,
         }));
     }
 
@@ -185,6 +187,27 @@ export default class CycleCountSheetComponent extends Component {
     }
 
     /**
+     * Pulls the expected quantities out of the reveal response, keyed by item uuid.
+     *
+     * The envelope varies with how the resource is wrapped, so this looks for the items
+     * array rather than assuming a shape.
+     */
+    readExpected(response) {
+        const count = response?.cycleCount ?? response?.cycle_count ?? response?.data ?? response;
+        const items = count?.items ?? [];
+
+        return items.reduce((map, item) => {
+            const uuid = item.uuid ?? item.id;
+
+            if (uuid !== undefined && item.expected_quantity !== undefined) {
+                map[uuid] = item.expected_quantity;
+            }
+
+            return map;
+        }, {});
+    }
+
+    /**
      * Asks the server for the expected quantities. It records the disclosure in the
      * audit trail before returning them, so there is no route to seeing these numbers
      * that does not leave a trace.
@@ -195,8 +218,13 @@ export default class CycleCountSheetComponent extends Component {
     @task({ drop: true })
     *revealExpected() {
         try {
-            yield this.fetch.post(`cycle-counts/${this.args.resource.public_id}/reveal-expected`, {}, { namespace: 'pallet/int/v1' });
-            yield this.args.resource.reload();
+            const response = yield this.fetch.post(`cycle-counts/${this.args.resource.public_id}/reveal-expected`, {}, { namespace: 'pallet/int/v1' });
+
+            // The figures come from this response and are held here, deliberately not
+            // reloaded into the record. A reload is a fresh GET, which carries no
+            // reveal and which the server therefore answers blind — so reloading undid
+            // the reveal and the column rendered dashes.
+            this.revealedExpected = this.readExpected(response);
             this.expectedRevealed = true;
             this.notifications.info(this.intl.t('operations.cycle-counts.count.revealed'));
         } catch (error) {
