@@ -70,7 +70,21 @@ export default class ProductsIndexEditController extends Controller {
             acceptButtonText: this.intl.t('common.continue'),
             confirm: async () => {
                 product.rollbackAttributes();
-                await this.hostRouter.transitionTo(routeName, ...models);
+                /*
+                 * The modal tears itself down as the transition starts, and that
+                 * teardown aborts the transition Ember has already begun. The
+                 * navigation still completes — measured landing on the list — but
+                 * awaiting it here turned the abort into an unhandled rejection and
+                 * an uncaught TransitionAborted in the console on every cancel.
+                 * Swallow only that; a real routing failure still throws.
+                 */
+                try {
+                    await this.hostRouter.transitionTo(routeName, ...models);
+                } catch (error) {
+                    if (error?.name !== 'TransitionAborted') {
+                        throw error;
+                    }
+                }
             },
         });
     }
