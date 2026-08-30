@@ -6,6 +6,8 @@ import { inject as service } from '@ember/service';
 export default class PurchaseOrdersDetailsController extends Controller {
     @service hostRouter;
     @service intl;
+    @service contextPanel;
+    @service loader;
 
     /**
      * The currently active view tab ('details' by default).
@@ -41,13 +43,75 @@ export default class PurchaseOrdersDetailsController extends Controller {
      * component has no @actionButtons argument — its only yield is the actions wormhole.
      */
     get actionButtons() {
-        return [
-            {
-                icon: 'pencil',
-                text: this.intl.t('common.edit'),
-                fn: () => this.onEdit(this.model),
+        const buttons = [];
+
+        // SCREENS.md section E: Receive is the primary action on this document, and it
+        // is absent rather than disabled once there is nothing left to receive. Until
+        // now it existed only in the list's row dropdown, so a clerk reading the order
+        // had to go back to the list to act on it.
+        if (this.canReceive) {
+            buttons.push({
+                icon: 'truck-ramp-box',
+                type: 'primary',
+                text: this.intl.t('purchase-order.actions.receive'),
+                fn: () => this.onReceive(this.model),
+            });
+        }
+
+        buttons.push({
+            icon: 'pencil',
+            text: this.intl.t('common.edit'),
+            fn: () => this.onEdit(this.model),
+        });
+
+        return buttons;
+    }
+
+    /**
+     * Whether this order still has goods to take in.
+     *
+     * A cancelled order is closed, and an order with nothing outstanding has nothing to
+     * receive — offering the action in either case invites a clerk to open a form that
+     * can only tell them there is nothing to do. An order with no line items is also
+     * excluded: the receive panel's own empty state is the wrong place to learn that
+     * the order was never filled in.
+     */
+    get canReceive() {
+        const order = this.model;
+
+        if (!order || order.status === 'cancelled') {
+            return false;
+        }
+
+        const items = order.items ?? [];
+
+        return items.length > 0 && items.some((item) => (Number(item.quantity) || 0) > (Number(item.quantity_received) || 0));
+    }
+
+    /**
+     * Opens the receiving panel, reusing the one the list already opens so the two
+     * entry points cannot drift apart.
+     */
+    @action async onReceive(purchaseOrder) {
+        this.loader.showOnInitialTransition = false;
+
+        // The document route loads the order, but a reload here keeps the panel's own
+        // assumption — that items are present — true regardless of how it was reached.
+        if (!purchaseOrder.items || purchaseOrder.items.length === 0) {
+            try {
+                await purchaseOrder.reload();
+            } catch (error) {
+                // Proceed with whatever is loaded; the panel renders its own empty state.
+            }
+        }
+
+        this.contextPanel.focus(purchaseOrder, 'receiving', {
+            args: {
+                onReceived: () => {
+                    this.hostRouter.refresh();
+                },
             },
-        ];
+        });
     }
 
     /**
