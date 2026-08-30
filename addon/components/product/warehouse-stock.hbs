@@ -1,6 +1,8 @@
 <div class="text-xs" ...attributes {{did-insert (perform this.load)}}>
     {{#if this.load.isRunning}}
         <div class="px-3 py-4"><Spinner /></div>
+    {{else if this.error}}
+        <div class="px-3 py-4 text-amber-600 dark:text-amber-300">{{t "product.warehouse-stock-failed"}}</div>
     {{else if this.rows.length}}
         <table class="w-full dark:text-gray-100">
             <thead>

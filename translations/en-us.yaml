@@ -489,6 +489,7 @@ actions:
 
 product:
   no-warehouse-stock: This product is not stocked in any warehouse.
+  warehouse-stock-failed: Could not load this product's stock by warehouse.
   columns:
     # Named for what they actually are. These read inventory_summary, an aggregate across
     # every warehouse, and SCREENS.md §B forbids both an unlabelled quantity and an

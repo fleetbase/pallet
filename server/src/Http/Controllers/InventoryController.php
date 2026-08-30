@@ -45,11 +45,14 @@ class InventoryController extends PalletResourceController
         $summarize = !$request->boolean('by_warehouse');
 
         $data = $this->model->queryFromRequest($request, function ($query) use ($summarize) {
-            // hotfix! fix the selected columns
-            $queryBuilder = $query->getQuery();
-            array_shift($queryBuilder->columns);
-
             if ($summarize) {
+                // The shift drops a column that summarizeByProduct then replaces with
+                // its own aggregates. It belongs inside this branch: on the plain
+                // listing there is nothing to put the column back, so the query went
+                // out as `select from pallet_inventories` and MySQL rejected it.
+                $queryBuilder = $query->getQuery();
+                array_shift($queryBuilder->columns);
+
                 $query->summarizeByProduct();
             }
         });
