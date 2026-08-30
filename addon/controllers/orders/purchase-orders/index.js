@@ -332,7 +332,7 @@ export default class PurchaseOrdersIndexController extends Controller {
      * @void
      */
     @action viewPurchaseOrder(purchaseOrder) {
-        this.hostRouter.transitionTo('console.pallet.orders.purchase-orders.index.details', purchaseOrder);
+        this.hostRouter.transitionTo('console.pallet.orders.purchase-orders.details', purchaseOrder);
     }
 
     /**

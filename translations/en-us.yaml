@@ -588,6 +588,8 @@ supplier:
 
 # Purchase Order translations
 purchase-order:
+  actions:
+    back-to-list: All Purchase Orders
   save-before-line-items: Save this purchase order first, then add its line items here.
   no-line-items: No line items on this purchase order.
   sections:

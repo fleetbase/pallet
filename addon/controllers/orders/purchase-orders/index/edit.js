@@ -61,7 +61,7 @@ export default class PurchaseOrdersIndexEditController extends Controller {
             this.events.trackResourceUpdated(purchaseOrder);
             this.overlay?.close();
 
-            yield this.hostRouter.transitionTo('console.pallet.orders.purchase-orders.index.details', purchaseOrder);
+            yield this.hostRouter.transitionTo('console.pallet.orders.purchase-orders.details', purchaseOrder);
             this.notifications.success(
                 this.intl.t('common.resource-updated-success', {
                     resource: 'Purchase Order',
@@ -117,7 +117,7 @@ export default class PurchaseOrdersIndexEditController extends Controller {
             return this.confirmContinueWithUnsavedChanges(purchaseOrder);
         }
 
-        return this.hostRouter.transitionTo('console.pallet.orders.purchase-orders.index.details', purchaseOrder);
+        return this.hostRouter.transitionTo('console.pallet.orders.purchase-orders.details', purchaseOrder);
     }
 
     /**
@@ -133,7 +133,7 @@ export default class PurchaseOrdersIndexEditController extends Controller {
         }
 
         this.hostRouter.refresh();
-        return this.hostRouter.transitionTo('console.pallet.orders.purchase-orders.index.details', purchaseOrder);
+        return this.hostRouter.transitionTo('console.pallet.orders.purchase-orders.details', purchaseOrder);
     }
 
     /**
@@ -181,7 +181,7 @@ export default class PurchaseOrdersIndexEditController extends Controller {
             acceptButtonText: 'Continue without saving',
             confirm: () => {
                 purchaseOrder.rollbackAttributes();
-                return this.hostRouter.transitionTo('console.pallet.orders.purchase-orders.index.details', purchaseOrder);
+                return this.hostRouter.transitionTo('console.pallet.orders.purchase-orders.details', purchaseOrder);
             },
             ...options,
         });

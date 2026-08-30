@@ -92,7 +92,7 @@ export default class PurchaseOrdersIndexNewController extends Controller {
         }
 
         this.hostRouter.refresh();
-        return this.hostRouter.transitionTo('console.pallet.orders.purchase-orders.index.details', purchaseOrder).then(() => {
+        return this.hostRouter.transitionTo('console.pallet.orders.purchase-orders.details', purchaseOrder).then(() => {
             this.resetForm();
         });
     }

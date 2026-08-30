@@ -1,0 +1,34 @@
+{{!
+    A purchase order is a document, not a record preview — DESIGN_DECISIONS §1.2, accepted
+    by Ron. So this is a full-width route view rather than a right-hand panel. §E's
+    must-never for the screen is putting the line-item grid in a 500px panel, which is
+    exactly what the overlay did.
+
+    Two component facts this template is built around, both checked rather than assumed:
+
+    1. `details` used to be a child of `index`, whose template renders the table and then
+       an outlet. An overlay floated above that; a full-width view would have rendered
+       BELOW the entire list. It is a sibling of `index` now, at the same URL.
+
+    2. Layout::Section::Header has NO @actionButtons argument — its only yield sits inside
+       the actions wormhole, so buttons go in the block and nowhere else. Passing
+       @actionButtons would have silently rendered nothing.
+}}
+<Layout::Container>
+    <Layout::Section>
+        <Layout::Section::Header @title={{@model.order_number}} @subtitle={{@model.supplier.name}} @status={{@model.status}}>
+            {{#each this.actionButtons as |button|}}
+                <Button @icon={{button.icon}} @type={{or button.type "default"}} @text={{button.text}} @helpText={{button.helpText}} @onClick={{button.fn}} @wrapperClass="ml-2" />
+            {{/each}}
+            <Button @icon="list" @type="default" @text={{t "purchase-order.actions.back-to-list"}} @onClick={{transition-to "orders.purchase-orders.index"}} @wrapperClass="ml-2" />
+        </Layout::Section::Header>
+
+        <Layout::Section::Body>
+            {{! Renders details/index.hbs. The component is not inlined here or it would
+                appear twice. }}
+            <div class="space-y-3 p-4">
+                {{outlet}}
+            </div>
+        </Layout::Section::Body>
+    </Layout::Section>
+</Layout::Container>

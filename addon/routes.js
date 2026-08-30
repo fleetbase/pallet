@@ -78,10 +78,22 @@ export default buildRoutes(function () {
         this.route('purchase-orders', function () {
             this.route('index', { path: '/' }, function () {
                 this.route('new');
-                this.route('details', { path: '/:public_id' }, function () {
-                    this.route('index', { path: '/' });
-                });
                 this.route('edit', { path: '/edit/:public_id' });
+            });
+            /*
+             * A purchase order is a document, not a record preview, so its detail view is
+             * full-width rather than a side panel (DESIGN_DECISIONS §1.2, accepted).
+             *
+             * That forces it out of `index`: the index template renders the table and then
+             * {{outlet}}, so a child route renders BELOW the whole list. An overlay got away
+             * with it by floating; a full-width view would have sat under the table.
+             *
+             * As a sibling at the same path the URL is unchanged — `index` is path '/', so
+             * /purchase-orders/:public_id resolves here either way, and Ember matches the
+             * static `new` segment before this dynamic one.
+             */
+            this.route('details', { path: '/:public_id' }, function () {
+                this.route('index', { path: '/' });
             });
         });
     });
