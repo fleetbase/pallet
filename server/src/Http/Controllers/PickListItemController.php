@@ -127,6 +127,17 @@ class PickListItemController extends PalletResourceController
 
         $item->markPicked($quantityPicked, $request->input('picked_by_uuid', session('user')));
 
+        // A short pick is a picked quantity below the requested one. SCREENS.md §F wants
+        // the reason captured and the route to carry on, so the note is recorded on the
+        // line rather than blocking the pick; without somewhere to put it the shortfall
+        // would be visible as a number with no explanation.
+        $notes = $request->input('notes');
+
+        if ($notes !== null && trim($notes) !== '') {
+            $item->notes = $notes;
+            $item->save();
+        }
+
         return new PickListItemResource($item->fresh(['product', 'variant', 'inventory', 'binLocation']));
     }
 

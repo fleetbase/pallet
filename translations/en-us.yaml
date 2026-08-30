@@ -295,6 +295,31 @@ operations:
     no-actions: No actions available
     no-items: No items on this pick list.
     back-to-list: All Pick Lists
+    pick:
+      title: Pick
+      back-to-list: Pick List
+      scan-placeholder: Scan bin, item or lot
+      current: Current pick
+      quantity: Quantity to pick
+      lot: Lot
+      confirm: Confirm pick
+      short: Short this line
+      skip: Skip
+      skipped: Skipped
+      up-next: Up next
+      found: Found
+      reason: Reason
+      record-short: Record short pick
+      short-explain: Record what was actually on the shelf and why. The rest of the route carries on.
+      complete: Complete Pick List
+      completed: Pick list completed.
+      all-picked: Every line on this route has been picked.
+      not-open: This pick list is not in progress, so nothing can be picked.
+      progress: '{picked} of {lines} picked · {short} short'
+      no-match: '{term} does not match this line.'
+      lot-required: 'This line is lot-tracked. Scan lot {lot} to pick it.'
+      invalid-quantity: 'Enter between 1 and {requested}.'
+      reason-required: A short pick needs a reason.
     started-at: Started
     completed-at: Completed
     sections:

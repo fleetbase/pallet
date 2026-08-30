@@ -11,13 +11,23 @@ export default class OperationsPickListsDetailsController extends Controller {
     @tracked queryParams = ['view'];
 
     /**
-     * SCREENS.md §F puts the picking itself on a separate `.pick` screen — scan-first
-     * and keyboard-driven — which does not exist yet. Until it does this document is
-     * read-only rather than offering a half-measure that picks from a table, which §F
-     * names as the must-never for this resource.
+     * Picking happens on the `.pick` screen, never from this table — §F's must-never for
+     * this resource is presenting the route as an editable grid with no current-line
+     * focus. This document stays a read-only view of the route; the button is the way in.
      */
     get actionButtons() {
-        return [];
+        if (this.model?.status !== 'in_progress') {
+            return [];
+        }
+
+        return [
+            {
+                icon: 'clipboard-list',
+                type: 'primary',
+                text: this.intl.t('operations.pick-lists.pick.title'),
+                fn: () => this.hostRouter.transitionTo('console.pallet.operations.pick-lists.pick', this.model.public_id),
+            },
+        ];
     }
 
     @action transitionBack() {

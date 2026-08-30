@@ -128,6 +128,9 @@ export default buildRoutes(function () {
             this.route('details', { path: '/:public_id' }, function () {
                 this.route('index', { path: '/' });
             });
+            // The pick screen is a sibling, like the count sheet: its own working
+            // screen, not something rendered inside the document's panels.
+            this.route('pick', { path: '/:public_id/pick' });
         });
         this.route('waves', function () {
             this.route('index', { path: '/' });
