@@ -48,6 +48,15 @@
     The audit trail is append-only, so this screen passes no @onPressNew and no
     bulk-delete options — that, not a @canCreate flag, is how Tabular hides them.
 }}
+{{!
+    Tabular with a block: the block replaces its Table but keeps the search and filter
+    chrome around it, which is how this screen gets expandable rows without losing the
+    header it already had.
+
+    §G's must-never is showing before and after as a raw JSON blob in the row. The diff
+    is a field-by-field table in the expanded row instead, and only the fields that
+    actually changed appear in it.
+}}
 <Layout::Resource::Tabular
     @resource="audit"
     @title={{t "audit.title"}}
@@ -59,6 +68,25 @@
     @onPageChange={{fn (mut this.page)}}
     @setupTable={{fn (mut this.table)}}
     @controller={{this}}
-/>
+>
+    <Table
+        @rows={{@model}}
+        @columns={{this.columns}}
+        @canExpand={{true}}
+        @selectable={{false}}
+        @pagination={{true}}
+        @paginationMeta={{@model.meta}}
+        @page={{this.page}}
+        @onPageChange={{fn (mut this.page)}}
+        as |Table|
+    >
+        <Table.head />
+        <Table.body as |body|>
+            <body.expanded-row as |audit|>
+                <Audit::Diff @resource={{audit}} />
+            </body.expanded-row>
+        </Table.body>
+    </Table>
+</Layout::Resource::Tabular>
 
 {{outlet}}

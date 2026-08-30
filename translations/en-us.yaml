@@ -835,6 +835,13 @@ batch:
 # data-change log — that is handled by Spatie Activity Log at the framework level.
 audit:
   title: Audit Trail
+  diff:
+    changed: What changed
+    context: Event context
+    field: Field
+    before: Before
+    after: After
+    no-detail: This event recorded no field changes and carried no additional context.
   columns:
     event: Event
     action: Action

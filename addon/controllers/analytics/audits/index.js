@@ -98,12 +98,39 @@ export default class AuditsIndexController extends Controller {
      *
      * @var {Array}
      */
+    /**
+     * SCREENS.md §G orders these Timestamp, Actor, Action, Resource type, Resource —
+     * when and who first, because those are the two questions an audit trail exists to
+     * answer. They were last, and the widths summed past the container, so on an
+     * ordinary window the timestamp and the actor were the two columns pushed off the
+     * right-hand edge.
+     *
+     * Widths are trimmed to fit rather than left to overflow. Before and after are not
+     * columns at all: §G's must-never is a raw JSON blob in the row, so the diff lives
+     * in the expandable row instead.
+     */
     @tracked columns = [
+        {
+            label: this.intl.t('audit.columns.date'),
+            valuePath: 'createdAt',
+            width: '150px',
+            resizable: true,
+            sortable: true,
+            filterable: true,
+            filterComponent: 'filter/date',
+        },
+        {
+            label: this.intl.t('audit.columns.performed-by'),
+            valuePath: 'performedBy.name',
+            width: '130px',
+            resizable: true,
+            sortable: false,
+        },
         {
             label: this.intl.t('audit.columns.event'),
             valuePath: 'eventTypeLabel',
             cellComponent: 'table/cell/status',
-            width: '160px',
+            width: '150px',
             resizable: true,
             sortable: true,
             filterable: true,
@@ -121,46 +148,30 @@ export default class AuditsIndexController extends Controller {
         {
             label: this.intl.t('audit.columns.action'),
             valuePath: 'action',
-            width: '140px',
+            width: '170px',
             resizable: true,
             sortable: false,
         },
         {
             label: this.intl.t('audit.columns.subject'),
             valuePath: 'subjectLabel',
-            width: '140px',
+            width: '110px',
             resizable: true,
             sortable: false,
         },
         {
             label: this.intl.t('audit.columns.subject-id'),
             valuePath: 'subject_reference',
-            width: '200px',
+            width: '160px',
             resizable: true,
             sortable: false,
         },
         {
             label: this.intl.t('audit.columns.reason'),
             valuePath: 'reason',
-            width: '200px',
+            width: '120px',
             resizable: true,
             sortable: false,
-        },
-        {
-            label: this.intl.t('audit.columns.performed-by'),
-            valuePath: 'performedBy.name',
-            width: '160px',
-            resizable: true,
-            sortable: false,
-        },
-        {
-            label: this.intl.t('audit.columns.date'),
-            valuePath: 'createdAt',
-            width: '160px',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterComponent: 'filter/date',
         },
     ];
 
