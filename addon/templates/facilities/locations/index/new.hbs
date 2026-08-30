@@ -4,7 +4,7 @@
     @controller={{this}}
     @headerTitle="Create a new bin location"
     @saveTask={{this.save}}
-    @onPressCancel={{transition-to "facilities.locations.index"}}
+    @onPressCancel={{this.cancel}}
     @onOverlayReady={{fn (mut this.overlay)}}
 >
     <BinLocation::Form @resource={{this.binLocation}} @controller={{this}} />

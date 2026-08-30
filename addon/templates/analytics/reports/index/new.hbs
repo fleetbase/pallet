@@ -4,7 +4,7 @@
     @controller={{this}}
     @headerTitle={{t "common.create-new-resource" resource=(lowercase (t "resource.report"))}}
     @saveTask={{this.save}}
-    @onPressCancel={{transition-to "analytics.reports.index"}}
+    @onPressCancel={{this.cancel}}
     @onOverlayReady={{fn (mut this.overlay)}}
     @width="800px"
     @authSchema="iam"

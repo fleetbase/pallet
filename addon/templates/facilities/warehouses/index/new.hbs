@@ -4,7 +4,7 @@
     @controller={{this}}
     @headerTitle="Create a new warehouse"
     @saveTask={{this.save}}
-    @onPressCancel={{transition-to "facilities.warehouses.index"}}
+    @onPressCancel={{this.cancel}}
     @onOverlayReady={{fn (mut this.overlay)}}
 >
     <Warehouse::Form @resource={{this.warehouse}} @controller={{this}} />

@@ -34,6 +34,26 @@ export default class ZonesIndexNewController extends Controller {
         }
     }
 
+    /**
+     * Cancel was wired straight to `transition-to`, so the record
+     * createNewInstance() had already put in the store was left behind on every
+     * cancelled create. They accumulate for the life of the session — visible to
+     * anything reading the store rather than the API, and a fresh orphan each time
+     * the panel is reopened. Rolling back removes an unsaved record from the store
+     * outright.
+     */
+    @action cancel() {
+        const record = this.zone;
+
+        if (record?.isNew) {
+            record.rollbackAttributes();
+        }
+
+        this.overlay?.close();
+
+        return this.hostRouter.transitionTo('console.pallet.facilities.zones.index');
+    }
+
     @action resetForm() {
         this.zone = this.warehouseZoneActions.createNewInstance();
     }

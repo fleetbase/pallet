@@ -34,6 +34,26 @@ export default class WarehousesIndexNewController extends Controller {
         }
     }
 
+    /**
+     * Cancel was wired straight to `transition-to`, so the record
+     * createNewInstance() had already put in the store was left behind on every
+     * cancelled create. They accumulate for the life of the session — visible to
+     * anything reading the store rather than the API, and a fresh orphan each time
+     * the panel is reopened. Rolling back removes an unsaved record from the store
+     * outright.
+     */
+    @action cancel() {
+        const record = this.warehouse;
+
+        if (record?.isNew) {
+            record.rollbackAttributes();
+        }
+
+        this.overlay?.close();
+
+        return this.hostRouter.transitionTo('console.pallet.facilities.warehouses.index');
+    }
+
     @action
     resetForm() {
         this.warehouse = this.warehouseActions.createNewInstance();

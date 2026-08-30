@@ -4,7 +4,7 @@
     @controller={{this}}
     @headerTitle="Create a new zone"
     @saveTask={{this.save}}
-    @onPressCancel={{transition-to "facilities.zones.index"}}
+    @onPressCancel={{this.cancel}}
     @onOverlayReady={{fn (mut this.overlay)}}
 >
     <WarehouseZone::Form @resource={{this.zone}} @controller={{this}} />

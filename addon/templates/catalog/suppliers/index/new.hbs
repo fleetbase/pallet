@@ -4,7 +4,7 @@
     @controller={{this}}
     @headerTitle="Create a new supplier"
     @saveTask={{this.save}}
-    @onPressCancel={{transition-to "catalog.suppliers.index"}}
+    @onPressCancel={{this.cancel}}
     @onOverlayReady={{fn (mut this.overlay)}}
 >
     <Supplier::Form @resource={{this.supplier}} @controller={{this}} />
