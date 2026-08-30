@@ -21,6 +21,26 @@ import Component from '@glimmer/component';
 const COUNTING_CLOSED = ['completed', 'approved'];
 
 export default class CycleCountDetailsComponent extends Component {
+    /**
+     * Accuracy with its per-cent sign, and zero preserved.
+     *
+     * `{{if @resource.accuracy_percentage}}` in the template treated 0 as absent and
+     * rendered a dash — the same zero-is-falsy trap cell/count and cell/percentage were
+     * written to avoid, reintroduced here by an inline conditional. A count where every
+     * line disagreed is 0% accurate, which is a result, not a missing value.
+     */
+    get accuracy() {
+        const value = this.args.resource?.accuracy_percentage;
+
+        if (value === null || value === undefined || value === '') {
+            return null;
+        }
+
+        const number = Number(value);
+
+        return isNaN(number) ? null : `${parseFloat(number.toFixed(2))}%`;
+    }
+
     get countingClosed() {
         return COUNTING_CLOSED.includes(this.args.resource?.status);
     }

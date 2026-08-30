@@ -73,7 +73,7 @@
             </div>
             <div class="field-info-container">
                 <div class="field-name">{{t "operations.cycle-counts.columns.accuracy"}}</div>
-                <div class="field-value tabular-nums">{{if @resource.accuracy_percentage (concat @resource.accuracy_percentage "%") "-"}}</div>
+                <div class="field-value tabular-nums">{{n-a this.accuracy}}</div>
             </div>
         </div>
     </ContentPanel>
