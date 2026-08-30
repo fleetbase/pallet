@@ -21,7 +21,7 @@ import { task } from 'ember-concurrency';
  * this engine.
  */
 export default class ProductWarehouseStockComponent extends Component {
-    @service store;
+    @service fetch;
     @service notifications;
 
     @tracked rows = [];
@@ -40,17 +40,18 @@ export default class ProductWarehouseStockComponent extends Component {
         }
 
         try {
-            // by_warehouse matters: the inventory listing collapses to one row per
-            // product by default, adding its quantities across every warehouse, so
-            // without it the query returns the very total this panel exists to break
-            // apart. It is a truthy opt-in because the adapter prunes falsy params —
-            // an earlier `summarize: 0` never reached the server at all.
-            const records = yield this.store.query('inventory', {
-                product,
-                by_warehouse: 1,
-                with: ['warehouse'],
-                limit: 200,
-            });
+            // `fetch`, not `store.query`. The store's adapter only forwards query params
+            // it recognises, so neither `summarize: 0` nor `by_warehouse: 1` ever left
+            // the browser — the request went out as ?limit&product&with[] both times and
+            // the summarised default won silently. The KPI tiles already read this API
+            // through `fetch` for the same reason.
+            //
+            // by_warehouse matters because the listing collapses to one row per product
+            // by default, adding quantities across every warehouse — the very total this
+            // panel exists to break apart.
+            const response = yield this.fetch.get('inventories', { product, by_warehouse: 1, with: ['warehouse'], limit: 200 }, { namespace: 'pallet/int/v1' });
+
+            const records = response?.inventories ?? response?.data ?? (Array.isArray(response) ? response : []);
 
             // Grouped here rather than asked of the API: a product sits in few enough
             // warehouses that a second endpoint would cost more than it saves, and the
@@ -59,7 +60,7 @@ export default class ProductWarehouseStockComponent extends Component {
 
             records.forEach((record) => {
                 const warehouse = record.warehouse;
-                const key = warehouse?.id ?? record.warehouse_uuid ?? 'unassigned';
+                const key = warehouse?.uuid ?? warehouse?.id ?? record.warehouse_uuid ?? 'unassigned';
 
                 if (!byWarehouse.has(key)) {
                     byWarehouse.set(key, {
