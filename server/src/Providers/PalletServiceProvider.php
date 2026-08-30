@@ -32,6 +32,7 @@ class PalletServiceProvider extends CoreServiceProvider
      */
     public $commands = [
         \Fleetbase\Pallet\Console\Commands\ReleaseExpiredReservations::class,
+        \Fleetbase\Pallet\Console\Commands\SeedStarterReports::class,
     ];
 
     /**
