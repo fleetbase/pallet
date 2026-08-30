@@ -108,6 +108,11 @@
         </div>
     </ContentPanel>
 
+    {{! Zones, not bins — §C's must-never is a flat 4,000-row bin list. }}
+    <ContentPanel @title={{t "warehouse.sections.structure"}} @open={{false}} @wrapperClass="bordered-top" @panelBodyWrapperClass="px-0i">
+        <Warehouse::Structure @resource={{@resource}} />
+    </ContentPanel>
+
     <ContentPanel @title={{t "warehouse.sections.docks"}} @open={{false}} @wrapperClass="bordered-top" @panelBodyWrapperClass="px-0i">
         <Warehouse::Docks @resource={{@resource}} />
     </ContentPanel>

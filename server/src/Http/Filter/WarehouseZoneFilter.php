@@ -12,4 +12,14 @@ namespace Fleetbase\Pallet\Http\Filter;
  */
 class WarehouseZoneFilter extends PalletFilter
 {
+    /**
+     * Scope zones to one warehouse.
+     *
+     * The warehouse detail panel lists that building's zones. Without this the
+     * listing returned every zone the company owns across every site.
+     */
+    public function warehouse(?string $uuid)
+    {
+        $this->builder->where('warehouse_uuid', $uuid);
+    }
 }

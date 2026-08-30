@@ -539,11 +539,13 @@ warehouse:
     utilisation: Utilisation
   empty:
     no-docks: No loading docks recorded for this warehouse.
+    no-zones: No zones defined for this warehouse.
   sections:
     address: Address
     capacity: Capacity
     details: Details
     docks: Loading Docks
+    structure: Zones & Structure
   fields:
     capacity: Capacity
     code: Warehouse Code
@@ -559,6 +561,7 @@ warehouse:
     phone: Phone
     status: Status
     stock-items: Stock Items
+    temperature-controlled: Temp Controlled
     third-party-logistics: Third-Party Logistics (3PL)
     timezone: Timezone
     total-bins: Total Bins
@@ -567,6 +570,7 @@ warehouse:
     type: Warehouse Type
     utilisation-percentage: Utilisation
     utilization: Utilization
+    zone: Zone
 
 # Supplier translations
 supplier:
