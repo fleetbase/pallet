@@ -58,20 +58,20 @@
         inferred from "50 / 50".
     }}
     <ContentPanel @title={{t "purchase-order.sections.receiving"}} @open={{true}} @wrapperClass="bordered-top">
-        <div class="grid grid-cols-2 gap-x-6 text-xs sm:grid-cols-4">
-            <div class="field-info-container field-vertical-container">
+        <div class="grid grid-cols-2 gap-3 text-xs sm:grid-cols-4">
+            <div class="field-info-container">
                 <div class="field-name">{{t "purchase-order.fields.lines-received"}}</div>
                 <div class="field-value tabular-nums">{{this.receiving.linesComplete}}<span class="text-gray-400"> / {{this.receiving.lines}}</span></div>
             </div>
-            <div class="field-info-container field-vertical-container">
+            <div class="field-info-container">
                 <div class="field-name">{{t "purchase-order.fields.quantity-ordered"}}</div>
                 <div class="field-value tabular-nums">{{format-number this.receiving.ordered}}</div>
             </div>
-            <div class="field-info-container field-vertical-container">
+            <div class="field-info-container">
                 <div class="field-name">{{t "purchase-order.fields.quantity-received"}}</div>
                 <div class="field-value tabular-nums">{{format-number this.receiving.received}}</div>
             </div>
-            <div class="field-info-container field-vertical-container">
+            <div class="field-info-container">
                 <div class="field-name">{{t "purchase-order.fields.quantity-outstanding"}}</div>
                 <div class="field-value tabular-nums {{if this.receiving.outstanding 'text-amber-600 dark:text-amber-300'}}">{{format-number this.receiving.outstanding}}</div>
             </div>
