@@ -487,6 +487,19 @@ actions:
   fulfill-order: Fulfill Order
 
 product:
+  columns:
+    # Named for what they actually are. These read inventory_summary, an aggregate across
+    # every warehouse, and SCREENS.md §B forbids both an unlabelled quantity and an
+    # unlabelled cross-warehouse sum.
+    available-all: Available (All Warehouses)
+    on-hand-all: On Hand (All Warehouses)
+    reserved-all: Reserved (All Warehouses)
+    stock-condition: Stock
+    declared-value: Declared Value
+    traceability: Traceability
+    storefront: Storefront
+    storefront-product: Storefront Product
+    internal-id: Internal ID
   sections:
     details: Details
     dimensions: Dimensions
@@ -544,6 +557,7 @@ product:
     variant-name: Variant Name
   actions:
     add-variant: Add Variant
+    create: Create product
     select-files: Select Files
     upload-images: Upload Images
 

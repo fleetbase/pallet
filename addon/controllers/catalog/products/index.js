@@ -179,7 +179,7 @@ export default class ProductsIndexController extends Controller {
 
     get emptyStateAction() {
         return {
-            label: 'Create product',
+            label: this.intl.t('product.actions.create'),
             onClick: this.productActions.transition.create,
         };
     }
@@ -194,7 +194,7 @@ export default class ProductsIndexController extends Controller {
                 // ember-ui's shared identity cell. On this screen the row *is* the
                 // product, so there is no deleted-relation case to guard — unlike
                 // the inventory lists, where the row merely points at one.
-                label: 'Product',
+                label: this.intl.t('columns.product'),
                 valuePath: 'name',
                 labelPath: 'name',
                 identifierPath: 'sku',
@@ -214,7 +214,7 @@ export default class ProductsIndexController extends Controller {
                 // one 190px cell, which clipped its own labels to "Availabl" and
                 // "Reserve" and made every row 79px tall. Three numeric columns and
                 // a badge say the same thing on one line, and each one sorts.
-                label: 'Stock',
+                label: this.intl.t('product.columns.stock-condition'),
                 valuePath: 'storefrontInventoryStatus',
                 width: '110px',
                 cellComponent: 'table/cell/status',
@@ -222,7 +222,7 @@ export default class ProductsIndexController extends Controller {
                 sortable: false,
             },
             {
-                label: 'Available',
+                label: this.intl.t('product.columns.available-all'),
                 valuePath: 'storefrontAvailableQuantity',
                 width: '90px',
                 cellComponent: 'cell/count',
@@ -230,7 +230,7 @@ export default class ProductsIndexController extends Controller {
                 sortable: false,
             },
             {
-                label: 'Reserved',
+                label: this.intl.t('product.columns.reserved-all'),
                 valuePath: 'storefrontReservedQuantity',
                 width: '90px',
                 cellComponent: 'cell/count',
@@ -239,7 +239,7 @@ export default class ProductsIndexController extends Controller {
                 hidden: true,
             },
             {
-                label: 'Total',
+                label: this.intl.t('product.columns.on-hand-all'),
                 valuePath: 'storefrontTotalQuantity',
                 width: '90px',
                 cellComponent: 'cell/count',
@@ -249,7 +249,7 @@ export default class ProductsIndexController extends Controller {
             {
                 // likewise cell/product-price stacked price, cost and declared
                 // value on three lines in a 170px cell
-                label: 'Price',
+                label: this.intl.t('product.fields.unit-price'),
                 valuePath: 'unit_price',
                 width: '100px',
                 cellComponent: 'table/cell/currency',
@@ -259,7 +259,7 @@ export default class ProductsIndexController extends Controller {
                 filterComponent: 'filter/string',
             },
             {
-                label: 'Cost',
+                label: this.intl.t('product.fields.unit-cost'),
                 valuePath: 'unit_cost',
                 width: '100px',
                 cellComponent: 'table/cell/currency',
@@ -268,7 +268,7 @@ export default class ProductsIndexController extends Controller {
                 hidden: true,
             },
             {
-                label: 'Declared Value',
+                label: this.intl.t('product.columns.declared-value'),
                 valuePath: 'declared_value',
                 width: '120px',
                 cellComponent: 'table/cell/currency',
@@ -280,7 +280,7 @@ export default class ProductsIndexController extends Controller {
                 // cell/product-traceability rendered four flags as separate inline
                 // spans, two lines deep. They are one fact — how this product has
                 // to be handled — so the model joins them onto one line.
-                label: 'Traceability',
+                label: this.intl.t('product.columns.traceability'),
                 valuePath: 'traceabilitySummary',
                 width: '150px',
                 cellComponent: 'table/cell/base',
@@ -288,7 +288,7 @@ export default class ProductsIndexController extends Controller {
                 sortable: false,
             },
             {
-                label: 'Status',
+                label: this.intl.t('common.status'),
                 valuePath: 'status',
                 width: '120px',
                 cellComponent: 'table/cell/status',
@@ -301,7 +301,7 @@ export default class ProductsIndexController extends Controller {
                 // cell/product-storefront stacked a Linked/Unlinked badge over an
                 // abbreviated storefront id — and that id is already its own
                 // column below, so the cell was duplicating it two lines deep.
-                label: 'Storefront',
+                label: this.intl.t('product.columns.storefront'),
                 valuePath: 'storefrontLinkStatus',
                 width: '120px',
                 cellComponent: 'table/cell/status',
@@ -309,7 +309,7 @@ export default class ProductsIndexController extends Controller {
                 sortable: false,
             },
             {
-                label: 'ID',
+                label: this.intl.t('common.id'),
                 valuePath: 'public_id',
                 width: '130px',
                 cellComponent: 'click-to-copy',
@@ -320,7 +320,7 @@ export default class ProductsIndexController extends Controller {
                 filterComponent: 'filter/string',
             },
             {
-                label: 'SKU',
+                label: this.intl.t('product.fields.sku'),
                 valuePath: 'sku',
                 cellComponent: 'click-to-copy',
                 width: '130px',
@@ -331,7 +331,7 @@ export default class ProductsIndexController extends Controller {
                 filterComponent: 'filter/string',
             },
             {
-                label: 'Internal ID',
+                label: this.intl.t('product.columns.internal-id'),
                 valuePath: 'internal_id',
                 cellComponent: 'click-to-copy',
                 width: '130px',
@@ -342,7 +342,7 @@ export default class ProductsIndexController extends Controller {
                 filterComponent: 'filter/string',
             },
             {
-                label: 'Storefront Product',
+                label: this.intl.t('product.columns.storefront-product'),
                 valuePath: 'storefront_product_uuid',
                 cellComponent: 'click-to-copy',
                 width: '180px',
@@ -353,7 +353,7 @@ export default class ProductsIndexController extends Controller {
                 filterComponent: 'filter/string',
             },
             {
-                label: 'Date Added',
+                label: this.intl.t('common.created-at'),
                 valuePath: 'createdAt',
                 sortParam: 'created_at',
                 width: '10%',
@@ -364,7 +364,7 @@ export default class ProductsIndexController extends Controller {
                 filterComponent: 'filter/date',
             },
             {
-                label: 'Last Updated',
+                label: this.intl.t('common.updated-at'),
                 valuePath: 'updatedAt',
                 sortParam: 'updated_at',
                 width: '10%',
