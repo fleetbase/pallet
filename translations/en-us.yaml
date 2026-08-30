@@ -477,6 +477,7 @@ inventory:
   tracking:
     expired: Expired
     expiring-soon: Expiring Soon
+    in-date: In Date
   sections:
     adjustments: Adjustments
     details: Details
@@ -497,6 +498,7 @@ inventory:
     batch-number: Batch Number
     bin-location: Bin Location
     days-over: Days Over
+    days-to-expiry: Days to Expiry
     expiry-date: Expiry Date
     in-transit: In Transit
     last-counted: Last Counted

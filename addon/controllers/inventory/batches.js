@@ -11,7 +11,12 @@ export default class InventoryBatchesController extends Controller {
 
     @tracked page = 1;
     @tracked limit;
-    @tracked sort = '-created_at';
+    /*
+     * FEFO — first expired, first out. SCREENS.md §D: "this is the screen where FEFO
+     * becomes visible", so it must never default-sort by created date. Ascending, so
+     * whatever needs using or writing off soonest is at the top.
+     */
+    @tracked sort = 'expiry_date_at';
     @tracked query;
     @tracked table;
 
@@ -72,6 +77,24 @@ export default class InventoryBatchesController extends Controller {
             width: '140px',
             resizable: true,
             sortable: true,
+        },
+        {
+            // A date alone makes the reader do the arithmetic against today on every
+            // row. Negative once the batch has expired.
+            label: this.intl.t('inventory.fields.days-to-expiry'),
+            valuePath: 'daysToExpiry',
+            cellComponent: 'cell/count',
+            width: '120px',
+            resizable: true,
+            sortable: false,
+        },
+        {
+            label: this.intl.t('common.status'),
+            valuePath: 'expiryStatus',
+            cellComponent: 'cell/expiry-status',
+            width: '130px',
+            resizable: true,
+            sortable: false,
         },
     ];
 
