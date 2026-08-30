@@ -12,4 +12,15 @@ namespace Fleetbase\Pallet\Http\Filter;
  */
 class StockAdjustmentFilter extends PalletFilter
 {
+    /**
+     * Scope adjustments to one inventory record.
+     *
+     * The inventory detail panel needs to show the adjustments made against the record
+     * it is displaying. Without this the only way to filter was client-side over every
+     * adjustment the company has ever made.
+     */
+    public function inventory(?string $inventoryUuid)
+    {
+        $this->builder->where('inventory_uuid', $inventoryUuid);
+    }
 }

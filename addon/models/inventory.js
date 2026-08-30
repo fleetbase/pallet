@@ -141,6 +141,38 @@ export default class InventoryModel extends Model {
         return days > 0 ? days : null;
     }
 
+    /**
+     * Whole days until this stock expires. Negative once it has.
+     */
+    @computed('expiry_date_at') get daysToExpiry() {
+        if (!isValidDate(this.expiry_date_at)) {
+            return null;
+        }
+
+        return differenceInCalendarDays(this.expiry_date_at, new Date());
+    }
+
+    /**
+     * `expired`, `expiring_soon`, or null.
+     *
+     * The 30-day window matches the server's `scopeExpiringSoon($days = 30)`, so the
+     * badge on a record and the row's presence in the expiring-soon metrics cannot
+     * disagree.
+     */
+    @computed('daysToExpiry') get expiryStatus() {
+        const days = this.daysToExpiry;
+
+        if (days === null) {
+            return null;
+        }
+
+        if (days < 0) {
+            return 'expired';
+        }
+
+        return days <= 30 ? 'expiring_soon' : null;
+    }
+
     @computed('received_at') get receivedAt() {
         if (!isValidDate(this.received_at)) {
             return null;

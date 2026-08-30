@@ -89,3 +89,31 @@ test('stock with no minimum set is never short', function () {
 
     expect($rows)->toHaveCount(0);
 });
+
+test('stock adjustments can be scoped to a single inventory record', function () {
+    // The inventory detail panel shows the adjustments made against the record it is
+    // displaying; without a filter method the listing returned every adjustment the
+    // company had ever made.
+    $company = (string) Str::uuid();
+    session(['company' => $company]);
+
+    $mine   = (string) Str::uuid();
+    $theirs = (string) Str::uuid();
+
+    foreach ([$mine, $mine, $theirs] as $inventory) {
+        Fleetbase\Pallet\Models\StockAdjustment::create([
+            'company_uuid'   => $company,
+            'inventory_uuid' => $inventory,
+            'product_uuid'   => (string) Str::uuid(),
+            'type'           => 'add',
+            'quantity'       => 5,
+        ]);
+    }
+
+    $filtered = Fleetbase\Pallet\Models\StockAdjustment::where('company_uuid', $company)
+        ->where('inventory_uuid', $mine)
+        ->get();
+
+    expect($filtered)->toHaveCount(2)
+        ->and($filtered->pluck('inventory_uuid')->unique()->all())->toBe([$mine]);
+});

@@ -467,12 +467,18 @@ inventory:
     before: Before
     current-quantity: Current Quantity
     delta: Delta
+    empty: No adjustments recorded against this record yet.
     make: Make Stock Adjustment
+    pending: Pending Approval
     reason: Reason
     resulting-quantity: Resulting Quantity
     save: Save Stock Adjustment
     submit-for-approval: Submit for Approval
+  tracking:
+    expired: Expired
+    expiring-soon: Expiring Soon
   sections:
+    adjustments: Adjustments
     details: Details
     ledger: Stock Movements
     location: Location
