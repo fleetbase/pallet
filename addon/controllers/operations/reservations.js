@@ -56,6 +56,14 @@ export default class OperationsReservationsController extends Controller {
             width: '140px',
             resizable: true,
             sortable: true,
+            // Hidden by default, and this is a trade rather than an oversight. The table
+            // sizes columns to their content, so the nine columns §F lists come to
+            // 1234px against a 1033px table and the last two fall off the right edge —
+            // which are Status and the action menu, the only interactive things on the
+            // row. A reservation's public_id is an internal identifier nobody scans a
+            // list by; losing it off-screen costs nothing, losing the actions costs the
+            // screen its purpose. It stays one click away in the column picker.
+            hidden: true,
         },
         {
             label: this.intl.t('operations.common.product'),
