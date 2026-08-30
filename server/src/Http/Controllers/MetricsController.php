@@ -48,6 +48,41 @@ class MetricsController extends Controller
     }
 
     /**
+     * Stock value, and an honest answer when there is nothing to value it with.
+     *
+     * The tile read "$0" against 94 units on hand. Arithmetically that was correct —
+     * every inventory row had a null unit_cost and COALESCE turned each into zero — but
+     * a warehouse holding stock and reporting no value reads as a broken tile, not as
+     * missing cost data. It is the same zero-versus-unknown confusion as a 0% accuracy
+     * rendering as a dash, in the opposite direction.
+     *
+     * Falling back to the product's sale price was the tempting fix and is the wrong
+     * one: valuation is a cost figure, and quietly substituting price would misstate it
+     * on a number people reconcile against their books.
+     *
+     * So when nothing on hand carries a cost the value is null — the tile shows a dash —
+     * and the footnote says why. When only part of the stock is costed the value is
+     * real but partial, and the footnote says how much it excludes rather than letting
+     * an understated total pass as complete.
+     */
+    protected function stockValueMetric($totals): array
+    {
+        $value         = round((float) ($totals->stock_value ?? 0), 2);
+        $uncostedUnits = (int) ($totals->uncosted_units ?? 0);
+        $totalUnits    = (int) ($totals->total_units ?? 0);
+
+        if ($totalUnits > 0 && $uncostedUnits >= $totalUnits) {
+            return $this->metric('Stock Value', null, 'currency', 'No unit cost recorded on any stock');
+        }
+
+        if ($uncostedUnits > 0) {
+            return $this->metric('Stock Value', $value, 'currency', "Excludes {$uncostedUnits} units with no unit cost");
+        }
+
+        return $this->metric('Stock Value', $value, 'currency', 'On-hand inventory value');
+    }
+
+    /**
      * GET pallet/metrics/kpis.
      *
      * Returns the individual KPI metrics consumed by Pallet dashboard tiles.
@@ -61,7 +96,8 @@ class MetricsController extends Controller
                 SUM(quantity) as total_units,
                 SUM(available_quantity) as available_units,
                 SUM(reserved_quantity) as reserved_units,
-                SUM(quantity * COALESCE(unit_cost, 0)) as stock_value
+                SUM(quantity * COALESCE(unit_cost, 0)) as stock_value,
+                SUM(CASE WHEN unit_cost IS NULL THEN quantity ELSE 0 END) as uncosted_units
             ')
             ->first();
 
@@ -78,7 +114,7 @@ class MetricsController extends Controller
             'total_skus'       => $this->metric('Total SKUs', $productCount + $variantCount, 'number', "{$productCount} products, {$variantCount} variants"),
             'available_units'  => $this->metric('Available Units', (int) ($totals->available_units ?? 0), 'number', 'Ready to promise'),
             'reserved_units'   => $this->metric('Reserved Units', (int) ($totals->reserved_units ?? 0), 'number', 'Committed to orders'),
-            'stock_value'      => $this->metric('Stock Value', round((float) ($totals->stock_value ?? 0), 2), 'currency', 'On-hand inventory value'),
+            'stock_value'      => $this->stockValueMetric($totals),
             'low_stock'        => $this->metric('Low Stock', $lowStockCount, 'number', 'At or below minimum'),
             'expiring_soon'    => $this->metric('Expiring Soon', $expiringSoonCount, 'number', 'Next 30 days'),
             'open_pos'         => $this->metric('Open POs', $openPurchaseOrders, 'number', 'Awaiting receipt'),

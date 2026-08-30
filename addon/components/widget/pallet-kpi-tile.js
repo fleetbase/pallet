@@ -20,7 +20,17 @@ export default class WidgetPalletKpiTileComponent extends Component {
     }
 
     get value() {
-        const value = this.metric.value ?? 0;
+        const raw = this.metric.value;
+
+        // A null value means the metric could not be computed, which is not the same as
+        // a value of zero — the stock-value tile reported "$0" against 94 units on hand
+        // because no inventory row carried a unit cost. Zero still renders as zero; only
+        // an absent value falls back to a dash, and the footnote says why.
+        if (raw === null || raw === undefined) {
+            return '–';
+        }
+
+        const value = raw;
 
         // `undefined` here means the *browser's* locale, not the console's, so the
         // stock-value tile rendered "0 US$" on a machine set to another locale
