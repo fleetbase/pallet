@@ -358,8 +358,12 @@ operations:
     clear: Clear
     actions-menu: Reservation Actions
     no-actions: No actions available
+    reserved-at: Reserved
     columns:
       context: Storefront Context
+      reservation: Reservation
+      batch: Batch
+      reserved-at: Reserved
 
 # Dashboard widgets
 widgets:

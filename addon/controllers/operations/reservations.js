@@ -33,14 +33,85 @@ export default class OperationsReservationsController extends Controller {
      * the reservation came from a storefront or not. Those are their own columns
      * now, hidden until someone picks them.
      */
+    /**
+     * SCREENS.md §F lists these as Reservation ID, Product, Batch, Warehouse, Qty
+     * reserved, Sales order, Reserved at, Expires at, Status.
+     *
+     * The reservation id was absent entirely, and **expires_at was declared but hidden**
+     * — the one column that makes a reservation need attention, on the screen whose
+     * whole subject is stock held against future demand. Variant and the storefront
+     * context move to hidden in exchange: they are available from the column picker for
+     * the storefront cases that need them, and keeping them visible pushed the row past
+     * the table's width, which is what clipped the action menu.
+     *
+     * Sales order is deliberately absent. The model carries `sales_order_uuid` but no
+     * relation to read a number from, and a column headed "Sales Order" showing a bare
+     * uuid is worse than no column. It needs the relation before it is worth adding.
+     */
     @tracked columns = [
+        {
+            label: this.intl.t('operations.reservations.columns.reservation'),
+            valuePath: 'public_id',
+            cellComponent: 'click-to-copy',
+            width: '140px',
+            resizable: true,
+            sortable: true,
+        },
         {
             label: this.intl.t('operations.common.product'),
             valuePath: 'product.name',
             cellComponent: 'table/cell/base',
-            width: '200px',
+            width: '160px',
             resizable: true,
             sortable: false,
+        },
+        {
+            label: this.intl.t('operations.reservations.columns.batch'),
+            valuePath: 'inventory.batch_number',
+            cellComponent: 'table/cell/base',
+            width: '100px',
+            resizable: true,
+            sortable: false,
+        },
+        {
+            label: this.intl.t('operations.common.warehouse'),
+            valuePath: 'warehouse.name',
+            cellComponent: 'table/cell/base',
+            width: '140px',
+            resizable: true,
+            sortable: false,
+        },
+        {
+            label: this.intl.t('operations.common.quantity'),
+            valuePath: 'quantity',
+            cellComponent: 'cell/count',
+            width: '80px',
+            resizable: true,
+            sortable: true,
+        },
+        {
+            label: this.intl.t('operations.reservations.columns.reserved-at'),
+            valuePath: 'reservedAt',
+            cellComponent: 'table/cell/base',
+            width: '120px',
+            resizable: true,
+            sortable: true,
+        },
+        {
+            label: this.intl.t('operations.reservations.expires'),
+            valuePath: 'expiresAt',
+            cellComponent: 'table/cell/base',
+            width: '120px',
+            resizable: true,
+            sortable: true,
+        },
+        {
+            label: this.intl.t('common.status'),
+            valuePath: 'status',
+            cellComponent: 'table/cell/status',
+            width: '110px',
+            resizable: true,
+            sortable: true,
         },
         {
             label: this.intl.t('operations.common.variant'),
@@ -49,34 +120,7 @@ export default class OperationsReservationsController extends Controller {
             width: '150px',
             resizable: true,
             sortable: false,
-        },
-        {
-            label: this.intl.t('operations.common.warehouse'),
-            valuePath: 'warehouse.name',
-            cellComponent: 'table/cell/base',
-            width: '170px',
-            resizable: true,
-            sortable: false,
-        },
-        {
-            label: this.intl.t('common.status'),
-            valuePath: 'status',
-            cellComponent: 'table/cell/status',
-            width: '120px',
-            resizable: true,
-            sortable: true,
-            filterable: true,
-            filterParam: 'status',
-            filterComponent: 'filter/select',
-            filterOptions: ['active', 'released', 'fulfilled', 'expired'],
-        },
-        {
-            label: this.intl.t('operations.common.quantity'),
-            valuePath: 'quantity',
-            cellComponent: 'cell/count',
-            width: '90px',
-            resizable: true,
-            sortable: true,
+            hidden: true,
         },
         {
             label: this.intl.t('operations.reservations.columns.context'),
@@ -85,6 +129,7 @@ export default class OperationsReservationsController extends Controller {
             width: '160px',
             resizable: true,
             sortable: false,
+            hidden: true,
         },
         {
             label: this.intl.t('operations.reservations.checkout'),
@@ -111,15 +156,6 @@ export default class OperationsReservationsController extends Controller {
             width: '160px',
             resizable: true,
             sortable: false,
-            hidden: true,
-        },
-        {
-            label: this.intl.t('operations.reservations.expires'),
-            valuePath: 'expires_at',
-            cellComponent: 'table/cell/base',
-            width: '150px',
-            resizable: true,
-            sortable: true,
             hidden: true,
         },
         {

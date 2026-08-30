@@ -1,5 +1,6 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
 import { computed } from '@ember/object';
+import { format as formatDate, isValid as isValidDate } from 'date-fns';
 
 export default class InventoryReservationModel extends Model {
     @attr('string') uuid;
@@ -42,6 +43,28 @@ export default class InventoryReservationModel extends Model {
      * storefront at all. The key identifies the context on its own; the rest are
      * their own hidden columns for when someone needs them.
      */
+    /**
+     * Reserved and expires are dates the list has to show — §F puts both on this screen,
+     * and an expiry is the only thing that makes a reservation need attention. Formatted
+     * here as every other list in the module formats its dates, so a raw Date object
+     * does not reach the cell.
+     */
+    @computed('reserved_at') get reservedAt() {
+        if (!isValidDate(this.reserved_at)) {
+            return null;
+        }
+
+        return formatDate(this.reserved_at, 'PP HH:mm');
+    }
+
+    @computed('expires_at') get expiresAt() {
+        if (!isValidDate(this.expires_at)) {
+            return null;
+        }
+
+        return formatDate(this.expires_at, 'PP HH:mm');
+    }
+
     @computed('storefront_reservation_key', 'storefront_checkout_uuid', 'storefront_cart_uuid') get storefrontContextLabel() {
         return this.storefront_reservation_key ?? this.storefront_checkout_uuid ?? this.storefront_cart_uuid ?? null;
     }
