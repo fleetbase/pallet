@@ -1,6 +1,6 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
 import { computed } from '@ember/object';
-import { format as formatDate, isValid as isValidDate, formatDistanceToNow } from 'date-fns';
+import { format as formatDate, isValid as isValidDate, formatDistanceToNow, differenceInCalendarDays } from 'date-fns';
 
 export default class InventoryModel extends Model {
     /** @ids */
@@ -108,6 +108,37 @@ export default class InventoryModel extends Model {
             return null;
         }
         return formatDate(this.expiry_date_at, 'yyyy-MM-dd');
+    }
+
+    /**
+     * How far below its minimum this row is sitting, in units.
+     *
+     * The low-stock screen is a worklist, and "quantity 3, min 5" makes a reader do
+     * the subtraction on every row to find the worst one. The server orders by this
+     * same expression, so the column and the sort agree.
+     */
+    @computed('min_quantity', 'available_quantity') get shortBy() {
+        const min = Number(this.min_quantity ?? 0);
+        const available = Number(this.available_quantity ?? 0);
+
+        if (min <= 0) {
+            return null;
+        }
+
+        return Math.max(0, min - available);
+    }
+
+    /**
+     * Whole days since this stock expired. Null when it has not.
+     */
+    @computed('expiry_date_at') get daysOverExpiry() {
+        if (!isValidDate(this.expiry_date_at)) {
+            return null;
+        }
+
+        const days = differenceInCalendarDays(new Date(), this.expiry_date_at);
+
+        return days > 0 ? days : null;
     }
 
     @computed('received_at') get receivedAt() {

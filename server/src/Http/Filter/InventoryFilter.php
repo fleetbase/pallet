@@ -23,11 +23,24 @@ class InventoryFilter extends PalletFilter
     {
         if ($view === 'low_stock') {
             $this->builder->havingRaw('minimum_quantity > 0 AND total_available_quantity <= minimum_quantity');
+
+            // Deepest shortfall first. Both screens are worklists, so the default
+            // order is the order someone would work them in — sorting them by
+            // created_at, as the client used to, buried the worst case on page 3.
+            // A client-supplied sort still wins: this only runs when none is given.
+            if (!request()->filled('sort')) {
+                $this->builder->orderByRaw('(minimum_quantity - total_available_quantity) DESC');
+            }
         }
 
         if ($view === 'expired_stock') {
             // Bound parameter rather than NOW(), which SQLite does not provide.
             $this->builder->havingRaw('latest_expiry_date_at IS NOT NULL AND latest_expiry_date_at <= ?', [now()]);
+
+            // Longest expired first — FEFO applies to the clean-up too.
+            if (!request()->filled('sort')) {
+                $this->builder->orderBy('latest_expiry_date_at', 'asc');
+            }
         }
     }
 

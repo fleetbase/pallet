@@ -87,7 +87,12 @@ export default class InventoryLowStockController extends Controller {
      *
      * @var {String}
      */
-    @tracked sort = '-created_at';
+    /*
+     * No client default: the server orders this view by depth below minimum, which
+     * is the order someone actually works it in. Sending '-created_at' overrode that
+     * and buried the deepest shortfall wherever it happened to have been created.
+     */
+    @tracked sort = null;
 
     /**
      * The filterable param `sku`
@@ -170,10 +175,32 @@ export default class InventoryLowStockController extends Controller {
             filterComponent: 'filter/string',
         },
         {
-            label: this.intl.t('columns.quantity'),
+            // Same must-never as the index: `quantity` unlabelled is ambiguous.
+            label: this.intl.t('inventory.fields.on-hand'),
             valuePath: 'quantity',
             cellComponent: 'cell/count',
-            width: '120px',
+            width: '100px',
+        },
+        {
+            label: this.intl.t('inventory.fields.available'),
+            valuePath: 'available_quantity',
+            cellComponent: 'cell/count',
+            width: '100px',
+        },
+        {
+            label: this.intl.t('inventory.fields.min-quantity'),
+            valuePath: 'min_quantity',
+            cellComponent: 'cell/count',
+            width: '100px',
+        },
+        {
+            // The number the screen exists to surface. "quantity 3, min 5" makes a
+            // reader subtract on every row to find the worst one; the server orders
+            // by this same expression so the column and the sort agree.
+            label: this.intl.t('inventory.fields.short-by'),
+            valuePath: 'shortBy',
+            cellComponent: 'cell/count',
+            width: '100px',
         },
         {
             label: this.intl.t('columns.batch'),

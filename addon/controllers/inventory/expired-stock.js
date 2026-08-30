@@ -87,7 +87,13 @@ export default class InventoryExpiredStockController extends Controller {
      *
      * @var {String}
      */
-    @tracked sort = '-created_at';
+    /*
+     * No client default: the server orders this view by expiry ascending — longest
+     * expired first, which is the order it gets worked. Sending '-created_at'
+     * overrode that and sorted a write-off worklist by when the row happened to be
+     * created.
+     */
+    @tracked sort = null;
 
     /**
      * The filterable param `sku`
@@ -171,10 +177,31 @@ export default class InventoryExpiredStockController extends Controller {
             filterComponent: 'filter/string',
         },
         {
-            label: this.intl.t('columns.quantity'),
+            // Same must-never as the index: `quantity` unlabelled is ambiguous.
+            label: this.intl.t('inventory.fields.on-hand'),
             valuePath: 'quantity',
             cellComponent: 'cell/count',
+            width: '100px',
+        },
+        {
+            // The screen is "expired stock" and did not show an expiry date. Every
+            // row was expired and none of them said when, so there was no way to tell
+            // last week's problem from last year's.
+            label: this.intl.t('columns.expiry-date'),
+            valuePath: 'expiryDate',
+            sortParam: 'expiry_date_at',
             width: '120px',
+            resizable: true,
+            sortable: true,
+        },
+        {
+            // How long it has been sitting expired — the number that decides what gets
+            // written off first. The server orders by expiry ascending, so the worst
+            // is already at the top and this column says by how much.
+            label: this.intl.t('inventory.fields.days-over'),
+            valuePath: 'daysOverExpiry',
+            cellComponent: 'cell/count',
+            width: '100px',
         },
         {
             label: this.intl.t('columns.batch'),

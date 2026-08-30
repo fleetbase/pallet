@@ -479,6 +479,7 @@ inventory:
     available: Available
     batch-number: Batch Number
     bin-location: Bin Location
+    days-over: Days Over
     expiry-date: Expiry Date
     in-transit: In Transit
     last-counted: Last Counted
@@ -502,6 +503,7 @@ inventory:
     select-warehouse: Select Warehouse
     select-zone: Select Zone
     serial-number: Serial Number
+    short-by: Short By
     supplier: Supplier
     unit-cost: Unit Cost
     uom: Unit of Measure
