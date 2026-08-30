@@ -125,7 +125,7 @@ export default class ZonesIndexController extends Controller {
                 label: 'Utilization',
                 valuePath: 'utilization_percentage',
                 width: '110px',
-                cellComponent: 'cell/count',
+                cellComponent: 'cell/percentage',
                 resizable: true,
                 sortable: false,
                 filterable: false,

@@ -72,7 +72,7 @@ export default class OperationsCycleCountsController extends Controller {
         {
             label: this.intl.t('operations.cycle-counts.columns.accuracy'),
             valuePath: 'accuracy_percentage',
-            cellComponent: 'cell/count',
+            cellComponent: 'cell/percentage',
             width: '100px',
             resizable: true,
             sortable: false,

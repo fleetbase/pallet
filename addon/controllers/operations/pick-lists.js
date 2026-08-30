@@ -92,7 +92,7 @@ export default class OperationsPickListsController extends Controller {
         {
             label: this.intl.t('operations.pick-lists.columns.progress'),
             valuePath: 'completion_percentage',
-            cellComponent: 'cell/count',
+            cellComponent: 'cell/percentage',
             width: '100px',
             resizable: true,
             sortable: false,
