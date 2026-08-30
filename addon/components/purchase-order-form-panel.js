@@ -5,6 +5,7 @@ import { action } from '@ember/object';
 import { task } from 'ember-concurrency';
 import contextComponentCallback from '@fleetbase/ember-core/utils/context-component-callback';
 import applyContextComponentArguments from '@fleetbase/ember-core/utils/apply-context-component-arguments';
+import getOrderStatusOptions from '@fleetbase/pallet-engine/utils/get-order-status-options';
 
 export default class PurchaseOrderFormPanelComponent extends Component {
     /**
@@ -53,7 +54,7 @@ export default class PurchaseOrderFormPanelComponent extends Component {
      *
      * @var {String}
      */
-    @tracked statusOptions = ['pending', 'active', 'prospective', 'archived'];
+    @tracked statusOptions = getOrderStatusOptions('purchase');
 
     /**
      * Constructs the component and applies initial state.

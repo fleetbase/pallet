@@ -41,14 +41,14 @@
                 <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
                     <PowerSelect
                         @options={{this.statusOptions}}
-                        @selected={{find-by "value" @resource.status this.statusOptions}}
+                        @selected={{@resource.status}}
                         @onChange={{set-model-attr @resource "status"}}
                         @placeholder={{t "common.select-status"}}
                         @triggerClass="form-select form-input"
                         @disabled={{cannot-write @resource}}
-                        as |option|
+                        as |status|
                     >
-                        {{option.label}}
+                        {{t (concat "status." status)}}
                     </PowerSelect>
                 </div>
             </InputGroup>

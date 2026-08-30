@@ -1,16 +1,12 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import getOrderStatusOptions from '@fleetbase/pallet-engine/utils/get-order-status-options';
 
 export default class SalesOrderFormComponent extends Component {
-    @tracked statusOptions = [
-        { label: 'Draft', value: 'draft' },
-        { label: 'Pending', value: 'pending' },
-        { label: 'Processing', value: 'processing' },
-        { label: 'Shipped', value: 'shipped' },
-        { label: 'Delivered', value: 'delivered' },
-        { label: 'Cancelled', value: 'cancelled' },
-    ];
+    // The statuses the server actually writes — see the util for what each of the
+    // four order forms was offering instead.
+    @tracked statusOptions = getOrderStatusOptions('sales');
 
     getRecordUuid(record) {
         return record?.uuid ?? record?.id;

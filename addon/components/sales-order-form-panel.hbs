@@ -60,17 +60,17 @@
                     {{model.name}}
                 </ModelSelect>
             </InputGroup>
-            <InputGroup @name="Status">
+            <InputGroup @name={{t "common.status"}}>
                 <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
                     <PowerSelect
                         @options={{this.statusOptions}}
                         @selected={{this.salesOrder.status}}
                         @onChange={{fn (mut this.salesOrder.status)}}
-                        @placeholder="Select sales order status"
+                        @placeholder={{t "common.select-status"}}
                         @triggerClass="form-select form-input"
                         as |status|
                     >
-                        {{smart-humanize status}}
+                        {{t (concat "status." status)}}
                     </PowerSelect>
                 </div>
             </InputGroup>
