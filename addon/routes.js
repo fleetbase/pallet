@@ -112,7 +112,12 @@ export default buildRoutes(function () {
             });
         });
         this.route('cycle-counts');
-        this.route('pick-lists');
+        this.route('pick-lists', function () {
+            this.route('index', { path: '/' });
+            this.route('details', { path: '/:public_id' }, function () {
+                this.route('index', { path: '/' });
+            });
+        });
         this.route('waves', function () {
             this.route('index', { path: '/' });
             this.route('details', { path: '/:public_id' }, function () {

@@ -43,7 +43,8 @@ export default class OperationsPickListsController extends Controller {
         {
             label: this.intl.t('operations.pick-lists.columns.pick-list'),
             valuePath: 'pick_list_number',
-            cellComponent: 'click-to-copy',
+            cellComponent: 'table/cell/anchor',
+            action: this.viewPickList,
             width: '170px',
             resizable: true,
             sortable: true,
@@ -109,6 +110,11 @@ export default class OperationsPickListsController extends Controller {
             width: '70px',
             actions: [
                 {
+                    label: this.intl.t('actions.view-details'),
+                    icon: 'eye',
+                    fn: this.viewPickList,
+                },
+                {
                     label: this.intl.t('operations.pick-lists.assign-to-me'),
                     icon: 'user-check',
                     fn: this.assignPickList,
@@ -166,6 +172,14 @@ export default class OperationsPickListsController extends Controller {
 
         yield timeout(250);
         this.query = value;
+    }
+
+    /**
+     * Opens the pick list document — the route in walk order. There was no way to see
+     * a pick list's lines at all before this.
+     */
+    @action viewPickList(pickList) {
+        return this.hostRouter.transitionTo('console.pallet.operations.pick-lists.details', pickList.public_id);
     }
 
     @action startCreatingPickList() {

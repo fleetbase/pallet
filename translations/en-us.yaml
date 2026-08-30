@@ -263,6 +263,19 @@ operations:
     actions-menu: Pick List Actions
     no-actions: No actions available
     no-items: No items on this pick list.
+    back-to-list: All Pick Lists
+    started-at: Started
+    completed-at: Completed
+    sections:
+      details: Details
+      progress: Picking Progress
+      route: Pick Route
+    groups:
+      assignment: Assignment
+    fields:
+      lines-picked: Lines Picked
+      outstanding: Outstanding
+      sequence: '#'
     columns:
       pick-list: Pick List
       assigned-to: Assigned To
