@@ -10,7 +10,7 @@
 }}
 <Layout::Container>
     <Layout::Section>
-        <Layout::Section::Header @title={{@model.order_number}} @subtitle={{@model.customer.name}} @status={{@model.status}}>
+        <Layout::Section::Header @title={{@model.order_number}} @badge={{@model.status}}>
             {{#each this.actionButtons as |button|}}
                 <Button @icon={{button.icon}} @type={{or button.type "default"}} @text={{button.text}} @helpText={{button.helpText}} @onClick={{button.fn}} @wrapperClass="ml-2" />
             {{/each}}

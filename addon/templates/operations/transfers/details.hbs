@@ -4,10 +4,20 @@
 
     Buttons go in Layout::Section::Header's block; the component has no @actionButtons
     argument, so passing one renders nothing.
+
+    Two more things about that component, both found by measuring rather than reading:
+
+    1. The status pill is @badge, NOT @status. All three documents passed @status, which
+       the component ignores, so none of them had ever shown a status pill.
+    2. No @subtitle. The subheader is `grid-template-columns: 1fr 3fr`, so the title
+       column is a fixed quarter of the width whatever it contains — 243px here. A
+       destination warehouse name wrapped the transfer number onto two lines inside it
+       while three quarters of the header sat empty. The same fact is one panel below
+       under ROUTE.
 }}
 <Layout::Container>
     <Layout::Section>
-        <Layout::Section::Header @title={{@model.transfer_number}} @subtitle={{@model.toWarehouse.name}} @status={{@model.status}}>
+        <Layout::Section::Header @title={{@model.transfer_number}} @badge={{@model.status}}>
             {{#each this.actionButtons as |button|}}
                 <Button @icon={{button.icon}} @type={{or button.type "default"}} @text={{button.text}} @onClick={{button.fn}} @wrapperClass="ml-2" />
             {{/each}}
