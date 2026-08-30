@@ -50,6 +50,7 @@ export default class InventoryAdjustmentsController extends Controller {
             width: '150px',
             resizable: true,
             sortable: false,
+            hidden: true,
         },
         {
             label: this.intl.t('inventory.fields.warehouse'),
@@ -71,14 +72,6 @@ export default class InventoryAdjustmentsController extends Controller {
             sortable: true,
         },
         {
-            label: this.intl.t('inventory.adjustments.reason'),
-            valuePath: 'reason',
-            cellComponent: 'table/cell/base',
-            width: '200px',
-            resizable: true,
-            sortable: false,
-        },
-        {
             label: this.intl.t('inventory.adjustments.delta'),
             valuePath: 'quantity',
             cellComponent: 'cell/count',
@@ -93,7 +86,6 @@ export default class InventoryAdjustmentsController extends Controller {
             width: '90px',
             resizable: true,
             sortable: false,
-            hidden: true,
         },
         {
             label: this.intl.t('inventory.adjustments.after'),
@@ -102,7 +94,14 @@ export default class InventoryAdjustmentsController extends Controller {
             width: '90px',
             resizable: true,
             sortable: false,
-            hidden: true,
+        },
+        {
+            label: this.intl.t('inventory.adjustments.reason'),
+            valuePath: 'reason',
+            cellComponent: 'table/cell/base',
+            width: '200px',
+            resizable: true,
+            sortable: false,
         },
         {
             label: this.intl.t('common.created-at'),
