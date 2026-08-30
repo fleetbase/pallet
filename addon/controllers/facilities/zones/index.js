@@ -59,7 +59,7 @@ export default class ZonesIndexController extends Controller {
             {
                 label: this.intl.t('common.name'),
                 valuePath: 'name',
-                width: '180px',
+                width: '150px',
                 cellComponent: 'table/cell/anchor',
                 action: this.warehouseZoneActions.transition.view,
                 resizable: true,
@@ -92,7 +92,7 @@ export default class ZonesIndexController extends Controller {
             {
                 label: this.intl.t('common.type'),
                 valuePath: 'type',
-                width: '130px',
+                width: '100px',
                 cellComponent: 'table/cell/base',
                 humanize: true,
                 resizable: true,
