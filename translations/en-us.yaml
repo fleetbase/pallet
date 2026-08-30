@@ -463,10 +463,15 @@ inventory:
     low-stock-list: Low Stock Inventory
     expired-stock-list: Expired Stock Inventory
   adjustments:
-    reason: Reason
-    delta: Delta
-    before: Before
     after: After
+    before: Before
+    current-quantity: Current Quantity
+    delta: Delta
+    make: Make Stock Adjustment
+    reason: Reason
+    resulting-quantity: Resulting Quantity
+    save: Save Stock Adjustment
+    submit-for-approval: Submit for Approval
   sections:
     details: Details
     ledger: Stock Movements

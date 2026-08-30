@@ -33,6 +33,11 @@ export default class StockAdjustmentFormPanelComponent extends Component {
     @service contextPanel;
 
     /**
+     * @service intl
+     */
+    @service intl;
+
+    /**
      * Overlay context.
      * @type {any}
      */
@@ -69,6 +74,96 @@ export default class StockAdjustmentFormPanelComponent extends Component {
         return this.stockAdjustmentTypeOptions.find((option) => option.value === this.stockAdjustment.type);
     }
 
+    /**
+     * The inventory row this adjustment will land on.
+     *
+     * Resolved with the same rules the server uses in
+     * StockAdjustmentController::resolveInventory — product + warehouse, matching
+     * variant (or explicitly no variant), status active, most recent first. If the
+     * preview used different rules it would confidently show a number the save would
+     * not produce.
+     */
+    @tracked currentInventory = null;
+
+    @task({ restartable: true })
+    *loadCurrentInventory() {
+        const { product_uuid: product, warehouse_uuid: warehouse, variant_uuid: variant } = this.stockAdjustment;
+
+        if (!product || !warehouse) {
+            this.currentInventory = null;
+            return;
+        }
+
+        try {
+            const matches = yield this.store.query('inventory', {
+                product,
+                warehouse,
+                status: 'active',
+                sort: '-created_at',
+                limit: 1,
+            });
+
+            const [match] = matches.slice();
+            // Only claim a match when the variant agrees, the way the server's
+            // whereNull/where split does.
+            const matchVariant = match ? (match.variant_uuid ?? null) : null;
+            this.currentInventory = match && matchVariant === (variant ?? null) ? match : null;
+        } catch (error) {
+            this.currentInventory = null;
+            this.notifications.serverError(error);
+        }
+    }
+
+    /**
+     * On-hand before the adjustment. Null — rendered as a dash — when no inventory row
+     * matches yet, which is different from a row holding zero.
+     */
+    get beforeQuantity() {
+        return this.currentInventory ? Number(this.currentInventory.quantity ?? 0) : null;
+    }
+
+    /**
+     * What on-hand becomes if this is saved.
+     *
+     * Mirrors StockAdjustmentController::calculateAfterQuantity exactly, including its
+     * default branch. SCREENS.md section D's must-never for this screen is that the user
+     * must not type the resulting quantity and have the delta inferred — the ledger needs
+     * the delta and the reason. So the delta stays the input and this is the readout.
+     */
+    get afterQuantity() {
+        const before = this.beforeQuantity;
+        const requested = Number(this.stockAdjustment?.quantity ?? 0);
+
+        if (before === null || !this.stockAdjustment?.type) {
+            return null;
+        }
+
+        switch (this.stockAdjustment.type) {
+            case 'remove':
+            case 'damage':
+            case 'expiry':
+            case 'loss':
+                return before - requested;
+            case 'correction':
+            case 'count':
+                return requested;
+            default:
+                return before + requested;
+        }
+    }
+
+    /**
+     * An adjustment awaiting approval does not move stock when it is saved, so the
+     * button should not claim it does.
+     */
+    get saveButtonText() {
+        if (this.stockAdjustment?.approval_required) {
+            return this.intl.t('inventory.adjustments.submit-for-approval');
+        }
+
+        return this.stockAdjustment?.id ? this.intl.t('inventory.adjustments.save') : this.intl.t('inventory.adjustments.make');
+    }
+
     get quantityLabel() {
         return ['correction', 'count'].includes(this.stockAdjustment.type) ? 'Target Quantity' : 'Adjustment Quantity';
     }
@@ -95,11 +190,13 @@ export default class StockAdjustmentFormPanelComponent extends Component {
         this.stockAdjustment.product_uuid = this.getRecordUuid(product);
         this.stockAdjustment.variant = null;
         this.stockAdjustment.variant_uuid = null;
+        this.loadCurrentInventory.perform();
     }
 
     @action setVariant(variant) {
         this.stockAdjustment.variant = variant;
         this.stockAdjustment.variant_uuid = this.getRecordUuid(variant);
+        this.loadCurrentInventory.perform();
     }
 
     @action setWarehouse(warehouse) {
@@ -107,6 +204,7 @@ export default class StockAdjustmentFormPanelComponent extends Component {
         this.stockAdjustment.warehouse_uuid = this.getRecordUuid(warehouse);
         this.stockAdjustment.inventory = null;
         this.stockAdjustment.inventory_uuid = null;
+        this.loadCurrentInventory.perform();
     }
 
     /**
