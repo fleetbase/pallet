@@ -62,7 +62,20 @@ export default class SalesOrdersIndexNewController extends Controller {
      * @return {Transition}
      * @memberof SalesOrdersIndexNewController
      */
+    /**
+     * Cancel left the record createRecord() had already put in the store behind on
+     * every abandoned create — a fresh orphan each time the panel is reopened, for the
+     * life of the session. Same defect the create panels had; this route reaches the
+     * exit through transitionBack rather than an onPressCancel action, which is why it
+     * was missed the first time round.
+     */
     @action transitionBack() {
+        const record = this.salesOrder;
+
+        if (record?.isNew) {
+            record.rollbackAttributes();
+        }
+
         return this.hostRouter.transitionTo('console.pallet.orders.sales-orders.index');
     }
 

@@ -59,7 +59,27 @@ export default class InventoryIndexNewController extends Controller {
      * @return {Transition}
      * @memberof InventoryIndexNewController
      */
+    /**
+     * Cancel left the record createRecord() had already put in the store behind on
+     * every abandoned create — a fresh orphan each time the panel is reopened, for the
+     * life of the session. Same defect the create panels had; this route reaches the
+     * exit through transitionBack rather than an onPressCancel action, which is why it
+     * was missed the first time round.
+     */
     @action transitionBack() {
+        const record = this.inventory;
+
+        if (record?.isNew) {
+            // The batch is created alongside the inventory row and orphans with it.
+            const batch = record.belongsTo('batch').value();
+
+            if (batch?.isNew) {
+                batch.rollbackAttributes();
+            }
+
+            record.rollbackAttributes();
+        }
+
         return this.hostRouter.transitionTo('console.pallet.inventory.index');
     }
 
