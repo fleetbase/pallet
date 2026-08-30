@@ -7,13 +7,14 @@
     <div class="sticky top-0 z-10 border-b border-gray-200 bg-white px-4 py-3 dark:border-gray-700 dark:bg-gray-900">
         <div class="flex flex-row items-center space-x-4">
             <div class="flex-1">
-                <Input
-                    @value={{this.scan}}
-                    @type="text"
+                <input
+                    type="text"
+                    value={{this.scan}}
                     placeholder={{t "operations.cycle-counts.count.scan-placeholder"}}
                     aria-label={{t "operations.cycle-counts.count.scan-placeholder"}}
                     class="w-full form-input"
                     disabled={{not this.isOpen}}
+                    {{on "input" this.setScan}}
                     {{on "keydown" this.onScan}}
                     {{did-insert this.registerScanField}}
                 />
@@ -57,9 +58,10 @@
                         <td class="px-4 py-2"><Badge @status={{row.item.status}}>{{smart-humanize row.item.status}}</Badge></td>
                         <td class="px-4 py-2">
                             <div class="flex flex-row items-center justify-end space-x-2">
-                                <Input
-                                    @value={{row.entered}}
-                                    @type="number"
+                                <input
+                                    type="number"
+                                    min="0"
+                                    value={{row.entered}}
                                     data-count-input={{row.uuid}}
                                     placeholder={{t "operations.cycle-counts.columns.counted"}}
                                     aria-label={{t "operations.cycle-counts.columns.counted"}}
@@ -67,6 +69,7 @@
                                     disabled={{not this.isOpen}}
                                     {{on "input" (fn this.setEntry row.uuid)}}
                                     {{on "focus" (fn this.focusRow row.uuid)}}
+                                    {{on "keydown" (fn this.onCountKey row)}}
                                 />
                                 <Button
                                     @icon="check"

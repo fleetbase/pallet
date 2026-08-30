@@ -3,6 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
+import { scheduleOnce } from '@ember/runloop';
 
 /**
  * The count sheet — SCREENS.md §F's `.count` screen.
@@ -101,6 +102,10 @@ export default class CycleCountSheetComponent extends Component {
         }
     }
 
+    @action setScan(event) {
+        this.scan = event.target.value;
+    }
+
     @action setEntry(uuid, event) {
         this.entries = { ...this.entries, [uuid]: event.target.value };
     }
@@ -144,12 +149,33 @@ export default class CycleCountSheetComponent extends Component {
         this.focusedUuid = match.uuid;
         this.scan = '';
 
-        const input = document.querySelector(`[data-count-input="${match.uuid}"]`);
+        // After render, not now: clearing the scan field and highlighting the row both
+        // trigger a re-render, and focus set synchronously here is lost when that
+        // render replaces the element. This is why the first scan appeared to work —
+        // the row highlighted — while the keystrokes that followed went nowhere.
+        scheduleOnce('afterRender', this, this.focusCountInput, match.uuid);
+    }
+
+    focusCountInput(uuid) {
+        const input = document.querySelector(`[data-count-input="${uuid}"]`);
 
         if (input) {
             input.focus();
             input.select();
         }
+    }
+
+    /**
+     * Enter in a count field records that line and hands the cursor back to the scanner.
+     * §F's must-never for this screen is requiring a mouse to complete a line.
+     */
+    @action onCountKey(row, event) {
+        if (event.key !== 'Enter') {
+            return;
+        }
+
+        event.preventDefault();
+        this.recordLine.perform(row);
     }
 
     @task({ drop: true })
