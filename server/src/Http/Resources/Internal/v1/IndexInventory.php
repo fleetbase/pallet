@@ -28,18 +28,23 @@ class IndexInventory extends FleetbaseResource
             'supplier'           => $this->whenLoaded('supplier', $this->supplier),
             'warehouse_uuid'     => $this->warehouse_uuid,
             'warehouse'          => $this->whenLoaded('warehouse', fn () => new Warehouse($this->warehouse)),
-            'status'             => $this->summary_status,
-            'quantity'           => (int) $this->total_quantity,
-            'reserved_quantity'  => (int) $this->total_reserved_quantity,
-            'available_quantity' => (int) $this->total_available_quantity,
-            'in_transit'         => (int) $this->total_in_transit,
-            'on_order'           => (int) $this->total_on_order,
-            'quarantined'        => (int) $this->total_quarantined,
-            'min_quantity'       => (int) $this->minimum_quantity,
-            'comments'           => $this->latest_comments,
-            'expiry_date_at'     => $this->latest_expiry_date_at,
-            'updated_at'         => $this->latest_updated_at,
-            'created_at'         => $this->latest_created_at,
+            'status'             => $this->summary_status ?? $this->status,
+            // Every field here reads an alias produced by Inventory::scopeSummarizeByProduct.
+            // The same controller also serves the unsummarised listing (`by_warehouse=1`),
+            // where none of those aliases exist — so each falls back to the real column it
+            // aggregates. Without the fallback a per-warehouse row reported every quantity
+            // as zero, which looks like an answer rather than a missing one.
+            'quantity'           => (int) ($this->total_quantity ?? $this->quantity),
+            'reserved_quantity'  => (int) ($this->total_reserved_quantity ?? $this->reserved_quantity),
+            'available_quantity' => (int) ($this->total_available_quantity ?? $this->available_quantity),
+            'in_transit'         => (int) ($this->total_in_transit ?? $this->in_transit),
+            'on_order'           => (int) ($this->total_on_order ?? $this->on_order),
+            'quarantined'        => (int) ($this->total_quarantined ?? $this->quarantined),
+            'min_quantity'       => (int) ($this->minimum_quantity ?? $this->min_quantity),
+            'comments'           => $this->latest_comments ?? $this->comments,
+            'expiry_date_at'     => $this->latest_expiry_date_at ?? $this->expiry_date_at,
+            'updated_at'         => $this->latest_updated_at ?? $this->updated_at,
+            'created_at'         => $this->latest_created_at ?? $this->created_at,
         ];
     }
 }
