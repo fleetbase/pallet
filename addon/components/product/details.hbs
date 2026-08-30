@@ -97,6 +97,19 @@
         </div>
     </ContentPanel>
 
+    {{!
+        §B asks the quantity panel for the totals "then a per-warehouse breakdown table".
+        The totals above are sums across every warehouse, so on their own they say how
+        much exists and not where any of it is. Showing the parts answers that better
+        than labelling the whole as a sum would.
+
+        Collapsed: most visits to a product want its details, not its distribution, and
+        the panel only fetches when opened.
+    }}
+    <ContentPanel @title={{t "product.sections.warehouse-stock"}} @open={{false}} @wrapperClass="bordered-top" @panelBodyWrapperClass="px-0i">
+        <Product::WarehouseStock @resource={{@resource}} />
+    </ContentPanel>
+
     <ContentPanel @title={{t "product.sections.pricing"}} @open={{true}} @wrapperClass="bordered-top">
         <div class="text-xs">
             <div class="field-info-container field-vertical-container dashed-bottom">

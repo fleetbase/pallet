@@ -153,3 +153,42 @@ test('every facilities filter declares the parent scope its panel relies on', fu
         }
     }
 });
+
+test('the inventory filter declares a method for every scope its panels rely on', function () {
+    // `product`, `warehouse` and `variant` all sat in Inventory's $filterParams with no
+    // method to act on them. A param the model advertises and the filter ignores fails
+    // open: the product's per-warehouse breakdown would have been handed every inventory
+    // row the company owns and shown it as that one product's stock.
+    $methods = collect((new ReflectionClass(Fleetbase\Pallet\Http\Filter\InventoryFilter::class))->getMethods(ReflectionMethod::IS_PUBLIC))
+        ->map(fn ($method) => $method->getName())
+        ->all();
+
+    foreach (['product', 'warehouse', 'variant'] as $param) {
+        expect($methods)->toContain($param);
+    }
+});
+
+test('inventory can be scoped to one product across its warehouses', function () {
+    $company = (string) Str::uuid();
+    session(['company' => $company]);
+
+    $product = (string) Str::uuid();
+    $other   = (string) Str::uuid();
+
+    foreach ([[$product, 40], [$product, 18], [$other, 99]] as [$productUuid, $quantity]) {
+        Fleetbase\Pallet\Models\Inventory::create([
+            'company_uuid'   => $company,
+            'product_uuid'   => $productUuid,
+            'warehouse_uuid' => (string) Str::uuid(),
+            'quantity'       => $quantity,
+            'status'         => 'active',
+        ]);
+    }
+
+    $scoped = Fleetbase\Pallet\Models\Inventory::where('company_uuid', $company)
+        ->where('product_uuid', $product)
+        ->get();
+
+    expect($scoped)->toHaveCount(2)
+        ->and($scoped->sum('quantity'))->toBe(58);
+});

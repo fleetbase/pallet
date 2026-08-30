@@ -44,6 +44,28 @@ class InventoryFilter extends PalletFilter
         }
     }
 
+    /**
+     * `product`, `warehouse` and `variant` were all listed in Inventory's $filterParams
+     * with no method here to act on them, so each was accepted and silently ignored —
+     * the same fail-open the supplier, dock, zone and bin listings had. A product's
+     * per-warehouse stock breakdown asking for one product would have been handed every
+     * inventory row the company owns and shown it as that product's.
+     */
+    public function product(?string $productUuid)
+    {
+        $this->builder->where('pallet_inventories.product_uuid', $productUuid);
+    }
+
+    public function warehouse(?string $warehouseUuid)
+    {
+        $this->builder->where('pallet_inventories.warehouse_uuid', $warehouseUuid);
+    }
+
+    public function variant(?string $variantUuid)
+    {
+        $this->builder->where('pallet_inventories.variant_uuid', $variantUuid);
+    }
+
     public function createdAt($createdAt)
     {
         $createdAt = Utils::dateRange($createdAt);

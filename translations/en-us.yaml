@@ -488,11 +488,15 @@ actions:
   fulfill-order: Fulfill Order
 
 product:
+  no-warehouse-stock: This product is not stocked in any warehouse.
   columns:
     # Named for what they actually are. These read inventory_summary, an aggregate across
     # every warehouse, and SCREENS.md §B forbids both an unlabelled quantity and an
     # unlabelled cross-warehouse sum.
     available-all: Available (All Warehouses)
+    on-hand: On Hand
+    reserved: Reserved
+    available: Available
     on-hand-all: On Hand (All Warehouses)
     reserved-all: Reserved (All Warehouses)
     stock-condition: Stock
@@ -504,6 +508,7 @@ product:
   sections:
     details: Details
     dimensions: Dimensions
+    warehouse-stock: Stock by Warehouse
     inventory-info: Inventory Information
     inventory-settings: Inventory Settings
     measurements: Measurements & Tracking
