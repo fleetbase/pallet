@@ -5,7 +5,7 @@
 <div class="text-xs" ...attributes {{did-insert (perform this.load)}}>
     {{#if this.load.isRunning}}
         <div class="py-2 text-gray-400">{{t "common.loading"}}</div>
-    {{else if this.load.lastSuccessful.value.length}}
+    {{else if this.movements.length}}
         <table class="w-full text-xs dark:text-gray-100">
             <thead>
                 <tr class="border-b border-gray-200 text-left whitespace-nowrap text-gray-500 uppercase dark:border-gray-700">
@@ -16,7 +16,7 @@
                 </tr>
             </thead>
             <tbody>
-                {{#each this.load.lastSuccessful.value as |movement|}}
+                {{#each this.movements as |movement|}}
                     <tr class="border-b border-gray-100 dark:border-gray-800">
                         <td class="px-3 py-2 whitespace-nowrap">{{n-a (format-date movement.transaction_date_at)}}</td>
                         <td class="px-3 py-2">{{smart-humanize movement.transaction_type}}</td>
