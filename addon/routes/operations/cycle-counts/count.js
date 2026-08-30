@@ -7,7 +7,6 @@ export default class OperationsCycleCountsCountRoute extends Route {
     model({ public_id }) {
         return this.store.findRecord('cycle-count', public_id, {
             include: ['warehouse', 'zone', 'items.product', 'items.binLocation'].join(','),
-            reload: true,
         });
     }
 }
