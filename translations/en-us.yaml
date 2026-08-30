@@ -235,6 +235,20 @@ operations:
     actions-menu: Cycle Count Actions
     no-actions: No actions available
     no-items: No items on this count.
+    back-to-list: All Cycle Counts
+    started-at: Started
+    completed-at: Completed
+    expected-hidden: Expected quantities are hidden while this count is open, so the figures cannot bias whoever is counting. They appear once the count is completed.
+    sections:
+      details: Details
+      result: Count Result
+      lines: Counted Lines
+    groups:
+      scope: Scope
+    fields:
+      lines: Lines
+      variance-lines: Variance Lines
+      net-variance: Net Variance
     columns:
       count: Count
       assigned-to: Assigned To

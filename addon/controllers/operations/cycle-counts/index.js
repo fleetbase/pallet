@@ -32,7 +32,8 @@ export default class OperationsCycleCountsController extends Controller {
         {
             label: this.intl.t('operations.cycle-counts.columns.count'),
             valuePath: 'count_number',
-            cellComponent: 'click-to-copy',
+            cellComponent: 'table/cell/anchor',
+            action: this.viewCycleCount,
             width: '170px',
             resizable: true,
             sortable: true,
@@ -89,6 +90,11 @@ export default class OperationsCycleCountsController extends Controller {
             width: '70px',
             actions: [
                 {
+                    label: this.intl.t('actions.view-details'),
+                    icon: 'eye',
+                    fn: this.viewCycleCount,
+                },
+                {
                     label: this.intl.t('operations.common.start'),
                     icon: 'play',
                     fn: this.startCycleCount,
@@ -131,6 +137,14 @@ export default class OperationsCycleCountsController extends Controller {
 
         yield timeout(250);
         this.query = value;
+    }
+
+    /**
+     * Opens the cycle count document — the variance review. There was no way to see a
+     * count's lines at all before this.
+     */
+    @action viewCycleCount(cycleCount) {
+        return this.hostRouter.transitionTo('console.pallet.operations.cycle-counts.details', cycleCount.public_id);
     }
 
     @action startCreatingCycleCount() {

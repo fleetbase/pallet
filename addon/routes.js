@@ -111,7 +111,12 @@ export default buildRoutes(function () {
                 this.route('index', { path: '/' });
             });
         });
-        this.route('cycle-counts');
+        this.route('cycle-counts', function () {
+            this.route('index', { path: '/' });
+            this.route('details', { path: '/:public_id' }, function () {
+                this.route('index', { path: '/' });
+            });
+        });
         this.route('pick-lists', function () {
             this.route('index', { path: '/' });
             this.route('details', { path: '/:public_id' }, function () {

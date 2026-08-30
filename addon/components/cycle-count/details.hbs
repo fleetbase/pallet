@@ -1,0 +1,141 @@
+<div class="details-wrapper" ...attributes>
+    <ContentPanel @title={{t "operations.cycle-counts.sections.details"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="text-xs">
+            <div class="pallet-field-group-heading">{{t "inventory.groups.identity"}}</div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "common.id"}}</div>
+                <ClickToCopy @value={{@resource.public_id}} class="field-value font-mono">{{n-a @resource.public_id}}</ClickToCopy>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "operations.cycle-counts.columns.count"}}</div>
+                <ClickToCopy @value={{@resource.count_number}} class="field-value font-mono">{{n-a @resource.count_number}}</ClickToCopy>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "common.status"}}</div>
+                <div class="field-value"><Badge @status={{@resource.status}}>{{smart-humanize @resource.status}}</Badge></div>
+            </div>
+            <div class="field-info-container field-vertical-container">
+                <div class="field-name">{{t "common.type"}}</div>
+                <div class="field-value">{{n-a (smart-humanize @resource.type)}}</div>
+            </div>
+
+            <div class="pallet-field-group-heading">{{t "operations.cycle-counts.groups.scope"}}</div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "operations.common.warehouse"}}</div>
+                <div class="field-value">{{n-a @resource.warehouse.name}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "operations.cycle-counts.zone"}}</div>
+                <div class="field-value">{{n-a @resource.zone.name}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "operations.cycle-counts.columns.assigned-to"}}</div>
+                <div class="field-value">{{n-a @resource.assignedTo.name}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "operations.cycle-counts.started-at"}}</div>
+                <div class="field-value">{{n-a (format-date @resource.started_at)}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container{{if @resource.notes ' dashed-bottom'}}">
+                <div class="field-name">{{t "operations.cycle-counts.completed-at"}}</div>
+                <div class="field-value">{{n-a (format-date @resource.completed_at)}}</div>
+            </div>
+            {{#if @resource.notes}}
+                <div class="field-info-container field-vertical-container">
+                    <div class="field-name">{{t "common.notes"}}</div>
+                    <div class="field-value">{{@resource.notes}}</div>
+                </div>
+            {{/if}}
+        </div>
+    </ContentPanel>
+
+    <ContentPanel @title={{t "operations.cycle-counts.sections.result"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-2 gap-3 text-xs sm:grid-cols-4">
+            <div class="field-info-container">
+                <div class="field-name">{{t "operations.cycle-counts.fields.lines"}}</div>
+                <div class="field-value tabular-nums">{{format-number this.counting.lines}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "operations.cycle-counts.fields.variance-lines"}}</div>
+                <div class="field-value tabular-nums">
+                    <span class={{if this.counting.varianceLines "text-amber-600 dark:text-amber-300"}}>{{format-number this.counting.varianceLines}}</span>
+                </div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "operations.cycle-counts.fields.net-variance"}}</div>
+                <div class="field-value tabular-nums">
+                    {{#if this.countingClosed}}
+                        <span class={{if this.counting.netVariance "text-amber-600 dark:text-amber-300"}}>{{format-number this.counting.netVariance}}</span>
+                    {{else}}
+                        <span class="text-gray-400">&ndash;</span>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "operations.cycle-counts.columns.accuracy"}}</div>
+                <div class="field-value tabular-nums">{{if @resource.accuracy_percentage (concat @resource.accuracy_percentage "%") "-"}}</div>
+            </div>
+        </div>
+    </ContentPanel>
+
+    <ContentPanel @title={{t "operations.cycle-counts.sections.lines"}} @open={{true}} @wrapperClass="bordered-top" @panelBodyWrapperClass="px-0i">
+        {{#if this.lines.length}}
+            {{#unless this.countingClosed}}
+                {{!
+                    Blind counting: the expected quantity is withheld while the count can
+                    still be entered, because seeing it biases whoever is counting. There
+                    is no reveal here on purpose — an unaudited reveal is the thing the
+                    decision guards against, and the audited one belongs on the count
+                    sheet.
+                }}
+                <div class="border-b border-gray-100 px-3 py-2 text-xs text-gray-500 dark:border-gray-800 dark:text-gray-400">
+                    {{t "operations.cycle-counts.expected-hidden"}}
+                </div>
+            {{/unless}}
+            <table class="w-full text-xs dark:text-gray-100">
+                <thead>
+                    <tr class="whitespace-nowrap border-b border-gray-200 text-left uppercase text-gray-500 dark:border-gray-700">
+                        <th class="px-3 py-2">{{t "operations.common.location"}}</th>
+                        <th class="w-1/3 px-3 py-2">{{t "columns.product"}}</th>
+                        <th class="px-3 py-2">{{t "common.status"}}</th>
+                        {{#if this.countingClosed}}
+                            <th class="px-3 py-2 text-right">{{t "operations.cycle-counts.columns.expected"}}</th>
+                        {{/if}}
+                        <th class="px-3 py-2 text-right">{{t "operations.cycle-counts.columns.counted"}}</th>
+                        {{#if this.countingClosed}}
+                            <th class="px-3 py-2 text-right">{{t "operations.cycle-counts.columns.variance"}}</th>
+                        {{/if}}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each this.lines as |line|}}
+                        <tr class="border-b border-gray-100 dark:border-gray-800">
+                            <td class="px-3 py-2 font-mono">{{n-a line.item.binLocation.bin_number}}</td>
+                            <td class="px-3 py-2">
+                                <div class="truncate font-medium text-gray-700 dark:text-gray-200">{{n-a line.item.product.name}}</div>
+                                <div class="truncate text-gray-400">{{n-a (or line.item.lot_number line.item.product.sku)}}</div>
+                            </td>
+                            <td class="px-3 py-2"><Badge @status={{line.item.status}}>{{smart-humanize line.item.status}}</Badge></td>
+                            {{#if this.countingClosed}}
+                                <td class="px-3 py-2 text-right tabular-nums">{{format-number line.expected}}</td>
+                            {{/if}}
+                            <td class="px-3 py-2 text-right tabular-nums">{{format-number line.counted}}</td>
+                            {{#if this.countingClosed}}
+                                {{! A signed variance: the direction is the fact, not the magnitude. }}
+                                <td class="px-3 py-2 text-right tabular-nums">
+                                    <span class={{if line.variance "text-amber-600 dark:text-amber-300"}}>{{if (gt line.variance 0) "+"}}{{format-number line.variance}}</span>
+                                </td>
+                            {{/if}}
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        {{else}}
+            <div class="px-3 py-6 text-xs text-gray-500 dark:text-gray-400">{{t "operations.cycle-counts.no-items"}}</div>
+        {{/if}}
+    </ContentPanel>
+
+    <ContentPanel @title={{t "common.metadata"}} @open={{false}} @wrapperClass="bordered-top" @panelBodyWrapperClass={{unless (is-object-empty @resource.meta) "px-0i" ""}}>
+        <MetadataViewer @metadata={{@resource.meta}} />
+    </ContentPanel>
+</div>
