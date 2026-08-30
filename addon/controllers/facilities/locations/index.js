@@ -57,7 +57,7 @@ export default class LocationsIndexController extends Controller {
     get columns() {
         return [
             {
-                label: 'Bin',
+                label: this.intl.t('facilities.locations.bin'),
                 valuePath: 'bin_number',
                 width: '150px',
                 cellComponent: 'table/cell/anchor',
@@ -69,7 +69,7 @@ export default class LocationsIndexController extends Controller {
                 filterComponent: 'filter/string',
             },
             {
-                label: 'Warehouse',
+                label: this.intl.t('operations.common.warehouse'),
                 valuePath: 'warehouse.name',
                 width: '210px',
                 cellComponent: 'table/cell/anchor',
@@ -79,7 +79,7 @@ export default class LocationsIndexController extends Controller {
                 filterable: false,
             },
             {
-                label: 'Zone',
+                label: this.intl.t('operations.cycle-counts.zone'),
                 valuePath: 'zone.name',
                 width: '160px',
                 cellComponent: 'table/cell/base',
@@ -88,7 +88,7 @@ export default class LocationsIndexController extends Controller {
                 filterable: false,
             },
             {
-                label: 'Type',
+                label: this.intl.t('common.type'),
                 valuePath: 'type',
                 width: '120px',
                 cellComponent: 'table/cell/base',
@@ -100,7 +100,7 @@ export default class LocationsIndexController extends Controller {
                 filterComponent: 'filter/string',
             },
             {
-                label: 'Status',
+                label: this.intl.t('common.status'),
                 valuePath: 'status',
                 width: '110px',
                 cellComponent: 'table/cell/status',
@@ -111,7 +111,7 @@ export default class LocationsIndexController extends Controller {
                 filterComponent: 'filter/string',
             },
             {
-                label: 'Capacity',
+                label: this.intl.t('warehouse.fields.capacity'),
                 valuePath: 'capacity',
                 width: '100px',
                 cellComponent: 'cell/count',
@@ -120,7 +120,7 @@ export default class LocationsIndexController extends Controller {
                 filterable: false,
             },
             {
-                label: 'Available',
+                label: this.intl.t('facilities.locations.available-capacity'),
                 valuePath: 'available_capacity',
                 width: '110px',
                 cellComponent: 'cell/count',
@@ -129,8 +129,8 @@ export default class LocationsIndexController extends Controller {
                 filterable: false,
             },
             {
-                label: 'Created At',
-                valuePath: 'created_at',
+                label: this.intl.t('common.created-at'),
+                valuePath: 'createdAt',
                 sortParam: 'created_at',
                 width: '140px',
                 cellComponent: 'table/cell/base',

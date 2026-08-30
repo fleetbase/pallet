@@ -1,4 +1,6 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
+import { computed } from '@ember/object';
+import { format as formatDate, isValid as isValidDate } from 'date-fns';
 
 export default class BinLocationModel extends Model {
     @attr('string') uuid;
@@ -26,4 +28,17 @@ export default class BinLocationModel extends Model {
     @attr() meta;
     @attr('date') created_at;
     @attr('date') updated_at;
+
+    /**
+     * The list bound Created At straight to the `date` attribute, so the cell rendered a
+     * JavaScript Date through toString — the same fault the zones list had, and the same
+     * cause of its table running off the edge. Formatted as every other model here does.
+     */
+    @computed('created_at') get createdAt() {
+        if (!isValidDate(this.created_at)) {
+            return null;
+        }
+
+        return formatDate(this.created_at, 'PP HH:mm');
+    }
 }

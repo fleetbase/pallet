@@ -426,6 +426,7 @@ widgets:
 facilities:
   locations:
     title: Locations
+    available-capacity: Available Capacity
     list-title: Bin Locations
     create: Create Bin Location
     bin: Bin
