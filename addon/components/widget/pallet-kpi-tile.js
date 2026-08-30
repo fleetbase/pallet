@@ -1,11 +1,13 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
+import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
 
 export default class WidgetPalletKpiTileComponent extends Component {
     @service fetch;
     @service intl;
+    @service hostRouter;
 
     @tracked data = null;
     @tracked error = null;
@@ -17,6 +19,29 @@ export default class WidgetPalletKpiTileComponent extends Component {
 
     get metric() {
         return this.data?.[this.args.metric] ?? {};
+    }
+
+    /**
+     * Where this tile leads.
+     *
+     * SCREENS.md §A gives every widget a click-through to a pre-filtered list, because
+     * the manager reading this screen "came to find out what needs them today". A tile
+     * reading "LOW STOCK 3" that cannot be clicked makes them go and find those three
+     * themselves, which is the opposite of the point.
+     *
+     * Tiles without a sensible destination stay inert rather than linking somewhere
+     * approximate — a link that lands on the wrong list is worse than no link.
+     */
+    get hasRoute() {
+        return Boolean(this.args.route);
+    }
+
+    @action openRoute() {
+        if (!this.args.route) {
+            return;
+        }
+
+        return this.hostRouter.transitionTo(`console.pallet.${this.args.route}`);
     }
 
     get value() {
