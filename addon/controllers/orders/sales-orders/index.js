@@ -333,7 +333,7 @@ export default class SalesOrdersIndexController extends Controller {
      * @void
      */
     @action viewSalesOrder(salesOrder) {
-        this.hostRouter.transitionTo('console.pallet.orders.sales-orders.index.details', salesOrder);
+        this.hostRouter.transitionTo('console.pallet.orders.sales-orders.details', salesOrder);
     }
 
     /**

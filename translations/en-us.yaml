@@ -667,6 +667,7 @@ sales-order:
     item-count: Item Count
     total-value: Total Value
   actions:
+    back-to-list: All Sales Orders
     fulfill: Fulfill Order
     view: View Sales Order
     edit: Edit Sales Order

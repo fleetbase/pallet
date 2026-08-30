@@ -3,8 +3,9 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 
-export default class SalesOrdersIndexDetailsController extends Controller {
+export default class SalesOrdersDetailsController extends Controller {
     @service hostRouter;
+    @service intl;
 
     /**
      * The currently active view tab ('details' by default).
@@ -28,19 +29,23 @@ export default class SalesOrdersIndexDetailsController extends Controller {
      */
     @tracked tabs = [
         {
-            route: 'orders.sales-orders.index.details.index',
+            route: 'orders.sales-orders.details.index',
             label: 'Overview',
         },
     ];
 
     /**
-     * The panel header's action buttons. The template binds this; without it the
-     * details panel renders no way to reach the record's edit form.
+     * Buttons for the document header.
+     *
+     * Rendered by the template into Layout::Section::Header's block, because that
+     * component has no @actionButtons argument — its only yield is the actions
+     * wormhole, so a button passed as an argument would render nowhere.
      */
     get actionButtons() {
         return [
             {
                 icon: 'pencil',
+                text: this.intl.t('common.edit'),
                 fn: () => this.onEdit(this.model),
             },
         ];

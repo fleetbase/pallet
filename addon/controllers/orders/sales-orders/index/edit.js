@@ -61,7 +61,7 @@ export default class SalesOrdersIndexEditController extends Controller {
             this.events.trackResourceUpdated(salesOrder);
             this.overlay?.close();
 
-            yield this.hostRouter.transitionTo('console.pallet.orders.sales-orders.index.details', salesOrder);
+            yield this.hostRouter.transitionTo('console.pallet.orders.sales-orders.details', salesOrder);
             this.notifications.success(
                 this.intl.t('common.resource-updated-success', {
                     resource: 'Sales Order',
@@ -117,7 +117,7 @@ export default class SalesOrdersIndexEditController extends Controller {
             return this.confirmContinueWithUnsavedChanges(salesOrder);
         }
 
-        return this.hostRouter.transitionTo('console.pallet.orders.sales-orders.index.details', salesOrder);
+        return this.hostRouter.transitionTo('console.pallet.orders.sales-orders.details', salesOrder);
     }
 
     /**
@@ -133,7 +133,7 @@ export default class SalesOrdersIndexEditController extends Controller {
         }
 
         this.hostRouter.refresh();
-        return this.hostRouter.transitionTo('console.pallet.orders.sales-orders.index.details', salesOrder);
+        return this.hostRouter.transitionTo('console.pallet.orders.sales-orders.details', salesOrder);
     }
 
     /**
@@ -181,7 +181,7 @@ export default class SalesOrdersIndexEditController extends Controller {
             acceptButtonText: 'Continue without saving',
             confirm: () => {
                 salesOrder.rollbackAttributes();
-                return this.hostRouter.transitionTo('console.pallet.orders.sales-orders.index.details', salesOrder);
+                return this.hostRouter.transitionTo('console.pallet.orders.sales-orders.details', salesOrder);
             },
             ...options,
         });

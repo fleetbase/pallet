@@ -6,6 +6,6 @@ export default class OrdersSalesOrdersIndexDetailsIndexRoute extends Route {
      * overview tab renders with no model.
      */
     model() {
-        return this.modelFor('orders.sales-orders.index.details');
+        return this.modelFor('orders.sales-orders.details');
     }
 }

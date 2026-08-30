@@ -1,0 +1,28 @@
+{{!
+    A sales order is a document, same as the purchase order — DESIGN_DECISIONS §1.2.
+    The overlay put the line-item grid in a 500px panel, which §E names as the
+    must-never for this screen.
+
+    The route is a sibling of `index` rather than a child, for the reason recorded in
+    routes.js: the index template renders the table and then an outlet, so a child
+    would render below the entire list. Layout::Section::Header has no @actionButtons
+    argument — its only yield is the actions wormhole — so the buttons go in the block.
+}}
+<Layout::Container>
+    <Layout::Section>
+        <Layout::Section::Header @title={{@model.order_number}} @subtitle={{@model.customer.name}} @status={{@model.status}}>
+            {{#each this.actionButtons as |button|}}
+                <Button @icon={{button.icon}} @type={{or button.type "default"}} @text={{button.text}} @helpText={{button.helpText}} @onClick={{button.fn}} @wrapperClass="ml-2" />
+            {{/each}}
+            <Button @icon="list" @type="default" @text={{t "sales-order.actions.back-to-list"}} @onClick={{transition-to "orders.sales-orders.index"}} @wrapperClass="ml-2" />
+        </Layout::Section::Header>
+
+        <Layout::Section::Body>
+            {{! Renders details/index.hbs — the component is not inlined here or it
+                would appear twice. }}
+            <div class="space-y-3 p-4">
+                {{outlet}}
+            </div>
+        </Layout::Section::Body>
+    </Layout::Section>
+</Layout::Container>

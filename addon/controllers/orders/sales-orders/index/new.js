@@ -92,7 +92,7 @@ export default class SalesOrdersIndexNewController extends Controller {
         }
 
         this.hostRouter.refresh();
-        return this.hostRouter.transitionTo('console.pallet.orders.sales-orders.index.details', salesOrder).then(() => {
+        return this.hostRouter.transitionTo('console.pallet.orders.sales-orders.details', salesOrder).then(() => {
             this.resetForm();
         });
     }

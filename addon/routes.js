@@ -69,10 +69,12 @@ export default buildRoutes(function () {
         this.route('sales-orders', function () {
             this.route('index', { path: '/' }, function () {
                 this.route('new');
-                this.route('details', { path: '/:public_id' }, function () {
-                    this.route('index', { path: '/' });
-                });
                 this.route('edit', { path: '/edit/:public_id' });
+            });
+            // A sales order is a document too, and moves out of `index` for the same
+            // reason the purchase order did — see the note below. The url is unchanged.
+            this.route('details', { path: '/:public_id' }, function () {
+                this.route('index', { path: '/' });
             });
         });
         this.route('purchase-orders', function () {
