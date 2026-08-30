@@ -29,13 +29,25 @@ class InventoryController extends PalletResourceController
         // sort set null as we handle via custom query
         $request->request->add(['sort' => null]);
 
-        $data = $this->model->queryFromRequest($request, function ($query) {
+        // This listing summarises by product by default — one row per product, its
+        // quantities added up across every warehouse — which is what the inventory list
+        // and the low/expired stock screens want.
+        //
+        // It is the wrong shape for anything asking where a product's stock actually is:
+        // the rows are already collapsed, so a per-warehouse breakdown cannot be read
+        // back out of them. `summarize=0` returns the underlying rows instead, one per
+        // product-and-warehouse, which is what the product panel's Stock by Warehouse
+        // table needs.
+        $summarize = $request->missing('summarize') || $request->boolean('summarize');
+
+        $data = $this->model->queryFromRequest($request, function ($query) use ($summarize) {
             // hotfix! fix the selected columns
             $queryBuilder = $query->getQuery();
             array_shift($queryBuilder->columns);
 
-            // use summarize scope
-            $query->summarizeByProduct();
+            if ($summarize) {
+                $query->summarizeByProduct();
+            }
         });
 
         if ($single) {

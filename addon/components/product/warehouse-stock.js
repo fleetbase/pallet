@@ -40,8 +40,13 @@ export default class ProductWarehouseStockComponent extends Component {
         }
 
         try {
+            // summarize=0 matters: the inventory listing collapses to one row per
+            // product by default, adding its quantities across every warehouse, so
+            // without this the query returns the very total this panel exists to break
+            // apart.
             const records = yield this.store.query('inventory', {
                 product,
+                summarize: 0,
                 with: ['warehouse'],
                 limit: 200,
             });
