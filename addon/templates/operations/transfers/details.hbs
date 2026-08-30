@@ -13,11 +13,13 @@
        column is a fixed quarter of the width whatever it contains — 243px here. A
        destination warehouse name wrapped the transfer number onto two lines inside it
        while three quarters of the header sat empty. The same fact is one panel below
-       under ROUTE.
+       under ROUTE. Dropping it was still not enough — the badge takes a further 110px
+       of that quarter — so the title is nowrap and allowed to run into the actions
+       column, which is right-aligned and empty next to it.
 }}
 <Layout::Container>
     <Layout::Section>
-        <Layout::Section::Header @title={{@model.transfer_number}} @badge={{@model.status}}>
+        <Layout::Section::Header @title={{@model.transfer_number}} @badge={{@model.status}} @titleClass="whitespace-nowrap">
             {{#each this.actionButtons as |button|}}
                 <Button @icon={{button.icon}} @type={{or button.type "default"}} @text={{button.text}} @onClick={{button.fn}} @wrapperClass="ml-2" />
             {{/each}}
