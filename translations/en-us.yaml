@@ -178,6 +178,22 @@ operations:
     receive: Receive
     actions-menu: Transfer Actions
     no-actions: No actions available
+    back-to-list: All Transfers
+    shipped-at: Shipped
+    received-at: Received
+    no-line-items: No line items on this transfer.
+    sections:
+      details: Details
+      movement: Movement
+      line-items: Line Items
+    groups:
+      route: Route
+    fields:
+      lines-received: Lines Received
+      quantity-sent: Qty Sent
+      quantity-received: Qty Received
+      quantity-in-transit: In Transit
+      lot: Lot
     columns:
       transfer: Transfer
       items: Items

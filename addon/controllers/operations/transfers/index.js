@@ -43,7 +43,8 @@ export default class OperationsTransfersController extends Controller {
         {
             label: this.intl.t('operations.transfers.columns.transfer'),
             valuePath: 'transfer_number',
-            cellComponent: 'click-to-copy',
+            cellComponent: 'table/cell/anchor',
+            action: this.viewTransfer,
             width: '160px',
             resizable: true,
             sortable: true,
@@ -120,6 +121,11 @@ export default class OperationsTransfersController extends Controller {
             // the old table printed the literal words "No actions" in this column
             // for every completed transfer; an empty menu says the same thing
             actions: [
+                {
+                    label: this.intl.t('actions.view-details'),
+                    icon: 'eye',
+                    fn: this.viewTransfer,
+                },
                 {
                     label: this.intl.t('operations.common.approve'),
                     icon: 'thumbs-up',
@@ -273,6 +279,15 @@ export default class OperationsTransfersController extends Controller {
         } catch (error) {
             this.notifications.serverError(error);
         }
+    }
+
+    /**
+     * Opens the transfer document. Until now the row menu held only status-gated
+     * lifecycle actions, so a completed transfer — every seeded one — offered an
+     * empty menu and there was no way to read the record at all.
+     */
+    @action viewTransfer(transfer) {
+        return this.hostRouter.transitionTo('console.pallet.operations.transfers.details', transfer.public_id);
     }
 
     @action approveTransfer(transfer) {

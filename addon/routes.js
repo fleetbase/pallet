@@ -100,7 +100,17 @@ export default buildRoutes(function () {
         });
     });
     this.route('operations', function () {
-        this.route('transfers');
+        /*
+         * Same shape as the order documents: `index` holds the list at path '/', and
+         * `details` is a SIBLING rather than a child, because the list template ends
+         * with the table and a child route would render underneath the whole thing.
+         */
+        this.route('transfers', function () {
+            this.route('index', { path: '/' });
+            this.route('details', { path: '/:public_id' }, function () {
+                this.route('index', { path: '/' });
+            });
+        });
         this.route('cycle-counts');
         this.route('pick-lists');
         this.route('waves');

@@ -1,0 +1,23 @@
+{{!
+    A stock transfer is a document, same shape as the two order documents — SCREENS.md
+    section F: "Detail is a document view".
+
+    Buttons go in Layout::Section::Header's block; the component has no @actionButtons
+    argument, so passing one renders nothing.
+}}
+<Layout::Container>
+    <Layout::Section>
+        <Layout::Section::Header @title={{@model.transfer_number}} @subtitle={{@model.toWarehouse.name}} @status={{@model.status}}>
+            {{#each this.actionButtons as |button|}}
+                <Button @icon={{button.icon}} @type={{or button.type "default"}} @text={{button.text}} @onClick={{button.fn}} @wrapperClass="ml-2" />
+            {{/each}}
+            <Button @icon="list" @type="default" @text={{t "operations.transfers.back-to-list"}} @onClick={{transition-to "operations.transfers.index"}} @wrapperClass="ml-2" />
+        </Layout::Section::Header>
+
+        <Layout::Section::Body>
+            <div class="space-y-3 p-4">
+                {{outlet}}
+            </div>
+        </Layout::Section::Body>
+    </Layout::Section>
+</Layout::Container>
