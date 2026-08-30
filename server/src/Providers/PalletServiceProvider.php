@@ -51,6 +51,11 @@ class PalletServiceProvider extends CoreServiceProvider
     {
         $this->app->register(CoreServiceProvider::class);
         $this->app->register(FleetOpsServiceProvider::class);
+
+        // Without this the report builder mounted on the analytics screen has no data
+        // sources at all — its table list reads "No results found" and no report can be
+        // built. FleetOps and the other extensions register the same way.
+        $this->app->register(ReportSchemaServiceProvider::class);
     }
 
     /**
