@@ -7,7 +7,33 @@ use Fleetbase\Models\Model;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * Generated from the table schema, the model's casts and its relation methods.
+ * PHPStan cannot see Eloquent's magic properties without these; every one of them
+ * was a reported error before.
+ *
+ * @property ?int                        $id
+ * @property string                      $uuid
+ * @property ?string                     $public_id
+ * @property ?string                     $company_uuid
+ * @property ?string                     $stock_transfer_uuid
+ * @property ?string                     $product_uuid
+ * @property ?string                     $variant_uuid
+ * @property ?int                        $quantity
+ * @property ?int                        $quantity_received
+ * @property ?string                     $lot_number
+ * @property ?string                     $serial_number
+ * @property ?string                     $notes
+ * @property ?array                      $meta
+ * @property ?\Illuminate\Support\Carbon $created_at
+ * @property ?\Illuminate\Support\Carbon $updated_at
+ * @property ?\Illuminate\Support\Carbon $deleted_at
+ * @property Product|null                $product
+ * @property StockTransfer|null          $stockTransfer
+ * @property ProductVariant|null         $variant
+ */
 class StockTransferItem extends Model
 {
     use HasUuid;
@@ -38,7 +64,7 @@ class StockTransferItem extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'company_uuid',
@@ -56,7 +82,7 @@ class StockTransferItem extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'meta'              => Json::class,
@@ -67,31 +93,27 @@ class StockTransferItem extends Model
     /**
      * Relationships to eager load.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $with = ['product', 'variant'];
 
     /**
      * Get the stock transfer.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function stockTransfer()
+    public function stockTransfer(): BelongsTo
     {
         return $this->belongsTo(StockTransfer::class, 'stock_transfer_uuid', 'uuid');
     }
 
     /**
      * Get the product.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function product()
+    public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class, 'product_uuid', 'uuid');
     }
 
-    public function variant()
+    public function variant(): BelongsTo
     {
         return $this->belongsTo(ProductVariant::class, 'variant_uuid', 'uuid');
     }

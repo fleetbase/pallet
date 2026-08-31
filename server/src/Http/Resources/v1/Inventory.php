@@ -10,6 +10,12 @@ use Fleetbase\Http\Resources\FleetbaseResource;
  * `available_quantity` is the figure an integrator should act on — on-hand minus
  * what is already reserved — so it is reported alongside both of its inputs rather
  * than in place of them.
+ *
+ * A JsonResource forwards every unknown property to the model it wraps, through
+ * __get. Naming that model here is what lets static analysis follow the forward;
+ * without it every $this->column read is an undefined property.
+ *
+ * @mixin \Fleetbase\Pallet\Models\Inventory
  */
 class Inventory extends FleetbaseResource
 {

@@ -12,9 +12,51 @@ use Fleetbase\Pallet\Traits\HasOperationalAuditTrail;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
+/**
+ * Generated from the table schema, the model's casts and its relation methods.
+ * PHPStan cannot see Eloquent's magic properties without these; every one of them
+ * was a reported error before.
+ *
+ * @property ?int                                                          $id
+ * @property string                                                        $uuid
+ * @property ?string                                                       $public_id
+ * @property ?string                                                       $order_number
+ * @property ?string                                                       $company_uuid
+ * @property ?string                                                       $created_by_uuid
+ * @property ?string                                                       $transaction_uuid
+ * @property ?string                                                       $assigned_to_uuid
+ * @property ?string                                                       $point_of_contact_uuid
+ * @property ?string                                                       $customer_uuid
+ * @property ?string                                                       $customer_type
+ * @property ?string                                                       $supplier_uuid
+ * @property ?string                                                       $warehouse_uuid
+ * @property ?array                                                        $meta
+ * @property ?string                                                       $status
+ * @property ?string                                                       $customer_reference_code
+ * @property ?string                                                       $reference_code
+ * @property ?string                                                       $reference_url
+ * @property ?string                                                       $description
+ * @property ?string                                                       $comments
+ * @property ?\Illuminate\Support\Carbon                                   $order_date_at
+ * @property ?\Illuminate\Support\Carbon                                   $expected_delivery_at
+ * @property ?\Illuminate\Support\Carbon                                   $created_at
+ * @property ?\Illuminate\Support\Carbon                                   $updated_at
+ * @property ?\Illuminate\Support\Carbon                                   $deleted_at
+ * @property \Fleetbase\Pallet\Models\User|null                            $assignedTo
+ * @property \Fleetbase\Pallet\Models\Company|null                         $company
+ * @property \Fleetbase\Pallet\Models\User|null                            $createdBy
+ * @property \Fleetbase\Pallet\Models\Contact|null                         $customer
+ * @property \Illuminate\Database\Eloquent\Collection<int, SalesOrderItem> $items
+ * @property \Fleetbase\Pallet\Models\Contact|null                         $pointOfContact
+ * @property Supplier|null                                                 $supplier
+ * @property \Fleetbase\Pallet\Models\Transaction|null                     $transaction
+ * @property Warehouse|null                                                $warehouse
+ */
 class SalesOrder extends Model
 {
     use HasUuid;
@@ -54,7 +96,7 @@ class SalesOrder extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'uuid',
@@ -89,7 +131,7 @@ class SalesOrder extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'meta' => Json::class,
@@ -98,95 +140,84 @@ class SalesOrder extends Model
     /**
      * Dynamic attributes that are appended to object.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $appends = [];
 
     /**
      * The attributes excluded from the model's JSON form.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $hidden = [];
 
+    /**
+     * @var array<int, string>
+     */
     protected $with = ['customer', 'warehouse', 'items.product', 'items.variant', 'items.warehouse', 'items.inventory'];
 
     /**
      * Relationship with the company associated with the sales order.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function company()
+    public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class, 'company_uuid', 'uuid');
     }
 
     /**
      * Relationship with the user who created the sales order.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function createdBy()
+    public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by_uuid', 'uuid');
     }
 
     /**
      * Relationship with the transaction associated with the sales order.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function transaction()
+    public function transaction(): BelongsTo
     {
         return $this->belongsTo(Transaction::class, 'transaction_uuid', 'uuid');
     }
 
     /**
      * Relationship with the user assigned to the sales order.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function assignedTo()
+    public function assignedTo(): BelongsTo
     {
         return $this->belongsTo(User::class, 'assigned_to_uuid', 'uuid');
     }
 
     /**
      * Relationship with the point of contact associated with the sales order.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function pointOfContact()
+    public function pointOfContact(): BelongsTo
     {
         return $this->belongsTo(Contact::class, 'point_of_contact_uuid', 'uuid');
     }
 
-    public function customer()
+    public function customer(): BelongsTo
     {
         return $this->belongsTo(Contact::class, 'customer_uuid', 'uuid');
     }
 
     /**
      * Relationship with the supplier associated with the sales order.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function supplier()
+    public function supplier(): BelongsTo
     {
         return $this->belongsTo(Supplier::class, 'supplier_uuid', 'uuid');
     }
 
-    public function warehouse()
+    public function warehouse(): BelongsTo
     {
         return $this->belongsTo(Warehouse::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
      * Relationship: the line items on this Sales Order.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function items()
+    public function items(): HasMany
     {
         return $this->hasMany(SalesOrderItem::class, 'sales_order_uuid', 'uuid')
                     ->orderBy('created_at', 'asc');

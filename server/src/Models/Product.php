@@ -15,6 +15,66 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
+/**
+ * Generated from the table schema, the model's casts and its relation methods.
+ * PHPStan cannot see Eloquent's magic properties without these; every one of them
+ * was a reported error before.
+ *
+ * @property ?int                                                                  $id
+ * @property string                                                                $uuid
+ * @property ?string                                                               $public_id
+ * @property ?string                                                               $company_uuid
+ * @property ?string                                                               $created_by_uuid
+ * @property ?string                                                               $category_uuid
+ * @property ?string                                                               $supplier_uuid
+ * @property ?string                                                               $storefront_product_uuid
+ * @property ?string                                                               $photo_uuid
+ * @property ?string                                                               $internal_id
+ * @property ?string                                                               $name
+ * @property ?string                                                               $description
+ * @property ?string                                                               $sku
+ * @property ?string                                                               $barcode
+ * @property ?string                                                               $currency
+ * @property ?string                                                               $unit_cost
+ * @property ?string                                                               $unit_price
+ * @property ?string                                                               $sale_price
+ * @property ?string                                                               $declared_value
+ * @property ?string                                                               $weight
+ * @property ?string                                                               $weight_unit
+ * @property ?string                                                               $length
+ * @property ?string                                                               $width
+ * @property ?string                                                               $height
+ * @property ?string                                                               $dimensions_unit
+ * @property ?array                                                                $dimensions
+ * @property ?bool                                                                 $has_variants
+ * @property ?bool                                                                 $is_serialized
+ * @property ?bool                                                                 $is_lot_tracked
+ * @property ?bool                                                                 $is_kit
+ * @property ?bool                                                                 $is_perishable
+ * @property ?bool                                                                 $requires_quality_check
+ * @property ?int                                                                  $reorder_point
+ * @property ?int                                                                  $reorder_quantity
+ * @property ?int                                                                  $shelf_life_days
+ * @property ?string                                                               $status
+ * @property ?string                                                               $slug
+ * @property ?array                                                                $meta
+ * @property ?\Illuminate\Support\Carbon                                           $created_at
+ * @property ?\Illuminate\Support\Carbon                                           $updated_at
+ * @property ?\Illuminate\Support\Carbon                                           $deleted_at
+ * @property \Illuminate\Database\Eloquent\Collection<int, Batch>                  $batches
+ * @property \Fleetbase\Models\Category|null                                       $category
+ * @property \Illuminate\Database\Eloquent\Collection<int, \Fleetbase\Models\File> $files
+ * @property \Illuminate\Database\Eloquent\Collection<int, Inventory>              $inventories
+ * @property \Illuminate\Database\Eloquent\Collection<int, ProductKitComponent>    $kitComponents
+ * @property Supplier|null                                                         $supplier
+ * @property \Illuminate\Database\Eloquent\Collection<int, ProductVariant>         $variants
+ * @property mixed                                                                 $incrementing_id
+ * @property mixed                                                                 $total_stock
+ * @property mixed                                                                 $available_stock
+ * @property mixed                                                                 $reserved_stock
+ * @property mixed                                                                 $is_out_of_stock
+ * @property mixed                                                                 $variant_count
+ */
 class Product extends Model
 {
     use HasUuid;
@@ -30,6 +90,9 @@ class Product extends Model
 
     public $publicIdType = 'product';
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'company_uuid',
         'created_by_uuid',
@@ -81,6 +144,9 @@ class Product extends Model
 
     protected $searchableColumns = ['name', 'description', 'sku', 'barcode', 'internal_id'];
 
+    /**
+     * @var array<string, string>
+     */
     protected $casts = [
         'meta'                   => Json::class,
         'dimensions'             => Json::class,
@@ -103,8 +169,14 @@ class Product extends Model
         'shelf_life_days'        => 'integer',
     ];
 
+    /**
+     * @var array<int, string>
+     */
     protected $appends = ['incrementing_id', 'total_stock', 'available_stock', 'reserved_stock', 'is_out_of_stock', 'variant_count'];
 
+    /**
+     * @var array<int, string>
+     */
     protected $with = ['category', 'supplier', 'variants', 'files'];
 
     public function getIncrementingIdAttribute(): ?int

@@ -31,7 +31,7 @@ test('every class imported across the server resolves', function () {
         preg_match_all('/^use\s+([A-Za-z0-9_\\\\]+)\s*;/m', file_get_contents($file->getPathname()), $imports);
 
         foreach ($imports[1] as $class) {
-            ++$checked;
+            $checked++;
 
             if (!class_exists($class) && !interface_exists($class) && !trait_exists($class)) {
                 $unresolvable[] = basename($file->getPathname()) . ' imports ' . $class;

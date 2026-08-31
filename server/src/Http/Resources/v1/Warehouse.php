@@ -9,6 +9,12 @@ use Fleetbase\Http\Resources\FleetbaseResource;
  *
  * The address is flattened out of the related place rather than exposed as a
  * place uuid — a consumer of this API has no way to resolve one.
+ *
+ * A JsonResource forwards every unknown property to the model it wraps, through
+ * __get. Naming that model here is what lets static analysis follow the forward;
+ * without it every $this->column read is an undefined property.
+ *
+ * @mixin \Fleetbase\Pallet\Models\Warehouse
  */
 class Warehouse extends FleetbaseResource
 {

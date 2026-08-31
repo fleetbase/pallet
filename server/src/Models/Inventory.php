@@ -8,8 +8,67 @@ use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasMetaAttributes;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\LogOptions;
 
+/**
+ * Generated from the table schema, the model's casts and its relation methods.
+ * PHPStan cannot see Eloquent's magic properties without these; every one of them
+ * was a reported error before.
+ *
+ * @property ?int                                                                $id
+ * @property string                                                              $uuid
+ * @property ?string                                                             $public_id
+ * @property ?string                                                             $status
+ * @property ?string                                                             $company_uuid
+ * @property ?string                                                             $created_by_uuid
+ * @property ?string                                                             $product_uuid
+ * @property ?string                                                             $variant_uuid
+ * @property ?string                                                             $warehouse_uuid
+ * @property ?string                                                             $bin_location_uuid
+ * @property ?string                                                             $zone_uuid
+ * @property ?string                                                             $supplier_uuid
+ * @property ?string                                                             $batch_uuid
+ * @property ?string                                                             $lot_number
+ * @property ?string                                                             $serial_number
+ * @property ?string                                                             $uom
+ * @property ?string                                                             $comments
+ * @property ?int                                                                $quantity
+ * @property ?int                                                                $reserved_quantity
+ * @property ?int                                                                $available_quantity
+ * @property ?int                                                                $quarantined
+ * @property ?int                                                                $on_order
+ * @property ?int                                                                $in_transit
+ * @property ?int                                                                $min_quantity
+ * @property ?int                                                                $max_quantity
+ * @property ?int                                                                $reorder_point
+ * @property ?string                                                             $unit_cost
+ * @property ?array                                                              $meta
+ * @property ?\Illuminate\Support\Carbon                                         $expiry_date_at
+ * @property ?\Illuminate\Support\Carbon                                         $received_at
+ * @property ?\Illuminate\Support\Carbon                                         $last_counted_at
+ * @property ?\Illuminate\Support\Carbon                                         $created_at
+ * @property ?\Illuminate\Support\Carbon                                         $updated_at
+ * @property ?\Illuminate\Support\Carbon                                         $deleted_at
+ * @property ?\Illuminate\Support\Carbon                                         $manufactured_date_at
+ * @property Batch|null                                                          $batch
+ * @property BinLocation|null                                                    $binLocation
+ * @property Product|null                                                        $product
+ * @property \Illuminate\Database\Eloquent\Collection<int, InventoryReservation> $reservations
+ * @property Supplier|null                                                       $supplier
+ * @property \Illuminate\Database\Eloquent\Collection<int, StockTransaction>     $transactions
+ * @property ProductVariant|null                                                 $variant
+ * @property Warehouse|null                                                      $warehouse
+ * @property WarehouseZone|null                                                  $zone
+ * @property mixed                                                               $incrementing_id
+ * @property mixed                                                               $is_low_stock
+ * @property mixed                                                               $is_out_of_stock
+ * @property mixed                                                               $is_expired
+ * @property mixed                                                               $is_expiring_soon
+ * @property mixed                                                               $days_until_expiry
+ * @property mixed                                                               $total_value
+ */
 class Inventory extends Model
 {
     use HasUuid;
@@ -48,7 +107,7 @@ class Inventory extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         // there is no `supplier` column — only supplier_uuid. The console's
@@ -91,7 +150,7 @@ class Inventory extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'meta'                => Json::class,
@@ -114,7 +173,7 @@ class Inventory extends Model
     /**
      * Dynamic attributes that are appended to object.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $appends = [
         'incrementing_id',
@@ -129,10 +188,13 @@ class Inventory extends Model
     /**
      * The attributes excluded from the model's JSON form.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $hidden = [];
 
+    /**
+     * @var array<int, string>
+     */
     protected $with = ['product', 'variant', 'batch', 'warehouse', 'supplier', 'binLocation'];
 
     protected $filterParams = [
@@ -153,75 +215,53 @@ class Inventory extends Model
         return static::select('id')->where('uuid', $this->uuid)->value('id');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function product()
+    public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class, 'product_uuid', 'uuid');
     }
 
-    public function variant()
+    public function variant(): BelongsTo
     {
         return $this->belongsTo(ProductVariant::class, 'variant_uuid', 'uuid');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function supplier()
+    public function supplier(): BelongsTo
     {
         return $this->belongsTo(Supplier::class, 'supplier_uuid', 'uuid');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function warehouse()
+    public function warehouse(): BelongsTo
     {
         return $this->belongsTo(Warehouse::class, 'warehouse_uuid', 'uuid');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function batch()
+    public function batch(): BelongsTo
     {
         return $this->belongsTo(Batch::class, 'batch_uuid', 'uuid');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function binLocation()
+    public function binLocation(): BelongsTo
     {
         return $this->belongsTo(BinLocation::class, 'bin_location_uuid', 'uuid');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function zone()
+    public function zone(): BelongsTo
     {
         return $this->belongsTo(WarehouseZone::class, 'zone_uuid', 'uuid');
     }
 
     /**
      * Get inventory reservations.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function reservations()
+    public function reservations(): HasMany
     {
         return $this->hasMany(InventoryReservation::class, 'inventory_uuid', 'uuid');
     }
 
     /**
      * Get stock transactions for this inventory.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function transactions()
+    public function transactions(): HasMany
     {
         return $this->hasMany(StockTransaction::class, 'inventory_uuid', 'uuid');
     }

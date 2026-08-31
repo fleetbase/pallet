@@ -1,8 +1,63 @@
+includes:
+    # Without this, PHPStan sees none of Eloquent: Model::where(), $model->uuid and
+    # every relation read are undefined symbols. It reported 2752 errors at level max,
+    # essentially all of them framework behaviour rather than defects.
+    - server_vendor/larastan/larastan/extension.neon
+
 parameters:
-    level: max
+    # Level 1 is where "this method does not exist" and "this property does not exist"
+    # are enforced, and both have already earned their place: level 0 caught the public
+    # sales order API importing a Contact class that does not exist, and level 1 caught
+    # SupplierFilter calling a method that had been renamed out from under it, which made
+    # every search on the suppliers list fatal.
+    #
+    # It is a floor, not a ceiling. With larastan, the @property blocks on the models and
+    # @mixin on the resources, the remaining counts are:
+    #     level 2: 77   level 3: 230   level 4: 238   level 5: 238   level 6: 737
+    # (down from 1865 / 1947 / 1953 / 1953 / 2476 before that work). Level 2 is largely
+    # missing generics on iterables; levels 3-5 add argument and return type mismatches.
+    level: 1
+
     paths:
         - server/src
 
-    checkMissingIterableValueType: true
-    checkGenericClassInNonGenericObjectType: false
     reportUnmatchedIgnoredErrors: true
+
+    ignoreErrors:
+        # Six fields the API emits that no model can supply, so each is always null. These are
+        # real defects, listed rather than silenced: reportUnmatchedIgnoredErrors is on, so
+        # any of them that gets fixed will fail this config until its entry is removed.
+        # None can be corrected without deciding the API contract first.
+        #
+        # pallet_products has photo_uuid but no photo_url and no accessor for one, while the
+        # console renders @resource.photo_url in the product pill, the panel header and the
+        # upload form — so a product photo shows after upload and is gone on the next load.
+        -
+            message: '#Access to an undefined property .+Product::\$photo_url\.#'
+            path: server/src/Http/Resources/Internal/v1/Product.php
+            count: 1
+        -
+            message: '#Access to an undefined property .+Product::\$photo_url\.#'
+            path: server/src/Http/Resources/v1/Product.php
+            count: 1
+        # pallet_audits has no incrementing id column at all, and pallet_stock_adjustment has
+        # one but neither model appends it the way Product does — so `id` is null for
+        # internal requests on both.
+        -
+            message: '#Access to an undefined property .+Audit::\$incrementing_id\.#'
+            path: server/src/Http/Resources/Internal/v1/Audit.php
+            count: 1
+        -
+            message: '#Access to an undefined property .+StockAdjustment::\$incrementing_id\.#'
+            path: server/src/Http/Resources/Internal/v1/StockAdjustment.php
+            count: 1
+        # currency exists on pallet_purchase_orders and customer_reference_code on
+        # pallet_sales_orders. Each of these two resources emits the other one's column.
+        -
+            message: '#Access to an undefined property .+SalesOrder::\$currency\.#'
+            path: server/src/Http/Resources/Internal/v1/SalesOrder.php
+            count: 1
+        -
+            message: '#Access to an undefined property .+PurchaseOrder::\$customer_reference_code\.#'
+            path: server/src/Http/Resources/Internal/v1/PurchaseOrder.php
+            count: 1

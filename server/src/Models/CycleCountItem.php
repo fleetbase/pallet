@@ -7,8 +7,44 @@ use Fleetbase\Models\Model;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Generated from the table schema, the model's casts and its relation methods.
+ * PHPStan cannot see Eloquent's magic properties without these; every one of them
+ * was a reported error before.
+ *
+ * @property ?int                        $id
+ * @property string                      $uuid
+ * @property ?string                     $public_id
+ * @property ?string                     $company_uuid
+ * @property ?string                     $cycle_count_uuid
+ * @property ?string                     $product_uuid
+ * @property ?string                     $variant_uuid
+ * @property ?string                     $inventory_uuid
+ * @property ?string                     $bin_location_uuid
+ * @property ?int                        $expected_quantity
+ * @property ?int                        $counted_quantity
+ * @property ?int                        $variance
+ * @property ?string                     $status
+ * @property ?\Illuminate\Support\Carbon $counted_at
+ * @property ?string                     $counted_by_uuid
+ * @property ?string                     $lot_number
+ * @property ?string                     $serial_number
+ * @property ?string                     $notes
+ * @property ?array                      $meta
+ * @property ?\Illuminate\Support\Carbon $created_at
+ * @property ?\Illuminate\Support\Carbon $updated_at
+ * @property ?\Illuminate\Support\Carbon $deleted_at
+ * @property BinLocation|null            $binLocation
+ * @property \Fleetbase\Models\User|null $countedBy
+ * @property CycleCount|null             $cycleCount
+ * @property Inventory|null              $inventory
+ * @property Product|null                $product
+ * @property ProductVariant|null         $variant
+ * @property mixed                       $has_discrepancy
+ */
 class CycleCountItem extends Model
 {
     use HasUuid;
@@ -39,7 +75,7 @@ class CycleCountItem extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'company_uuid',
@@ -63,7 +99,7 @@ class CycleCountItem extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'meta'              => Json::class,
@@ -76,68 +112,58 @@ class CycleCountItem extends Model
     /**
      * Dynamic attributes that are appended to object.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $appends = ['has_discrepancy'];
 
     /**
      * Relationships to eager load.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $with = ['product', 'variant', 'binLocation'];
 
     /**
      * Get the cycle count.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function cycleCount()
+    public function cycleCount(): BelongsTo
     {
         return $this->belongsTo(CycleCount::class, 'cycle_count_uuid', 'uuid');
     }
 
     /**
      * Get the product.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function product()
+    public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class, 'product_uuid', 'uuid');
     }
 
-    public function variant()
+    public function variant(): BelongsTo
     {
         return $this->belongsTo(ProductVariant::class, 'variant_uuid', 'uuid');
     }
 
     /**
      * Get the inventory record.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function inventory()
+    public function inventory(): BelongsTo
     {
         return $this->belongsTo(Inventory::class, 'inventory_uuid', 'uuid');
     }
 
     /**
      * Get the bin location.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function binLocation()
+    public function binLocation(): BelongsTo
     {
         return $this->belongsTo(BinLocation::class, 'bin_location_uuid', 'uuid');
     }
 
     /**
      * Get the user who counted this item.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function countedBy()
+    public function countedBy(): BelongsTo
     {
         return $this->belongsTo(\Fleetbase\Models\User::class, 'counted_by_uuid', 'uuid');
     }

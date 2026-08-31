@@ -10,6 +10,12 @@ use Fleetbase\Http\Resources\FleetbaseResource;
  * The older section/aisle/rack hierarchy is reported when a bin is placed in one,
  * but is not settable here — those levels are managed through the console's layout
  * tools rather than assembled a bin at a time over the API.
+ *
+ * A JsonResource forwards every unknown property to the model it wraps, through
+ * __get. Naming that model here is what lets static analysis follow the forward;
+ * without it every $this->column read is an undefined property.
+ *
+ * @mixin \Fleetbase\Pallet\Models\BinLocation
  */
 class BinLocation extends FleetbaseResource
 {

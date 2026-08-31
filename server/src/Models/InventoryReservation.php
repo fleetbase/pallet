@@ -8,8 +8,44 @@ use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 use Fleetbase\Traits\TracksApiCredential;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Generated from the table schema, the model's casts and its relation methods.
+ * PHPStan cannot see Eloquent's magic properties without these; every one of them
+ * was a reported error before.
+ *
+ * @property ?int                        $id
+ * @property string                      $uuid
+ * @property ?string                     $public_id
+ * @property ?string                     $company_uuid
+ * @property ?string                     $product_uuid
+ * @property ?string                     $variant_uuid
+ * @property ?string                     $inventory_uuid
+ * @property ?string                     $warehouse_uuid
+ * @property ?string                     $order_uuid
+ * @property ?string                     $sales_order_uuid
+ * @property ?string                     $pick_list_uuid
+ * @property ?int                        $quantity
+ * @property ?\Illuminate\Support\Carbon $reserved_at
+ * @property ?\Illuminate\Support\Carbon $expires_at
+ * @property ?\Illuminate\Support\Carbon $released_at
+ * @property ?string                     $status
+ * @property ?string                     $type
+ * @property ?array                      $meta
+ * @property ?\Illuminate\Support\Carbon $created_at
+ * @property ?\Illuminate\Support\Carbon $updated_at
+ * @property ?\Illuminate\Support\Carbon $deleted_at
+ * @property Inventory|null              $inventory
+ * @property PickList|null               $pickList
+ * @property Product|null                $product
+ * @property SalesOrder|null             $salesOrder
+ * @property ProductVariant|null         $variant
+ * @property Warehouse|null              $warehouse
+ * @property mixed                       $is_expired
+ * @property mixed                       $is_active
+ */
 class InventoryReservation extends Model
 {
     use HasUuid;
@@ -41,7 +77,7 @@ class InventoryReservation extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'company_uuid',
@@ -64,7 +100,7 @@ class InventoryReservation extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'meta'        => Json::class,
@@ -77,14 +113,14 @@ class InventoryReservation extends Model
     /**
      * Dynamic attributes that are appended to object.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $appends = ['is_expired', 'is_active'];
 
     /**
      * Relationships to eager load.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $with = ['product', 'variant', 'warehouse', 'salesOrder'];
 
@@ -97,35 +133,29 @@ class InventoryReservation extends Model
 
     /**
      * Get the product.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function product()
+    public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class, 'product_uuid', 'uuid');
     }
 
-    public function variant()
+    public function variant(): BelongsTo
     {
         return $this->belongsTo(ProductVariant::class, 'variant_uuid', 'uuid');
     }
 
     /**
      * Get the inventory record.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function inventory()
+    public function inventory(): BelongsTo
     {
         return $this->belongsTo(Inventory::class, 'inventory_uuid', 'uuid');
     }
 
     /**
      * Get the warehouse.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function warehouse()
+    public function warehouse(): BelongsTo
     {
         return $this->belongsTo(Warehouse::class, 'warehouse_uuid', 'uuid');
     }
@@ -142,20 +172,16 @@ class InventoryReservation extends Model
      *
      * A reservation only ever needs the order's identity, so nothing below the order
      * is loaded. Anything that needs the line items should load them explicitly.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function salesOrder()
+    public function salesOrder(): BelongsTo
     {
         return $this->belongsTo(SalesOrder::class, 'sales_order_uuid', 'uuid')->withOnly([]);
     }
 
     /**
      * Get the pick list.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function pickList()
+    public function pickList(): BelongsTo
     {
         return $this->belongsTo(PickList::class, 'pick_list_uuid', 'uuid');
     }

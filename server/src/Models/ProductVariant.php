@@ -11,6 +11,43 @@ use Fleetbase\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * Generated from the table schema, the model's casts and its relation methods.
+ * PHPStan cannot see Eloquent's magic properties without these; every one of them
+ * was a reported error before.
+ *
+ * @property ?int                                                     $id
+ * @property string                                                   $uuid
+ * @property ?string                                                  $public_id
+ * @property ?string                                                  $company_uuid
+ * @property ?string                                                  $created_by_uuid
+ * @property ?string                                                  $product_uuid
+ * @property ?string                                                  $storefront_variant_uuid
+ * @property ?string                                                  $name
+ * @property ?string                                                  $sku
+ * @property ?string                                                  $barcode
+ * @property ?array                                                   $option_values
+ * @property ?string                                                  $currency
+ * @property ?string                                                  $unit_cost
+ * @property ?string                                                  $unit_price
+ * @property ?string                                                  $sale_price
+ * @property ?string                                                  $declared_value
+ * @property ?string                                                  $weight
+ * @property ?string                                                  $weight_unit
+ * @property ?string                                                  $status
+ * @property ?array                                                   $meta
+ * @property ?\Illuminate\Support\Carbon                              $created_at
+ * @property ?\Illuminate\Support\Carbon                              $updated_at
+ * @property ?\Illuminate\Support\Carbon                              $deleted_at
+ * @property \Illuminate\Database\Eloquent\Collection<int, Inventory> $inventories
+ * @property Product|null                                             $product
+ * @property mixed                                                    $incrementing_id
+ * @property mixed                                                    $display_name
+ * @property mixed                                                    $total_stock
+ * @property mixed                                                    $available_stock
+ * @property mixed                                                    $reserved_stock
+ * @property mixed                                                    $is_out_of_stock
+ */
 class ProductVariant extends Model
 {
     use HasUuid;
@@ -26,6 +63,9 @@ class ProductVariant extends Model
 
     protected $publicIdType = 'variant';
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'company_uuid',
         'created_by_uuid',
@@ -48,6 +88,9 @@ class ProductVariant extends Model
 
     protected $searchableColumns = ['name', 'sku', 'barcode', 'storefront_variant_uuid'];
 
+    /**
+     * @var array<string, string>
+     */
     protected $casts = [
         'meta'           => Json::class,
         'option_values'  => Json::class,
@@ -58,8 +101,14 @@ class ProductVariant extends Model
         'weight'         => 'decimal:4',
     ];
 
+    /**
+     * @var array<int, string>
+     */
     protected $appends = ['incrementing_id', 'display_name', 'total_stock', 'available_stock', 'reserved_stock', 'is_out_of_stock'];
 
+    /**
+     * @var array<int, string>
+     */
     protected $with = [];
 
     public function getIncrementingIdAttribute(): ?int

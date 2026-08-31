@@ -10,6 +10,40 @@ use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * Generated from the table schema, the model's casts and its relation methods.
+ * PHPStan cannot see Eloquent's magic properties without these; every one of them
+ * was a reported error before.
+ *
+ * @property ?int                           $id
+ * @property string                         $uuid
+ * @property ?string                        $public_id
+ * @property ?string                        $company_uuid
+ * @property ?string                        $created_by_uuid
+ * @property ?string                        $product_uuid
+ * @property ?string                        $variant_uuid
+ * @property ?string                        $destination_uuid
+ * @property ?string                        $batch_uuid
+ * @property ?string                        $inventory_uuid
+ * @property ?string                        $source_uuid
+ * @property ?string                        $source_type
+ * @property ?array                         $meta
+ * @property ?string                        $transaction_type
+ * @property ?int                           $quantity
+ * @property ?int                           $balance_after
+ * @property ?\Illuminate\Support\Carbon    $transaction_date_at
+ * @property ?\Illuminate\Support\Carbon    $transaction_created_at
+ * @property ?\Illuminate\Support\Carbon    $created_at
+ * @property ?\Illuminate\Support\Carbon    $updated_at
+ * @property ?\Illuminate\Support\Carbon    $deleted_at
+ * @property Batch|null                     $batch
+ * @property \Fleetbase\Models\Company|null $company
+ * @property \Fleetbase\Models\User|null    $createdBy
+ * @property Inventory|null                 $inventory
+ * @property Product|null                   $product
+ * @property ProductVariant|null            $variant
+ * @property Warehouse|null                 $warehouse
+ */
 class StockTransaction extends Model
 {
     use HasUuid;
@@ -55,7 +89,7 @@ class StockTransaction extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'uuid',
@@ -82,7 +116,7 @@ class StockTransaction extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'meta'                   => Json::class,
@@ -95,14 +129,14 @@ class StockTransaction extends Model
     /**
      * Dynamic attributes that are appended to object.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $appends = [];
 
     /**
      * The attributes excluded from the model's JSON form.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $hidden = [];
 

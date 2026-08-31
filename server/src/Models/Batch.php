@@ -9,9 +9,36 @@ use Fleetbase\Models\User;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
+/**
+ * Generated from the table schema, the model's casts and its relation methods.
+ * PHPStan cannot see Eloquent's magic properties without these; every one of them
+ * was a reported error before.
+ *
+ * @property ?int                                  $id
+ * @property string                                $uuid
+ * @property ?string                               $public_id
+ * @property ?string                               $company_uuid
+ * @property ?string                               $created_by_uuid
+ * @property ?string                               $batch_number
+ * @property ?string                               $product_uuid
+ * @property ?string                               $variant_uuid
+ * @property ?int                                  $quantity
+ * @property ?array                                $meta
+ * @property ?\Illuminate\Support\Carbon           $manufacture_date_at
+ * @property ?\Illuminate\Support\Carbon           $expiry_date_at
+ * @property ?\Illuminate\Support\Carbon           $created_at
+ * @property ?\Illuminate\Support\Carbon           $updated_at
+ * @property ?\Illuminate\Support\Carbon           $deleted_at
+ * @property \Fleetbase\Pallet\Models\Company|null $company
+ * @property \Fleetbase\Pallet\Models\User|null    $createdBy
+ * @property Product|null                          $product
+ * @property ProductVariant|null                   $variant
+ * @property mixed                                 $incrementing_id
+ */
 class Batch extends Model
 {
     use HasUuid;
@@ -50,7 +77,7 @@ class Batch extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'id',
@@ -75,7 +102,7 @@ class Batch extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'meta' => Json::class,
@@ -84,17 +111,20 @@ class Batch extends Model
     /**
      * Dynamic attributes that are appended to object.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $appends = ['incrementing_id'];
 
     /**
      * The attributes excluded from the model's JSON form.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $hidden = [];
 
+    /**
+     * @var array<int, string>
+     */
     protected $with = [];
 
     public function getIncrementingIdAttribute(): ?int
@@ -104,35 +134,29 @@ class Batch extends Model
 
     /**
      * Relationship with the company associated with the batch.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function company()
+    public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class, 'company_uuid', 'uuid');
     }
 
     /**
      * Relationship with the user who created the batch.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function createdBy()
+    public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by_uuid', 'uuid');
     }
 
     /**
      * Relationship with the product associated with the batch.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function product()
+    public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class, 'product_uuid', 'uuid');
     }
 
-    public function variant()
+    public function variant(): BelongsTo
     {
         return $this->belongsTo(ProductVariant::class, 'variant_uuid', 'uuid');
     }

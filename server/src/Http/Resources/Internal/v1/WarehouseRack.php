@@ -6,6 +6,13 @@ use Fleetbase\Http\Resources\FleetbaseResource;
 use Fleetbase\Pallet\Http\Resources\Internal\v1\WarehouseBin as WarehouseBinResource;
 use Fleetbase\Support\Http;
 
+/**
+ * A JsonResource forwards every unknown property to the model it wraps, through
+ * __get. Naming that model here is what lets static analysis follow the forward;
+ * without it every $this->column read is an undefined property.
+ *
+ * @mixin \Fleetbase\Pallet\Models\WarehouseRack
+ */
 class WarehouseRack extends FleetbaseResource
 {
     /**

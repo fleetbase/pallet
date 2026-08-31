@@ -8,7 +8,46 @@ use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasMetaAttributes;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * Generated from the table schema, the model's casts and its relation methods.
+ * PHPStan cannot see Eloquent's magic properties without these; every one of them
+ * was a reported error before.
+ *
+ * @property ?int                                                     $id
+ * @property string                                                   $uuid
+ * @property ?string                                                  $public_id
+ * @property ?string                                                  $company_uuid
+ * @property ?string                                                  $warehouse_uuid
+ * @property ?string                                                  $zone_uuid
+ * @property ?string                                                  $aisle_uuid
+ * @property ?string                                                  $rack_uuid
+ * @property ?string                                                  $section_uuid
+ * @property ?string                                                  $bin_number
+ * @property ?string                                                  $barcode
+ * @property ?string                                                  $type
+ * @property ?string                                                  $status
+ * @property ?string                                                  $capacity
+ * @property ?string                                                  $current_volume
+ * @property ?array                                                   $dimensions
+ * @property ?bool                                                    $is_pickable
+ * @property ?bool                                                    $is_replenishable
+ * @property ?int                                                     $priority
+ * @property ?array                                                   $meta
+ * @property ?\Illuminate\Support\Carbon                              $created_at
+ * @property ?\Illuminate\Support\Carbon                              $updated_at
+ * @property ?\Illuminate\Support\Carbon                              $deleted_at
+ * @property WarehouseAisle|null                                      $aisle
+ * @property \Illuminate\Database\Eloquent\Collection<int, Inventory> $inventoryItems
+ * @property WarehouseRack|null                                       $rack
+ * @property WarehouseSection|null                                    $section
+ * @property Warehouse|null                                           $warehouse
+ * @property WarehouseZone|null                                       $zone
+ * @property mixed                                                    $utilization_percentage
+ * @property mixed                                                    $available_capacity
+ */
 class BinLocation extends Model
 {
     use HasUuid;
@@ -40,7 +79,7 @@ class BinLocation extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'company_uuid',
@@ -65,7 +104,7 @@ class BinLocation extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'meta'              => Json::class,
@@ -80,7 +119,7 @@ class BinLocation extends Model
     /**
      * Dynamic attributes that are appended to object.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $appends = ['utilization_percentage', 'available_capacity'];
 
@@ -95,7 +134,7 @@ class BinLocation extends Model
      * `warehouse` is deliberately excluded — it eager-loads its zones, which
      * would pull the whole warehouse graph in for every bin.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $with = ['zone'];
 
@@ -108,60 +147,48 @@ class BinLocation extends Model
 
     /**
      * Get the warehouse.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function warehouse()
+    public function warehouse(): BelongsTo
     {
         return $this->belongsTo(Warehouse::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
      * Get the zone.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function zone()
+    public function zone(): BelongsTo
     {
         return $this->belongsTo(WarehouseZone::class, 'zone_uuid', 'uuid');
     }
 
     /**
      * Get the aisle.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function aisle()
+    public function aisle(): BelongsTo
     {
         return $this->belongsTo(WarehouseAisle::class, 'aisle_uuid', 'uuid');
     }
 
     /**
      * Get the rack.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function rack()
+    public function rack(): BelongsTo
     {
         return $this->belongsTo(WarehouseRack::class, 'rack_uuid', 'uuid');
     }
 
     /**
      * Get the section.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function section()
+    public function section(): BelongsTo
     {
         return $this->belongsTo(WarehouseSection::class, 'section_uuid', 'uuid');
     }
 
     /**
      * Get inventory items in this bin.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function inventoryItems()
+    public function inventoryItems(): HasMany
     {
         return $this->hasMany(Inventory::class, 'bin_location_uuid', 'uuid');
     }

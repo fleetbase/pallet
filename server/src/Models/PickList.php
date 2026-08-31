@@ -9,7 +9,42 @@ use Fleetbase\Traits\HasMetaAttributes;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 use Fleetbase\Traits\TracksApiCredential;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * Generated from the table schema, the model's casts and its relation methods.
+ * PHPStan cannot see Eloquent's magic properties without these; every one of them
+ * was a reported error before.
+ *
+ * @property ?int                                                        $id
+ * @property string                                                      $uuid
+ * @property ?string                                                     $public_id
+ * @property ?string                                                     $company_uuid
+ * @property ?string                                                     $warehouse_uuid
+ * @property ?string                                                     $sales_order_uuid
+ * @property ?string                                                     $wave_uuid
+ * @property ?string                                                     $assigned_to_uuid
+ * @property ?string                                                     $pick_list_number
+ * @property ?string                                                     $type
+ * @property ?int                                                        $priority
+ * @property ?string                                                     $status
+ * @property ?\Illuminate\Support\Carbon                                 $started_at
+ * @property ?\Illuminate\Support\Carbon                                 $completed_at
+ * @property ?string                                                     $notes
+ * @property ?array                                                      $meta
+ * @property ?\Illuminate\Support\Carbon                                 $created_at
+ * @property ?\Illuminate\Support\Carbon                                 $updated_at
+ * @property ?\Illuminate\Support\Carbon                                 $deleted_at
+ * @property \Fleetbase\Models\User|null                                 $assignedTo
+ * @property \Illuminate\Database\Eloquent\Collection<int, PickListItem> $items
+ * @property SalesOrder|null                                             $salesOrder
+ * @property Warehouse|null                                              $warehouse
+ * @property Wave|null                                                   $wave
+ * @property mixed                                                       $total_items
+ * @property mixed                                                       $picked_items
+ * @property mixed                                                       $completion_percentage
+ */
 class PickList extends Model
 {
     use HasUuid;
@@ -42,7 +77,7 @@ class PickList extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'company_uuid',
@@ -63,7 +98,7 @@ class PickList extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'meta'         => Json::class,
@@ -75,14 +110,14 @@ class PickList extends Model
     /**
      * Dynamic attributes that are appended to object.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $appends = ['total_items', 'picked_items', 'completion_percentage'];
 
     /**
      * Relationships to eager load.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $with = ['warehouse', 'salesOrder', 'wave', 'assignedTo', 'items'];
 
@@ -95,50 +130,40 @@ class PickList extends Model
 
     /**
      * Get the warehouse.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function warehouse()
+    public function warehouse(): BelongsTo
     {
         return $this->belongsTo(Warehouse::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
      * Get the sales order.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function salesOrder()
+    public function salesOrder(): BelongsTo
     {
         return $this->belongsTo(SalesOrder::class, 'sales_order_uuid', 'uuid');
     }
 
     /**
      * Get the wave.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function wave()
+    public function wave(): BelongsTo
     {
         return $this->belongsTo(Wave::class, 'wave_uuid', 'uuid');
     }
 
     /**
      * Get the assigned user.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function assignedTo()
+    public function assignedTo(): BelongsTo
     {
         return $this->belongsTo(\Fleetbase\Models\User::class, 'assigned_to_uuid', 'uuid');
     }
 
     /**
      * Get the pick list items.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function items()
+    public function items(): HasMany
     {
         return $this->hasMany(PickListItem::class, 'pick_list_uuid', 'uuid');
     }

@@ -17,6 +17,58 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
+/**
+ * Generated from the table schema, the model's casts and its relation methods.
+ * PHPStan cannot see Eloquent's magic properties without these; every one of them
+ * was a reported error before.
+ *
+ * @property ?int                                                            $id
+ * @property string                                                          $uuid
+ * @property ?string                                                         $public_id
+ * @property ?string                                                         $company_uuid
+ * @property ?string                                                         $created_by_uuid
+ * @property ?string                                                         $place_uuid
+ * @property ?string                                                         $name
+ * @property ?string                                                         $code
+ * @property ?string                                                         $type
+ * @property ?string                                                         $status
+ * @property ?int                                                            $capacity
+ * @property ?int                                                            $current_utilization
+ * @property ?float                                                          $floor_area_sqm
+ * @property ?array                                                          $operating_hours
+ * @property ?string                                                         $timezone
+ * @property ?string                                                         $phone
+ * @property ?string                                                         $email
+ * @property ?string                                                         $manager_uuid
+ * @property ?int                                                            $total_docks
+ * @property ?bool                                                           $is_active
+ * @property ?bool                                                           $is_default
+ * @property ?array                                                          $meta
+ * @property ?\Illuminate\Support\Carbon                                     $created_at
+ * @property ?\Illuminate\Support\Carbon                                     $updated_at
+ * @property ?\Illuminate\Support\Carbon                                     $deleted_at
+ * @property \Illuminate\Database\Eloquent\Collection<int, WarehouseAisle>   $aisles
+ * @property \Illuminate\Database\Eloquent\Collection<int, BinLocation>      $binLocations
+ * @property \Fleetbase\Pallet\Models\Company|null                           $company
+ * @property \Fleetbase\Pallet\Models\User|null                              $createdBy
+ * @property \Illuminate\Database\Eloquent\Collection<int, CycleCount>       $cycleCounts
+ * @property \Illuminate\Database\Eloquent\Collection<int, WarehouseDock>    $docks
+ * @property \Illuminate\Database\Eloquent\Collection<int, StockTransfer>    $inboundTransfers
+ * @property \Illuminate\Database\Eloquent\Collection<int, Inventory>        $inventories
+ * @property \Fleetbase\Pallet\Models\User|null                              $manager
+ * @property \Illuminate\Database\Eloquent\Collection<int, StockTransfer>    $outboundTransfers
+ * @property \Illuminate\Database\Eloquent\Collection<int, PickList>         $pickLists
+ * @property \Fleetbase\Pallet\Models\Place|null                             $place
+ * @property \Illuminate\Database\Eloquent\Collection<int, PurchaseOrder>    $purchaseOrders
+ * @property \Illuminate\Database\Eloquent\Collection<int, WarehouseRack>    $racks
+ * @property \Illuminate\Database\Eloquent\Collection<int, SalesOrder>       $salesOrders
+ * @property \Illuminate\Database\Eloquent\Collection<int, WarehouseSection> $sections
+ * @property \Illuminate\Database\Eloquent\Collection<int, WarehouseZone>    $zones
+ * @property mixed                                                           $utilization_percentage
+ * @property mixed                                                           $total_zones
+ * @property mixed                                                           $total_bins
+ * @property mixed                                                           $address
+ */
 class Warehouse extends Model
 {
     use HasUuid;
@@ -50,7 +102,7 @@ class Warehouse extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'uuid',
@@ -79,7 +131,7 @@ class Warehouse extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'operating_hours'     => 'array',
@@ -95,14 +147,14 @@ class Warehouse extends Model
     /**
      * Dynamic attributes that are appended to object.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $appends = ['utilization_percentage', 'total_zones', 'total_bins', 'address'];
 
     /**
      * Relationships to eager load.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $with = ['place', 'sections', 'zones', 'docks'];
 
@@ -156,130 +208,104 @@ class Warehouse extends Model
 
     /**
      * Get warehouse sections.
-     *
-     * @return HasMany
      */
-    public function sections()
+    public function sections(): HasMany
     {
         return $this->hasMany(WarehouseSection::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
      * Get warehouse docks.
-     *
-     * @return HasMany
      */
-    public function docks()
+    public function docks(): HasMany
     {
         return $this->hasMany(WarehouseDock::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
      * Get warehouse zones.
-     *
-     * @return HasMany
      */
-    public function zones()
+    public function zones(): HasMany
     {
         return $this->hasMany(WarehouseZone::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
      * Get warehouse aisles.
-     *
-     * @return HasMany
      */
-    public function aisles()
+    public function aisles(): HasMany
     {
         return $this->hasMany(WarehouseAisle::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
      * Get warehouse racks.
-     *
-     * @return HasMany
      */
-    public function racks()
+    public function racks(): HasMany
     {
         return $this->hasMany(WarehouseRack::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
      * Get bin locations.
-     *
-     * @return HasMany
      */
-    public function binLocations()
+    public function binLocations(): HasMany
     {
         return $this->hasMany(BinLocation::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
      * Get inventory items in this warehouse.
-     *
-     * @return HasMany
      */
-    public function inventories()
+    public function inventories(): HasMany
     {
         return $this->hasMany(Inventory::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
      * Get purchase orders for this warehouse.
-     *
-     * @return HasMany
      */
-    public function purchaseOrders()
+    public function purchaseOrders(): HasMany
     {
         return $this->hasMany(PurchaseOrder::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
      * Get sales orders for this warehouse.
-     *
-     * @return HasMany
      */
-    public function salesOrders()
+    public function salesOrders(): HasMany
     {
         return $this->hasMany(SalesOrder::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
      * Get pick lists for this warehouse.
-     *
-     * @return HasMany
      */
-    public function pickLists()
+    public function pickLists(): HasMany
     {
         return $this->hasMany(PickList::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
      * Get cycle counts for this warehouse.
-     *
-     * @return HasMany
      */
-    public function cycleCounts()
+    public function cycleCounts(): HasMany
     {
         return $this->hasMany(CycleCount::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
      * Get stock transfers from this warehouse.
-     *
-     * @return HasMany
      */
-    public function outboundTransfers()
+    public function outboundTransfers(): HasMany
     {
         return $this->hasMany(StockTransfer::class, 'from_warehouse_uuid', 'uuid');
     }
 
     /**
      * Get stock transfers to this warehouse.
-     *
-     * @return HasMany
      */
-    public function inboundTransfers()
+    public function inboundTransfers(): HasMany
     {
         return $this->hasMany(StockTransfer::class, 'to_warehouse_uuid', 'uuid');
     }

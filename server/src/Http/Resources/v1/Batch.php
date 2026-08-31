@@ -7,6 +7,12 @@ use Fleetbase\Http\Resources\FleetbaseResource;
 /**
  * A received lot. `quantity` is the quantity the batch arrived with, not the
  * quantity still on hand — that lives on the stock record the batch is attached to.
+ *
+ * A JsonResource forwards every unknown property to the model it wraps, through
+ * __get. Naming that model here is what lets static analysis follow the forward;
+ * without it every $this->column read is an undefined property.
+ *
+ * @mixin \Fleetbase\Pallet\Models\Batch
  */
 class Batch extends FleetbaseResource
 {

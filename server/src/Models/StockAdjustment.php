@@ -9,9 +9,43 @@ use Fleetbase\Pallet\Traits\HasOperationalAuditTrail;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
+/**
+ * Generated from the table schema, the model's casts and its relation methods.
+ * PHPStan cannot see Eloquent's magic properties without these; every one of them
+ * was a reported error before.
+ *
+ * @property ?int                               $id
+ * @property string                             $uuid
+ * @property ?string                            $public_id
+ * @property ?string                            $company_uuid
+ * @property ?string                            $created_by_uuid
+ * @property ?string                            $product_uuid
+ * @property ?string                            $variant_uuid
+ * @property ?string                            $inventory_uuid
+ * @property ?string                            $warehouse_uuid
+ * @property ?string                            $assignee_uuid
+ * @property ?array                             $meta
+ * @property ?string                            $type
+ * @property ?string                            $reason
+ * @property ?bool                              $approval_required
+ * @property ?int                               $before_quantity
+ * @property ?int                               $after_quantity
+ * @property ?int                               $quantity
+ * @property ?\Illuminate\Support\Carbon        $created_at
+ * @property ?\Illuminate\Support\Carbon        $updated_at
+ * @property ?\Illuminate\Support\Carbon        $deleted_at
+ * @property \Fleetbase\Models\Company|null     $company
+ * @property \Fleetbase\Pallet\Models\User|null $createdBy
+ * @property Inventory|null                     $inventory
+ * @property Product|null                       $product
+ * @property \Fleetbase\Pallet\Models\User|null $user
+ * @property ProductVariant|null                $variant
+ * @property Warehouse|null                     $warehouse
+ */
 class StockAdjustment extends Model
 {
     use HasUuid;
@@ -58,7 +92,7 @@ class StockAdjustment extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'uuid',
@@ -83,7 +117,7 @@ class StockAdjustment extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'meta'              => Json::class,
@@ -93,63 +127,57 @@ class StockAdjustment extends Model
     /**
      * Dynamic attributes that are appended to object.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $appends = [];
 
     /**
      * The attributes excluded from the model's JSON form.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $hidden = [];
 
     /**
      * Relationship with the company associated with the stock adjustment.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function company()
+    public function company(): BelongsTo
     {
         return $this->belongsTo(\Fleetbase\Models\Company::class, 'company_uuid', 'uuid');
     }
 
     /**
      * Relationship with the user who created the stock adjustment.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function createdBy()
+    public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by_uuid', 'uuid');
     }
 
     /**
      * Relationship with the product associated with the stock adjustment.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function product()
+    public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class, 'product_uuid', 'uuid');
     }
 
-    public function variant()
+    public function variant(): BelongsTo
     {
         return $this->belongsTo(ProductVariant::class, 'variant_uuid', 'uuid');
     }
 
-    public function inventory()
+    public function inventory(): BelongsTo
     {
         return $this->belongsTo(Inventory::class, 'inventory_uuid', 'uuid');
     }
 
-    public function warehouse()
+    public function warehouse(): BelongsTo
     {
         return $this->belongsTo(Warehouse::class, 'warehouse_uuid', 'uuid');
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'assignee_uuid', 'uuid');
     }

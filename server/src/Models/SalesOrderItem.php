@@ -7,6 +7,7 @@ use Fleetbase\Models\Model;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 use Fleetbase\Traits\TracksApiCredential;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -20,6 +21,38 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * and may be less than `quantity` for partial fulfilments.
  *
  * Status lifecycle: pending → partial → fulfilled | cancelled
+ *
+ * @property ?int                        $id
+ * @property string                      $uuid
+ * @property ?string                     $public_id
+ * @property ?string                     $company_uuid
+ * @property ?string                     $sales_order_uuid
+ * @property ?string                     $created_by_uuid
+ * @property ?string                     $product_uuid
+ * @property ?string                     $variant_uuid
+ * @property ?string                     $warehouse_uuid
+ * @property ?string                     $inventory_uuid
+ * @property ?int                        $quantity
+ * @property ?int                        $quantity_fulfilled
+ * @property ?string                     $currency
+ * @property ?string                     $unit_price
+ * @property ?string                     $total_price
+ * @property ?string                     $unit_of_measure
+ * @property ?string                     $sku
+ * @property ?string                     $lot_number
+ * @property ?string                     $serial_number
+ * @property ?string                     $status
+ * @property ?string                     $notes
+ * @property ?array                      $meta
+ * @property ?\Illuminate\Support\Carbon $fulfilled_at
+ * @property ?\Illuminate\Support\Carbon $created_at
+ * @property ?\Illuminate\Support\Carbon $updated_at
+ * @property ?\Illuminate\Support\Carbon $deleted_at
+ * @property Inventory|null              $inventory
+ * @property Product|null                $product
+ * @property SalesOrder|null             $salesOrder
+ * @property ProductVariant|null         $variant
+ * @property Warehouse|null              $warehouse
  */
 class SalesOrderItem extends Model
 {
@@ -60,7 +93,7 @@ class SalesOrderItem extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'uuid',
@@ -90,7 +123,7 @@ class SalesOrderItem extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'meta'               => Json::class,
@@ -103,45 +136,37 @@ class SalesOrderItem extends Model
 
     /**
      * Relationship: the parent Sales Order.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function salesOrder()
+    public function salesOrder(): BelongsTo
     {
         return $this->belongsTo(SalesOrder::class, 'sales_order_uuid', 'uuid');
     }
 
     /**
      * Relationship: the Product being sold.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function product()
+    public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class, 'product_uuid', 'uuid');
     }
 
-    public function variant()
+    public function variant(): BelongsTo
     {
         return $this->belongsTo(ProductVariant::class, 'variant_uuid', 'uuid');
     }
 
     /**
      * Relationship: the source Warehouse.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function warehouse()
+    public function warehouse(): BelongsTo
     {
         return $this->belongsTo(Warehouse::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
      * Relationship: the specific Inventory record being drawn from.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function inventory()
+    public function inventory(): BelongsTo
     {
         return $this->belongsTo(Inventory::class, 'inventory_uuid', 'uuid');
     }

@@ -10,8 +10,42 @@ use Fleetbase\Traits\HasMetaAttributes;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 use Fleetbase\Traits\TracksApiCredential;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Generated from the table schema, the model's casts and its relation methods.
+ * PHPStan cannot see Eloquent's magic properties without these; every one of them
+ * was a reported error before.
+ *
+ * @property ?int                                                          $id
+ * @property string                                                        $uuid
+ * @property ?string                                                       $public_id
+ * @property ?string                                                       $company_uuid
+ * @property ?string                                                       $warehouse_uuid
+ * @property ?string                                                       $zone_uuid
+ * @property ?string                                                       $assigned_to_uuid
+ * @property ?string                                                       $count_number
+ * @property ?string                                                       $type
+ * @property ?string                                                       $status
+ * @property ?\Illuminate\Support\Carbon                                   $scheduled_at
+ * @property ?\Illuminate\Support\Carbon                                   $started_at
+ * @property ?\Illuminate\Support\Carbon                                   $completed_at
+ * @property ?string                                                       $notes
+ * @property ?array                                                        $meta
+ * @property ?\Illuminate\Support\Carbon                                   $created_at
+ * @property ?\Illuminate\Support\Carbon                                   $updated_at
+ * @property ?\Illuminate\Support\Carbon                                   $deleted_at
+ * @property \Fleetbase\Models\User|null                                   $assignedTo
+ * @property \Illuminate\Database\Eloquent\Collection<int, CycleCountItem> $items
+ * @property Warehouse|null                                                $warehouse
+ * @property WarehouseZone|null                                            $zone
+ * @property mixed                                                         $total_items
+ * @property mixed                                                         $counted_items
+ * @property mixed                                                         $discrepancies_count
+ * @property mixed                                                         $accuracy_percentage
+ */
 class CycleCount extends Model
 {
     use HasUuid;
@@ -45,7 +79,7 @@ class CycleCount extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'company_uuid',
@@ -65,7 +99,7 @@ class CycleCount extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'meta'         => Json::class,
@@ -77,14 +111,14 @@ class CycleCount extends Model
     /**
      * Dynamic attributes that are appended to object.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $appends = ['total_items', 'counted_items', 'discrepancies_count', 'accuracy_percentage'];
 
     /**
      * Relationships to eager load.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $with = ['warehouse', 'zone', 'assignedTo', 'items'];
 
@@ -97,40 +131,32 @@ class CycleCount extends Model
 
     /**
      * Get the warehouse.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function warehouse()
+    public function warehouse(): BelongsTo
     {
         return $this->belongsTo(Warehouse::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
      * Get the zone.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function zone()
+    public function zone(): BelongsTo
     {
         return $this->belongsTo(WarehouseZone::class, 'zone_uuid', 'uuid');
     }
 
     /**
      * Get the assigned user.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function assignedTo()
+    public function assignedTo(): BelongsTo
     {
         return $this->belongsTo(\Fleetbase\Models\User::class, 'assigned_to_uuid', 'uuid');
     }
 
     /**
      * Get the cycle count items.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function items()
+    public function items(): HasMany
     {
         return $this->hasMany(CycleCountItem::class, 'cycle_count_uuid', 'uuid');
     }

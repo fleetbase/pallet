@@ -7,7 +7,43 @@ use Fleetbase\Models\Model;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * Generated from the table schema, the model's casts and its relation methods.
+ * PHPStan cannot see Eloquent's magic properties without these; every one of them
+ * was a reported error before.
+ *
+ * @property ?int                        $id
+ * @property string                      $uuid
+ * @property ?string                     $public_id
+ * @property ?string                     $company_uuid
+ * @property ?string                     $pick_list_uuid
+ * @property ?string                     $product_uuid
+ * @property ?string                     $variant_uuid
+ * @property ?string                     $inventory_uuid
+ * @property ?string                     $bin_location_uuid
+ * @property ?string                     $sales_order_item_uuid
+ * @property ?int                        $quantity_requested
+ * @property ?int                        $quantity_picked
+ * @property ?int                        $sequence_number
+ * @property ?string                     $status
+ * @property ?\Illuminate\Support\Carbon $picked_at
+ * @property ?string                     $picked_by_uuid
+ * @property ?string                     $lot_number
+ * @property ?string                     $serial_number
+ * @property ?string                     $notes
+ * @property ?array                      $meta
+ * @property ?\Illuminate\Support\Carbon $created_at
+ * @property ?\Illuminate\Support\Carbon $updated_at
+ * @property ?\Illuminate\Support\Carbon $deleted_at
+ * @property BinLocation|null            $binLocation
+ * @property Inventory|null              $inventory
+ * @property PickList|null               $pickList
+ * @property \Fleetbase\Models\User|null $pickedBy
+ * @property Product|null                $product
+ * @property ProductVariant|null         $variant
+ */
 class PickListItem extends Model
 {
     use HasUuid;
@@ -38,7 +74,7 @@ class PickListItem extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'company_uuid',
@@ -63,7 +99,7 @@ class PickListItem extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'meta'               => Json::class,
@@ -76,61 +112,51 @@ class PickListItem extends Model
     /**
      * Relationships to eager load.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $with = ['product', 'variant', 'binLocation'];
 
     /**
      * Get the pick list.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function pickList()
+    public function pickList(): BelongsTo
     {
         return $this->belongsTo(PickList::class, 'pick_list_uuid', 'uuid');
     }
 
     /**
      * Get the product.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function product()
+    public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class, 'product_uuid', 'uuid');
     }
 
-    public function variant()
+    public function variant(): BelongsTo
     {
         return $this->belongsTo(ProductVariant::class, 'variant_uuid', 'uuid');
     }
 
     /**
      * Get the inventory record.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function inventory()
+    public function inventory(): BelongsTo
     {
         return $this->belongsTo(Inventory::class, 'inventory_uuid', 'uuid');
     }
 
     /**
      * Get the bin location.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function binLocation()
+    public function binLocation(): BelongsTo
     {
         return $this->belongsTo(BinLocation::class, 'bin_location_uuid', 'uuid');
     }
 
     /**
      * Get the user who picked this item.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function pickedBy()
+    public function pickedBy(): BelongsTo
     {
         return $this->belongsTo(\Fleetbase\Models\User::class, 'picked_by_uuid', 'uuid');
     }

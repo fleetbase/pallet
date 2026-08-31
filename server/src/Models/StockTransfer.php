@@ -10,8 +10,41 @@ use Fleetbase\Traits\HasMetaAttributes;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 use Fleetbase\Traits\TracksApiCredential;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Generated from the table schema, the model's casts and its relation methods.
+ * PHPStan cannot see Eloquent's magic properties without these; every one of them
+ * was a reported error before.
+ *
+ * @property ?int                                                             $id
+ * @property string                                                           $uuid
+ * @property ?string                                                          $public_id
+ * @property ?string                                                          $company_uuid
+ * @property ?string                                                          $from_warehouse_uuid
+ * @property ?string                                                          $to_warehouse_uuid
+ * @property ?string                                                          $transfer_number
+ * @property ?string                                                          $status
+ * @property ?string                                                          $type
+ * @property ?string                                                          $requested_by_uuid
+ * @property ?string                                                          $approved_by_uuid
+ * @property ?\Illuminate\Support\Carbon                                      $shipped_at
+ * @property ?\Illuminate\Support\Carbon                                      $received_at
+ * @property ?string                                                          $notes
+ * @property ?array                                                           $meta
+ * @property ?\Illuminate\Support\Carbon                                      $created_at
+ * @property ?\Illuminate\Support\Carbon                                      $updated_at
+ * @property ?\Illuminate\Support\Carbon                                      $deleted_at
+ * @property \Fleetbase\Models\User|null                                      $approvedBy
+ * @property Warehouse|null                                                   $fromWarehouse
+ * @property \Illuminate\Database\Eloquent\Collection<int, StockTransferItem> $items
+ * @property \Fleetbase\Models\User|null                                      $requestedBy
+ * @property Warehouse|null                                                   $toWarehouse
+ * @property mixed                                                            $total_items
+ * @property mixed                                                            $total_quantity
+ */
 class StockTransfer extends Model
 {
     use HasUuid;
@@ -45,7 +78,7 @@ class StockTransfer extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'company_uuid',
@@ -65,7 +98,7 @@ class StockTransfer extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'meta'        => Json::class,
@@ -76,14 +109,14 @@ class StockTransfer extends Model
     /**
      * Dynamic attributes that are appended to object.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $appends = ['total_items', 'total_quantity'];
 
     /**
      * Relationships to eager load.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $with = ['fromWarehouse', 'toWarehouse', 'items.product', 'items.variant'];
 
@@ -96,50 +129,40 @@ class StockTransfer extends Model
 
     /**
      * Get the source warehouse.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function fromWarehouse()
+    public function fromWarehouse(): BelongsTo
     {
         return $this->belongsTo(Warehouse::class, 'from_warehouse_uuid', 'uuid');
     }
 
     /**
      * Get the destination warehouse.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function toWarehouse()
+    public function toWarehouse(): BelongsTo
     {
         return $this->belongsTo(Warehouse::class, 'to_warehouse_uuid', 'uuid');
     }
 
     /**
      * Get the user who requested the transfer.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function requestedBy()
+    public function requestedBy(): BelongsTo
     {
         return $this->belongsTo(\Fleetbase\Models\User::class, 'requested_by_uuid', 'uuid');
     }
 
     /**
      * Get the user who approved the transfer.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function approvedBy()
+    public function approvedBy(): BelongsTo
     {
         return $this->belongsTo(\Fleetbase\Models\User::class, 'approved_by_uuid', 'uuid');
     }
 
     /**
      * Get the transfer items.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function items()
+    public function items(): HasMany
     {
         return $this->hasMany(StockTransferItem::class, 'stock_transfer_uuid', 'uuid');
     }

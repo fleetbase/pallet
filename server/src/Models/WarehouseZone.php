@@ -8,7 +8,36 @@ use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasMetaAttributes;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * Generated from the table schema, the model's casts and its relation methods.
+ * PHPStan cannot see Eloquent's magic properties without these; every one of them
+ * was a reported error before.
+ *
+ * @property ?int                                                          $id
+ * @property string                                                        $uuid
+ * @property ?string                                                       $public_id
+ * @property ?string                                                       $company_uuid
+ * @property ?string                                                       $warehouse_uuid
+ * @property ?string                                                       $name
+ * @property ?string                                                       $code
+ * @property ?string                                                       $type
+ * @property ?string                                                       $status
+ * @property ?bool                                                         $temperature_controlled
+ * @property ?array                                                        $temperature_range
+ * @property ?string                                                       $capacity
+ * @property ?string                                                       $current_utilization
+ * @property ?array                                                        $meta
+ * @property ?\Illuminate\Support\Carbon                                   $created_at
+ * @property ?\Illuminate\Support\Carbon                                   $updated_at
+ * @property ?\Illuminate\Support\Carbon                                   $deleted_at
+ * @property \Illuminate\Database\Eloquent\Collection<int, WarehouseAisle> $aisles
+ * @property \Illuminate\Database\Eloquent\Collection<int, BinLocation>    $binLocations
+ * @property Warehouse|null                                                $warehouse
+ * @property mixed                                                         $utilization_percentage
+ */
 class WarehouseZone extends Model
 {
     use HasUuid;
@@ -40,7 +69,7 @@ class WarehouseZone extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'company_uuid',
@@ -59,7 +88,7 @@ class WarehouseZone extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'meta'                   => Json::class,
@@ -72,7 +101,7 @@ class WarehouseZone extends Model
     /**
      * Dynamic attributes that are appended to object.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $appends = ['utilization_percentage'];
 
@@ -87,7 +116,7 @@ class WarehouseZone extends Model
      * Deliberately does NOT include `warehouse`: Warehouse eager-loads its
      * zones, so a back-reference here recurses until memory is exhausted.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $with = [];
 
@@ -100,30 +129,24 @@ class WarehouseZone extends Model
 
     /**
      * Get the warehouse.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function warehouse()
+    public function warehouse(): BelongsTo
     {
         return $this->belongsTo(Warehouse::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
      * Get bin locations in this zone.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function binLocations()
+    public function binLocations(): HasMany
     {
         return $this->hasMany(BinLocation::class, 'zone_uuid', 'uuid');
     }
 
     /**
      * Get aisles in this zone.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function aisles()
+    public function aisles(): HasMany
     {
         return $this->hasMany(WarehouseAisle::class, 'zone_uuid', 'uuid');
     }

@@ -10,6 +10,12 @@ use Fleetbase\Http\Resources\FleetbaseResource;
  * Before and after are both reported, and the signed delta with them, so a caller
  * reconciling against their own records does not have to infer the direction from
  * the adjustment type.
+ *
+ * A JsonResource forwards every unknown property to the model it wraps, through
+ * __get. Naming that model here is what lets static analysis follow the forward;
+ * without it every $this->column read is an undefined property.
+ *
+ * @mixin \Fleetbase\Pallet\Models\StockAdjustment
  */
 class StockAdjustment extends FleetbaseResource
 {

@@ -32,7 +32,13 @@ class SupplierFilter extends PalletFilter
 
     public function query(?string $query)
     {
+        /*
+         * Only the search. The pallet-supplier narrowing used to be repeated here as
+         * scopeToPalletSuppliers(); that method became the scopeToCompany() override
+         * above and this call site was not updated, so every search on the suppliers
+         * list raised "Call to undefined method". apply() now runs scopeToCompany()
+         * unconditionally, so there is nothing left for this method to re-apply.
+         */
         $this->builder->search($query);
-        $this->scopeToPalletSuppliers();
     }
 }

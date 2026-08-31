@@ -10,8 +10,37 @@ use Fleetbase\Traits\HasMetaAttributes;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
 use Fleetbase\Traits\TracksApiCredential;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Generated from the table schema, the model's casts and its relation methods.
+ * PHPStan cannot see Eloquent's magic properties without these; every one of them
+ * was a reported error before.
+ *
+ * @property ?int                                                    $id
+ * @property string                                                  $uuid
+ * @property ?string                                                 $public_id
+ * @property ?string                                                 $company_uuid
+ * @property ?string                                                 $warehouse_uuid
+ * @property ?string                                                 $wave_number
+ * @property ?string                                                 $type
+ * @property ?string                                                 $status
+ * @property ?int                                                    $priority
+ * @property ?\Illuminate\Support\Carbon                             $scheduled_at
+ * @property ?\Illuminate\Support\Carbon                             $started_at
+ * @property ?\Illuminate\Support\Carbon                             $completed_at
+ * @property ?string                                                 $notes
+ * @property ?array                                                  $meta
+ * @property ?\Illuminate\Support\Carbon                             $created_at
+ * @property ?\Illuminate\Support\Carbon                             $updated_at
+ * @property ?\Illuminate\Support\Carbon                             $deleted_at
+ * @property \Illuminate\Database\Eloquent\Collection<int, PickList> $pickLists
+ * @property Warehouse|null                                          $warehouse
+ * @property mixed                                                   $total_pick_lists
+ * @property mixed                                                   $completed_pick_lists
+ */
 class Wave extends Model
 {
     use HasUuid;
@@ -45,7 +74,7 @@ class Wave extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'company_uuid',
@@ -64,7 +93,7 @@ class Wave extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'meta'         => Json::class,
@@ -77,14 +106,14 @@ class Wave extends Model
     /**
      * Dynamic attributes that are appended to object.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $appends = ['total_pick_lists', 'completed_pick_lists'];
 
     /**
      * Relationships to eager load.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $with = ['warehouse'];
 
@@ -97,20 +126,16 @@ class Wave extends Model
 
     /**
      * Get the warehouse.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function warehouse()
+    public function warehouse(): BelongsTo
     {
         return $this->belongsTo(Warehouse::class, 'warehouse_uuid', 'uuid');
     }
 
     /**
      * Get the pick lists in this wave.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function pickLists()
+    public function pickLists(): HasMany
     {
         return $this->hasMany(PickList::class, 'wave_uuid', 'uuid');
     }

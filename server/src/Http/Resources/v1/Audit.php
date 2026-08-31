@@ -17,6 +17,12 @@ use Fleetbase\Http\Resources\FleetbaseResource;
  * product_uuid, variant_uuid and inventory_uuid. Emitting them verbatim leaked
  * internal identifiers through the consumable API, which every other resource here
  * is careful not to do, so they are stripped on the way out.
+ *
+ * A JsonResource forwards every unknown property to the model it wraps, through
+ * __get. Naming that model here is what lets static analysis follow the forward;
+ * without it every $this->column read is an undefined property.
+ *
+ * @mixin \Fleetbase\Pallet\Models\Audit
  */
 class Audit extends FleetbaseResource
 {

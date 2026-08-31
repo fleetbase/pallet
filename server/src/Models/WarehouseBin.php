@@ -8,7 +8,31 @@ use Fleetbase\Models\User;
 use Fleetbase\Traits\HasApiModelBehavior;
 use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * Generated from the table schema, the model's casts and its relation methods.
+ * PHPStan cannot see Eloquent's magic properties without these; every one of them
+ * was a reported error before.
+ *
+ * @property ?int                                  $id
+ * @property string                                $uuid
+ * @property ?string                               $public_id
+ * @property ?string                               $company_uuid
+ * @property ?string                               $created_by_uuid
+ * @property ?string                               $warehouse_uuid
+ * @property ?string                               $rack_uuid
+ * @property ?string                               $bin_number
+ * @property ?string                               $size
+ * @property ?string                               $max_weight
+ * @property ?array                                $meta
+ * @property ?\Illuminate\Support\Carbon           $created_at
+ * @property ?\Illuminate\Support\Carbon           $updated_at
+ * @property ?\Illuminate\Support\Carbon           $deleted_at
+ * @property \Fleetbase\Pallet\Models\Company|null $company
+ * @property \Fleetbase\Pallet\Models\User|null    $createdBy
+ * @property WarehouseRack|null                    $racks
+ */
 class WarehouseBin extends Model
 {
     use HasUuid;
@@ -53,7 +77,7 @@ class WarehouseBin extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'warehouse_uuid',
@@ -71,7 +95,7 @@ class WarehouseBin extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'meta' => 'json',
@@ -79,30 +103,24 @@ class WarehouseBin extends Model
 
     /**
      * Relationship with the company associated with the warehouse bin.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function company()
+    public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class, 'company_uuid', 'uuid');
     }
 
     /**
      * Relationship with the user who created the warehouse bin.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function createdBy()
+    public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by_uuid', 'uuid');
     }
 
     /**
      * Relationship with the rack associated with the warehouse bin.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function racks()
+    public function racks(): BelongsTo
     {
         return $this->belongsTo(WarehouseRack::class, 'rack_uuid', 'uuid');
     }

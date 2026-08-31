@@ -9,6 +9,12 @@ use Fleetbase\Http\Resources\FleetbaseResource;
  *
  * `outstanding_quantity` is reported rather than left to the caller to derive,
  * because it is the figure a receipt is capped against.
+ *
+ * A JsonResource forwards every unknown property to the model it wraps, through
+ * __get. Naming that model here is what lets static analysis follow the forward;
+ * without it every $this->column read is an undefined property.
+ *
+ * @mixin \Fleetbase\Pallet\Models\PurchaseOrderItem
  */
 class PurchaseOrderItem extends FleetbaseResource
 {

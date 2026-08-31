@@ -17,6 +17,12 @@ use Fleetbase\Http\Resources\FleetbaseResource;
  * died with "You must include an 'id' for supplier". This restores the previous
  * behaviour explicitly rather than relying on a fallback that a sibling class can
  * intercept.
+ *
+ * A JsonResource forwards every unknown property to the model it wraps, through
+ * __get. Naming that model here is what lets static analysis follow the forward;
+ * without it every $this->column read is an undefined property.
+ *
+ * @mixin \Fleetbase\Pallet\Models\Supplier
  */
 class Supplier extends FleetbaseResource
 {

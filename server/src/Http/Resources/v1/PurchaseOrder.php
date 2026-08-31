@@ -9,6 +9,12 @@ use Fleetbase\Http\Resources\FleetbaseResource;
  *
  * Lines are included whenever they have been loaded — an order without its lines
  * tells a consumer almost nothing, and receiving requires their ids.
+ *
+ * A JsonResource forwards every unknown property to the model it wraps, through
+ * __get. Naming that model here is what lets static analysis follow the forward;
+ * without it every $this->column read is an undefined property.
+ *
+ * @mixin \Fleetbase\Pallet\Models\PurchaseOrder
  */
 class PurchaseOrder extends FleetbaseResource
 {

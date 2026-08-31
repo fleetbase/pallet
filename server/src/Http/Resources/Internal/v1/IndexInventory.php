@@ -4,6 +4,20 @@ namespace Fleetbase\Pallet\Http\Resources\Internal\v1;
 
 use Fleetbase\Http\Resources\FleetbaseResource;
 
+/**
+ * A JsonResource forwards every unknown property to the model it wraps, through
+ * __get. Naming that model here is what lets static analysis follow the forward;
+ * without it every $this->column read is an undefined property.
+ *
+ * @mixin \Fleetbase\Pallet\Models\Inventory
+ *
+ * latest_uuid and latest_public_id are aliases produced by the inventory summary
+ * query (summarizeByProduct), not columns on the model — the listing groups rows by
+ * product and carries the newest row's identity through the aggregate.
+ *
+ * @property ?string $latest_uuid
+ * @property ?string $latest_public_id
+ */
 class IndexInventory extends FleetbaseResource
 {
     /**

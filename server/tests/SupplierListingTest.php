@@ -83,3 +83,38 @@ test('the listing is scoped to the authenticated company', function () {
     expect(listedSuppliers($company))->toHaveCount(1)
         ->and(listedSuppliers($otherCompany))->toHaveCount(1);
 });
+
+/*
+ * Searching the suppliers list raised "Call to undefined method
+ * SupplierFilter::scopeToPalletSuppliers()". The method had been renamed to the
+ * scopeToCompany() override when company scoping moved into PalletFilter, and this one
+ * call site inside query() was missed. Nothing exercised the search path, so it stayed
+ * broken: the listing worked, and only typing in the search box hit it.
+ */
+test('every method a filter calls on itself exists', function () {
+    $filters = glob(__DIR__ . '/../src/Http/Filter/*.php');
+
+    expect($filters)->not->toBeEmpty();
+
+    $missing = [];
+
+    foreach ($filters as $file) {
+        $class = 'Fleetbase\\Pallet\\Http\\Filter\\' . basename($file, '.php');
+
+        if (!class_exists($class)) {
+            continue;
+        }
+
+        $reflection = new ReflectionClass($class);
+
+        preg_match_all('/\$this->([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/', file_get_contents($file), $calls);
+
+        foreach (array_unique($calls[1]) as $method) {
+            if (!$reflection->hasMethod($method)) {
+                $missing[] = basename($file, '.php') . '::' . $method . '()';
+            }
+        }
+    }
+
+    expect($missing)->toBe([]);
+});

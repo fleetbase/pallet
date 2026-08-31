@@ -111,7 +111,7 @@ class Audit extends Model
      * Note: this model is written to programmatically via AuditService.
      * Direct user creation via the API is not permitted.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'uuid',
@@ -138,7 +138,7 @@ class Audit extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'meta'         => Json::class,
@@ -151,21 +151,21 @@ class Audit extends Model
     /**
      * The relationships to be eager loaded.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $with = ['performedBy'];
 
     /**
      * Dynamic attributes that are appended to object.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $appends = ['subject_label'];
 
     /**
      * The attributes excluded from the model's JSON form.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $hidden = [];
 

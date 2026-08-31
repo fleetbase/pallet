@@ -10,6 +10,12 @@ use Fleetbase\Http\Resources\FleetbaseResource;
  * The model has no outstanding-quantity accessor of its own, so it is derived here
  * rather than left for the caller — it is the figure that decides whether the order
  * is partial or complete.
+ *
+ * A JsonResource forwards every unknown property to the model it wraps, through
+ * __get. Naming that model here is what lets static analysis follow the forward;
+ * without it every $this->column read is an undefined property.
+ *
+ * @mixin \Fleetbase\Pallet\Models\SalesOrderItem
  */
 class SalesOrderItem extends FleetbaseResource
 {

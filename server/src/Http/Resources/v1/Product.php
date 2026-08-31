@@ -11,6 +11,12 @@ use Fleetbase\Http\Resources\FleetbaseResource;
  * `public_id`, so the internal uuids (company, creator, photo, storefront link) and
  * the console's derived inventory_summary block are not part of the contract.
  * Related records are referenced by their own public id, never by uuid.
+ *
+ * A JsonResource forwards every unknown property to the model it wraps, through
+ * __get. Naming that model here is what lets static analysis follow the forward;
+ * without it every $this->column read is an undefined property.
+ *
+ * @mixin \Fleetbase\Pallet\Models\Product
  */
 class Product extends FleetbaseResource
 {

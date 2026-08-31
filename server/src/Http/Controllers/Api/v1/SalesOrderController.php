@@ -2,8 +2,8 @@
 
 namespace Fleetbase\Pallet\Http\Controllers\Api\v1;
 
-use Fleetbase\Http\Controllers\Controller;
 use Fleetbase\FleetOps\Models\Contact;
+use Fleetbase\Http\Controllers\Controller;
 use Fleetbase\Pallet\Http\Controllers\SalesOrderController as InternalSalesOrderController;
 use Fleetbase\Pallet\Http\Requests\CreateSalesOrderRequest;
 use Fleetbase\Pallet\Http\Requests\UpdateSalesOrderRequest;
