@@ -1,7 +1,6 @@
 <?php
 
 use Fleetbase\Pallet\Http\Controllers\MetricsController;
-use Illuminate\Support\Str;
 
 /*
  * The dashboard's Stock Value tile read "$0" against 94 units on hand. Arithmetically

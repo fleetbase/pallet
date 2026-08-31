@@ -103,7 +103,7 @@ class SeedStarterReports extends Command
                     ->exists();
 
                 if ($exists) {
-                    ++$skipped;
+                    $skipped++;
                     continue;
                 }
 
@@ -111,13 +111,13 @@ class SeedStarterReports extends Command
 
                 if ($config === null) {
                     $this->warn("Skipped '{$definition['title']}': table {$definition['table']} is not registered.");
-                    ++$skipped;
+                    $skipped++;
                     continue;
                 }
 
                 if ($this->option('dry-run')) {
                     $this->line("Would create '{$definition['title']}' for {$company->uuid}");
-                    ++$created;
+                    $created++;
                     continue;
                 }
 
@@ -129,7 +129,7 @@ class SeedStarterReports extends Command
                     'query_config' => $config,
                 ]);
 
-                ++$created;
+                $created++;
             }
         }
 

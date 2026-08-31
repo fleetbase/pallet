@@ -1,9 +1,9 @@
 <div class="pallet-product-panel-header" ...attributes>
-    <div class="pallet-product-panel-header__identity">
+    <div class="pallet-product-panel-header-identity">
         <Image src={{@resource.photo_url}} @fallbackSrc={{config "defaultValues.placeholderImage"}} alt={{@resource.name}} />
         <div>
-            <div class="pallet-product-panel-header__title">{{n-a @resource.name "Untitled product"}}</div>
-            <div class="pallet-product-panel-header__meta">
+            <div class="pallet-product-panel-header-title">{{n-a @resource.name "Untitled product"}}</div>
+            <div class="pallet-product-panel-header-meta">
                 <span>{{n-a @resource.public_id}}</span>
                 <span>SKU {{n-a @resource.sku "not set"}}</span>
                 {{#if @resource.barcode}}
@@ -12,7 +12,7 @@
             </div>
         </div>
     </div>
-    <div class="pallet-product-panel-header__badges">
+    <div class="pallet-product-panel-header-badges">
         <Badge @status={{@resource.status}}>{{smart-humanize @resource.status}}</Badge>
         <Badge @status={{if @resource.is_out_of_stock "danger" "success"}} @hideStatusDot={{true}}>{{if @resource.is_out_of_stock "Out of stock" "Available"}}</Badge>
         {{#if @resource.is_serialized}}

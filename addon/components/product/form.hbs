@@ -238,7 +238,7 @@
             <div class="flex flex-col gap-2 text-xs">
                 {{#if this.variants.length}}
                     <div class="pallet-product-variant-table">
-                        <div class="pallet-product-variant-row pallet-product-variant-row--header">
+                        <div class="pallet-product-variant-row pallet-product-variant-row-header">
                             <span>{{t "product.fields.variant-name"}}</span>
                             <span>{{t "product.fields.sku"}}</span>
                             <span>{{t "product.sections.stock"}}</span>
@@ -283,7 +283,7 @@
                         <Input @value={{this.editingVariant.option_values_text}} class="form-input lg:col-span-2" placeholder={{t "product.fields.option-values"}} />
                         <MoneyInput @value={{this.editingVariant.unit_cost}} @currency={{@resource.currency}} disabled={{cannot-write @resource}} />
                         <MoneyInput @value={{this.editingVariant.unit_price}} @currency={{@resource.currency}} disabled={{cannot-write @resource}} />
-                        <div class="pallet-product-variant-editor__actions">
+                        <div class="pallet-product-variant-editor-actions">
                             <Button @icon="check" @type="primary" @size="sm" @onClick={{this.saveVariant}} @helpText={{t "common.save"}} />
                             <Button @icon="times" @type="default" @size="sm" @onClick={{this.cancelEditingVariant}} @helpText={{t "common.cancel"}} />
                         </div>
@@ -299,7 +299,7 @@
                         <Input @value={{this.newVariant.option_values_text}} class="form-input lg:col-span-2" placeholder={{t "product.fields.option-values"}} />
                         <MoneyInput @value={{this.newVariant.unit_cost}} @currency={{@resource.currency}} disabled={{cannot-write @resource}} />
                         <MoneyInput @value={{this.newVariant.unit_price}} @currency={{@resource.currency}} disabled={{cannot-write @resource}} />
-                        <div class="pallet-product-variant-editor__actions">
+                        <div class="pallet-product-variant-editor-actions">
                             <Button @icon="plus" @type="primary" @size="sm" @onClick={{this.addVariant}} @helpText={{t "product.actions.add-variant"}} />
                             <Button @icon="times" @type="default" @size="sm" @onClick={{this.cancelAddingVariant}} @helpText={{t "common.cancel"}} />
                         </div>

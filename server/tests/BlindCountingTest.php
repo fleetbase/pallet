@@ -1,9 +1,9 @@
 <?php
 
+use Fleetbase\Pallet\Http\Resources\Internal\v1\CycleCountItem as CycleCountItemResource;
 use Fleetbase\Pallet\Models\Audit;
 use Fleetbase\Pallet\Models\CycleCount;
 use Fleetbase\Pallet\Models\CycleCountItem;
-use Fleetbase\Pallet\Http\Resources\Internal\v1\CycleCountItem as CycleCountItemResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -51,7 +51,7 @@ function serializeItem(CycleCountItem $item, ?bool $visible = null): array
 }
 
 test('an open count does not send expected quantity or variance', function () {
-    $count = makeCount('in_progress');
+    $count   = makeCount('in_progress');
     $payload = serializeItem($count->items->first(), false);
 
     expect($payload)->not->toHaveKey('expected_quantity')
@@ -60,7 +60,7 @@ test('an open count does not send expected quantity or variance', function () {
 });
 
 test('a closed count sends both, because the numbers can no longer bias anyone', function () {
-    $count = makeCount('completed');
+    $count   = makeCount('completed');
     $payload = serializeItem($count->items->first(), true);
 
     expect($payload['expected_quantity'])->toBe(60)
