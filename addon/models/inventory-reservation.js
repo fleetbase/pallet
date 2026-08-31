@@ -25,6 +25,7 @@ export default class InventoryReservationModel extends Model {
     @belongsTo('pallet-product-variant', { async: false }) variant;
     @belongsTo('inventory', { async: false }) inventory;
     @belongsTo('warehouse', { async: false }) warehouse;
+    @belongsTo('sales-order', { async: false }) salesOrder;
     @attr('number') quantity;
     @attr('date') reserved_at;
     @attr('date') expires_at;

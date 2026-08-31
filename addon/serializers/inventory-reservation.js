@@ -22,7 +22,19 @@ export default class InventoryReservationSerializer extends ApplicationSerialize
             variant: { embedded: 'always' },
             inventory: { embedded: 'always' },
             warehouse: { embedded: 'always' },
+            salesOrder: { embedded: 'always' },
         };
+    }
+
+    /**
+     * The resource emits `sales_order` while the model declares `salesOrder`, and
+     * ember-core's ApplicationSerializer calls this hook without defining it. Without
+     * the bridge the relation never populates and the list's Sales Order column reads
+     * blank on every row — the same defect the inventory serializer hit with
+     * `bin_location`.
+     */
+    keyForRelationship(key) {
+        return underscore(key);
     }
 
     /**

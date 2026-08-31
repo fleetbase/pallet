@@ -44,9 +44,11 @@ export default class OperationsReservationsController extends Controller {
      * the storefront cases that need them, and keeping them visible pushed the row past
      * the table's width, which is what clipped the action menu.
      *
-     * Sales order is deliberately absent. The model carries `sales_order_uuid` but no
-     * relation to read a number from, and a column headed "Sales Order" showing a bare
-     * uuid is worse than no column. It needs the relation before it is worth adding.
+     * Sales order reads through the relation rather than the raw `sales_order_uuid`
+     * the model has always carried — a column headed "Sales Order" showing a bare uuid
+     * would be worse than no column. It renders through cell/related-record so that an
+     * order deleted after the stock was held reads as such instead of as a reservation
+     * that was never held for anything.
      */
     @tracked columns = [
         {
@@ -96,6 +98,18 @@ export default class OperationsReservationsController extends Controller {
             width: '80px',
             resizable: true,
             sortable: true,
+        },
+        {
+            label: this.intl.t('operations.reservations.columns.sales-order'),
+            valuePath: 'salesOrder.order_number',
+            uuidPath: 'sales_order_uuid',
+            relationPath: 'salesOrder',
+            namePath: 'order_number',
+            missingLabel: this.intl.t('operations.reservations.sales-order-unavailable'),
+            cellComponent: 'cell/related-record',
+            width: '150px',
+            resizable: true,
+            sortable: false,
         },
         {
             label: this.intl.t('operations.reservations.columns.reserved-at'),
