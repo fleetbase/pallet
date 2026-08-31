@@ -33,6 +33,30 @@ class InventoryReservation extends FleetbaseResource
             'variant'                    => $this->whenLoaded('variant', fn () => new ProductVariant($this->variant)),
             'inventory'                  => $this->whenLoaded('inventory', fn () => new Inventory($this->inventory)),
             'warehouse'                  => $this->whenLoaded('warehouse', fn () => new Warehouse($this->warehouse)),
+            /*
+             * A reference, not the SalesOrder resource. That resource renders its line
+             * items through `whenLoaded('items', $this->items ?? [])`, whose second
+             * argument PHP evaluates before whenLoaded can decide anything — so it
+             * lazy-loads the items and emits a full order tree per row. The list needs
+             * an order number and somewhere to click; this is that and nothing more.
+             *
+             * Null-guarded rather than left to whenLoaded: the relation is eager-loaded
+             * on every reservation, and most reservations have no sales order at all
+             * (storefront holds do not), so "loaded" here routinely means "loaded, and
+             * it is null".
+             */
+            'sales_order'                => $this->when($this->salesOrder !== null, fn () => [
+                // `uuid` is what decides identity — ember-core's ApplicationSerializer
+                // sets primaryKey = 'uuid' — so an order embedded here merges onto the
+                // same store record as one loaded from the sales order list instead of
+                // becoming a second copy. `id` is carried only because every other
+                // resource in this namespace emits it, under the same expression.
+                'id'           => Http::isInternalRequest() ? $this->salesOrder->id : $this->salesOrder->public_id,
+                'uuid'         => $this->salesOrder->uuid,
+                'public_id'    => $this->salesOrder->public_id,
+                'order_number' => $this->salesOrder->order_number,
+                'status'       => $this->salesOrder->status,
+            ]),
             'quantity'                   => (int) $this->quantity,
             'reserved_at'                => $this->reserved_at,
             'expires_at'                 => $this->expires_at,

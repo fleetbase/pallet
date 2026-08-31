@@ -360,11 +360,13 @@ operations:
     actions-menu: Reservation Actions
     no-actions: No actions available
     reserved-at: Reserved
+    sales-order-unavailable: Order deleted
     columns:
       context: Storefront Context
       reservation: Reservation
       batch: Batch
       reserved-at: Reserved
+      sales-order: Sales Order
 
 # Dashboard widgets
 widgets:

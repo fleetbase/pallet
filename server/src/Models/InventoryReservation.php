@@ -133,11 +133,21 @@ class InventoryReservation extends Model
     /**
      * Get the sales order.
      *
+     * `withOnly([])` discards SalesOrder's own $with, which is
+     * ['customer', 'warehouse', 'items.product', 'items.variant', 'items.warehouse',
+     * 'items.inventory']. Because this relation sits in this model's $with, every
+     * reservation query was hydrating an entire order — its customer, its warehouse,
+     * all of its line items and four relations per item — for each row of the
+     * reservations list, and the resource then emitted none of it.
+     *
+     * A reservation only ever needs the order's identity, so nothing below the order
+     * is loaded. Anything that needs the line items should load them explicitly.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function salesOrder()
     {
-        return $this->belongsTo(SalesOrder::class, 'sales_order_uuid', 'uuid');
+        return $this->belongsTo(SalesOrder::class, 'sales_order_uuid', 'uuid')->withOnly([]);
     }
 
     /**
