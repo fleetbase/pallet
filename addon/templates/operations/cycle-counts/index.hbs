@@ -1,0 +1,136 @@
+{{!
+    The count sheet — the nested table where counted quantities are typed — is the
+    working surface of this screen, so unlike the other operations lists this one
+    drives Table directly for @canExpand rather than going through
+    Layout::Resource::Tabular, whose only block replaces the Table.
+
+    Before, that sheet was rendered open under every row at once: a list of five
+    counts was five stacked sub-tables and several screens of scrolling. It is a
+    row you expand now, so the list reads as a list.
+}}
+<Layout::Section::Header @title={{t "operations.cycle-counts.title"}} @searchQuery={{this.query}} @onSearch={{perform this.search}}>
+    <Button @icon="plus" @type="primary" @text={{t "common.new"}} @onClick={{this.startCreatingCycleCount}} />
+</Layout::Section::Header>
+
+<Layout::Section::Body>
+    <Table
+        @rows={{@model}}
+        @columns={{this.columns}}
+        @canExpand={{true}}
+        @selectable={{false}}
+        @pagination={{true}}
+        @paginationMeta={{@model.meta}}
+        @page={{this.page}}
+        @onPageChange={{fn (mut this.page)}}
+        as |Table|
+    >
+        <Table.head />
+        <Table.body as |body|>
+            <body.expanded-row as |count|>
+                {{#if count.items.length}}
+                    <table class="sub-table w-full text-xs dark:text-gray-100">
+                        <thead>
+                            <tr class="text-left uppercase text-gray-400">
+                                <th class="w-1/3 py-2 pr-3">{{t "operations.cycle-counts.columns.item"}}</th>
+                                <th class="px-3 py-2">{{t "operations.common.location"}}</th>
+                                <th class="px-3 py-2 text-right">{{t "operations.cycle-counts.columns.expected"}}</th>
+                                <th class="px-3 py-2 text-right">{{t "operations.cycle-counts.columns.counted"}}</th>
+                                <th class="px-3 py-2 text-right">{{t "operations.cycle-counts.columns.variance"}}</th>
+                                <th class="px-3 py-2">{{t "common.status"}}</th>
+                                <th class="py-2 pl-3 text-right">{{t "common.actions"}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each count.items as |item|}}
+                                <tr class="border-t border-gray-100 dark:border-gray-800">
+                                    <td class="py-2 pr-3">
+                                        <div class="truncate font-semibold text-gray-700 dark:text-gray-200">{{n-a item.product.name}}</div>
+                                        <div class="truncate text-gray-400">{{n-a (or item.variant.display_name item.variant.name item.product.sku)}}</div>
+                                    </td>
+                                    <td class="px-3 py-2 truncate">{{n-a (or item.binLocation.bin_number item.lot_number item.serial_number)}}</td>
+                                    <td class="px-3 py-2 text-right tabular-nums">{{n-a item.expected_quantity}}</td>
+                                    <td class="px-3 py-2 text-right">
+                                        <Input @type="number" @value={{item.counted_quantity}} class="form-input w-20 text-right text-xs" disabled={{eq item.status "counted"}} />
+                                    </td>
+                                    <td class="px-3 py-2 text-right tabular-nums">
+                                        <span class={{if item.has_discrepancy "font-semibold text-amber-600 dark:text-amber-300" "text-gray-500 dark:text-gray-400"}}>
+                                            {{n-a item.variance}}
+                                        </span>
+                                    </td>
+                                    <td class="px-3 py-2"><Badge @status={{if (eq item.status "counted") "success" "info"}}>{{n-a item.status}}</Badge></td>
+                                    <td class="py-2 pl-3 text-right">
+                                        {{#unless (eq item.status "counted")}}
+                                            <Button
+                                                @icon="calculator"
+                                                @type="primary"
+                                                @size="xs"
+                                                @text={{t "operations.cycle-counts.record"}}
+                                                @onClick={{fn this.recordCycleCountItem item}}
+                                            />
+                                        {{/unless}}
+                                    </td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                {{else}}
+                    <div class="py-3 text-xs text-gray-400">{{t "operations.cycle-counts.no-items"}}</div>
+                {{/if}}
+            </body.expanded-row>
+        </Table.body>
+    </Table>
+</Layout::Section::Body>
+
+{{#if this.isCreatingCycleCount}}
+    <Overlay @position="right" @noBackdrop={{true}} @fullHeight={{true}} @isResizable={{true}} @width="720px">
+        <Overlay::Header @title={{t "operations.cycle-counts.create"}} @hideStatusDot={{true}}>
+            <:actions>
+                <Button @icon="check" @type="primary" @text={{t "common.create"}} @onClick={{this.createCycleCount}} @wrapperClass="mr-2" />
+                <Button @type="default" @icon="times" @helpText={{t "common.cancel"}} @onClick={{this.cancelCreatingCycleCount}} />
+            </:actions>
+        </Overlay::Header>
+
+        <Overlay::Body @wrapperClass="px-4 pt-4" @increaseInnerBodyHeightBy={{700}}>
+            <div class="grid grid-cols-1 gap-2 text-xs lg:grid-cols-2 no-input-group-padding">
+                <InputGroup @name={{t "operations.common.warehouse"}}>
+                    <ModelSelect
+                        @modelName="warehouse"
+                        @selectedModel={{this.newCycleCount.warehouse}}
+                        @placeholder={{t "operations.common.warehouse"}}
+                        @triggerClass="form-select form-input"
+                        @infiniteScroll={{false}}
+                        @renderInPlace={{true}}
+                        @onChange={{this.setCycleCountWarehouse}}
+                        as |model|
+                    >
+                        {{n-a (or model.name model.address)}}
+                    </ModelSelect>
+                </InputGroup>
+
+                <InputGroup @name={{t "operations.cycle-counts.zone"}}>
+                    <ModelSelect
+                        @modelName="warehouse-zone"
+                        @selectedModel={{this.newCycleCount.zone}}
+                        @placeholder={{t "operations.cycle-counts.zone-placeholder"}}
+                        @triggerClass="form-select form-input"
+                        @infiniteScroll={{false}}
+                        @renderInPlace={{true}}
+                        @onChange={{this.setCycleCountZone}}
+                        as |model|
+                    >
+                        {{n-a (or model.name model.public_id)}}
+                    </ModelSelect>
+                </InputGroup>
+
+                <InputGroup @name={{t "operations.common.type"}}>
+                    <Select class="w-full form-input form-select" @options={{this.cycleCountTypes}} @value={{this.newCycleCount.type}} @onSelect={{this.setType}} @humanize={{true}} />
+                </InputGroup>
+
+                <InputGroup @name={{t "operations.common.scheduled"}}>
+                    <Input @value={{this.newCycleCount.scheduled_at}} @type="datetime-local" class="w-full form-input" />
+                </InputGroup>
+
+            </div>
+        </Overlay::Body>
+    </Overlay>
+{{/if}}

@@ -1,2 +1,908 @@
 pallet:
   extension-name: Pallet
+
+# Resource titles (used in page headers and table titles)
+resource:
+  inventory: Inventory
+  products: Products
+  purchase-orders: Purchase Orders
+  sales-orders: Sales Orders
+  suppliers: Suppliers
+  warehouses: Warehouses
+  zones: Zones
+  bin-locations: Bin Locations
+  audits: Audit Trail
+  reports: Reports
+  report: Report
+  batches: Batches
+
+# Common / shared labels
+# Sidebar navigation
+navigation:
+  dashboard:
+    label: Dashboard
+    description: Pallet dashboard and warehouse operations overview.
+  catalog:
+    label: Catalog
+    description: Products, variants, and supplier records.
+  products:
+    label: Products
+    description: Manage product SKUs, variants, and catalog details.
+  suppliers:
+    label: Suppliers
+    description: Manage suppliers used for purchasing and replenishment.
+  facilities:
+    label: Facilities
+    description: Warehouses, zones, and bin locations.
+  warehouses:
+    label: Warehouses
+    description: Manage warehouse facilities and operating details.
+  locations:
+    label: Locations
+    description: Manage bin locations inside warehouses.
+  zones:
+    label: Zones
+    description: Manage warehouse zones and storage areas.
+  inventory:
+    label: Inventory
+    description: Stock, batches, adjustments, and exception views.
+  inventory-index:
+    label: Inventory
+    description: Review current stock by product, variant, and warehouse.
+  batches:
+    label: Batches
+    description: Review batch and lot-controlled stock.
+  stock-adjustments:
+    label: Stock Adjustments
+    description: Review manual stock adjustments and corrections.
+  low-stock:
+    label: Low Stock
+    description: Find items that are below reorder thresholds.
+  expired-stock:
+    label: Expired Stock
+    description: Find expired and aging inventory.
+  orders:
+    label: Orders
+    description: Purchase orders and sales orders.
+  purchase-orders:
+    label: Purchase Orders
+    description: Manage inbound purchase orders and receiving.
+  sales-orders:
+    label: Sales Orders
+    description: Manage outbound sales orders and fulfillment.
+  operations:
+    label: Operations
+    description: Transfers, cycle counts, pick lists, waves, and reservations.
+  transfers:
+    label: Transfers
+    description: Move stock between warehouses and locations.
+  cycle-counts:
+    label: Cycle Counts
+    description: Run and review inventory count workflows.
+  pick-lists:
+    label: Pick Lists
+    description: Manage picking work for outbound orders.
+  waves:
+    label: Waves
+    description: Group fulfillment work into picking waves.
+  reservations:
+    label: Reservations
+    description: Review reserved inventory and allocation state.
+  analytics:
+    label: Analytics
+    description: Pallet reporting and operational audit trail.
+  reports:
+    label: Reports
+    description: Build and review Pallet reports.
+  audits:
+    label: Audits
+    description: Review warehouse and inventory audit events.
+
+common:
+  code: Code
+  active: Active
+  address: Address
+  city: City
+  country: Country
+  description: Description
+  create-new-resource: Create a new {resource}
+  edit-resource-name: Edit {name}
+  email: Email
+  height: Height
+  id: ID
+  inactive: Inactive
+  internal-id: Internal ID
+  length: Length
+  metadata: Metadata
+  name: Name
+  'no': No
+  notes: Notes
+  phone: Phone
+  postal-code: Postal Code
+  select-status: Select Status
+  state: State / Province
+  status: Status
+  street1: Street 1
+  street2: Street 2
+  weight: Weight
+  width: Width
+  'yes': Yes
+  save: Save
+  cancel: Cancel
+  close: Close
+  delete: Delete
+  edit: Edit
+  view: View
+  create: Create
+  search: Search
+  filter: Filter
+  export: Export
+  import: Import
+  actions: Actions
+  created-at: Created At
+  type: Type
+  updated-at: Updated At
+  clear_filters: Clear Filters
+  no-records: No records found
+  loading: Loading...
+  new: New
+  refresh: Refresh
+  clear-filters: Clear Filters
+  continue: Continue
+  continue-without-saving: Continue without saving
+
+# Product translations
+# WMS operations screens
+operations:
+  common:
+    product: Product
+    variant: Variant
+    quantity: Quantity
+    warehouse: Warehouse
+    type: Type
+    priority: Priority
+    scheduled: Scheduled
+    start: Start
+    complete: Complete
+    approve: Approve
+    location: Location
+  transfers:
+    title: Transfers
+    description: Track stock movement between warehouses from request through receipt.
+    create: Create Transfer
+    list-title: Stock Transfers
+    from-warehouse: From Warehouse
+    to-warehouse: To Warehouse
+    source-placeholder: Source warehouse
+    destination-placeholder: Destination warehouse
+    ship: Ship
+    receive: Receive
+    actions-menu: Transfer Actions
+    no-actions: No actions available
+    back-to-list: All Transfers
+    shipped-at: Shipped
+    received-at: Received
+    no-line-items: No line items on this transfer.
+    sections:
+      details: Details
+      movement: Movement
+      line-items: Line Items
+    groups:
+      route: Route
+    fields:
+      lines-received: Lines Received
+      quantity-sent: Qty Sent
+      quantity-received: Qty Received
+      quantity-in-transit: In Transit
+      lot: Lot
+    columns:
+      transfer: Transfer
+      items: Items
+  waves:
+    title: Waves
+    description: Group fulfillment work into picking waves.
+    create: Create Wave
+    release: Release
+    actions-menu: Wave Actions
+    no-actions: No actions available
+    released: Wave released. Pick lists have been generated.
+    back-to-list: All Waves
+    scheduled-at: Scheduled
+    started-at: Started
+    completed-at: Completed
+    no-pick-lists: This wave has no pick lists yet. Release it to generate them.
+    sections:
+      details: Details
+      progress: Picking Progress
+      pick-lists: Pick Lists
+    groups:
+      scheduling: Scheduling
+    fields:
+      lists-complete: Lists Complete
+      lines: Lines
+      picked: Picked
+      outstanding: Outstanding
+    columns:
+      wave: Wave
+      pick-lists: Pick Lists
+      progress: Progress
+  cycle-counts:
+    title: Cycle Counts
+    description: Run and review inventory count workflows.
+    create: Create Cycle Count
+    zone: Zone
+    zone-placeholder: Optional zone
+    record: Record
+    actions-menu: Cycle Count Actions
+    no-actions: No actions available
+    no-items: No items on this count.
+    back-to-list: All Cycle Counts
+    count:
+      title: Count Sheet
+      back-to-count: Count Details
+      scan-placeholder: Scan bin or item
+      progress: '{counted} of {lines} lines counted'
+      summary: '{counted} of {lines} lines counted'
+      record: Record count
+      recount: Recount
+      submit: Submit Count
+      submitted: Count submitted for review.
+      invalid-quantity: Enter a counted quantity of zero or more.
+      no-match: 'Nothing on this sheet matches {term}.'
+      not-open: This count is not in progress, so no quantities can be recorded.
+      reveal: Show expected
+      reveal-help: Reveals the expected quantities. This is recorded in the audit trail.
+      revealed: Expected quantities revealed. This has been recorded in the audit trail.
+      revealed-notice: Expected quantities are showing. This count is no longer blind, and the disclosure is on the audit trail.
+    started-at: Started
+    completed-at: Completed
+    expected-hidden: Expected quantities are hidden while this count is open, so the figures cannot bias whoever is counting. They appear once the count is completed.
+    sections:
+      details: Details
+      result: Count Result
+      lines: Counted Lines
+    groups:
+      scope: Scope
+    fields:
+      lines: Lines
+      variance-lines: Variance Lines
+      net-variance: Net Variance
+    columns:
+      count: Count
+      assigned-to: Assigned To
+      accuracy: Accuracy
+      item: Item
+      expected: Expected
+      counted: Counted
+      variance: Variance
+  pick-lists:
+    title: Pick Lists
+    description: Manage picking work for outbound orders.
+    create: Create Pick List
+    pick-list: Pick List
+    add-item: Add Item
+    add-pick-item: Add Pick Item
+    assign-to-me: Assign to Me
+    picked: Picked
+    wave: Wave
+    wave-placeholder: Optional wave
+    sales-order: Sales Order
+    sales-order-placeholder: Order to pick for
+    bin: Bin
+    bin-placeholder: Optional bin
+    inventory: Inventory
+    inventory-placeholder: Optional inventory
+    actions-menu: Pick List Actions
+    no-actions: No actions available
+    no-items: No items on this pick list.
+    back-to-list: All Pick Lists
+    pick:
+      title: Pick
+      back-to-list: Pick List
+      scan-placeholder: Scan bin, item or lot
+      current: Current pick
+      quantity: Quantity to pick
+      lot: Lot
+      confirm: Confirm pick
+      short: Short this line
+      skip: Skip
+      skipped: Skipped
+      up-next: Up next
+      found: Found
+      reason: Reason
+      record-short: Record short pick
+      short-explain: Record what was actually on the shelf and why. The rest of the route carries on.
+      complete: Complete Pick List
+      completed: Pick list completed.
+      all-picked: Every line on this route has been picked.
+      not-open: This pick list is not in progress, so nothing can be picked.
+      progress: '{picked} of {lines} picked · {short} short'
+      no-match: '{term} does not match this line.'
+      lot-required: 'This line is lot-tracked. Scan lot {lot} to pick it.'
+      invalid-quantity: 'Enter between 1 and {requested}.'
+      reason-required: A short pick needs a reason.
+    started-at: Started
+    completed-at: Completed
+    sections:
+      details: Details
+      progress: Picking Progress
+      route: Pick Route
+    groups:
+      assignment: Assignment
+    fields:
+      lines-picked: Lines Picked
+      outstanding: Outstanding
+      sequence: '#'
+    columns:
+      pick-list: Pick List
+      assigned-to: Assigned To
+      progress: Progress
+      item: Item
+      requested: Requested
+      picked: Picked
+  reservations:
+    title: Reservations
+    description: Review reserved inventory and allocation state.
+    list-title: Inventory Reservations
+    create: Create Reservation
+    reserve: Reserve
+    release: Release
+    fulfill: Fulfill
+    expires: Expires
+    context-title: Storefront Reservation Context
+    reservation-key: Reservation Key
+    checkout: Checkout
+    cart: Cart
+    order: Order
+    line: Line
+    lookup: Lookup
+    clear: Clear
+    actions-menu: Reservation Actions
+    no-actions: No actions available
+    reserved-at: Reserved
+    sales-order-unavailable: Order deleted
+    columns:
+      context: Storefront Context
+      reservation: Reservation
+      batch: Batch
+      reserved-at: Reserved
+      sales-order: Sales Order
+
+# Dashboard widgets
+widgets:
+  kpi:
+    total-skus: Total SKUs
+    available-units: Available Units
+    reserved-units: Reserved Units
+    stock-value: Stock Value
+    low-stock: Low Stock
+    expiring-soon: Expiring Soon
+    open-pos: Open POs
+    open-fulfillment: Open Fulfillment
+  titles:
+    inventory-health: Inventory Health
+    warehouse-utilization: Warehouse Utilization
+    stock-movement: Stock Movement
+    fulfillment-workload: Fulfillment Workload
+    reorder-risk: Reorder Risk
+    expiring-stock: Expiring Stock
+    top-movers: Top Movers
+    recent-activity: Recent Activity
+    stock-value-by-warehouse: Stock Value by Warehouse
+    low-stock-alerts: Low Stock Alerts
+    purchase-order-status: Purchase Order Status
+    sales-order-status: Sales Order Status
+    inventory-summary: Inventory Summary
+  subtitles:
+    reorder-risk: Products at or below reorder point
+    top-movers: Products with the most stock movement
+    inventory-summary: Legacy grouped inventory totals
+  labels:
+    product: Product
+    sku: SKU
+    qty: Qty
+    min: Min
+    expires: Expires
+    warehouses: Warehouses
+    total-units: Total Units
+    total-stock-value: Total Stock Value
+    total-skus: Total SKUs
+    in-stock: In Stock
+    low-stock: Low Stock
+    stock-value: Stock Value
+    out-of-stock: Out of Stock
+    expired: Expired
+    expiring-soon: Expiring Soon
+    reservations: Reservations
+    waves: Waves
+    pick-lists: Pick Lists
+    cycle-counts: Cycle Counts
+    transfers: Transfers
+  empty:
+    healthy: All stock levels are healthy
+    no-movement: No movement data yet
+    no-activity: No recent activity
+    no-warehouse-data: No warehouse data
+
+# Facilities screens
+facilities:
+  locations:
+    title: Locations
+    available-capacity: Available Capacity
+    list-title: Bin Locations
+    create: Create Bin Location
+    bin: Bin
+    zone-placeholder: Optional zone
+    barcode: Barcode
+    priority: Priority
+    available: Available
+    is-pickable: Pickable
+    is-replenishable: Replenishable
+  zones:
+    title: Zones
+    list-title: Warehouse Zones
+    create: Create Zone
+    zone: Zone
+    code: Code
+    capacity: Capacity
+    temperature-controlled: Temperature Controlled
+
+# Shared record status words
+status:
+  pending: Pending
+  partial: Partial
+  received: Received
+  fulfilled: Fulfilled
+  cancelled: Cancelled
+
+# Shared table column headers
+columns:
+  product: Product
+  product-sku: Product SKU
+  quantity: Quantity
+  batch: Batch
+  expiry-date: Expiry Date
+  last-stocked: Last Stocked
+  reference: Reference
+  items: Items
+  expected-delivery: Expected Delivery
+  supplier: Supplier
+  customer-ref: Customer Ref
+  po-number: PO Number
+  so-number: SO Number
+  ordered: Ordered
+  received: Received
+  fulfilled: Fulfilled
+  outstanding: Outstanding
+  unit-price: Unit Price
+  total: Total
+
+# Row and toolbar actions
+actions:
+  view-details: View Details
+  view-inventory: View Inventory
+  edit-inventory: Edit Inventory
+  edit-purchase-order: Edit Purchase Order
+  delete-purchase-order: Delete Purchase Order
+  receive-goods: Receive Goods
+  edit-sales-order: Edit Sales Order
+  delete-sales-order: Delete Sales Order
+  fulfill-order: Fulfill Order
+
+product:
+  no-warehouse-stock: This product is not stocked in any warehouse.
+  warehouse-stock-failed: Could not load this product's stock by warehouse.
+  columns:
+    # Named for what they actually are. These read inventory_summary, an aggregate across
+    # every warehouse, and SCREENS.md §B forbids both an unlabelled quantity and an
+    # unlabelled cross-warehouse sum.
+    available-all: Available (All Warehouses)
+    on-hand: On Hand
+    reserved: Reserved
+    available: Available
+    on-hand-all: On Hand (All Warehouses)
+    reserved-all: Reserved (All Warehouses)
+    stock-condition: Stock
+    declared-value: Declared Value
+    traceability: Traceability
+    storefront: Storefront
+    storefront-product: Storefront Product
+    internal-id: Internal ID
+  sections:
+    details: Details
+    dimensions: Dimensions
+    warehouse-stock: Stock by Warehouse
+    inventory-info: Inventory Information
+    inventory-settings: Inventory Settings
+    measurements: Measurements & Tracking
+    media: Media
+    pricing: Pricing
+    stock: Stock
+    storefront: Storefront
+    variants: Variants
+  groups:
+    handling: Handling
+    identity: Identity
+    on-hand: On Hand
+    organization: Organization
+    physical: Physical
+    thresholds: Thresholds
+  fields:
+    available-stock: Available Stock
+    barcode: Barcode
+    category: Category
+    declared-value: Declared Value
+    is-lot-tracked: Lot Tracked
+    is-perishable: Perishable
+    is-serialized: Serialized
+    lot-tracked: Track Lot Numbers
+    make-primary: Make Primary
+    name-placeholder: Product name
+    no-images: No images.
+    no-variants: Tracked as a single SKU.
+    option-values: Options
+    perishable: Perishable
+    perishable-item: Perishable Item
+    reorder-point: Reorder Point
+    reorder-quantity: Reorder Quantity
+    requires-qc: Requires QC
+    requires-quality-check: Requires Quality Check
+    reserved-stock: Reserved Stock
+    sale-price: Sale Price
+    save-first: Save the product first — variants and images attach to the saved record.
+    select-category: Select Category
+    select-supplier: Select Supplier
+    serialized: Serialized
+    shelf-life-days: Shelf Life (Days)
+    sku: SKU
+    storefront-variant: Storefront Variant
+    supplier: Supplier
+    total-stock: Total Stock
+    track-lot-numbers: Track Lot Numbers
+    track-serial-numbers: Track Serial Numbers
+    tracking: Tracking
+    unit-cost: Unit Cost
+    unit-price: Unit Price
+    variant-name: Variant Name
+  actions:
+    add-variant: Add Variant
+    create: Create product
+    select-files: Select Files
+    upload-images: Upload Images
+
+# Inventory translations
+inventory:
+  product-unavailable: Product unavailable
+  product-unavailable-hint: The product this stock belongs to has been deleted.
+  variant-unavailable: Variant unavailable
+  warehouse-unavailable: Warehouse unavailable
+  ledger:
+    balance-after: Balance After
+    change: Change
+    empty: No stock movements recorded against this record yet.
+    when: When
+  empty:
+    low-stock-title: Nothing is running low
+    low-stock-description: No inventory is at or below its reorder point.
+    expired-stock-title: Nothing has expired
+    expired-stock-description: No inventory has passed its expiry date.
+  screens:
+    batches-title: Batches
+    batches-list: Inventory Batches
+    adjustments-title: Stock Adjustments
+    adjustments-list: Adjustment History
+    new-adjustment: New Adjustment
+    low-stock-list: Low Stock Inventory
+    expired-stock-list: Expired Stock Inventory
+  adjustments:
+    after: After
+    before: Before
+    current-quantity: Current Quantity
+    delta: Delta
+    empty: No adjustments recorded against this record yet.
+    make: Make Stock Adjustment
+    pending: Pending Approval
+    reason: Reason
+    resulting-quantity: Resulting Quantity
+    save: Save Stock Adjustment
+    submit-for-approval: Submit for Approval
+  tracking:
+    expired: Expired
+    expiring-soon: Expiring Soon
+    in-date: In Date
+  sections:
+    adjustments: Adjustments
+    details: Details
+    ledger: Stock Movements
+    location: Location
+    stock: Stock
+    tracking: Tracking
+  groups:
+    identity: Identity
+    on-hand: On Hand
+    thresholds: Thresholds
+    valuation: Valuation
+    identifiers: Identifiers
+    dates: Dates
+  fields:
+    available-quantity: Available Quantity
+    available: Available
+    batch-number: Batch Number
+    bin-location: Bin Location
+    days-over: Days Over
+    days-to-expiry: Days to Expiry
+    expiry-date: Expiry Date
+    in-transit: In Transit
+    last-counted: Last Counted
+    lot-number: Lot Number
+    manufactured: Manufactured
+    max-quantity: Max Quantity
+    min-quantity: Min Quantity
+    on-hand: On Hand
+    on-order: On Order
+    product: Product
+    quantity: Quantity
+    quarantined: Quarantined
+    received-at: Received At
+    reorder-point: Reorder Point
+    reserved-quantity: Reserved Quantity
+    reserved: Reserved
+    select-bin: Select Bin Location
+    select-product: Select Product
+    select-supplier: Select Supplier
+    select-variant: Select Variant
+    select-warehouse: Select Warehouse
+    select-zone: Select Zone
+    serial-number: Serial Number
+    short-by: Short By
+    supplier: Supplier
+    unit-cost: Unit Cost
+    uom: Unit of Measure
+    variant: Variant
+    warehouse: Warehouse
+    zone: Zone
+
+# Warehouse translations
+warehouse:
+  groups:
+    contact: Contact
+    structure: Structure
+    utilisation: Utilisation
+  empty:
+    no-docks: No loading docks recorded for this warehouse.
+    no-zones: No zones defined for this warehouse.
+  sections:
+    address: Address
+    capacity: Capacity
+    details: Details
+    docks: Loading Docks
+    structure: Zones & Structure
+  fields:
+    capacity: Capacity
+    code: Warehouse Code
+    current-utilization: Current Utilization
+    direction: Direction
+    dock-number: Dock Number
+    email: Email
+    floor-area: Floor Area (sqm)
+    is-3pl: Third-Party Logistics
+    is-active: Active
+    is-default: Default Warehouse
+    name: Warehouse Name
+    phone: Phone
+    status: Status
+    stock-items: Stock Items
+    temperature-controlled: Temp Controlled
+    third-party-logistics: Third-Party Logistics (3PL)
+    timezone: Timezone
+    total-bins: Total Bins
+    total-docks: Total Docks
+    total-zones: Total Zones
+    type: Warehouse Type
+    utilisation-percentage: Utilisation
+    utilization: Utilization
+    zone: Zone
+
+# Supplier translations
+supplier:
+  empty:
+    no-products: No products are supplied by this supplier.
+    no-purchase-orders: No purchase orders have been raised with this supplier.
+  sections:
+    details: Details
+    products: Products Supplied
+    purchase-orders: Purchase Orders
+  fields:
+    name: Supplier Name
+    select-type: Select Supplier Type
+    type: Supplier Type
+
+# Purchase Order translations
+purchase-order:
+  save-before-line-items: Save this purchase order first, then add its line items here.
+  no-line-items: No line items on this purchase order.
+  over-received: '{quantity} more received than ordered across this order.'
+  sections:
+    details: Details
+    receiving: Receiving Progress
+    line-items: Line Items
+    receive: Receive Goods
+  groups:
+    fulfilment: Fulfilment
+  fields:
+    expected-delivery: Expected Delivery Date
+    lines-received: Lines Received
+    quantity-ordered: Qty Ordered
+    quantity-received: Qty Received
+    quantity-outstanding: Qty Outstanding
+    order-number: Order Number
+    select-supplier: Select Supplier
+    select-warehouse: Select Warehouse
+    supplier: Supplier
+    warehouse: Warehouse
+    item-count: Item Count
+    total-value: Total Value
+  actions:
+    back-to-list: All Purchase Orders
+    receive: Receive Goods
+    view: View Purchase Order
+    edit: Edit Purchase Order
+    delete: Delete Purchase Order
+  receive:
+    title: Receive Purchase Order
+    summary: Order Summary
+    po-number: PO Number
+    supplier: Supplier
+    reference: Reference
+    expected-delivery: Expected Delivery
+    total-items: Total Items
+    receive-items: Receive Items
+    ordered: Ordered
+    previously-received: Previously Received
+    outstanding: Outstanding
+    receive-now: Receive Now
+    lot-number: Lot Number (optional)
+    expiry-date: Expiry Date (optional)
+    notes: Notes (optional)
+    submit: Confirm Receipt
+    all-received: All items on this purchase order have already been received.
+    success: Purchase order received successfully. Inventory has been updated.
+    error: Failed to receive purchase order. Please try again.
+  line-items:
+    title: Line Items
+    add: Add Line Item
+    product: Product
+    sku: SKU
+    quantity: Quantity
+    quantity-received: Qty Received
+    unit-price: Unit Price
+    total-price: Total Price
+    status: Status
+    notes: Notes
+    lot-number: Lot Number
+    serial-number: Serial Number
+    expiry-date: Expiry Date
+    unit-of-measure: Unit of Measure
+
+# Sales Order translations
+sales-order:
+  save-before-line-items: Save this sales order first, then add its line items here.
+  no-line-items: No line items on this sales order.
+  sections:
+    details: Details
+    line-items: Line Items
+    fulfill: Fulfill Order
+  groups:
+    fulfilment: Fulfilment
+  fields:
+    customer: Customer
+    expected-shipment: Expected Shipment Date
+    order-number: Order Number
+    select-customer: Select Customer
+    select-warehouse: Select Warehouse
+    warehouse: Warehouse
+    item-count: Item Count
+    total-value: Total Value
+  actions:
+    back-to-list: All Sales Orders
+    fulfill: Fulfill Order
+    view: View Sales Order
+    edit: Edit Sales Order
+    delete: Delete Sales Order
+  fulfill:
+    title: Fulfill Sales Order
+    summary: Order Summary
+    so-number: SO Number
+    customer-ref: Customer Reference
+    reference: Reference
+    expected-delivery: Expected Delivery
+    total-items: Total Items
+    fulfill-items: Fulfill Items
+    ordered: Ordered
+    previously-fulfilled: Previously Fulfilled
+    outstanding: Outstanding
+    fulfill-now: Fulfill Now
+    notes: Notes (optional)
+    status: Status
+    submit: Confirm Fulfillment
+    fefo-notice: Inventory will be deducted using FEFO (First Expired, First Out) unless a specific inventory record is selected.
+    all-fulfilled: All items on this sales order have already been fulfilled.
+    success: Sales order fulfilled successfully. Inventory has been deducted.
+    error: Failed to fulfill sales order. Please try again.
+  line-items:
+    title: Line Items
+    add: Add Line Item
+    product: Product
+    sku: SKU
+    quantity: Quantity
+    quantity-fulfilled: Qty Fulfilled
+    unit-price: Unit Price
+    total-price: Total Price
+    status: Status
+    notes: Notes
+    lot-number: Lot Number
+    serial-number: Serial Number
+    unit-of-measure: Unit of Measure
+
+# Batch translations
+batch:
+  sections:
+    details: Details
+  fields:
+    batch-number: Batch Number
+    expiry-date: Expiry Date
+    product: Product
+    production-date: Production Date
+    select-product: Select Product
+    select-supplier: Select Supplier
+    supplier: Supplier
+
+# Audit Trail translations
+# The Pallet audit trail captures intentional WMS operational events (stock adjustments,
+# cycle counts, PO receipts, SO fulfilments, stock transfers). It is NOT a generic
+# data-change log — that is handled by Spatie Activity Log at the framework level.
+audit:
+  title: Audit Trail
+  diff:
+    changed: What changed
+    context: Event context
+    field: Field
+    before: Before
+    after: After
+    no-detail: This event recorded no field changes and carried no additional context.
+  columns:
+    event: Event
+    action: Action
+    subject: Subject
+    subject-id: Subject ID
+    reason: Reason
+    performed-by: Performed By
+    date: Date
+  search_placeholder: Search audit events...
+  all_events: All Events
+  filter_event_type: Event Type
+  no_records: No audit events found
+  sections:
+    details: Details
+  fields:
+    event-type: Event Type
+    action: Action
+    subject-type: Subject Type
+    subject-id: Subject ID
+    performed-by: Performed By
+    reason: Reason
+    comments: Comments
+    meta: Event Data
+    date: Date
+    scheduled-at: Scheduled At
+    completed-at: Completed At
+  event-types:
+    stock_adjustment: Stock Adjustment
+    cycle_count: Cycle Count
+    po_received: PO Received
+    so_fulfilled: SO Fulfilled
+    stock_transfer: Stock Transfer
+    inventory_receive: Inventory Received
+    batch_created: Batch Created
+    product_created: Product Created
+    warehouse_created: Warehouse Created

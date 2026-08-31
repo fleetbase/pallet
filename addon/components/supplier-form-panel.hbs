@@ -3,7 +3,7 @@
     @position="right"
     @noBackdrop={{true}}
     @fullHeight={{true}}
-    @isResizeble={{or this.isResizable @isResizable}}
+    @isResizable={{or this.isResizable @isResizable}}
     @width={{or this.width @width "600px"}}
 >
     <Overlay::Header
@@ -13,13 +13,21 @@
         @createdAt={{this.supplier.createdAt}}
         @titleWrapperClass="leading-5"
     >
-        <div class="flex flex-1 justify-end">
-            <Button @icon={{if this.supplier.id "save" "check"}} @type="primary" @text={{if this.supplier.id "Save Supplier" "Add Supplier"}} @onClick={{this.save}} @wrapperClass="mr-2" />
+        <:actions>
+            <Button
+                @icon={{if this.supplier.id "save" "check"}}
+                @type="primary"
+                @text={{if this.supplier.id "Save Supplier" "Add Supplier"}}
+                @onClick={{perform this.saveTask}}
+                @wrapperClass="mr-2"
+                @isLoading={{this.saveTask.isRunning}}
+                @disabled={{this.saveTask.isRunning}}
+            />
             {{#if this.supplier.id}}
                 <Button @type="default" @icon="supplier" @helpText="View supplier details" @onClick={{this.onViewDetails}} @wrapperClass="mr-2" />
             {{/if}}
             <Button @type="default" @icon="times" @helpText={{if this.supplier.id "Cancel edit supplier" "Cancel add supplier"}} @onClick={{this.onPressCancel}} />
-        </div>
+        </:actions>
     </Overlay::Header>
 
     <Overlay::Body @wrapperClass="new-service-rate-overlay-body px-4 space-y-4 pt-4" @increaseInnerBodyHeightBy={{1000}}>
@@ -54,8 +62,7 @@
                         @triggerClass="form-select form-input"
                         @infiniteScroll={{false}}
                         @renderInPlace={{true}}
-                        @onChange={{fn (mut this.supplier.place)}}
-                        @onChangeId={{fn (mut this.supplier.place_uuid)}}
+                        @onChange={{this.setPlace}}
                         as |model|
                     >
                         <div class="flex items-center flex-row justify-between">

@@ -3,7 +3,7 @@
     @position="right"
     @noBackdrop={{true}}
     @fullHeight={{true}}
-    @isResizeble={{or this.isResizable @isResizable}}
+    @isResizable={{or this.isResizable @isResizable}}
     @width={{or this.width @width "600px"}}
 >
     <Overlay::Header
@@ -13,55 +13,123 @@
         @createdAt={{this.stockAdjustment.createdAt}}
         @titleWrapperClass="leading-5"
     >
-        <div class="flex flex-1 justify-end">
+        <:actions>
             <Button
                 @icon={{if this.stockAdjustment.id "save" "check"}}
                 @type="primary"
-                @text={{if this.stockAdjustment.id "Save Stock Adjustment" "Make Stock Adjustment"}}
-                @onClick={{this.save}}
+                @text={{this.saveButtonText}}
+                @onClick={{perform this.saveTask}}
                 @wrapperClass="mr-2"
+                @isLoading={{this.saveTask.isRunning}}
+                @disabled={{this.saveTask.isRunning}}
             />
             {{#if this.stockAdjustment.id}}
                 <Button @type="default" @icon="inventory" @helpText="View inventory details" @onClick={{this.onViewDetails}} @wrapperClass="mr-2" />
             {{/if}}
             <Button @type="default" @icon="times" @helpText={{if this.stockAdjustment.id "Cancel edit stock adjustment" "Cancel add stock adjustment"}} @onClick={{this.onPressCancel}} />
-        </div>
+        </:actions>
     </Overlay::Header>
 
     <Overlay::Body @wrapperClass="new-service-rate-overlay-body px-4 space-y-4 pt-4" @increaseInnerBodyHeightBy={{1000}}>
-        <div class="grid grid-cols-1 text-xs dark:text-gray-100">
+        <div class="grid grid-cols-1 gap-2 text-xs dark:text-gray-100">
+            <InputGroup @name="Product">
+                <ModelSelect
+                    @modelName="pallet-product"
+                    @selectedModel={{this.stockAdjustment.product}}
+                    @placeholder="Select product"
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{this.setProduct}}
+                    as |product|
+                >
+                    {{product.name}}
+                </ModelSelect>
+            </InputGroup>
+
+            {{#if this.hasProductVariants}}
+                <InputGroup @name="Variant">
+                    <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                        <PowerSelect
+                            @options={{this.stockAdjustment.product.variants}}
+                            @selected={{find-by "uuid" this.stockAdjustment.variant_uuid this.stockAdjustment.product.variants}}
+                            @onChange={{this.setVariant}}
+                            @placeholder="Select variant"
+                            @triggerClass="form-select form-input"
+                            as |variant|
+                        >
+                            {{or variant.display_name variant.name variant.sku}}
+                        </PowerSelect>
+                    </div>
+                </InputGroup>
+            {{/if}}
+
+            <InputGroup @name="Warehouse">
+                <ModelSelect
+                    @modelName="warehouse"
+                    @selectedModel={{this.stockAdjustment.warehouse}}
+                    @placeholder="Select warehouse"
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{this.setWarehouse}}
+                    as |warehouse|
+                >
+                    {{warehouse.name}}
+                </ModelSelect>
+            </InputGroup>
+
             <InputGroup @name="Type">
                 <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
                     <PowerSelect
-                        @options={{this.stockAdjustmentTypeOption}}
-                        @selected={{this.stockAdjustment.type}}
-                        @onChange={{fn (mut this.stockAdjustment.type)}}
+                        @options={{this.stockAdjustmentTypeOptions}}
+                        @selected={{this.selectedTypeOption}}
+                        @onChange={{this.setType}}
                         @placeholder="Select stock adjustment type"
                         @triggerClass="form-select form-input"
-                        as |type|
+                        as |option|
                     >
-                        {{smart-humanize type}}
+                        {{option.label}}
                     </PowerSelect>
                 </div>
             </InputGroup>
-            <InputGroup @name="Approval Required">
-                <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
-                    <PowerSelect
-                        @options={{this.statusOptions}}
-                        @selected={{this.stockAdjustment.approval_required}}
-                        @onChange={{fn (mut this.stockAdjustment.approval_required)}}
-                        @placeholder="Select approval status"
-                        @triggerClass="form-select form-input"
-                        as |status|
-                    >
-                        {{smart-humanize status}}
-                    </PowerSelect>
+            <InputGroup @name={{this.quantityLabel}} @type="number" @value={{this.stockAdjustment.quantity}} />
+
+            {{!
+                SCREENS.md §D must-never: the user types the delta, never the resulting
+                quantity — the ledger needs the delta and the reason, and inferring one
+                from the other loses intent. So the result is shown, not entered.
+
+                The arithmetic mirrors StockAdjustmentController::calculateAfterQuantity
+                exactly; a preview using different rules would confidently show a number
+                the save would not produce.
+            }}
+            {{#if this.stockAdjustment.type}}
+                <div class="rounded-md border border-gray-200 px-3 py-2 text-xs dark:border-gray-700">
+                    <div class="field-info-container field-vertical-container dashed-bottom">
+                        <div class="field-name">{{t "inventory.adjustments.current-quantity"}}</div>
+                        <div class="field-value tabular-nums">
+                            {{#if this.loadCurrentInventory.isRunning}}
+                                {{t "common.loading"}}
+                            {{else}}
+                                {{n-a this.beforeQuantity}}
+                            {{/if}}
+                        </div>
+                    </div>
+                    <div class="field-info-container field-vertical-container">
+                        <div class="field-name">{{t "inventory.adjustments.resulting-quantity"}}</div>
+                        <div class="field-value tabular-nums">{{n-a this.afterQuantity}}</div>
+                    </div>
                 </div>
-            </InputGroup>
+            {{/if}}
             <InputGroup @name="Stock Adjustment Reason">
                 <Textarea @value={{this.stockAdjustment.reason}} aria-label="Reason" class="w-full form-input" placeholder="Reason" rows={{5}} />
             </InputGroup>
-            <InputGroup @name="Quantity" @type="number" @value={{this.stockAdjustment.quantity}} />
+            <InputGroup @name="Approval">
+                <Checkbox @checked={{this.stockAdjustment.approval_required}} @onChange={{fn (mut this.stockAdjustment.approval_required)}}>
+                    Requires approval
+                </Checkbox>
+            </InputGroup>
         </div>
     </Overlay::Body>
 </Overlay>

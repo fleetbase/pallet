@@ -1,0 +1,189 @@
+<div class="details-wrapper" ...attributes>
+    {{!
+        Restructured against UI_CONVENTIONS.md. This was four panels, every one open,
+        with thirteen ungrouped fields in the first — a wall of label/value pairs that
+        gave a bin location the same weight as an on-hand quantity.
+
+        Fields use ember-ui's field-vertical-container: label left, value right, one
+        line each, dashed rule between. That is the pattern FleetOps' order detail
+        pane uses and it halves the height of a stacked label/value list.
+
+        Group headings deliberately do not reuse the .field-name recipe. Both are
+        11px uppercase semibold, so a heading set the same way is indistinguishable
+        from the labels beneath it and the grouping reads as noise.
+    }}
+    <ContentPanel @title={{t "inventory.sections.details"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="text-xs">
+            <div class="pallet-field-group-heading">{{t "inventory.groups.identity"}}</div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "common.id"}}</div>
+                <ClickToCopy @value={{@resource.public_id}} class="field-value font-mono">{{n-a @resource.public_id}}</ClickToCopy>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "common.status"}}</div>
+                <div class="field-value">
+                    <Badge @status={{@resource.status}}>{{smart-humanize @resource.status}}</Badge>
+                </div>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "inventory.fields.product"}}</div>
+                <div class="field-value">{{n-a @resource.product.name}}</div>
+            </div>
+            {{#if (or @resource.variant.display_name @resource.variant.name)}}
+                <div class="field-info-container field-vertical-container dashed-bottom">
+                    <div class="field-name">{{t "inventory.fields.variant"}}</div>
+                    <div class="field-value">{{or @resource.variant.display_name @resource.variant.name}}</div>
+                </div>
+            {{/if}}
+            {{#if (or @resource.supplier.name @resource.product.supplier.name)}}
+                <div class="field-info-container field-vertical-container dashed-bottom">
+                    <div class="field-name">{{t "inventory.fields.supplier"}}</div>
+                    <div class="field-value">{{or @resource.supplier.name @resource.product.supplier.name}}</div>
+                </div>
+            {{/if}}
+
+            <div class="pallet-field-group-heading">{{t "inventory.sections.location"}}</div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "inventory.fields.warehouse"}}</div>
+                <div class="field-value">{{n-a @resource.warehouse.name}}</div>
+            </div>
+            {{#if @resource.zone.name}}
+                <div class="field-info-container field-vertical-container dashed-bottom">
+                    <div class="field-name">{{t "inventory.fields.zone"}}</div>
+                    <div class="field-value">{{@resource.zone.name}}</div>
+                </div>
+            {{/if}}
+            {{#if @resource.binLocation.bin_number}}
+                <div class="field-info-container field-vertical-container dashed-bottom">
+                    <div class="field-name">{{t "inventory.fields.bin-location"}}</div>
+                    <div class="field-value">{{@resource.binLocation.bin_number}}</div>
+                </div>
+            {{/if}}
+        </div>
+    </ContentPanel>
+
+    <ContentPanel @title={{t "inventory.sections.stock"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="text-xs">
+            <div class="pallet-field-group-heading">{{t "inventory.groups.on-hand"}}</div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "inventory.fields.quantity"}}</div>
+                <div class="field-value tabular-nums">{{format-number @resource.quantity}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "inventory.fields.reserved-quantity"}}</div>
+                <div class="field-value tabular-nums">{{format-number @resource.reserved_quantity}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "inventory.fields.available-quantity"}}</div>
+                <div class="field-value tabular-nums">{{format-number @resource.available_quantity}}</div>
+            </div>
+            {{! The rest of the set. Guarded rather than always shown: a warehouse with no
+                transfers or open POs should not read three permanent zeroes. }}
+            {{#if @resource.in_transit}}
+                <div class="field-info-container field-vertical-container dashed-bottom">
+                    <div class="field-name">{{t "inventory.fields.in-transit"}}</div>
+                    <div class="field-value tabular-nums">{{format-number @resource.in_transit}}</div>
+                </div>
+            {{/if}}
+            {{#if @resource.on_order}}
+                <div class="field-info-container field-vertical-container dashed-bottom">
+                    <div class="field-name">{{t "inventory.fields.on-order"}}</div>
+                    <div class="field-value tabular-nums">{{format-number @resource.on_order}}</div>
+                </div>
+            {{/if}}
+            {{#if @resource.quarantined}}
+                <div class="field-info-container field-vertical-container dashed-bottom">
+                    <div class="field-name">{{t "inventory.fields.quarantined"}}</div>
+                    <div class="field-value tabular-nums">{{format-number @resource.quarantined}}</div>
+                </div>
+            {{/if}}
+            {{#if @resource.uom}}
+                <div class="field-info-container field-vertical-container dashed-bottom">
+                    <div class="field-name">{{t "inventory.fields.uom"}}</div>
+                    <div class="field-value">{{@resource.uom}}</div>
+                </div>
+            {{/if}}
+
+            <div class="pallet-field-group-heading">{{t "inventory.groups.thresholds"}}</div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "inventory.fields.min-quantity"}}</div>
+                <div class="field-value tabular-nums">{{format-number @resource.min_quantity}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "inventory.fields.max-quantity"}}</div>
+                <div class="field-value tabular-nums">{{format-number @resource.max_quantity}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "inventory.fields.reorder-point"}}</div>
+                <div class="field-value tabular-nums">{{format-number @resource.reorder_point}}</div>
+            </div>
+
+            <div class="pallet-field-group-heading">{{t "inventory.groups.valuation"}}</div>
+            <div class="field-info-container field-vertical-container">
+                <div class="field-name">{{t "inventory.fields.unit-cost"}}</div>
+                <div class="field-value tabular-nums">{{format-currency @resource.unit_cost @resource.currency}}</div>
+            </div>
+        </div>
+    </ContentPanel>
+
+    <ContentPanel
+        @title={{t "inventory.sections.tracking"}}
+        @open={{false}}
+        @wrapperClass="bordered-top"
+        {{! Colour key plus text, not a status slug: expiring_soon has no badge.css rule. }}
+        @titleStatusRight={{this.expiryBadge.type}}
+        @titleStatusRightText={{this.expiryBadge.text}}
+        @hideRightTitleStatusDot={{true}}
+    >
+        <div class="text-xs">
+            <div class="pallet-field-group-heading">{{t "inventory.groups.identifiers"}}</div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "inventory.fields.batch-number"}}</div>
+                <div class="field-value">{{n-a @resource.batch.batch_number}}</div>
+            </div>
+            {{#if @resource.lot_number}}
+                <div class="field-info-container field-vertical-container dashed-bottom">
+                    <div class="field-name">{{t "inventory.fields.lot-number"}}</div>
+                    <ClickToCopy @value={{@resource.lot_number}} class="field-value">{{@resource.lot_number}}</ClickToCopy>
+                </div>
+            {{/if}}
+            {{#if @resource.serial_number}}
+                <div class="field-info-container field-vertical-container dashed-bottom">
+                    <div class="field-name">{{t "inventory.fields.serial-number"}}</div>
+                    <ClickToCopy @value={{@resource.serial_number}} class="field-value">{{@resource.serial_number}}</ClickToCopy>
+                </div>
+            {{/if}}
+
+            <div class="pallet-field-group-heading">{{t "inventory.groups.dates"}}</div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "inventory.fields.expiry-date"}}</div>
+                <div class="field-value">{{n-a (format-date @resource.expiry_date_at)}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "inventory.fields.received-at"}}</div>
+                <div class="field-value">{{n-a (format-date @resource.received_at)}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container">
+                <div class="field-name">{{t "inventory.fields.last-counted"}}</div>
+                <div class="field-value">{{n-a (format-date @resource.last_counted_at)}}</div>
+            </div>
+        </div>
+    </ContentPanel>
+
+    {{! SCREENS.md §D must-never: never require leaving the panel to see why a number is
+        what it is. Every quantity above is the sum of these movements. }}
+    <ContentPanel @title={{t "inventory.sections.ledger"}} @open={{false}} @wrapperClass="bordered-top" @panelBodyWrapperClass="px-0i">
+        <Inventory::Ledger @resource={{@resource}} />
+    </ContentPanel>
+
+    {{! Beside the ledger: the ledger says what moved, this says who asked and why. }}
+    <ContentPanel @title={{t "inventory.sections.adjustments"}} @open={{false}} @wrapperClass="bordered-top" @panelBodyWrapperClass="px-0i">
+        <Inventory::Adjustments @resource={{@resource}} />
+    </ContentPanel>
+
+    <CustomField::Yield @subject={{@resource}} @viewMode={{true}} @wrapperClass="bordered-top" />
+
+    <ContentPanel @title={{t "common.metadata"}} @open={{false}} @wrapperClass="bordered-top" @panelBodyWrapperClass={{unless (is-object-empty @resource.meta) "px-0i" ""}}>
+        <MetadataViewer @metadata={{@resource.meta}} />
+    </ContentPanel>
+</div>

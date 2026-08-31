@@ -23,6 +23,30 @@ export default class InventoryIndexDetailsController extends Controller {
     @tracked queryParams = ['view'];
 
     /**
+     * The panel renders a TabNavigation over these; without them the details
+     * body had no tabs and no outlet content at all.
+     */
+    @tracked tabs = [
+        {
+            route: 'inventory.index.details.index',
+            label: 'Overview',
+        },
+    ];
+
+    /**
+     * The panel header's action buttons. The template binds this; without it the
+     * details panel renders no way to reach the record's edit form.
+     */
+    get actionButtons() {
+        return [
+            {
+                icon: 'pencil',
+                fn: () => this.onEdit(this.model),
+            },
+        ];
+    }
+
+    /**
      * Transitions back to the "inventory.index" route.
      *
      * @method
@@ -30,7 +54,7 @@ export default class InventoryIndexDetailsController extends Controller {
      * @returns {Transition} The transition object representing the route change.
      */
     @action transitionBack() {
-        return this.transitionToRoute('inventory.index');
+        return this.hostRouter.transitionTo('console.pallet.inventory.index');
     }
 
     /**
@@ -42,7 +66,7 @@ export default class InventoryIndexDetailsController extends Controller {
      * @returns {Transition} The transition object representing the route change.
      */
     @action onEdit(inventory) {
-        return this.transitionToRoute('inventory.index.edit', inventory);
+        return this.hostRouter.transitionTo('console.pallet.inventory.index.edit', inventory);
     }
 
     /**

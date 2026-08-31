@@ -1,0 +1,38 @@
+<div class="details-wrapper" ...attributes>
+    <ContentPanel @title={{t "batch.sections.details"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-2 gap-2 text-xs dark:text-gray-100">
+            <div class="field-info-container">
+                <div class="field-name">{{t "common.id"}}</div>
+                <ClickToCopy @value={{@resource.public_id}} class="field-value">{{n-a @resource.public_id}}</ClickToCopy>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "batch.fields.batch-number"}}</div>
+                <ClickToCopy @value={{@resource.batch_number}} class="field-value">{{n-a @resource.batch_number}}</ClickToCopy>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "batch.fields.product"}}</div>
+                <div class="field-value">{{n-a @resource.product.name}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">Variant</div>
+                <div class="field-value">{{n-a (or @resource.variant.display_name @resource.variant.name)}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "batch.fields.production-date"}}</div>
+                <div class="field-value">{{format-date @resource.manufacture_date_at}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "batch.fields.expiry-date"}}</div>
+                <div class="field-value">{{format-date @resource.expiry_date_at}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "inventory.fields.quantity"}}</div>
+                <div class="field-value">{{format-number @resource.quantity}}</div>
+            </div>
+        </div>
+    </ContentPanel>
+    <CustomField::Yield @subject={{@resource}} @viewMode={{true}} @wrapperClass="bordered-top" />
+    <ContentPanel @title={{t "common.metadata"}} @open={{true}} @wrapperClass="bordered-top" @panelBodyWrapperClass={{unless (is-object-empty @resource.meta) "px-0i" ""}}>
+        <MetadataViewer @metadata={{@resource.meta}} />
+    </ContentPanel>
+</div>

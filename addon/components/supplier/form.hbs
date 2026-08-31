@@ -1,0 +1,52 @@
+<div class="form-wrapper" ...attributes>
+    <ContentPanel @title={{t "supplier.sections.details"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 text-xs no-input-group-padding">
+            <InputGroup @name={{t "common.name"}} @wrapperClass="col-span-2">
+                <Input @value={{@resource.name}} @type="text" class="w-full form-input" placeholder={{t "supplier.fields.name"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+            <InputGroup @name={{t "common.email"}}>
+                <Input @value={{@resource.email}} @type="email" class="w-full form-input" placeholder={{t "common.email"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+            <InputGroup @name={{t "common.phone"}}>
+                <PhoneInput @value={{@resource.phone}} class="form-input w-full" disabled={{cannot-write @resource}} />
+            </InputGroup>
+            <InputGroup @name={{t "supplier.fields.type"}}>
+                <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                    <PowerSelect
+                        @options={{this.typeOptions}}
+                        @selected={{find-by "value" @resource.type this.typeOptions}}
+                        @onChange={{set-model-attr @resource "type"}}
+                        @placeholder={{t "supplier.fields.select-type"}}
+                        @triggerClass="form-select form-input"
+                        @disabled={{cannot-write @resource}}
+                        as |option|
+                    >
+                        {{option.label}}
+                    </PowerSelect>
+                </div>
+            </InputGroup>
+            <InputGroup @name={{t "common.status"}}>
+                <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                    <PowerSelect
+                        @options={{this.statusOptions}}
+                        @selected={{find-by "value" @resource.status this.statusOptions}}
+                        @onChange={{set-model-attr @resource "status"}}
+                        @placeholder={{t "common.select-status"}}
+                        @triggerClass="form-select form-input"
+                        @disabled={{cannot-write @resource}}
+                        as |option|
+                    >
+                        {{option.label}}
+                    </PowerSelect>
+                </div>
+            </InputGroup>
+            <InputGroup @name={{t "common.description"}} @wrapperClass="col-span-2">
+                <Textarea @value={{@resource.description}} class="w-full form-input" placeholder={{t "common.description"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+        </div>
+    </ContentPanel>
+    <CustomField::Yield @subject={{@resource}} @wrapperClass="bordered-top" />
+    <ContentPanel @title={{t "common.metadata"}} @open={{true}} @wrapperClass="bordered-top">
+        <MetadataEditor @value={{@resource.meta}} @onChange={{fn (mut @resource.meta)}} />
+    </ContentPanel>
+</div>

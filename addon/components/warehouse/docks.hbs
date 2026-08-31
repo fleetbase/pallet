@@ -1,0 +1,38 @@
+<div class="text-xs" ...attributes {{did-insert (perform this.load)}}>
+    {{#if this.load.isRunning}}
+        <div class="py-2 text-gray-400">{{t "common.loading"}}</div>
+    {{else if this.docks.length}}
+        <table class="w-full text-xs dark:text-gray-100">
+            <thead>
+                <tr class="border-b border-gray-200 text-left whitespace-nowrap text-gray-500 uppercase dark:border-gray-700">
+                    <th class="px-3 py-2 font-medium">{{t "warehouse.fields.dock-number"}}</th>
+                    <th class="px-3 py-2 font-medium">{{t "warehouse.fields.direction"}}</th>
+                    <th class="px-3 py-2 font-medium">{{t "common.type"}}</th>
+                    <th class="px-3 py-2 font-medium">{{t "warehouse.fields.capacity"}}</th>
+                    <th class="px-3 py-2 font-medium">{{t "common.status"}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each this.docks as |dock|}}
+                    <tr class="border-b border-gray-100 dark:border-gray-800">
+                        <td class="px-3 py-2 font-mono">{{n-a dock.dock_number}}</td>
+                        <td class="px-3 py-2">{{smart-humanize (n-a dock.direction)}}</td>
+                        <td class="px-3 py-2">{{smart-humanize (n-a dock.type)}}</td>
+                        {{! `capacity` is a string on this model — displayed verbatim, never
+                            summed or compared. Flagged for migration in DESIGN_DECISIONS §4.2. }}
+                        <td class="px-3 py-2">{{n-a dock.capacity}}</td>
+                        <td class="px-3 py-2">
+                            {{#if dock.status}}
+                                <Badge @status={{dock.status}}>{{smart-humanize dock.status}}</Badge>
+                            {{else}}
+                                <span class="text-gray-400">&ndash;</span>
+                            {{/if}}
+                        </td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    {{else}}
+        <div class="py-1 text-gray-400">{{t "warehouse.empty.no-docks"}}</div>
+    {{/if}}
+</div>

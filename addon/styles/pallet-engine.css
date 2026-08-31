@@ -1,0 +1,1131 @@
+/**
+ * ember-ui gives .next-content-overlay-panel-body `min-height: 100%`, and the
+ * panel is a plain block, so in a panel that also has an Overlay::Footer the body
+ * alone claims the full height and the footer spills past the bottom. Measured on
+ * the fulfil sheet: panel 884px, header 57 + body 884 + footer 66 = 1007, so the
+ * primary action sat at y=1014 in a 941px viewport — off-screen.
+ *
+ * Overlay::Footer renders a bare {{yield}} with no class of its own, so there is
+ * nothing to select on; the two panels that have one opt in via @overlayClass.
+ */
+.pallet-overlay-has-footer .next-content-overlay-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+/* matches ember-ui's own four-class chain, or min-height: 100% wins */
+.next-content-overlay.pallet-overlay-has-footer > .next-content-overlay-panel-container > .next-content-overlay-panel .next-content-overlay-panel-body {
+    min-height: 0;
+    flex: 1 1 auto;
+}
+
+/**
+ * The same shape as the rule above, for the panels that have no footer.
+ *
+ * With @fullHeight, ember-ui gives BOTH the panel and its body `height: 100%`.
+ * The panel is a plain block, so the body starts below the header and then runs
+ * a full panel-height further down: measured on the product panel, panel 57-941
+ * but body 105-989, so the last 48px sat below the window and the bottom panel
+ * could not be scrolled to at all. Every Pallet resource panel opts in with
+ * class="pallet-overlay-fill", which lands on .next-content-overlay-panel via
+ * Overlay's ...attributes.
+ */
+.next-content-overlay.full-height > .next-content-overlay-panel-container > .next-content-overlay-panel.pallet-overlay-fill {
+    display: flex;
+    flex-direction: column;
+}
+
+/* one class deeper than ember-ui's own chain, or its height: 100% wins */
+.next-content-overlay.full-height > .next-content-overlay-panel-container > .next-content-overlay-panel.pallet-overlay-fill .next-content-overlay-panel-body {
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+}
+
+.next-content-overlay.full-height
+    > .next-content-overlay-panel-container
+    > .next-content-overlay-panel.pallet-overlay-fill
+    .next-content-overlay-panel-body
+    .next-content-overlay-panel-body-inner-wrapper {
+    min-height: 0;
+    max-height: none;
+}
+
+/**
+ * ember-ui reserves room for the floating pagination bar with
+ * `.next-table-wrapper table > tbody:after { height: 153px }`. The selector is
+ * `table > tbody`, so it also lands on a sub-table nested inside an expanded
+ * row: the pick sheet and the count sheet each rendered 153px of empty space
+ * below a single item. Only the outer table needs the spacer.
+ */
+.next-table-wrapper table.sub-table > tbody::after {
+    height: 0;
+}
+
+/**
+ * Group heading inside a detail or form panel.
+ *
+ * ember-ui's .field-name is already 11px uppercase semibold, so the FleetOps
+ * habit of setting a group heading with the same recipe makes the heading
+ * indistinguishable from the labels under it. This one is heavier, darker and
+ * ruled off, so the grouping actually reads as a level above the fields.
+ */
+.pallet-field-group-heading {
+    margin: 1rem 0 0.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 0.25rem;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #111827;
+}
+
+.pallet-field-group-heading:first-child {
+    margin-top: 0;
+}
+
+[data-theme='dark'] .pallet-field-group-heading,
+body[data-theme='dark'] .pallet-field-group-heading {
+    border-bottom-color: #1f2937;
+    color: #e5e7eb;
+}
+
+.pallet-dashboard-page {
+    display: flex;
+    flex: 0 0 auto;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    background-color: #fff;
+    padding: 1rem;
+    box-shadow: 0 1px 2px rgb(15 23 42 / 6%);
+}
+
+[data-theme='dark'] .pallet-dashboard-page,
+.dark .pallet-dashboard-page,
+body[data-theme='dark'] .pallet-dashboard-page {
+    border-bottom-color: #1f2937;
+    background-color: #111827;
+    box-shadow: 0 1px 2px rgb(2 6 23 / 30%);
+}
+
+.pallet-dashboard-page + * {
+    min-height: 0;
+}
+
+.pallet-dashboard-page button,
+.pallet-dashboard-page .btn,
+.pallet-dashboard-page select,
+.pallet-dashboard-page .form-input,
+.pallet-dashboard-page .ember-power-select-trigger {
+    min-height: 30px;
+}
+
+.pallet-dashboard-page .dashboard-title,
+.pallet-dashboard-page .dashboard-header,
+.pallet-dashboard-page .dashboard-header-left,
+.pallet-dashboard-page .dashboard-header-right,
+.pallet-dashboard-page .dashboard-actions {
+    min-width: 0;
+}
+
+.pallet-dashboard-title {
+    min-width: 0;
+}
+
+.pallet-dashboard-title h1 {
+    margin: 0;
+    color: #111827;
+    font-size: 1.05rem;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.pallet-dashboard-page h1,
+.pallet-dashboard-page .dashboard-title h1 {
+    margin: 0;
+}
+
+[data-theme='dark'] .pallet-dashboard-title h1,
+.dark .pallet-dashboard-title h1,
+body[data-theme='dark'] .pallet-dashboard-title h1 {
+    color: #f9fafb;
+}
+
+.pallet-dashboard-actions {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.pallet-dashboard-create-wrapper {
+    min-height: 0;
+    padding: 1rem;
+    background-color: #f8fafc;
+}
+
+.pallet-dashboard-create-wrapper,
+.pallet-dashboard-create-wrapper > *,
+.pallet-dashboard-create-wrapper .grid-stack,
+.pallet-dashboard-create-wrapper .grid-stack-item,
+.pallet-dashboard-create-wrapper .grid-stack-item-content {
+    min-width: 0;
+}
+
+[data-theme='dark'] .pallet-dashboard-create-wrapper,
+.dark .pallet-dashboard-create-wrapper,
+body[data-theme='dark'] .pallet-dashboard-create-wrapper {
+    background-color: #0f172a;
+}
+
+.pallet-dashboard-create-wrapper .grid-stack {
+    min-height: 0;
+}
+
+.pallet-dashboard-create-wrapper .grid-stack-item-content {
+    overflow: hidden !important;
+    border-radius: 0.375rem;
+}
+
+.pallet-dashboard-create-wrapper .grid-stack-item {
+    min-height: 0;
+}
+
+.pallet-dashboard-create-wrapper .dashboard-widget,
+.pallet-dashboard-create-wrapper .dashboard-widget-component,
+.pallet-dashboard-create-wrapper .widget-component,
+.pallet-dashboard-create-wrapper .grid-stack-item-content > div {
+    height: 100%;
+    min-height: 0;
+}
+
+.pallet-dashboard-widget {
+    min-width: 0;
+    min-height: 0;
+    color: #334155;
+    border-color: #e5e7eb;
+    background-color: #fff;
+    animation: pallet-widget-fade-up 320ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    transition:
+        border-color 160ms ease,
+        box-shadow 160ms ease,
+        transform 160ms ease;
+}
+
+.pallet-dashboard-widget,
+.pallet-dashboard-widget * {
+    box-sizing: border-box;
+}
+
+.pallet-dashboard-widget:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 10px 28px -22px rgb(15 23 42 / 45%);
+}
+
+[data-theme='dark'] .pallet-dashboard-widget,
+.dark .pallet-dashboard-widget,
+body[data-theme='dark'] .pallet-dashboard-widget {
+    color: #e5e7eb;
+    border-color: #374151;
+    background-color: #1f2937;
+    box-shadow: 0 14px 30px -24px rgb(0 0 0 / 70%);
+}
+
+.pallet-dashboard-widget > * {
+    min-width: 0;
+}
+
+.pallet-dashboard-widget .table-wrapper,
+.pallet-dashboard-widget table {
+    min-width: 0;
+}
+
+.pallet-dashboard-widget > .flex,
+.pallet-dashboard-widget > .overflow-y-auto,
+.pallet-dashboard-widget > .space-y-2,
+.pallet-dashboard-widget > .space-y-3 {
+    min-height: 0;
+    min-width: 0;
+}
+
+.pallet-dashboard-widget > .overflow-y-auto,
+.pallet-dashboard-widget .overflow-y-auto {
+    overflow-x: hidden;
+    scrollbar-width: thin;
+}
+
+.pallet-dashboard-widget table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.pallet-dashboard-widget thead {
+    box-shadow: 0 1px 0 #e5e7eb;
+}
+
+.pallet-dashboard-widget tbody tr {
+    transition: background-color 120ms ease;
+}
+
+.pallet-dashboard-widget tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.dark .pallet-dashboard-widget thead,
+[data-theme='dark'] .pallet-dashboard-widget thead,
+body[data-theme='dark'] .pallet-dashboard-widget thead {
+    box-shadow: 0 1px 0 #374151;
+}
+
+.dark .pallet-dashboard-widget tbody tr:hover,
+[data-theme='dark'] .pallet-dashboard-widget tbody tr:hover,
+body[data-theme='dark'] .pallet-dashboard-widget tbody tr:hover {
+    background-color: #111827;
+}
+
+@keyframes pallet-widget-fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* The tile surface stays the neutral card the rest of the console uses — see
+   ember-ui's stat-widget. Accent colour is kept, but only on the icon, where it
+   carries the meaning (red for low stock, amber for expiring) without giving
+   eight tiles eight competing backgrounds. */
+
+.pallet-kpi-tile:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px -12px rgb(15 23 42 / 35%);
+}
+
+.pallet-kpi-title {
+    overflow: hidden;
+    color: #64748b;
+    font-size: 0.625rem;
+    font-weight: 800;
+    line-height: 1.15;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+[data-theme='dark'] .pallet-kpi-title,
+.dark .pallet-kpi-title,
+body[data-theme='dark'] .pallet-kpi-title {
+    color: #9ca3af;
+}
+
+.pallet-kpi-value {
+    overflow: hidden;
+    color: #111827;
+    font-size: 1.55rem;
+    font-weight: 800;
+    line-height: 1.05;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+[data-theme='dark'] .pallet-kpi-value,
+.dark .pallet-kpi-value,
+body[data-theme='dark'] .pallet-kpi-value {
+    color: #f9fafb;
+}
+
+.pallet-kpi-icon {
+    display: flex;
+    width: 2rem;
+    height: 2rem;
+    flex: 0 0 2rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.45rem;
+    color: #2563eb;
+    background-color: rgb(37 99 235 / 10%);
+}
+
+.pallet-kpi-footer {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    color: #64748b;
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.pallet-kpi-footer .truncate {
+    display: -webkit-box;
+    overflow: hidden;
+    white-space: normal;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+[data-theme='dark'] .pallet-kpi-footer,
+.dark .pallet-kpi-footer,
+body[data-theme='dark'] .pallet-kpi-footer {
+    color: #9ca3af;
+}
+
+.pallet-kpi-accent-blue .pallet-kpi-icon {
+    color: #2563eb;
+    background-color: rgb(37 99 235 / 12%);
+}
+
+.pallet-kpi-accent-green .pallet-kpi-icon,
+.pallet-kpi-accent-emerald .pallet-kpi-icon {
+    color: #059669;
+    background-color: rgb(16 185 129 / 12%);
+}
+
+.pallet-kpi-accent-amber .pallet-kpi-icon,
+.pallet-kpi-accent-orange .pallet-kpi-icon {
+    color: #d97706;
+    background-color: rgb(245 158 11 / 14%);
+}
+
+.pallet-kpi-accent-red .pallet-kpi-icon {
+    color: #e11d48;
+    background-color: rgb(244 63 94 / 12%);
+}
+
+.pallet-kpi-accent-indigo .pallet-kpi-icon,
+.pallet-kpi-accent-purple .pallet-kpi-icon {
+    color: #4f46e5;
+    background-color: rgb(99 102 241 / 12%);
+}
+
+[data-theme='dark'] .pallet-kpi-icon,
+.dark .pallet-kpi-icon,
+body[data-theme='dark'] .pallet-kpi-icon {
+    color: #bfdbfe;
+    background-color: rgb(59 130 246 / 18%);
+}
+
+/**
+ * The two rules above paint every KPI icon the same blue in dark mode, and they
+ * are declared after the accent rules, so all eight tiles collapsed to blue —
+ * the accents only ever showed in light mode, which is not the mode the console
+ * runs in. These carry the accent through; the extra class puts them ahead of
+ * the blanket rules on specificity rather than source order.
+ */
+[data-theme='dark'] .pallet-kpi-accent-blue .pallet-kpi-icon {
+    color: #93c5fd;
+    background-color: rgb(59 130 246 / 18%);
+}
+
+[data-theme='dark'] .pallet-kpi-accent-green .pallet-kpi-icon,
+[data-theme='dark'] .pallet-kpi-accent-emerald .pallet-kpi-icon {
+    color: #6ee7b7;
+    background-color: rgb(16 185 129 / 18%);
+}
+
+[data-theme='dark'] .pallet-kpi-accent-amber .pallet-kpi-icon,
+[data-theme='dark'] .pallet-kpi-accent-orange .pallet-kpi-icon {
+    color: #fcd34d;
+    background-color: rgb(245 158 11 / 18%);
+}
+
+[data-theme='dark'] .pallet-kpi-accent-red .pallet-kpi-icon {
+    color: #fda4af;
+    background-color: rgb(244 63 94 / 18%);
+}
+
+[data-theme='dark'] .pallet-kpi-accent-indigo .pallet-kpi-icon,
+[data-theme='dark'] .pallet-kpi-accent-purple .pallet-kpi-icon {
+    color: #a5b4fc;
+    background-color: rgb(99 102 241 / 18%);
+}
+
+.pallet-widget-header {
+    display: flex;
+    min-height: 3.25rem;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0.75rem;
+}
+
+/* stylelint-disable selector-class-pattern -- .svg-inline--fa is FontAwesome's own
+   generated class name. It is not ours to rename. */
+.pallet-widget-header .text-gray-400,
+.pallet-widget-header .svg-inline--fa {
+    color: #94a3b8;
+}
+/* stylelint-enable selector-class-pattern */
+
+/* stylelint-disable selector-class-pattern -- .svg-inline--fa is FontAwesome's own
+   generated class name. It is not ours to rename. */
+.pallet-widget-header svg,
+.pallet-widget-header .svg-inline--fa {
+    flex: 0 0 auto;
+}
+/* stylelint-enable selector-class-pattern */
+
+[data-theme='dark'] .pallet-widget-header,
+.dark .pallet-widget-header,
+body[data-theme='dark'] .pallet-widget-header {
+    border-bottom-color: #374151;
+}
+
+/* stylelint-disable selector-class-pattern -- .svg-inline--fa is FontAwesome's own
+   generated class name. It is not ours to rename. */
+[data-theme='dark'] .pallet-widget-header .text-gray-400,
+[data-theme='dark'] .pallet-widget-header .svg-inline--fa,
+.dark .pallet-widget-header .text-gray-400,
+.dark .pallet-widget-header .svg-inline--fa,
+body[data-theme='dark'] .pallet-widget-header .text-gray-400,
+body[data-theme='dark'] .pallet-widget-header .svg-inline--fa {
+    color: #64748b;
+}
+/* stylelint-enable selector-class-pattern */
+
+/* stylelint-disable-next-line no-descending-specificity -- ranked below
+   `.pallet-dashboard-create-wrapper .grid-stack-item-content > div`, which shares the
+   bare `div` key selector but belongs to another component and sets height, not this.
+   Nothing here can override it; hoisting this rule 300 lines to satisfy source order
+   would split the component's own block apart. */
+.pallet-widget-header > div {
+    min-width: 0;
+}
+
+.pallet-widget-title {
+    overflow: hidden;
+    color: #111827;
+    font-size: 0.82rem;
+    font-weight: 800;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+[data-theme='dark'] .pallet-widget-title,
+.dark .pallet-widget-title,
+body[data-theme='dark'] .pallet-widget-title {
+    color: #f9fafb;
+}
+
+.pallet-widget-subtitle {
+    margin-top: 0.15rem;
+    overflow: hidden;
+    color: #6b7280;
+    font-size: 0.69rem;
+    line-height: 1.25;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+[data-theme='dark'] .pallet-widget-subtitle,
+.dark .pallet-widget-subtitle,
+body[data-theme='dark'] .pallet-widget-subtitle {
+    color: #9ca3af;
+}
+
+/**
+ * Five of the eight dashboard widgets hold more rows than fit, and the last
+ * visible row was cut clean in half at the panel edge — which reads as a
+ * rendering fault rather than as "scroll for more". Fading the final few pixels
+ * makes the cut deliberate. The thin scrollbar is easy to miss on a trackpad,
+ * where it only appears mid-scroll.
+ */
+.pallet-widget-scroll-body {
+    display: flex;
+    min-height: 0;
+    min-width: 0;
+    flex: 1 1 auto;
+    flex-direction: column;
+    padding: 0.85rem;
+    overflow: hidden auto;
+    scrollbar-width: thin;
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 14px), transparent 100%);
+}
+
+.pallet-widget-scroll-body::-webkit-scrollbar {
+    width: 0.45rem;
+}
+
+.pallet-widget-scroll-body::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background-color: #cbd5e1;
+}
+
+[data-theme='dark'] .pallet-widget-scroll-body::-webkit-scrollbar-thumb,
+.dark .pallet-widget-scroll-body::-webkit-scrollbar-thumb,
+body[data-theme='dark'] .pallet-widget-scroll-body::-webkit-scrollbar-thumb {
+    background-color: #475569;
+}
+
+.pallet-widget-empty {
+    display: flex;
+    min-height: 6rem;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    color: #9ca3af;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.pallet-widget-scroll-body .space-y-3,
+.pallet-widget-scroll-body .space-y-2 {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    min-height: 0;
+}
+
+.pallet-widget-scroll-body .space-y-3 > *,
+.pallet-widget-scroll-body .space-y-2 > * {
+    margin-top: 0 !important;
+}
+
+.pallet-widget-scroll-body .rounded-md {
+    min-width: 0;
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 60%);
+}
+
+.pallet-widget-scroll-body .rounded-md,
+.pallet-widget-scroll-body .border {
+    border-color: #e5e7eb;
+    background-color: #f8fafc;
+}
+
+.pallet-widget-scroll-body .text-sm {
+    font-size: 0.78rem;
+    line-height: 1.25;
+}
+
+.pallet-widget-scroll-body .text-xs {
+    font-size: 0.69rem;
+    line-height: 1.2;
+}
+
+.pallet-widget-scroll-body .divide-y > * {
+    min-width: 0;
+}
+
+.pallet-movement-chart {
+    display: flex;
+    min-height: 5rem;
+    align-items: end;
+    gap: 0.25rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+
+    /* longhand form: clean-css v3 (ember-engines css pipeline) cannot parse
+       multi-layer background shorthand with position/size */
+    background-image: linear-gradient(to top, rgb(148 163 184 / 12%) 1px, transparent 1px);
+    background-position: 0 0;
+    background-size: 100% 33.333%;
+    background-color: #f8fafc;
+    padding: 0.65rem;
+}
+
+.pallet-movement-bar {
+    display: flex;
+    height: 100%;
+    min-width: 0;
+    flex: 1 1 0;
+    align-items: end;
+}
+
+.pallet-movement-bar span {
+    display: block;
+    width: 100%;
+    min-height: 0.35rem;
+    border-radius: 999px 999px 0.25rem 0.25rem;
+    background: linear-gradient(180deg, #38bdf8 0%, #2563eb 100%);
+}
+
+.pallet-storefront-inventory {
+    min-width: 0;
+}
+
+.pallet-storefront-inventory .field-info-container {
+    min-width: 0;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    background-color: #f8fafc;
+    padding: 0.65rem 0.75rem;
+}
+
+.pallet-storefront-inventory .field-value {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.pallet-storefront-inventory table {
+    min-width: 42rem;
+}
+
+.pallet-storefront-inventory-variant-input {
+    min-height: 1.875rem;
+    font-size: 0.75rem;
+}
+
+.pallet-product-metric-cell,
+.pallet-product-price-cell {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+}
+
+.pallet-product-metric-cell-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.35rem;
+}
+
+.pallet-product-metric-cell-grid span {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    background: #f8fafc;
+    padding: 0.35rem 0.45rem;
+    color: #64748b;
+    line-height: 1.15;
+}
+
+.pallet-product-metric-cell-grid strong {
+    color: #111827;
+    font-size: 0.85rem;
+    font-weight: 800;
+}
+
+.pallet-product-metric-cell-note,
+.pallet-product-price-cell-secondary,
+.pallet-product-price-cell-value {
+    color: #64748b;
+    font-size: 0.7rem;
+    line-height: 1.25;
+}
+
+.pallet-product-price-cell-primary {
+    color: #111827;
+    font-weight: 800;
+}
+
+.pallet-product-price-cell-secondary {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.pallet-product-media-dropzone {
+    display: flex;
+    min-height: 7.5rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: 1px dashed #cbd5e1;
+    border-radius: 0.375rem;
+    background: #f8fafc;
+    padding: 0.75rem;
+    color: #64748b;
+    text-align: center;
+}
+
+.pallet-product-detail-media-strip img,
+.pallet-product-panel-header-identity img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.pallet-product-media-dropzone > svg {
+    color: #94a3b8;
+    font-size: 1rem;
+}
+
+.pallet-product-upload-queue,
+.pallet-product-image-strip,
+.pallet-product-detail-media-strip {
+    display: grid;
+    min-width: 0;
+    gap: 0.75rem;
+}
+
+.pallet-product-upload-queue {
+    margin-top: 0.5rem;
+}
+
+/* stylelint-disable-next-line no-descending-specificity -- ranked below
+   `.pallet-dashboard-create-wrapper .grid-stack-item-content > div`, which shares the
+   bare `div` key selector but belongs to another component and sets height, not this.
+   Nothing here can override it; hoisting this rule 300 lines to satisfy source order
+   would split the component's own block apart. */
+.pallet-product-upload-queue div {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #bbf7d0;
+    border-radius: 0.375rem;
+    background: #f0fdf4;
+    color: #166534;
+    padding: 0.3rem 0.45rem;
+}
+
+.pallet-product-image-strip,
+.pallet-product-detail-media-strip {
+    grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+    margin-top: 0.5rem;
+}
+
+.pallet-product-detail-media-strip img {
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    border-radius: 0.375rem;
+}
+
+.pallet-product-variant-table {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 0.5rem;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.45rem;
+    background: #fff;
+}
+
+.pallet-product-variant-row {
+    display: grid;
+    grid-template-columns: minmax(11rem, 1.4fr) minmax(9rem, 1fr) minmax(7rem, 0.8fr) minmax(7rem, 0.8fr) minmax(4rem, auto);
+    gap: 0.5rem;
+    align-items: center;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0.45rem 0.6rem;
+    font-size: 0.75rem;
+}
+
+.pallet-product-variant-row:last-child {
+    border-bottom: 0;
+}
+
+.pallet-product-variant-row-header {
+    background: #f8fafc;
+    color: #64748b;
+    font-size: 0.68rem;
+    font-weight: 800;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+    text-transform: uppercase;
+}
+
+.pallet-product-variant-row span,
+.pallet-product-variant-row strong,
+.pallet-product-variant-row small {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pallet-product-variant-row strong {
+    color: #111827;
+    font-weight: 800;
+}
+
+.pallet-product-variant-row small {
+    display: block;
+    color: #64748b;
+}
+
+.pallet-product-variant-actions,
+.pallet-product-variant-editor-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.35rem;
+}
+
+.pallet-product-variant-editor {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.5rem;
+    border: 1px solid #dbeafe;
+    border-radius: 0.45rem;
+    background: #eff6ff;
+    padding: 0.6rem;
+}
+
+.pallet-product-panel-header {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.pallet-product-panel-header-identity {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.pallet-product-panel-header-identity img {
+    width: 3rem;
+    height: 3rem;
+    flex: 0 0 auto;
+    border-radius: 0.375rem;
+}
+
+.pallet-product-panel-header-title {
+    max-width: 28rem;
+    overflow: hidden;
+    color: #111827;
+    font-size: 1rem;
+    font-weight: 800;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pallet-product-panel-header-meta,
+.pallet-product-panel-header-badges {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+
+.pallet-product-panel-header-meta {
+    color: #64748b;
+    font-size: 0.72rem;
+}
+
+[data-theme='dark'] .pallet-product-media-dropzone,
+.dark .pallet-product-media-dropzone,
+[data-theme='dark'] .pallet-product-metric-cell-grid span,
+body[data-theme='dark'] .pallet-product-media-dropzone,
+.dark .pallet-product-metric-cell-grid span,
+body[data-theme='dark'] .pallet-product-metric-cell-grid span {
+    border-color: #374151;
+    background-color: #111827;
+}
+
+[data-theme='dark'] .pallet-product-price-cell-primary,
+[data-theme='dark'] .pallet-product-panel-header-title,
+.dark .pallet-product-price-cell-primary,
+.dark .pallet-product-panel-header-title,
+[data-theme='dark'] .pallet-product-metric-cell-grid strong,
+[data-theme='dark'] .pallet-product-variant-row strong,
+body[data-theme='dark'] .pallet-product-price-cell-primary,
+body[data-theme='dark'] .pallet-product-panel-header-title,
+.dark .pallet-product-metric-cell-grid strong,
+.dark .pallet-product-variant-row strong,
+body[data-theme='dark'] .pallet-product-metric-cell-grid strong,
+body[data-theme='dark'] .pallet-product-variant-row strong {
+    color: #f9fafb;
+}
+
+[data-theme='dark'] .pallet-product-metric-cell-note,
+[data-theme='dark'] .pallet-product-price-cell-secondary,
+[data-theme='dark'] .pallet-product-price-cell-value,
+[data-theme='dark'] .pallet-product-panel-header-meta,
+.dark .pallet-product-metric-cell-note,
+.dark .pallet-product-price-cell-secondary,
+.dark .pallet-product-price-cell-value,
+.dark .pallet-product-panel-header-meta,
+[data-theme='dark'] .pallet-product-variant-row small,
+body[data-theme='dark'] .pallet-product-metric-cell-note,
+body[data-theme='dark'] .pallet-product-price-cell-secondary,
+body[data-theme='dark'] .pallet-product-price-cell-value,
+body[data-theme='dark'] .pallet-product-panel-header-meta,
+.dark .pallet-product-variant-row small,
+body[data-theme='dark'] .pallet-product-variant-row small {
+    color: #9ca3af;
+}
+
+[data-theme='dark'] .pallet-product-variant-row,
+.dark .pallet-product-variant-row,
+body[data-theme='dark'] .pallet-product-variant-row {
+    border-color: #374151;
+}
+
+[data-theme='dark'] .pallet-product-variant-row-header,
+.dark .pallet-product-variant-row-header,
+body[data-theme='dark'] .pallet-product-variant-row-header {
+    border-color: #374151;
+    background: #0f172a;
+}
+
+[data-theme='dark'] .pallet-product-variant-table,
+.dark .pallet-product-variant-table,
+body[data-theme='dark'] .pallet-product-variant-table {
+    border-color: #374151;
+    background: #111827;
+}
+
+[data-theme='dark'] .pallet-product-variant-editor,
+.dark .pallet-product-variant-editor,
+body[data-theme='dark'] .pallet-product-variant-editor {
+    border-color: #1e3a8a;
+    background: rgb(30 58 138 / 22%);
+}
+
+[data-theme='dark'] .pallet-storefront-inventory .field-info-container,
+.dark .pallet-storefront-inventory .field-info-container,
+body[data-theme='dark'] .pallet-storefront-inventory .field-info-container {
+    border-color: #374151;
+    background-color: #111827;
+}
+
+[data-theme='dark'] .pallet-widget-scroll-body .border-gray-100,
+.dark .pallet-widget-scroll-body .border-gray-100 {
+    border-color: #374151;
+}
+
+.dark .pallet-widget-scroll-body .rounded-md,
+.dark .pallet-widget-scroll-body .border,
+.dark .pallet-widget-scroll-body .border-gray-100,
+body[data-theme='dark'] .pallet-widget-scroll-body .rounded-md,
+body[data-theme='dark'] .pallet-widget-scroll-body .border,
+body[data-theme='dark'] .pallet-widget-scroll-body .border-gray-100 {
+    border-color: #374151;
+    background-color: #111827;
+}
+
+[data-theme='dark'] .pallet-movement-chart,
+.dark .pallet-movement-chart,
+body[data-theme='dark'] .pallet-movement-chart {
+    border-color: #374151;
+    background-image: linear-gradient(to top, rgb(148 163 184 / 10%) 1px, transparent 1px);
+    background-position: 0 0;
+    background-size: 100% 33.333%;
+    background-color: #111827;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pallet-dashboard-widget,
+    .pallet-kpi-tile,
+    .pallet-widget-empty {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    .pallet-dashboard-widget:hover,
+    .pallet-kpi-tile:hover {
+        transform: none !important;
+    }
+}
+
+@media (width <= 1024px) {
+    .pallet-product-variant-editor {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .pallet-product-variant-row {
+        grid-template-columns: minmax(10rem, 1.2fr) minmax(8rem, 1fr) minmax(7rem, 0.8fr) minmax(4rem, auto);
+    }
+
+    .pallet-product-variant-row > span:nth-child(4) {
+        display: none;
+    }
+}
+
+@media (width <= 640px) {
+    .pallet-dashboard-page {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 0.85rem;
+    }
+
+    .pallet-dashboard-actions {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .pallet-kpi-value {
+        font-size: 1.35rem;
+    }
+
+    .pallet-dashboard-create-wrapper {
+        padding: 0.75rem;
+    }
+
+    .pallet-product-variant-editor {
+        grid-template-columns: 1fr;
+    }
+
+    .pallet-product-variant-row {
+        grid-template-columns: 1fr;
+        gap: 0.35rem;
+    }
+
+    .pallet-product-variant-row-header {
+        display: none;
+    }
+
+    .pallet-product-panel-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .pallet-product-panel-header-title {
+        max-width: 16rem;
+    }
+}
+
+/*
+ * Pin the row-action column to the right edge of every Pallet list.
+ *
+ * The tables size their columns to content, so a warehouse named "Singapore
+ * Distribution Center" is 209px whatever the column declares. Across the module that
+ * pushed nine lists past their container — warehouses by 663px, stock adjustments by
+ * 787px — and the column that fell off the edge was always the last one, which is the
+ * row-action menu. The list still scrolled, but the only control on the row was out of
+ * reach until you scrolled sideways to find it.
+ *
+ * Four lists were fixed by trimming declared widths. That works and it does not hold:
+ * the declared width is a floor, so one longer supplier name puts the menu back off the
+ * edge. Pinning the column fixes every list at once and survives any content.
+ *
+ * Scoped to `console-pallet-*`, the per-route class the console puts on <main>. Pallet's
+ * stylesheet is bundled into the host app rather than namespaced, so an unscoped
+ * `.next-table-wrapper` rule here would restyle Fleet-Ops and Storefront tables too.
+ *
+ * No background is declared: these cells already carry their own opaque one, so the
+ * scrolled content does not show through, and inventing a colour here would be a second
+ * source of truth for it.
+ *
+ * Matched on `.overflow-visible`, which is the class every one of the module's sixteen
+ * dropdown columns sets, rather than on last-child alone. A list without row actions —
+ * stock adjustments is the one — ends in an ordinary data column, and pinning that
+ * floated the date over the reason text beside it. The rule should pin a control, not
+ * whatever happens to be last.
+ *
+ * The header is deliberately not pinned with it: `th` carries no such class, and a
+ * header cell pinned while its column's body cells are not would drift out of line.
+ */
+main[class*='console-pallet-'] .next-table-wrapper tbody td.overflow-visible:last-child {
+    position: sticky;
+    right: 0;
+    z-index: 2;
+}

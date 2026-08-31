@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import { task } from 'ember-concurrency';
 import contextComponentCallback from '@fleetbase/ember-core/utils/context-component-callback';
 import applyContextComponentArguments from '@fleetbase/ember-core/utils/apply-context-component-arguments';
 
@@ -38,12 +39,6 @@ export default class SupplierFormPanelComponent extends Component {
     @tracked context;
 
     /**
-     * Indicates whether the component is in a loading state.
-     * @type {boolean}
-     */
-    @tracked isLoading = false;
-
-    /**
      * Fuel Report status
      * @type {Array}
      */
@@ -56,6 +51,15 @@ export default class SupplierFormPanelComponent extends Component {
         super(...arguments);
         this.supplier = this.args.supplier;
         applyContextComponentArguments(this);
+    }
+
+    getRecordUuid(record) {
+        return record?.uuid ?? record?.id;
+    }
+
+    @action setPlace(place) {
+        this.supplier.place = place;
+        this.supplier.place_uuid = this.getRecordUuid(place);
     }
 
     /**
@@ -75,31 +79,21 @@ export default class SupplierFormPanelComponent extends Component {
      * @action
      * @returns {Promise<any>}
      */
-    @action save() {
+    @task *saveTask() {
         const { supplier } = this;
 
         this.loader.showLoader('.next-content-overlay-panel-container', { loadingMessage: 'Saving supplier...', preserveTargetPosition: true });
-        this.isLoading = true;
-
         contextComponentCallback(this, 'onBeforeSave', supplier);
 
         try {
-            return supplier
-                .save()
-                .then((supplier) => {
-                    this.notifications.success(`Supplier saved successfully.`);
-                    contextComponentCallback(this, 'onAfterSave', supplier);
-                })
-                .catch((error) => {
-                    this.notifications.serverError(error);
-                })
-                .finally(() => {
-                    this.loader.removeLoader('.next-content-overlay-panel-container ');
-                    this.isLoading = false;
-                });
+            const savedSupplier = yield supplier.save();
+            this.notifications.success(`Supplier saved successfully.`);
+            contextComponentCallback(this, 'onAfterSave', savedSupplier);
+            return savedSupplier;
         } catch (error) {
+            this.notifications.serverError(error);
+        } finally {
             this.loader.removeLoader('.next-content-overlay-panel-container ');
-            this.isLoading = false;
         }
     }
 

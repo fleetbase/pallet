@@ -1,0 +1,66 @@
+{{!
+    Was a ContentPanel wrapping a raw <table>: 65px rows of px-4 py-3, one line
+    per pick list so a wave with six of them was a six-line row, the literal words
+    "No actions" in the last column, and no search, sorting, pagination, column
+    picker or bulk select. Same conversion as operations/transfers.
+
+    The screen's description used to be passed as a block to
+    Layout::Section::Header, whose only yield sits inside the actions wormhole —
+    so a sentence of prose was rendering where the buttons go. Dropped, as on
+    transfers; FleetOps resource lists do not carry one.
+}}
+<Layout::Resource::Tabular
+    @title={{t "operations.waves.title"}}
+    @searchQuery={{this.query}}
+    @onSearch={{perform this.search}}
+    @data={{@model}}
+    @columns={{this.columns}}
+    @page={{this.page}}
+    @onPageChange={{fn (mut this.page)}}
+    @setupTable={{fn (mut this.table)}}
+    @controller={{this}}
+    @onPressNew={{this.startCreatingWave}}
+/>
+
+{{#if this.isCreatingWave}}
+    <Overlay @position="right" @noBackdrop={{true}} @fullHeight={{true}} @isResizable={{true}} @width="720px">
+        <Overlay::Header @title={{t "operations.waves.create"}} @hideStatusDot={{true}}>
+            <:actions>
+                <Button @icon="check" @type="primary" @text={{t "common.create"}} @onClick={{this.createWave}} @wrapperClass="mr-2" />
+                <Button @type="default" @icon="times" @helpText={{t "common.cancel"}} @onClick={{this.cancelCreatingWave}} />
+            </:actions>
+        </Overlay::Header>
+
+        <Overlay::Body @wrapperClass="px-4 pt-4" @increaseInnerBodyHeightBy={{700}}>
+            <div class="grid grid-cols-1 gap-2 text-xs lg:grid-cols-2 no-input-group-padding">
+                <InputGroup @name={{t "operations.common.warehouse"}}>
+                    <ModelSelect
+                        @modelName="warehouse"
+                        @selectedModel={{this.newWave.warehouse}}
+                        @placeholder={{t "operations.common.warehouse"}}
+                        @triggerClass="form-select form-input"
+                        @infiniteScroll={{false}}
+                        @renderInPlace={{true}}
+                        @onChange={{this.setWaveWarehouse}}
+                        as |model|
+                    >
+                        {{n-a (or model.name model.address)}}
+                    </ModelSelect>
+                </InputGroup>
+
+                <InputGroup @name={{t "operations.common.type"}}>
+                    <Select class="w-full form-input form-select" @options={{this.waveTypes}} @value={{this.newWave.type}} @onSelect={{this.setType}} @humanize={{true}} />
+                </InputGroup>
+
+                <InputGroup @name={{t "operations.common.priority"}}>
+                    <Input @value={{this.newWave.priority}} @type="number" class="w-full form-input" />
+                </InputGroup>
+
+                <InputGroup @name={{t "operations.common.scheduled"}}>
+                    <Input @value={{this.newWave.scheduled_at}} @type="datetime-local" class="w-full form-input" />
+                </InputGroup>
+
+            </div>
+        </Overlay::Body>
+    </Overlay>
+{{/if}}

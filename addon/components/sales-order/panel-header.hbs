@@ -1,0 +1,22 @@
+<div class="flex flex-row items-center justify-between" ...attributes>
+    <div class="flex flex-col">
+        <div class="text-lg font-semibold">{{@resource.order_number}}</div>
+        <div class="text-xs text-gray-600 dark:text-gray-400">
+            {{t "sales-order.fields.customer"}}: {{n-a (or @resource.customer.name @resource.customer_reference_code)}}
+        </div>
+    </div>
+    <div class="flex flex-row items-center space-x-2">
+        <Badge @status={{@resource.status}}>{{smart-humanize @resource.status}}</Badge>
+        <Layout::Resource::Panel::HeaderActions
+            @resource={{@resource}}
+            @modelName={{@modelName}}
+            @saveTask={{@saveTask}}
+            @saveOptions={{@saveOptions}}
+            @saveDisabled={{@saveDisabled}}
+            @pojoResource={{@pojoResource}}
+            @authSchema={{@authSchema}}
+            @actionButtons={{@actionButtons}}
+            @onPressCancel={{@onPressCancel}}
+        />
+    </div>
+</div>

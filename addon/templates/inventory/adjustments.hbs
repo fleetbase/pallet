@@ -1,0 +1,21 @@
+{{!
+    Was a ContentPanel wrapping a raw <table>: px-4 py-3 cells, nine columns all
+    always visible, and no search, sorting, pagination or column picker. The New
+    Adjustment button was passed as a block to Layout::Section::Header alongside a
+    sentence of description — that block renders inside the actions wormhole, so
+    the description was sitting where the buttons go. The button is a proper
+    @onPressNew now and the description is gone, as on the other lists.
+}}
+<Layout::Resource::Tabular
+    @title={{t "inventory.screens.adjustments-list"}}
+    @searchQuery={{this.query}}
+    @onSearch={{perform this.search}}
+    @data={{@model}}
+    @columns={{this.columns}}
+    @page={{this.page}}
+    @onPageChange={{fn (mut this.page)}}
+    @setupTable={{fn (mut this.table)}}
+    @controller={{this}}
+    @onPressNew={{this.createAdjustment}}
+/>
+{{outlet}}

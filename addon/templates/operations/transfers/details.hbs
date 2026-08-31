@@ -1,0 +1,35 @@
+{{!
+    A stock transfer is a document, same shape as the two order documents — SCREENS.md
+    section F: "Detail is a document view".
+
+    Buttons go in Layout::Section::Header's block; the component has no @actionButtons
+    argument, so passing one renders nothing.
+
+    Two more things about that component, both found by measuring rather than reading:
+
+    1. The status pill is @badge, NOT @status. All three documents passed @status, which
+       the component ignores, so none of them had ever shown a status pill.
+    2. No @subtitle. The subheader is `grid-template-columns: 1fr 3fr`, so the title
+       column is a fixed quarter of the width whatever it contains — 243px here. A
+       destination warehouse name wrapped the transfer number onto two lines inside it
+       while three quarters of the header sat empty. The same fact is one panel below
+       under ROUTE. Dropping it was still not enough — the badge takes a further 110px
+       of that quarter — so the title is nowrap and allowed to run into the actions
+       column, which is right-aligned and empty next to it.
+}}
+<Layout::Container>
+    <Layout::Section>
+        <Layout::Section::Header @title={{@model.transfer_number}} @badge={{@model.status}} @titleClass="whitespace-nowrap" @badgeClass="whitespace-nowrap">
+            {{#each this.actionButtons as |button|}}
+                <Button @icon={{button.icon}} @type={{or button.type "default"}} @text={{button.text}} @onClick={{button.fn}} @wrapperClass="ml-2" />
+            {{/each}}
+            <Button @icon="list" @type="default" @text={{t "operations.transfers.back-to-list"}} @onClick={{transition-to "operations.transfers.index"}} @wrapperClass="ml-2" />
+        </Layout::Section::Header>
+
+        <Layout::Section::Body>
+            <div class="space-y-3 p-4">
+                {{outlet}}
+            </div>
+        </Layout::Section::Body>
+    </Layout::Section>
+</Layout::Container>

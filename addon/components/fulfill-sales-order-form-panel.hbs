@@ -1,0 +1,159 @@
+<Overlay @position="right" @noBackdrop={{true}} @fullHeight={{true}} @isResizable={{true}} @width="1100px" @overlayClass="pallet-overlay-has-footer">
+    <Overlay::Header @title={{t "sales-order.fulfill.title"}} @status={{or this.salesOrder.order_number this.salesOrder.public_id}} @hideStatusDot={{true}} @disableBadgeHumanize={{true}} @createdAt={{this.salesOrder.createdAt}}>
+        <:actions>
+            <Button @type="default" @icon="times" @helpText="Close" @onClick={{this.onPressCancel}} />
+
+        </:actions>
+    </Overlay::Header>
+
+    {{!
+        No @increaseInnerBodyHeightBy here. It inflates the body's inner wrapper by
+        that many pixels, and these two panels are the only ones in the module that
+        pair it with an Overlay::Footer — so the primary action sat at y=1014 in a
+        941px viewport, below the fold, with 450px of empty space above it.
+    }}
+    <Overlay::Body>
+        <div class="p-4 space-y-4">
+
+            {{! SO Summary }}
+            <ContentPanel @title="Order Summary" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-900">
+                <div class="grid grid-cols-3 gap-3 text-xs dark:text-gray-100">
+                    <div class="field-info-container">
+                        <div class="field-name">{{t "sales-order.fulfill.so-number"}}</div>
+                        <div class="field-value font-medium">{{n-a this.salesOrder.order_number}}</div>
+                    </div>
+                    <div class="field-info-container">
+                        <div class="field-name">Customer Ref</div>
+                        <div class="field-value">{{n-a this.salesOrder.customer_reference_code}}</div>
+                    </div>
+                    <div class="field-info-container">
+                        <div class="field-name">Status</div>
+                        <div class="field-value"><Badge @status={{this.salesOrder.status}} /></div>
+                    </div>
+                    <div class="field-info-container">
+                        <div class="field-name">Reference</div>
+                        <div class="field-value">{{n-a this.salesOrder.reference_code}}</div>
+                    </div>
+                    <div class="field-info-container">
+                        <div class="field-name">Expected Delivery</div>
+                        <div class="field-value">{{n-a this.salesOrder.expected_delivery_at}}</div>
+                    </div>
+                    <div class="field-info-container">
+                        <div class="field-name">Total Items</div>
+                        <div class="field-value">{{this.salesOrder.item_count}}</div>
+                    </div>
+                </div>
+                <div class="mt-3 p-2 bg-blue-50 dark:bg-blue-900/20 rounded text-xs text-blue-700 dark:text-blue-300">
+                    <FaIcon @icon="info-circle" class="mr-1" />
+                    Inventory will be deducted using
+                    <strong>FEFO</strong>
+                    (First Expired, First Out) unless a specific inventory record is selected.
+                </div>
+            </ContentPanel>
+
+            {{! Fulfill Items }}
+            <ContentPanel @title="Fulfill Items" @open={{true}} @pad={{false}} @panelBodyClass="bg-white dark:bg-gray-900">
+                {{#if this.hasNoFulfillableItems}}
+                    <div class="p-6 text-center text-gray-400 dark:text-gray-500 text-sm">
+                        <FaIcon @icon="check-circle" class="text-green-500 text-2xl mb-2" />
+                        <p>All items on this sales order have already been fulfilled.</p>
+                    </div>
+                {{else}}
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full text-xs">
+                            <thead class="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                                <tr>
+                                    <th class="px-3 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Product</th>
+                                    <th class="px-3 py-2 text-right font-medium text-gray-500 dark:text-gray-400">Ordered</th>
+                                    <th class="px-3 py-2 text-right font-medium text-gray-500 dark:text-gray-400">Fulfilled</th>
+                                    <th class="px-3 py-2 text-right font-medium text-gray-500 dark:text-gray-400">Outstanding</th>
+                                    <th class="px-3 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Inventory</th>
+                                    <th class="px-3 py-2 text-right font-medium text-gray-500 dark:text-gray-400 w-24">Fulfill Now</th>
+                                    <th class="px-3 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Notes</th>
+                                    <th class="px-3 py-2 text-center font-medium text-gray-500 dark:text-gray-400">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+                                {{#each this.fulfillableItems as |item|}}
+                                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                                        <td class="px-3 py-2 font-medium text-gray-800 dark:text-gray-100">
+                                            {{n-a item.product.name}}
+                                            {{#if item.variant}}
+                                                <span class="block text-gray-500 font-normal">{{n-a (or item.variant.display_name item.variant.name)}}</span>
+                                            {{/if}}
+                                            {{#if item.sku}}
+                                                <span class="block text-gray-400 font-normal">{{item.sku}}</span>
+                                            {{/if}}
+                                        </td>
+                                        <td class="px-3 py-2 text-right text-gray-600 dark:text-gray-300">
+                                            {{item.quantity}}
+                                        </td>
+                                        <td class="px-3 py-2 text-right text-gray-600 dark:text-gray-300">
+                                            {{item.quantity_fulfilled}}
+                                        </td>
+                                        <td class="px-3 py-2 text-right font-medium text-orange-600 dark:text-orange-400">
+                                            {{item.outstanding_quantity}}
+                                        </td>
+                                        <td class="px-3 py-2 min-w-48">
+                                            <ModelSelect
+                                                @modelName="inventory"
+                                                @selectedModel={{(get (this.getFulfillmentEntry item) "inventory")}}
+                                                @placeholder="FEFO default"
+                                                @triggerClass="form-select form-input text-xs"
+                                                @infiniteScroll={{false}}
+                                                @renderInPlace={{true}}
+                                                @onChange={{fn this.setFulfillmentInventory item}}
+                                                as |inventory|
+                                            >
+                                                {{n-a inventory.lot_number inventory.serial_number inventory.public_id}}
+                                            </ModelSelect>
+                                        </td>
+                                        <td class="px-3 py-2">
+                                            <Input
+                                                @type="number"
+                                                @value={{(get (this.getFulfillmentEntry item) "quantity_fulfilled")}}
+                                                min="0"
+                                                max={{item.outstanding_quantity}}
+                                                class="form-input w-full text-xs text-right"
+                                                placeholder="0"
+                                                {{on "input" (fn this.updateFulfillmentField item "quantity_fulfilled")}}
+                                            />
+                                        </td>
+                                        <td class="px-3 py-2">
+                                            <Input
+                                                @value={{(get (this.getFulfillmentEntry item) "notes")}}
+                                                class="form-input w-full text-xs"
+                                                placeholder="Notes..."
+                                                {{on "input" (fn this.updateFulfillmentField item "notes")}}
+                                            />
+                                        </td>
+                                        <td class="px-3 py-2 text-center">
+                                            <Badge @status={{item.status}} />
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                {{/if}}
+            </ContentPanel>
+
+        </div>
+    </Overlay::Body>
+
+    <Overlay::Footer>
+        <div class="flex items-center justify-end gap-2 p-4">
+            <Button @type="default" @text="Cancel" @onClick={{this.onPressCancel}} />
+            {{#unless this.hasNoFulfillableItems}}
+                <Button
+                    @type="primary"
+                    @icon="box-open"
+                    @text="Fulfill Order"
+                    @isLoading={{this.fulfillOrder.isRunning}}
+                    @disabled={{this.fulfillOrder.isRunning}}
+                    @onClick={{perform this.fulfillOrder}}
+                />
+            {{/unless}}
+        </div>
+    </Overlay::Footer>
+</Overlay>

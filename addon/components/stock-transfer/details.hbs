@@ -1,0 +1,116 @@
+<div class="details-wrapper" ...attributes>
+    <ContentPanel @title={{t "operations.transfers.sections.details"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="text-xs">
+            <div class="pallet-field-group-heading">{{t "inventory.groups.identity"}}</div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "common.id"}}</div>
+                <ClickToCopy @value={{@resource.public_id}} class="field-value font-mono">{{n-a @resource.public_id}}</ClickToCopy>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "operations.transfers.columns.transfer"}}</div>
+                <ClickToCopy @value={{@resource.transfer_number}} class="field-value font-mono">{{n-a @resource.transfer_number}}</ClickToCopy>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "common.status"}}</div>
+                <div class="field-value">
+                    <Badge @status={{@resource.status}}>{{smart-humanize @resource.status}}</Badge>
+                </div>
+            </div>
+            <div class="field-info-container field-vertical-container">
+                <div class="field-name">{{t "common.type"}}</div>
+                <div class="field-value">{{n-a (smart-humanize @resource.type)}}</div>
+            </div>
+
+            <div class="pallet-field-group-heading">{{t "operations.transfers.groups.route"}}</div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "operations.transfers.from-warehouse"}}</div>
+                <div class="field-value">{{n-a @resource.fromWarehouse.name}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "operations.transfers.to-warehouse"}}</div>
+                <div class="field-value">{{n-a @resource.toWarehouse.name}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "operations.transfers.shipped-at"}}</div>
+                <div class="field-value">{{n-a (format-date @resource.shipped_at)}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container{{if @resource.notes ' dashed-bottom'}}">
+                <div class="field-name">{{t "operations.transfers.received-at"}}</div>
+                <div class="field-value">{{n-a (format-date @resource.received_at)}}</div>
+            </div>
+            {{#if @resource.notes}}
+                <div class="field-info-container field-vertical-container">
+                    <div class="field-name">{{t "common.notes"}}</div>
+                    <div class="field-value">{{@resource.notes}}</div>
+                </div>
+            {{/if}}
+        </div>
+    </ContentPanel>
+
+    {{!
+        Section F ties this screen to the IN TRANSIT quantity slot — what has left the
+        source but not arrived is the fact a transfer exists to track, and the list
+        showed only a single total quantity.
+    }}
+    <ContentPanel @title={{t "operations.transfers.sections.movement"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-2 gap-3 text-xs sm:grid-cols-4">
+            <div class="field-info-container">
+                <div class="field-name">{{t "operations.transfers.fields.lines-received"}}</div>
+                <div class="field-value tabular-nums">{{this.movement.linesComplete}}<span class="text-gray-400"> / {{this.movement.lines}}</span></div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "operations.transfers.fields.quantity-sent"}}</div>
+                <div class="field-value tabular-nums">{{format-number this.movement.sent}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "operations.transfers.fields.quantity-received"}}</div>
+                <div class="field-value tabular-nums">{{format-number this.movement.received}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "operations.transfers.fields.quantity-in-transit"}}</div>
+                {{! A bare span: .field-value declares its own colour and outranks the utility class. }}
+                <div class="field-value tabular-nums">
+                    <span class={{if this.movement.inTransit "text-amber-600 dark:text-amber-300"}}>{{format-number this.movement.inTransit}}</span>
+                </div>
+            </div>
+        </div>
+    </ContentPanel>
+
+    <ContentPanel @title={{t "operations.transfers.sections.line-items"}} @open={{true}} @wrapperClass="bordered-top" @panelBodyWrapperClass="px-0i">
+        {{#if @resource.items.length}}
+            <table class="w-full text-xs dark:text-gray-100">
+                <thead>
+                    <tr class="whitespace-nowrap border-b border-gray-200 text-left uppercase text-gray-500 dark:border-gray-700">
+                        <th class="w-2/5 px-3 py-2">{{t "columns.product"}}</th>
+                        <th class="px-3 py-2 text-right">{{t "operations.transfers.fields.quantity-sent"}}</th>
+                        <th class="px-3 py-2 text-right">{{t "columns.received"}}</th>
+                        <th class="px-3 py-2 text-right">{{t "operations.transfers.fields.quantity-in-transit"}}</th>
+                        <th class="px-3 py-2">{{t "operations.transfers.fields.lot"}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each this.lines as |line|}}
+                        <tr class="border-b border-gray-100 dark:border-gray-800">
+                            <td class="px-3 py-2">
+                                <div class="truncate font-medium text-gray-700 dark:text-gray-200">{{n-a line.item.product.name}}</div>
+                                <div class="truncate text-gray-400">{{n-a (or line.item.variant.display_name line.item.product.sku)}}</div>
+                            </td>
+                            <td class="px-3 py-2 text-right tabular-nums">{{format-number line.sent}}</td>
+                            <td class="px-3 py-2 text-right tabular-nums">{{format-number line.received}}</td>
+                            <td class="px-3 py-2 text-right tabular-nums">
+                                <span class={{if line.inTransit "text-amber-600 dark:text-amber-300"}}>{{format-number line.inTransit}}</span>
+                            </td>
+                            <td class="px-3 py-2">{{n-a line.item.lot_number}}</td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        {{else}}
+            <div class="px-3 py-6 text-xs text-gray-500 dark:text-gray-400">{{t "operations.transfers.no-line-items"}}</div>
+        {{/if}}
+    </ContentPanel>
+
+    <ContentPanel @title={{t "common.metadata"}} @open={{false}} @wrapperClass="bordered-top" @panelBodyWrapperClass={{unless (is-object-empty @resource.meta) "px-0i" ""}}>
+        <MetadataViewer @metadata={{@resource.meta}} />
+    </ContentPanel>
+</div>
