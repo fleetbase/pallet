@@ -160,7 +160,7 @@ class Audit extends Model
      *
      * @var array<int, string>
      */
-    protected $appends = ['subject_label'];
+    protected $appends = ['incrementing_id', 'subject_label'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -318,5 +318,15 @@ class Audit extends Model
     public function scopeStockTransfers(Builder $query): Builder
     {
         return $query->where('event_type', AuditEventType::STOCK_TRANSFER);
+    }
+
+    /**
+     * The resource emits this as `id` for internal requests. Neither the column nor an
+     * accessor for it was ever wired up, so that field was null on every row — harmless
+     * only because the Ember serializer keys records on `uuid`.
+     */
+    public function getIncrementingIdAttribute(): ?int
+    {
+        return isset($this->attributes['id']) ? (int) $this->attributes['id'] : null;
     }
 }

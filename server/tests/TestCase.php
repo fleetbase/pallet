@@ -236,6 +236,8 @@ abstract class TestCase extends TestbenchTestCase
                 $table->increments('id');
                 $table->string('uuid', 191)->nullable()->index();
                 $table->string('public_id', 191)->nullable()->index();
+                // File uses HasSlug, so every insert writes a slug.
+                $table->string('slug', 191)->nullable()->index();
                 $table->string('company_uuid', 191)->nullable()->index();
                 $table->string('uploader_uuid', 191)->nullable()->index();
                 $table->string('subject_uuid', 191)->nullable()->index();

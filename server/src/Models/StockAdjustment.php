@@ -129,7 +129,7 @@ class StockAdjustment extends Model
      *
      * @var array<int, string>
      */
-    protected $appends = [];
+    protected $appends = ['incrementing_id'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -225,5 +225,15 @@ class StockAdjustment extends Model
             ])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
+    }
+
+    /**
+     * The resource emits this as `id` for internal requests. Neither the column nor an
+     * accessor for it was ever wired up, so that field was null on every row — harmless
+     * only because the Ember serializer keys records on `uuid`.
+     */
+    public function getIncrementingIdAttribute(): ?int
+    {
+        return isset($this->attributes['id']) ? (int) $this->attributes['id'] : null;
     }
 }

@@ -37,7 +37,6 @@ export default class SalesOrderModel extends Model {
     @attr('string') reference_url;
     @attr('string') description;
     @attr('string') comments;
-    @attr('string') currency;
     @attr('raw') meta;
 
     /** @date */

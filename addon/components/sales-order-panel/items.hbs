@@ -6,8 +6,7 @@
             {{#if this.totalValue}}
                 <span class="font-medium text-gray-700 dark:text-gray-200">
                     Total:
-                    {{@salesOrder.currency}}
-                    {{this.totalValue}}
+                    {{#if this.currency}}{{format-currency this.totalValue this.currency}}{{else}}{{this.totalValue}}{{/if}}
                 </span>
             {{/if}}
         </div>

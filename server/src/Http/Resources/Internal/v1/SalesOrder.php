@@ -46,7 +46,6 @@ class SalesOrder extends FleetbaseResource
             'reference_code'               => $this->reference_code,
             'reference_url'                => $this->reference_url,
             'customer_reference_code'      => $this->customer_reference_code,
-            'currency'                     => $this->currency,
             'meta'                         => $this->meta ?? [],
             'order_date_at'                => $this->order_date_at,
             'expected_delivery_at'         => $this->expected_delivery_at,

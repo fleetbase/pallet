@@ -172,16 +172,48 @@ class Product extends Model
     /**
      * @var array<int, string>
      */
-    protected $appends = ['incrementing_id', 'total_stock', 'available_stock', 'reserved_stock', 'is_out_of_stock', 'variant_count'];
+    protected $appends = ['incrementing_id', 'photo_url', 'total_stock', 'available_stock', 'reserved_stock', 'is_out_of_stock', 'variant_count'];
 
     /**
      * @var array<int, string>
      */
-    protected $with = ['category', 'supplier', 'variants', 'files'];
+    protected $with = ['category', 'supplier', 'variants', 'files', 'photo'];
 
+    /**
+     * `id` is already on the row; this used to re-select it, which cost one query per
+     * product on every list that appends it.
+     */
     public function getIncrementingIdAttribute(): ?int
     {
-        return static::select('id')->where('uuid', $this->uuid)->value('id');
+        return isset($this->attributes['id']) ? (int) $this->attributes['id'] : null;
+    }
+
+    /**
+     * The photo is one of the product's files, singled out by `photo_uuid`.
+     *
+     * Eager-loaded via $with because `photo_url` is appended: without it, appending the
+     * url would lazy-load the file once per product on every catalogue and inventory
+     * list.
+     */
+    public function photo(): BelongsTo
+    {
+        return $this->belongsTo(\Fleetbase\Models\File::class, 'photo_uuid', 'uuid');
+    }
+
+    /**
+     * The console reads `photo_url` in eleven places — the product pill, the panel
+     * header, the details panel, the catalogue list and three inventory lists — and the
+     * upload form sets `photo_uuid` and `photo_url` on the record as soon as a file is
+     * chosen. Nothing on the server ever produced it: `pallet_products` has photo_uuid
+     * and no url column, so a photo appeared the moment it was uploaded and was gone on
+     * the next load.
+     *
+     * Null rather than a placeholder image when there is no photo. Every caller already
+     * supplies its own fallback, and each one differs.
+     */
+    public function getPhotoUrlAttribute(): ?string
+    {
+        return data_get($this, 'photo.url');
     }
 
     public function category(): BelongsTo

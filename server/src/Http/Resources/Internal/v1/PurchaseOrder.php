@@ -42,7 +42,6 @@ class PurchaseOrder extends FleetbaseResource
             'description'                  => $this->description,
             'reference_code'               => $this->reference_code,
             'reference_url'                => $this->reference_url,
-            'customer_reference_code'      => $this->customer_reference_code,
             'currency'                     => $this->currency,
             'meta'                         => $this->meta ?? [],
             'order_date_at'                => $this->order_created_at,

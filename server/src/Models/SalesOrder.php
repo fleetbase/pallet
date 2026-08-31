@@ -325,7 +325,6 @@ class SalesOrder extends Model
                 'status',
                 'reference_code',
                 'description',
-                'currency',
                 'expected_delivery_at',
             ])
             ->logOnlyDirty()

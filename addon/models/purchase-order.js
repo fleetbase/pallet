@@ -30,7 +30,6 @@ export default class PurchaseOrderModel extends Model {
     @attr('number') total_value;
     @attr('string') reference_code;
     @attr('string') reference_url;
-    @attr('string') customer_reference_code;
     @attr('string') description;
     @attr('string') comments;
     @attr('string') currency;

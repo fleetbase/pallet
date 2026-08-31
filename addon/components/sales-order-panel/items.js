@@ -55,6 +55,19 @@ export default class SalesOrderPanelItemsComponent extends Component {
         return this.items.length;
     }
 
+    /**
+     * A sales order has no currency of its own — pallet_sales_orders has no such column,
+     * and the resource used to emit one that was always null, so this summary rendered
+     * its total with an empty currency. The line items each carry their own, so the
+     * total is denominated in whatever the items are.
+     *
+     * Left null when no item declares one: format-currency defaults to USD, and
+     * labelling an unknown currency as dollars is worse than showing a bare number.
+     */
+    get currency() {
+        return this.items.find((item) => item.currency)?.currency ?? null;
+    }
+
     get totalValue() {
         const total = this.items.reduce((sum, item) => sum + Number(item.quantity ?? 0) * Number(item.unit_price ?? 0), 0);
 
