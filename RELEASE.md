@@ -5,9 +5,9 @@
 
 RELEASE_NOTES_PLACEHOLDER
 
-Describe what changed in this release. The first line above must name the version
-being released, and both placeholder markers must be gone, or the release workflow
-refuses to tag.
+Describe what changed in this release. The first line above must name the version being
+released, and both placeholder markers must be gone, or the release workflow refuses to
+tag.
 
 ---
 ## Need help?
