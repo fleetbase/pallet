@@ -1,0 +1,12 @@
+<Layout::Resource::Panel
+    class="pallet-overlay-fill"
+    @resource={{this.supplier}}
+    @controller={{this}}
+    @headerTitle="Create a new supplier"
+    @saveTask={{this.save}}
+    @onPressCancel={{this.cancel}}
+    @onOverlayReady={{fn (mut this.overlay)}}
+>
+    <Supplier::Form @resource={{this.supplier}} @controller={{this}} />
+    <Spacer @height="200px" />
+</Layout::Resource::Panel>

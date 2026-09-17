@@ -1,0 +1,196 @@
+<div class="form-wrapper" ...attributes>
+    {{!
+        Restructured to mirror inventory/details.hbs so the edit view and the read
+        view have the same shape. Previously this was four panels, all open, with
+        unit cost and unit-of-measure filed under "Location" and the stock figures
+        mixed in with the product selector.
+    }}
+    <ContentPanel @title={{t "inventory.sections.details"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 text-xs no-input-group-padding">
+            <div class="pallet-field-group-heading col-span-1 lg:col-span-2">{{t "inventory.groups.identity"}}</div>
+            <InputGroup @name={{t "inventory.fields.product"}} @wrapperClass="col-span-1 lg:col-span-2">
+                <ModelSelect
+                    @modelName="pallet-product"
+                    @selectedModel={{@resource.product}}
+                    @placeholder={{t "inventory.fields.select-product"}}
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{this.setProduct}}
+                    @disabled={{cannot-write @resource}}
+                    as |model|
+                >
+                    {{model.name}}
+                </ModelSelect>
+            </InputGroup>
+
+            {{#if @resource.product.has_variants}}
+                <InputGroup @name={{t "inventory.fields.variant"}} @wrapperClass="col-span-1 lg:col-span-2">
+                    <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                        <PowerSelect
+                            @options={{@resource.product.variants}}
+                            @selected={{find-by "uuid" @resource.variant_uuid @resource.product.variants}}
+                            @onChange={{this.setVariant}}
+                            @placeholder={{t "inventory.fields.select-variant"}}
+                            @triggerClass="form-select form-input"
+                            @disabled={{cannot-write @resource}}
+                            as |variant|
+                        >
+                            {{n-a (or variant.display_name variant.name)}}
+                            {{#if variant.sku}}
+                                <span class="text-gray-400">({{variant.sku}})</span>
+                            {{/if}}
+                        </PowerSelect>
+                    </div>
+                </InputGroup>
+            {{/if}}
+
+            <InputGroup @name={{t "inventory.fields.supplier"}}>
+                <ModelSelect
+                    @modelName="supplier"
+                    @selectedModel={{@resource.supplier}}
+                    @placeholder={{t "inventory.fields.select-supplier"}}
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{this.setSupplier}}
+                    @disabled={{cannot-write @resource}}
+                    as |model|
+                >
+                    {{model.name}}
+                </ModelSelect>
+            </InputGroup>
+
+            <InputGroup @name={{t "common.status"}}>
+                <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                    <PowerSelect
+                        @options={{this.statusOptions}}
+                        @selected={{find-by "value" @resource.status this.statusOptions}}
+                        @onChange={{set-model-attr @resource "status"}}
+                        @placeholder={{t "common.select-status"}}
+                        @triggerClass="form-select form-input"
+                        @disabled={{cannot-write @resource}}
+                        as |option|
+                    >
+                        {{option.label}}
+                    </PowerSelect>
+                </div>
+            </InputGroup>
+
+            <div class="pallet-field-group-heading col-span-1 lg:col-span-2">{{t "inventory.sections.location"}}</div>
+            <InputGroup @name={{t "inventory.fields.warehouse"}}>
+                <ModelSelect
+                    @modelName="warehouse"
+                    @selectedModel={{@resource.warehouse}}
+                    @placeholder={{t "inventory.fields.select-warehouse"}}
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{this.setWarehouse}}
+                    @disabled={{cannot-write @resource}}
+                    as |model|
+                >
+                    {{n-a (or model.name model.address)}}
+                </ModelSelect>
+            </InputGroup>
+
+            <InputGroup @name={{t "inventory.fields.zone"}}>
+                <ModelSelect
+                    @modelName="warehouse-zone"
+                    @selectedModel={{@resource.zone}}
+                    @placeholder={{t "inventory.fields.select-zone"}}
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{this.setZone}}
+                    @disabled={{cannot-write @resource}}
+                    as |model|
+                >
+                    {{model.name}}
+                </ModelSelect>
+            </InputGroup>
+
+            <InputGroup @name={{t "inventory.fields.bin-location"}}>
+                <ModelSelect
+                    @modelName="bin-location"
+                    @selectedModel={{@resource.binLocation}}
+                    @placeholder={{t "inventory.fields.select-bin"}}
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{this.setBinLocation}}
+                    @disabled={{cannot-write @resource}}
+                    as |model|
+                >
+                    {{model.bin_number}}
+                </ModelSelect>
+            </InputGroup>
+        </div>
+    </ContentPanel>
+
+    <ContentPanel @title={{t "inventory.sections.stock"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 text-xs no-input-group-padding">
+            <div class="pallet-field-group-heading col-span-1 lg:col-span-2">{{t "inventory.groups.on-hand"}}</div>
+            <InputGroup @name={{t "inventory.fields.quantity"}}>
+                <Input @value={{@resource.quantity}} @type="number" class="w-full form-input" placeholder={{t "inventory.fields.quantity"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+
+            <InputGroup @name={{t "inventory.fields.uom"}}>
+                <Input @value={{@resource.uom}} @type="text" class="w-full form-input" placeholder={{t "inventory.fields.uom"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+
+            <div class="pallet-field-group-heading col-span-1 lg:col-span-2">{{t "inventory.groups.thresholds"}}</div>
+            <InputGroup @name={{t "inventory.fields.min-quantity"}}>
+                <Input @value={{@resource.min_quantity}} @type="number" class="w-full form-input" placeholder={{t "inventory.fields.min-quantity"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+
+            <InputGroup @name={{t "inventory.fields.max-quantity"}}>
+                <Input @value={{@resource.max_quantity}} @type="number" class="w-full form-input" placeholder={{t "inventory.fields.max-quantity"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+
+            <InputGroup @name={{t "inventory.fields.reorder-point"}}>
+                <Input @value={{@resource.reorder_point}} @type="number" class="w-full form-input" placeholder={{t "inventory.fields.reorder-point"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+
+            <div class="pallet-field-group-heading col-span-1 lg:col-span-2">{{t "inventory.groups.valuation"}}</div>
+            <InputGroup @name={{t "inventory.fields.unit-cost"}}>
+                <MoneyInput
+                    class="w-full"
+                    @value={{@resource.unit_cost}}
+                    @currency={{@resource.currency}}
+                    @canSelectCurrency={{true}}
+                    @onCurrencyChange={{fn (mut @resource.currency)}}
+                    disabled={{cannot-write @resource}}
+                />
+            </InputGroup>
+        </div>
+    </ContentPanel>
+
+    <ContentPanel @title={{t "inventory.sections.tracking"}} @open={{false}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 text-xs no-input-group-padding">
+            <div class="pallet-field-group-heading col-span-1 lg:col-span-2">{{t "inventory.groups.identifiers"}}</div>
+            <InputGroup @name={{t "inventory.fields.batch-number"}}>
+                <Input @value={{@resource.batch.batch_number}} @type="text" class="w-full form-input" placeholder={{t "inventory.fields.batch-number"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+
+            <InputGroup @name={{t "inventory.fields.lot-number"}}>
+                <Input @value={{@resource.lot_number}} @type="text" class="w-full form-input" placeholder={{t "inventory.fields.lot-number"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+
+            <InputGroup @name={{t "inventory.fields.serial-number"}}>
+                <Input @value={{@resource.serial_number}} @type="text" class="w-full form-input" placeholder={{t "inventory.fields.serial-number"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+
+            <div class="pallet-field-group-heading col-span-1 lg:col-span-2">{{t "inventory.groups.dates"}}</div>
+            <InputGroup @name={{t "inventory.fields.expiry-date"}}>
+                <input value={{@resource.expiryDate}} type="date" class="form-input w-full" {{on "change" this.setExpiryDate}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+        </div>
+    </ContentPanel>
+
+    <CustomField::Yield @subject={{@resource}} @wrapperClass="bordered-top" />
+
+    <ContentPanel @title={{t "common.metadata"}} @open={{false}} @wrapperClass="bordered-top">
+        <MetadataEditor @value={{@resource.meta}} @onChange={{fn (mut @resource.meta)}} />
+    </ContentPanel>
+</div>

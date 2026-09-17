@@ -1,11 +1,15 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
+import { action, get } from '@ember/object';
+import { getOwner } from '@ember/application';
+import relatedRecordLabel from '../../utils/related-record-label';
+import placeholderImage from '../../utils/placeholder-image';
 import { isBlank } from '@ember/utils';
 import { task, timeout } from 'ember-concurrency';
 
 export default class InventoryIndexController extends Controller {
+    @service intl;
     /**
      * Inject the `notifications` service
      *
@@ -119,50 +123,143 @@ export default class InventoryIndexController extends Controller {
     @tracked product;
 
     /**
+     * Products routinely have no photo, and an <img> with no src draws the
+     * browser's broken-image glyph in every row.
+     */
+    get placeholderImage() {
+        return placeholderImage(getOwner(this));
+    }
+
+    /**
      * All columns applicable for orders
      *
      * @var {Array}
      */
     @tracked columns = [
         {
-            label: 'Product',
+            // ember-ui's shared identity cell: one truncated line plus up to three
+            // meta chips, on a 20px avatar. The bespoke cell/product-info it replaces
+            // stacked a title, a meta line, a description and three badges, which made
+            // every row ~109px tall and fitted five on a screen.
+            label: this.intl.t('columns.product'),
             valuePath: 'product.name',
+            // an inventory row keeps its product_uuid when the product is deleted;
+            // say so rather than rendering a nameless row
+            labelValue: (row) =>
+                relatedRecordLabel(row, {
+                    uuidPath: 'product_uuid',
+                    relationPath: 'product',
+                    missingLabel: this.intl.t('inventory.product-unavailable'),
+                }),
+            identifierPath: 'product.sku',
+            // resolved per row rather than by path: the placeholder comes from the
+            // host config, which is not readable while the class fields initialise
+            mediaUrl: (row) => get(row, 'product.photo_url') || this.placeholderImage,
+            metaPaths: [{ path: 'batch.batch_number', style: 'badge' }],
+            imageSizeClass: 'h-5 w-5',
+            showStatusDot: false,
+            cellComponent: 'table/cell/resource-identity',
             action: this.viewInventory,
-            width: '170px',
-            cellComponent: 'cell/product-info',
-            modelPath: 'product',
+            width: '240px',
             resizable: true,
             sortable: true,
             filterable: true,
+            filterParam: 'product',
             filterComponent: 'filter/string',
         },
         {
-            label: 'Product SKU',
-            valuePath: 'product.sku',
-            cellComponent: 'click-to-copy',
+            // the list showed two identical "Steel Shelving Bracket" rows holding 46
+            // and 18 units with nothing to tell them apart — stock is meaningless
+            // without the place it is held
+            label: this.intl.t('operations.common.warehouse'),
+            valuePath: 'warehouse.name',
+            cellComponent: 'table/cell/base',
+            width: '180px',
+            resizable: true,
+            sortable: false,
+            filterable: false,
+        },
+        {
+            // Stock is held in a bin, not a building. The relation has always been
+            // loaded on this request (with[]=binLocation) and never surfaced, so the
+            // list could say which warehouse but not where inside it.
+            label: this.intl.t('inventory.fields.bin-location'),
+            valuePath: 'binLocation.bin_number',
+            cellComponent: 'table/cell/base',
             width: '120px',
             resizable: true,
-            sortable: true,
-            filterable: true,
-            filterComponent: 'filter/string',
+            sortable: false,
+            filterable: false,
         },
         {
-            label: 'Quantity',
+            // SCREENS.md §D, must-never: never show `quantity` unlabelled. It is the
+            // on-hand figure, and a warehouse reads "Quantity" as whichever slot it
+            // happens to care about — the column has to say which one it is.
+            label: this.intl.t('inventory.fields.on-hand'),
             valuePath: 'quantity',
-            width: '120px',
-        },
-        {
-            label: 'Batch',
-            valuePath: 'batch.batch_number',
-            width: '120px',
-            cellComponent: 'click-to-copy',
+            cellComponent: 'cell/count',
+            width: '90px',
             resizable: true,
             sortable: true,
-            filterable: true,
-            filterComponent: 'filter/string',
         },
         {
-            label: 'Status',
+            label: this.intl.t('inventory.fields.reserved'),
+            valuePath: 'reserved_quantity',
+            cellComponent: 'cell/count',
+            width: '90px',
+            resizable: true,
+            sortable: false,
+        },
+        {
+            label: this.intl.t('inventory.fields.available'),
+            valuePath: 'available_quantity',
+            cellComponent: 'cell/count',
+            width: '90px',
+            resizable: true,
+            sortable: false,
+        },
+        {
+            // The three slots that complete the set. On-hand alone answers "what is on
+            // the shelf"; these answer "can I promise it". Hidden by default because
+            // most warehouses run without transfers or open POs, and an all-zero column
+            // is noise — the column picker surfaces them where they earn their place.
+            label: this.intl.t('inventory.fields.in-transit'),
+            valuePath: 'in_transit',
+            cellComponent: 'cell/count',
+            width: '90px',
+            resizable: true,
+            sortable: false,
+            hidden: true,
+        },
+        {
+            label: this.intl.t('inventory.fields.on-order'),
+            valuePath: 'on_order',
+            cellComponent: 'cell/count',
+            width: '90px',
+            resizable: true,
+            sortable: false,
+            hidden: true,
+        },
+        {
+            label: this.intl.t('inventory.fields.quarantined'),
+            valuePath: 'quarantined',
+            cellComponent: 'cell/count',
+            width: '90px',
+            resizable: true,
+            sortable: false,
+            hidden: true,
+        },
+        {
+            label: this.intl.t('inventory.fields.min-quantity'),
+            valuePath: 'min_quantity',
+            cellComponent: 'cell/count',
+            width: '90px',
+            resizable: true,
+            sortable: false,
+            hidden: true,
+        },
+        {
+            label: this.intl.t('common.status'),
             valuePath: 'status',
             cellComponent: 'table/cell/status',
             width: '10%',
@@ -172,7 +269,7 @@ export default class InventoryIndexController extends Controller {
             filterComponent: 'filter/multi-option',
         },
         {
-            label: 'Last Stocked',
+            label: this.intl.t('columns.last-stocked'),
             valuePath: 'createdAt',
             sortParam: 'created_at',
             width: '10%',
@@ -182,7 +279,7 @@ export default class InventoryIndexController extends Controller {
             filterComponent: 'filter/date',
         },
         {
-            label: 'Expiry Date',
+            label: this.intl.t('columns.expiry-date'),
             valuePath: 'expiryDate',
             sortParam: 'expiry_date_at',
             width: '10%',
@@ -192,7 +289,7 @@ export default class InventoryIndexController extends Controller {
             filterComponent: 'filter/date',
         },
         {
-            label: 'Updated At',
+            label: this.intl.t('common.updated-at'),
             valuePath: 'updatedAt',
             sortParam: 'updated_at',
             width: '10%',
@@ -214,11 +311,11 @@ export default class InventoryIndexController extends Controller {
             width: '10%',
             actions: [
                 {
-                    label: 'View Inventory',
+                    label: this.intl.t('actions.view-inventory'),
                     fn: this.viewInventory,
                 },
                 {
-                    label: 'Edit Inventory',
+                    label: this.intl.t('actions.edit-inventory'),
                     fn: this.editInventory,
                 },
             ],
@@ -254,6 +351,40 @@ export default class InventoryIndexController extends Controller {
     }
 
     /**
+     * Toolbar buttons for the inventory table.
+     *
+     * @var {Array}
+     */
+    get actionButtons() {
+        return [
+            {
+                icon: 'refresh',
+                onClick: () => this.hostRouter.refresh(),
+                helpText: this.intl.t('common.refresh'),
+            },
+            {
+                text: this.intl.t('common.new'),
+                type: 'primary',
+                icon: 'plus',
+                onClick: this.createInventory,
+            },
+            {
+                text: this.intl.t('inventory.screens.new-adjustment'),
+                icon: 'sliders',
+                wrapperClass: 'hidden md:flex',
+                onClick: this.makeStockAdjustment,
+            },
+            {
+                text: this.intl.t('common.export'),
+                icon: 'long-arrow-up',
+                iconClass: 'rotate-icon-45',
+                wrapperClass: 'hidden md:flex',
+                onClick: this.exportProcuts,
+            },
+        ];
+    }
+
+    /**
      * Toggles dialog to export `inventory`
      *
      * @void
@@ -270,7 +401,7 @@ export default class InventoryIndexController extends Controller {
      * @void
      */
     @action viewInventory(inventory) {
-        return this.transitionToRoute('inventory.index.details', inventory.public_id);
+        return this.hostRouter.transitionTo('console.pallet.inventory.index.details', inventory.public_id);
     }
 
     /**
@@ -280,11 +411,11 @@ export default class InventoryIndexController extends Controller {
      * @void
      */
     @action createInventory() {
-        return this.transitionToRoute('inventory.index.new');
+        return this.hostRouter.transitionTo('console.pallet.inventory.index.new');
     }
 
     @action makeStockAdjustment() {
-        return this.transitionToRoute('inventory.index.new-stock-adjustment');
+        return this.hostRouter.transitionTo('console.pallet.inventory.index.new-stock-adjustment');
     }
 
     /**
@@ -295,6 +426,6 @@ export default class InventoryIndexController extends Controller {
      * @void
      */
     @action async editInventory(inventory) {
-        return this.transitionToRoute('inventory.index.edit', inventory);
+        return this.hostRouter.transitionTo('console.pallet.inventory.index.edit', inventory);
     }
 }

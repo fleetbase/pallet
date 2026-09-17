@@ -1,0 +1,47 @@
+<div class="pallet-dashboard-widget flex h-full min-h-0 flex-col overflow-hidden rounded-md border bg-white shadow-sm dark:bg-gray-800" ...attributes>
+    <div class="pallet-widget-header">
+        <div>
+            <div class="pallet-widget-title">{{t "widgets.titles.low-stock-alerts"}}</div>
+            <div class="pallet-widget-subtitle">Items at or below their minimum stock threshold</div>
+        </div>
+        <FaIcon @icon="triangle-exclamation" class="text-gray-400" />
+    </div>
+
+    {{#if this.error}}
+        <div class="pallet-widget-empty">{{this.error}}</div>
+    {{else if this.loadLowStock.isRunning}}
+        <div class="pallet-widget-empty"><Spinner /></div>
+    {{else if (eq this.items.length 0)}}
+        <div class="pallet-widget-empty">
+            <div>
+                <FaIcon @icon="check-circle" class="mb-2 text-2xl text-green-400" />
+                <div>{{t "widgets.empty.healthy"}}</div>
+            </div>
+        </div>
+    {{else}}
+        <div class="pallet-widget-scroll-body p-0">
+            <table class="w-full text-xs">
+                <thead class="sticky top-0 z-10 bg-white dark:bg-gray-900">
+                    <tr class="border-b border-gray-100 text-gray-500 dark:border-gray-700 dark:text-gray-400">
+                        <th class="px-3 py-2 text-left font-medium">{{t "widgets.labels.product"}}</th>
+                        <th class="px-3 py-2 text-left font-medium">{{t "widgets.labels.sku"}}</th>
+                        <th class="px-3 py-2 text-right font-medium">{{t "widgets.labels.in-stock"}}</th>
+                        <th class="px-3 py-2 text-right font-medium">{{t "widgets.labels.min"}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each this.items as |item|}}
+                        <tr class="border-b border-gray-50 hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-gray-800/50">
+                            <td class="max-w-[120px] truncate px-3 py-2 font-medium text-gray-800 dark:text-gray-100">{{n-a item.name}}</td>
+                            <td class="px-3 py-2 text-gray-500 dark:text-gray-400">{{n-a item.sku}}</td>
+                            <td class="px-3 py-2 text-right">
+                                <span class="font-semibold {{if (eq item.quantity 0) 'text-red-600' 'text-orange-500'}}">{{item.quantity}}</span>
+                            </td>
+                            <td class="px-3 py-2 text-right text-gray-500 dark:text-gray-400">{{item.min_stock}}</td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    {{/if}}
+</div>

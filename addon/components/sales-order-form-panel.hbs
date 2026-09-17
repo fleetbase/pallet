@@ -3,7 +3,7 @@
     @position="right"
     @noBackdrop={{true}}
     @fullHeight={{true}}
-    @isResizeable={{or this.isResizable @isResizable}}
+    @isResizable={{or this.isResizable @isResizable}}
     @width={{or this.width @width "600px"}}
 >
     <Overlay::Header
@@ -13,49 +13,64 @@
         @createdAt={{this.salesOrder.createdAt}}
         @titleWrapperClass="leading-5"
     >
-        <div class="flex flex-1 justify-end">
+        <:actions>
             <Button
                 @icon={{if this.salesOrder.id "save" "check"}}
                 @type="primary"
                 @text={{if this.salesOrder.id "Save Sales Order" "Create Sales Order"}}
-                @onClick={{this.save}}
+                @onClick={{perform this.saveTask}}
                 @wrapperClass="mr-2"
+                @isLoading={{this.saveTask.isRunning}}
+                @disabled={{this.saveTask.isRunning}}
             />
             {{#if this.salesOrder.id}}
                 <Button @type="default" @icon="file-invoice" @helpText="View sales order details" @onClick={{this.onViewDetails}} @wrapperClass="mr-2" />
             {{/if}}
             <Button @type="default" @icon="times" @helpText={{if this.salesOrder.id "Cancel edit sales order" "Cancel new sales order"}} @onClick={{this.onPressCancel}} />
-        </div>
+        </:actions>
     </Overlay::Header>
 
     <Overlay::Body @wrapperClass="new-service-rate-overlay-body px-4 space-y-4 pt-4" @increaseInnerBodyHeightBy={{1000}}>
-        <div class="grid grid-cols-1 text-xs dark:text-gray-100">
-            <InputGroup @name="Supplier">
+        <div class="grid grid-cols-1 gap-2 text-xs dark:text-gray-100">
+            <InputGroup @name="Customer">
                 <ModelSelect
-                    @modelName="vendor"
-                    @selectedModel={{this.salesOrder.supplier}}
-                    @placeholder="Select Supplier"
+                    @modelName="contact"
+                    @selectedModel={{this.salesOrder.customer}}
+                    @placeholder="Select customer"
                     @triggerClass="form-select form-input"
                     @infiniteScroll={{false}}
                     @renderInPlace={{true}}
-                    @onChange={{fn (mut this.salesOrder.supplier)}}
-                    @onChangeId={{fn (mut this.salesOrder.supplier_uuid)}}
+                    @onChange={{this.setCustomer}}
                     as |model|
                 >
                     {{model.name}}
                 </ModelSelect>
             </InputGroup>
-            <InputGroup @name="Status">
+            <InputGroup @name="Warehouse">
+                <ModelSelect
+                    @modelName="warehouse"
+                    @selectedModel={{this.salesOrder.warehouse}}
+                    @placeholder="Select fulfillment warehouse"
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{this.setWarehouse}}
+                    as |model|
+                >
+                    {{model.name}}
+                </ModelSelect>
+            </InputGroup>
+            <InputGroup @name={{t "common.status"}}>
                 <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
                     <PowerSelect
                         @options={{this.statusOptions}}
                         @selected={{this.salesOrder.status}}
                         @onChange={{fn (mut this.salesOrder.status)}}
-                        @placeholder="Select sales order status"
+                        @placeholder={{t "common.select-status"}}
                         @triggerClass="form-select form-input"
                         as |status|
                     >
-                        {{smart-humanize status}}
+                        {{t (concat "status." status)}}
                     </PowerSelect>
                 </div>
             </InputGroup>

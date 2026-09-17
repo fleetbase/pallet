@@ -2,22 +2,68 @@
 
 namespace Fleetbase\Pallet\Http\Filter;
 
-use Fleetbase\Http\Filter\Filter;
 use Fleetbase\Pallet\Support\Utils;
-use Illuminate\Support\Facades\DB;
 
-
-class InventoryFilter extends Filter
+class InventoryFilter extends PalletFilter
 {
+    /**
+     * The Low Stock and Expired Stock screens run over the summarized listing, so
+     * they filter on the aggregate aliases from Inventory::scopeSummarizeByProduct.
+     *
+     * Low stock previously read `total_quantity < minimum_quantity`, which
+     * disagreed with the dashboard KPI it is reached from — that counts
+     * `min_quantity > 0 AND available_quantity <= min_quantity` and describes
+     * itself as "At or below minimum". Anything sitting exactly at its reorder
+     * point was counted on the dashboard and then missing from this screen, and
+     * reserved stock was ignored entirely. The `minimum_quantity > 0` guard
+     * matters once the comparison is inclusive: without it every product with no
+     * reorder point set and no stock would report as low.
+     */
     public function view(?string $view): void
     {
         if ($view === 'low_stock') {
-            $this->builder->havingRaw('total_quantity < minimum_quantity');
+            $this->builder->havingRaw('minimum_quantity > 0 AND total_available_quantity <= minimum_quantity');
+
+            // Deepest shortfall first. Both screens are worklists, so the default
+            // order is the order someone would work them in — sorting them by
+            // created_at, as the client used to, buried the worst case on page 3.
+            // A client-supplied sort still wins: this only runs when none is given.
+            if (!request()->filled('sort')) {
+                $this->builder->orderByRaw('(minimum_quantity - total_available_quantity) DESC');
+            }
         }
 
         if ($view === 'expired_stock') {
-            $this->builder->havingRaw('latest_expiry_date_at <= NOW()');
+            // Bound parameter rather than NOW(), which SQLite does not provide.
+            $this->builder->havingRaw('latest_expiry_date_at IS NOT NULL AND latest_expiry_date_at <= ?', [now()]);
+
+            // Longest expired first — FEFO applies to the clean-up too.
+            if (!request()->filled('sort')) {
+                $this->builder->orderBy('latest_expiry_date_at', 'asc');
+            }
         }
+    }
+
+    /**
+     * `product`, `warehouse` and `variant` were all listed in Inventory's $filterParams
+     * with no method here to act on them, so each was accepted and silently ignored —
+     * the same fail-open the supplier, dock, zone and bin listings had. A product's
+     * per-warehouse stock breakdown asking for one product would have been handed every
+     * inventory row the company owns and shown it as that product's.
+     */
+    public function product(?string $productUuid)
+    {
+        $this->builder->where('pallet_inventories.product_uuid', $productUuid);
+    }
+
+    public function warehouse(?string $warehouseUuid)
+    {
+        $this->builder->where('pallet_inventories.warehouse_uuid', $warehouseUuid);
+    }
+
+    public function variant(?string $variantUuid)
+    {
+        $this->builder->where('pallet_inventories.variant_uuid', $variantUuid);
     }
 
     public function createdAt($createdAt)

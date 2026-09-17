@@ -1,0 +1,105 @@
+{{!
+    Was a ContentPanel wrapping a raw <table> with px-4 py-3 cells: no search, no
+    sorting, no pagination, no column picker, a transfer number that wrapped onto
+    two lines, and the literal words "No actions" in the last column of every
+    completed row. It is a resource list, so it now uses the same
+    Layout::Resource::Tabular as every other list in the module.
+
+    The create form was a permanently-open panel eating the top of the screen. It
+    is now behind the New button, in an overlay, the way every other create in the
+    module works. It cannot go in a <:subheader> — Tabular has no such block, and
+    the one it does have replaces the table.
+}}
+<Layout::Resource::Tabular
+    @title={{t "operations.transfers.title"}}
+    @searchQuery={{this.query}}
+    @onSearch={{perform this.search}}
+    @data={{@model}}
+    @columns={{this.columns}}
+    @page={{this.page}}
+    @onPageChange={{fn (mut this.page)}}
+    @setupTable={{fn (mut this.table)}}
+    @controller={{this}}
+    @onPressNew={{this.startCreatingTransfer}}
+/>
+
+{{#if this.isCreatingTransfer}}
+    <Overlay @position="right" @noBackdrop={{true}} @fullHeight={{true}} @isResizable={{true}} @width="720px">
+        <Overlay::Header @title={{t "operations.transfers.create"}} @hideStatusDot={{true}}>
+            <:actions>
+                <Button @icon="check" @type="primary" @text={{t "common.create"}} @onClick={{this.createTransfer}} @wrapperClass="mr-2" />
+                <Button @type="default" @icon="times" @helpText={{t "common.cancel"}} @onClick={{this.cancelCreatingTransfer}} />
+            </:actions>
+        </Overlay::Header>
+
+        <Overlay::Body @wrapperClass="px-4 pt-4" @increaseInnerBodyHeightBy={{700}}>
+            <div class="grid grid-cols-1 gap-2 text-xs lg:grid-cols-2 no-input-group-padding">
+                <InputGroup @name={{t "operations.transfers.from-warehouse"}}>
+                    <ModelSelect
+                        @modelName="warehouse"
+                        @selectedModel={{this.newTransfer.fromWarehouse}}
+                        @placeholder={{t "operations.transfers.source-placeholder"}}
+                        @triggerClass="form-select form-input"
+                        @infiniteScroll={{false}}
+                        @renderInPlace={{true}}
+                        @onChange={{this.setFromWarehouse}}
+                        as |model|
+                    >
+                        {{n-a (or model.name model.address)}}
+                    </ModelSelect>
+                </InputGroup>
+
+                <InputGroup @name={{t "operations.transfers.to-warehouse"}}>
+                    <ModelSelect
+                        @modelName="warehouse"
+                        @selectedModel={{this.newTransfer.toWarehouse}}
+                        @placeholder={{t "operations.transfers.destination-placeholder"}}
+                        @triggerClass="form-select form-input"
+                        @infiniteScroll={{false}}
+                        @renderInPlace={{true}}
+                        @onChange={{this.setToWarehouse}}
+                        as |model|
+                    >
+                        {{n-a (or model.name model.address)}}
+                    </ModelSelect>
+                </InputGroup>
+
+                <InputGroup @name={{t "operations.common.product"}}>
+                    <ModelSelect
+                        @modelName="pallet-product"
+                        @selectedModel={{this.newTransfer.product}}
+                        @placeholder={{t "operations.common.product"}}
+                        @triggerClass="form-select form-input"
+                        @infiniteScroll={{false}}
+                        @renderInPlace={{true}}
+                        @onChange={{this.setTransferProduct}}
+                        as |model|
+                    >
+                        {{model.name}}
+                    </ModelSelect>
+                </InputGroup>
+
+                <InputGroup @name={{t "operations.common.variant"}}>
+                    <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                        <PowerSelect
+                            @options={{this.newTransfer.product.variants}}
+                            @selected={{this.newTransfer.variant}}
+                            @onChange={{this.setTransferVariant}}
+                            @placeholder={{t "operations.common.variant"}}
+                            @triggerClass="form-select form-input"
+                            @disabled={{not this.newTransfer.product.has_variants}}
+                            as |variant|
+                        >
+                            {{n-a (or variant.display_name variant.name)}}
+                        </PowerSelect>
+                    </div>
+                </InputGroup>
+
+                <InputGroup @name={{t "operations.common.quantity"}}>
+                    <Input @value={{this.newTransfer.quantity}} @type="number" class="w-full form-input" placeholder="Qty" />
+                </InputGroup>
+
+            </div>
+        </Overlay::Body>
+    </Overlay>
+{{/if}}

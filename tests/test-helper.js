@@ -9,4 +9,7 @@ setApplication(Application.create(config.APP));
 
 setup(QUnit.assert);
 
+// a hung await must fail the test, not wedge the whole suite
+QUnit.config.testTimeout = 30000;
+
 start();

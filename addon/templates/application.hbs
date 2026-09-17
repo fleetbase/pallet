@@ -1,26 +1,16 @@
 <EmberWormhole @to="sidebar-menu-items">
-    <Layout::Sidebar::Panel @open={{true}} @title="Pallet">
-        <Layout::Sidebar::Item @route="console.pallet.home" @icon="home">Dashboard</Layout::Sidebar::Item>
-        <Layout::Sidebar::Item @route="console.pallet.products" @icon="boxes-stacked">Products</Layout::Sidebar::Item>
-        <Layout::Sidebar::Item @route="console.pallet.warehouses" @icon="warehouse">Warehouses</Layout::Sidebar::Item>
-        <Layout::Sidebar::Item @route="console.pallet.suppliers" @icon="user-tie">Suppliers</Layout::Sidebar::Item>
-    </Layout::Sidebar::Panel>
-    <Layout::Sidebar::Panel @open={{true}} @title="Inventory">
-        <Layout::Sidebar::Item @route="console.pallet.inventory" @icon="barcode">All</Layout::Sidebar::Item>
-        <Layout::Sidebar::Item @route="console.pallet.inventory.low-stock" @icon="exclamation-triangle">Low Stock</Layout::Sidebar::Item>
-        <Layout::Sidebar::Item @route="console.pallet.inventory.expired-stock" @icon="calendar-times">Expired Stock</Layout::Sidebar::Item>
-    </Layout::Sidebar::Panel>
-    <Layout::Sidebar::Panel @open={{true}} @title="Transact">
-        <Layout::Sidebar::Item @route="console.pallet.sales-orders" @icon="cash-register">Sales</Layout::Sidebar::Item>
-        <Layout::Sidebar::Item @route="console.pallet.purchase-orders" @icon="file-invoice-dollar">Purchases</Layout::Sidebar::Item>
-    </Layout::Sidebar::Panel>
-    <Layout::Sidebar::Panel @open={{true}} @title="Research">
-        <Layout::Sidebar::Item @route="console.pallet.audits" @icon="magnifying-glass">Audits</Layout::Sidebar::Item>
-        <Layout::Sidebar::Item @route="console.pallet.reports" @icon="chart-line">Reports</Layout::Sidebar::Item>
-    </Layout::Sidebar::Panel>
+    <Layout::Sidebar::Navigator @items={{this.navigationItems}} @searchPlaceholder="Search Pallet..." @searchProvider={{this.searchNavigation}} />
 </EmberWormhole>
 
 <Layout::Section::Container>
     {{outlet}}
 </Layout::Section::Container>
+
+{{!
+    Nothing rendered the context panel, so every contextPanel.focus() call set
+    state on a service with no view attached. The two that are reachable from a
+    live screen are Receive Goods and Fulfill Order — the operations that actually
+    move stock — and both were dead buttons: no panel, no error, nothing at all.
+    Storefront mounts it here in exactly the same way.
+}}
 <ContextPanel />

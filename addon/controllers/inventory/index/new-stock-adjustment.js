@@ -37,7 +37,7 @@ export default class InventoryIndexNewStockAdjustmentController extends Controll
      *
      * @var {StockAdjustmentModel}
      */
-    @tracked stockAdjustment = this.store.createRecord('stock-adjustment');
+    @tracked stockAdjustment = this.store.createRecord('stock-adjustment', { type: 'add', approval_required: false });
 
     /**
      * Set the overlay component context object.
@@ -55,8 +55,21 @@ export default class InventoryIndexNewStockAdjustmentController extends Controll
      * @return {Transition}
      * @memberof InventoryIndexNewStockAdjustmentController
      */
+    /**
+     * Cancel left the record createRecord() had already put in the store behind on
+     * every abandoned create — a fresh orphan each time the panel is reopened, for the
+     * life of the session. Same defect the create panels had; this route reaches the
+     * exit through transitionBack rather than an onPressCancel action, which is why it
+     * was missed the first time round.
+     */
     @action transitionBack() {
-        return this.transitionToRoute('inventory.index');
+        const record = this.stockAdjustment;
+
+        if (record?.isNew) {
+            record.rollbackAttributes();
+        }
+
+        return this.hostRouter.transitionTo('console.pallet.inventory.adjustments');
     }
 
     /**
@@ -72,7 +85,7 @@ export default class InventoryIndexNewStockAdjustmentController extends Controll
         }
 
         this.hostRouter.refresh();
-        return this.transitionToRoute('inventory.index');
+        return this.hostRouter.transitionTo('console.pallet.inventory.adjustments');
     }
 
     /**
@@ -81,6 +94,6 @@ export default class InventoryIndexNewStockAdjustmentController extends Controll
      * @memberof InventoryIndexNewStockAdjustmentController
      */
     resetForm() {
-        this.stockAdjustment = this.store.createRecord('stock-adjustment');
+        this.stockAdjustment = this.store.createRecord('stock-adjustment', { type: 'add', approval_required: false });
     }
 }

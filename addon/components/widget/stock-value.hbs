@@ -1,0 +1,47 @@
+<div class="pallet-dashboard-widget flex h-full min-h-0 flex-col overflow-hidden rounded-md border bg-white shadow-sm dark:bg-gray-800" ...attributes>
+    <div class="pallet-widget-header">
+        <div>
+            <div class="pallet-widget-title">{{t "widgets.titles.stock-value-by-warehouse"}}</div>
+            <div class="pallet-widget-subtitle">Total inventory value broken down per warehouse</div>
+        </div>
+        <FaIcon @icon="chart-bar" class="text-gray-400" />
+    </div>
+
+    {{#if this.error}}
+        <div class="pallet-widget-empty">{{this.error}}</div>
+    {{else if this.loadStockValue.isRunning}}
+        <div class="pallet-widget-empty"><Spinner /></div>
+    {{else if (eq this.warehouses.length 0)}}
+        <div class="pallet-widget-empty">
+            <div>
+                <FaIcon @icon="warehouse" class="mb-2 text-2xl" />
+                <div>{{t "widgets.empty.no-warehouse-data"}}</div>
+            </div>
+        </div>
+    {{else}}
+        <div class="flex items-center justify-between gap-3 border-b border-gray-100 px-3 py-2 dark:border-gray-700">
+            <span class="truncate text-xs text-gray-500 dark:text-gray-400">{{t "widgets.labels.total-stock-value"}}</span>
+            <span class="shrink-0 text-sm font-bold text-gray-800 dark:text-gray-100">{{this.totalValue}}</span>
+        </div>
+        <div class="pallet-widget-scroll-body">
+            <div class="space-y-3">
+                {{#each this.warehouseBars as |warehouse|}}
+                    <div>
+                        <div class="mb-1 flex items-center justify-between gap-2">
+                            <span class="max-w-[60%] truncate text-xs font-medium text-gray-700 dark:text-gray-300">{{n-a warehouse.name}}</span>
+                            <span class="shrink-0 text-xs text-gray-500 dark:text-gray-400">{{n-a warehouse.value}}</span>
+                        </div>
+                        <div class="grid grid-cols-10 gap-0.5">
+                            {{#each warehouse.filledSegments}}
+                                <div class="h-2 rounded-full bg-blue-500"></div>
+                            {{/each}}
+                            {{#each warehouse.emptySegments}}
+                                <div class="h-2 rounded-full bg-gray-100 dark:bg-gray-700"></div>
+                            {{/each}}
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+    {{/if}}
+</div>
