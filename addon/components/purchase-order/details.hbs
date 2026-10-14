@@ -1,0 +1,132 @@
+<div class="details-wrapper" ...attributes>
+    {{!
+        Restructured like inventory/details.hbs. ORDER NUMBER used to print the
+        same string as ID on every record, because the resource synthesised
+        order_number from public_id; orders carry their own PO-/SO- series now, so
+        it is back as a distinct field. The expected date rendered blank rather
+        than a dash when unset, and Metadata sat open showing its "No metadata"
+        empty state on every order.
+
+        The line-item table had eight columns inside a 600px panel, so it scrolled
+        sideways and everything from RECEIVED rightwards was off-screen. Received
+        against ordered is one fact, not two columns, so it reads as "60 / 60"
+        and outstanding follows from it.
+    }}
+    <ContentPanel @title={{t "purchase-order.sections.details"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="text-xs">
+            <div class="pallet-field-group-heading">{{t "inventory.groups.identity"}}</div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "common.id"}}</div>
+                <ClickToCopy @value={{@resource.public_id}} class="field-value font-mono">{{n-a @resource.public_id}}</ClickToCopy>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "purchase-order.fields.order-number"}}</div>
+                <ClickToCopy @value={{@resource.order_number}} class="field-value font-mono">{{n-a @resource.order_number}}</ClickToCopy>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "common.status"}}</div>
+                <div class="field-value">
+                    <Badge @status={{@resource.status}}>{{smart-humanize @resource.status}}</Badge>
+                </div>
+            </div>
+
+            <div class="pallet-field-group-heading">{{t "purchase-order.groups.fulfilment"}}</div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "purchase-order.fields.supplier"}}</div>
+                <div class="field-value">{{n-a @resource.supplier.name}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "purchase-order.fields.warehouse"}}</div>
+                <div class="field-value">{{n-a @resource.warehouse.name}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container{{if @resource.comments ' dashed-bottom'}}">
+                <div class="field-name">{{t "purchase-order.fields.expected-delivery"}}</div>
+                <div class="field-value">{{n-a (format-date @resource.expected_delivery_at)}}</div>
+            </div>
+            {{#if @resource.comments}}
+                <div class="field-info-container field-vertical-container">
+                    <div class="field-name">{{t "common.notes"}}</div>
+                    <div class="field-value">{{@resource.comments}}</div>
+                </div>
+            {{/if}}
+        </div>
+    </ContentPanel>
+
+    {{!
+        SCREENS.md section E's must-never for this screen is hiding "outstanding" — it is
+        the number the receiving clerk works from, and it was previously left to be
+        inferred from "50 / 50".
+    }}
+    <ContentPanel @title={{t "purchase-order.sections.receiving"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-2 gap-3 text-xs sm:grid-cols-4">
+            <div class="field-info-container">
+                <div class="field-name">{{t "purchase-order.fields.lines-received"}}</div>
+                <div class="field-value tabular-nums">{{this.receiving.linesComplete}}<span class="text-gray-400"> / {{this.receiving.lines}}</span></div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "purchase-order.fields.quantity-ordered"}}</div>
+                <div class="field-value tabular-nums">{{format-number this.receiving.ordered}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "purchase-order.fields.quantity-received"}}</div>
+                <div class="field-value tabular-nums">{{format-number this.receiving.received}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "purchase-order.fields.quantity-outstanding"}}</div>
+                <div class="field-value tabular-nums">
+                    <span class={{if this.receiving.outstanding "text-amber-600 dark:text-amber-300"}}>{{format-number this.receiving.outstanding}}</span>
+                </div>
+            </div>
+        </div>
+        {{#if this.receiving.over}}
+            {{! Over-receipt is a warning, never an error — section E, 9.5. }}
+            <div class="mt-3 text-xs text-amber-600 dark:text-amber-300">
+                {{t "purchase-order.over-received" quantity=this.receiving.over}}
+            </div>
+        {{/if}}
+    </ContentPanel>
+
+    <ContentPanel @title={{t "purchase-order.sections.line-items"}} @open={{true}} @wrapperClass="bordered-top" @panelBodyWrapperClass="px-0i">
+        {{#if @resource.items.length}}
+            <table class="w-full text-xs dark:text-gray-100">
+                <thead>
+                    <tr class="whitespace-nowrap border-b border-gray-200 text-left uppercase text-gray-500 dark:border-gray-700">
+                        <th class="w-1/3 px-3 py-2">{{t "columns.product"}}</th>
+                        <th class="px-3 py-2">{{t "common.status"}}</th>
+                        <th class="px-3 py-2 text-right">{{t "columns.ordered"}}</th>
+                        <th class="px-3 py-2 text-right">{{t "columns.received"}}</th>
+                        <th class="px-3 py-2 text-right">{{t "columns.outstanding"}}</th>
+                        <th class="px-3 py-2 text-right">{{t "columns.unit-price"}}</th>
+                        <th class="px-3 py-2 text-right">{{t "columns.total"}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each @resource.items as |item|}}
+                        <tr class="border-b border-gray-100 dark:border-gray-800">
+                            <td class="px-3 py-2">
+                                <div class="truncate font-medium text-gray-700 dark:text-gray-200">{{n-a item.product.name}}</div>
+                                <div class="truncate text-gray-400">{{n-a (or item.sku item.product.sku)}}</div>
+                            </td>
+                            <td class="px-3 py-2"><Badge @status={{item.status}}>{{smart-humanize item.status}}</Badge></td>
+                            <td class="px-3 py-2 text-right tabular-nums">{{format-number item.quantity}}</td>
+                            <td class="px-3 py-2 text-right tabular-nums">{{format-number item.quantity_received}}</td>
+                            <td class="px-3 py-2 text-right tabular-nums">
+                                <span class={{if item.outstanding_quantity "text-amber-600 dark:text-amber-300"}}>{{format-number item.outstanding_quantity}}</span>
+                            </td>
+                            <td class="px-3 py-2 text-right tabular-nums">{{format-currency item.unit_price item.currency}}</td>
+                            <td class="px-3 py-2 text-right tabular-nums">{{format-currency item.total_price item.currency}}</td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        {{else}}
+            <div class="px-3 py-6 text-xs text-gray-500 dark:text-gray-400">{{t "purchase-order.no-line-items"}}</div>
+        {{/if}}
+    </ContentPanel>
+
+    <CustomField::Yield @subject={{@resource}} @viewMode={{true}} @wrapperClass="bordered-top" />
+
+    <ContentPanel @title={{t "common.metadata"}} @open={{false}} @wrapperClass="bordered-top" @panelBodyWrapperClass={{unless (is-object-empty @resource.meta) "px-0i" ""}}>
+        <MetadataViewer @metadata={{@resource.meta}} />
+    </ContentPanel>
+</div>

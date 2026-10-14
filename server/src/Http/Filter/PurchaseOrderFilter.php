@@ -1,0 +1,25 @@
+<?php
+
+namespace Fleetbase\Pallet\Http\Filter;
+
+/**
+ * Tenant scoping for PurchaseOrder listings.
+ *
+ * Before this class existed the model resolved no filter at all, so
+ * HasApiModelBehavior::applyCustomFilters() added no company clause and the listing
+ * returned every company's rows. Per-column filtering continues to go through the
+ * generic filter machinery — only the company scope is declared here.
+ */
+class PurchaseOrderFilter extends PalletFilter
+{
+    /**
+     * Scope purchase orders to one supplier.
+     *
+     * The supplier detail panel answers "what have we ordered from them"; without this
+     * the listing could not be narrowed to a supplier at all.
+     */
+    public function supplier(?string $supplierUuid)
+    {
+        $this->builder->where('supplier_uuid', $supplierUuid);
+    }
+}

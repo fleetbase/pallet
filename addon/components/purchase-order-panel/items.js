@@ -1,0 +1,256 @@
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
+import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
+
+export default class PurchaseOrderPanelItemsComponent extends Component {
+    @service store;
+    @service notifications;
+    @service fetch;
+
+    @tracked isAddingItem = false;
+    @tracked editingItem = null;
+    @tracked newItem = {};
+
+    getRecordUuid(record) {
+        return record?.uuid ?? record?.id;
+    }
+
+    validateItemDraft(draft) {
+        const product = draft.product;
+        const quantity = Number(draft.quantity);
+        const unitPrice = Number(draft.unit_price ?? 0);
+
+        if (!draft.product_uuid && !product) {
+            this.notifications.warning('Select a product for this line item.');
+            return false;
+        }
+
+        if (product?.has_variants && !draft.variant_uuid) {
+            this.notifications.warning('Select a variant for this product.');
+            return false;
+        }
+
+        if (!Number.isFinite(quantity) || quantity <= 0) {
+            this.notifications.warning('Enter a quantity greater than zero.');
+            return false;
+        }
+
+        if (!Number.isFinite(unitPrice) || unitPrice < 0) {
+            this.notifications.warning('Enter a valid unit price.');
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * item_count and total_value are computed server-side, so they stayed stale the
+     * moment a line was added or removed — the panel read "0 item(s)" with a line
+     * plainly listed beneath it. Deriving them from the live items keeps the summary
+     * honest without refetching the order, which would discard any unsaved edits to
+     * the order itself.
+     */
+    get itemCount() {
+        return this.items.length;
+    }
+
+    get totalValue() {
+        const total = this.items.reduce((sum, item) => sum + Number(item.quantity ?? 0) * Number(item.unit_price ?? 0), 0);
+
+        return total > 0 ? Number(total.toFixed(2)) : 0;
+    }
+
+    /**
+     * Returns the items for this purchase order.
+     *
+     * @type {Array}
+     */
+    get items() {
+        return this.args.purchaseOrder?.items ?? [];
+    }
+
+    /**
+     * The order is read-only once it has been received or cancelled.
+     *
+     * @type {Boolean}
+     */
+    get isReadOnly() {
+        const status = this.args.purchaseOrder?.status;
+        return status === 'received' || status === 'cancelled';
+    }
+
+    /**
+     * Show the new-item input row.
+     */
+    @action startAddingItem() {
+        this.newItem = { quantity: 1, unit_price: 0 };
+        this.isAddingItem = true;
+    }
+
+    /**
+     * Hide the new-item input row and reset the draft.
+     */
+    @action cancelAddingItem() {
+        this.isAddingItem = false;
+        this.newItem = {};
+    }
+
+    /**
+     * Persist the new line item to the API and push it into the PO's items array.
+     */
+    @action async addItem() {
+        const purchaseOrder = this.args.purchaseOrder;
+        if (!purchaseOrder) return;
+        if (!this.validateItemDraft(this.newItem)) return;
+
+        try {
+            const item = await this.fetch.post(
+                `purchase-orders/${purchaseOrder.id}/items`,
+                {
+                    purchase_order_item: {
+                        product_uuid: this.newItem.product_uuid ?? this.getRecordUuid(this.newItem.product),
+                        variant_uuid: this.newItem.variant_uuid ?? this.getRecordUuid(this.newItem.variant),
+                        sku: this.newItem.sku,
+                        quantity: this.newItem.quantity,
+                        unit_price: this.newItem.unit_price,
+                        notes: this.newItem.notes,
+                    },
+                },
+                { namespace: 'pallet/int/v1' }
+            );
+
+            // Push into the store and update the PO's items
+            const record = this.store.push(this.store.normalize('purchase-order-item', item.purchase_order_item ?? item));
+            purchaseOrder.items.pushObject(record);
+
+            this.isAddingItem = false;
+            this.newItem = {};
+            this.notifications.success('Line item added.');
+        } catch (error) {
+            this.notifications.serverError(error);
+        }
+    }
+
+    /**
+     * Begin inline editing of an existing item.
+     *
+     * @param {PurchaseOrderItemModel} item
+     */
+    @action startEditingItem(item) {
+        // Clone the item's attributes into a plain object for editing
+        this.editingItem = {
+            id: item.id,
+            product: item.product,
+            product_uuid: item.product_uuid,
+            variant: item.variant,
+            variant_uuid: item.variant_uuid,
+            sku: item.sku,
+            quantity: item.quantity,
+            unit_price: item.unit_price,
+            notes: item.notes,
+        };
+    }
+
+    @action setNewProduct(product) {
+        this.newItem = {
+            ...this.newItem,
+            product,
+            product_uuid: this.getRecordUuid(product),
+            variant: null,
+            variant_uuid: null,
+            sku: product?.has_variants ? null : product?.sku,
+        };
+    }
+
+    @action setEditingProduct(product) {
+        this.editingItem = {
+            ...this.editingItem,
+            product,
+            product_uuid: this.getRecordUuid(product),
+            variant: null,
+            variant_uuid: null,
+            sku: product?.has_variants ? null : product?.sku,
+        };
+    }
+
+    @action setNewVariant(variant) {
+        this.newItem = {
+            ...this.newItem,
+            variant,
+            variant_uuid: this.getRecordUuid(variant),
+            sku: variant?.sku ?? this.newItem.sku,
+        };
+    }
+
+    @action setEditingVariant(variant) {
+        this.editingItem = {
+            ...this.editingItem,
+            variant,
+            variant_uuid: this.getRecordUuid(variant),
+            sku: variant?.sku ?? this.editingItem.sku,
+        };
+    }
+
+    /**
+     * Cancel inline editing without saving.
+     */
+    @action cancelEditing() {
+        this.editingItem = null;
+    }
+
+    /**
+     * Persist the edited item to the API and update the store record.
+     */
+    @action async saveEditingItem() {
+        const purchaseOrder = this.args.purchaseOrder;
+        if (!this.editingItem || !purchaseOrder) return;
+        if (!this.validateItemDraft(this.editingItem)) return;
+
+        try {
+            await this.fetch.put(
+                `purchase-orders/${purchaseOrder.id}/items/${this.editingItem.id}`,
+                {
+                    purchase_order_item: {
+                        product_uuid: this.editingItem.product_uuid ?? this.getRecordUuid(this.editingItem.product),
+                        variant_uuid: this.editingItem.variant_uuid ?? this.getRecordUuid(this.editingItem.variant),
+                        sku: this.editingItem.sku,
+                        quantity: this.editingItem.quantity,
+                        unit_price: this.editingItem.unit_price,
+                        notes: this.editingItem.notes,
+                    },
+                },
+                { namespace: 'pallet/int/v1' }
+            );
+
+            // Reload the item from the store to reflect server-calculated fields
+            const storeItem = this.store.peekRecord('purchase-order-item', this.editingItem.id);
+            if (storeItem) {
+                storeItem.reload();
+            }
+
+            this.editingItem = null;
+            this.notifications.success('Line item updated.');
+        } catch (error) {
+            this.notifications.serverError(error);
+        }
+    }
+
+    /**
+     * Delete a line item from the PO.
+     *
+     * @param {PurchaseOrderItemModel} item
+     */
+    @action async removeItem(item) {
+        const purchaseOrder = this.args.purchaseOrder;
+        if (!purchaseOrder) return;
+
+        try {
+            await this.fetch.delete(`purchase-orders/${purchaseOrder.id}/items/${item.id}`, {}, { namespace: 'pallet/int/v1' });
+            purchaseOrder.items.removeObject(item);
+            this.notifications.success('Line item removed.');
+        } catch (error) {
+            this.notifications.serverError(error);
+        }
+    }
+}

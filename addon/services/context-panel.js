@@ -17,16 +17,6 @@ export default class ContextPanelService extends Service {
      * @type {Object}
      */
     registry = {
-        palletProduct: {
-            viewing: {
-                component: 'product-panel',
-                componentArguments: [{ isResizable: true }, { width: '600px' }],
-            },
-            editing: {
-                component: 'product-form-panel',
-                componentArguments: [{ isResizable: true }, { width: '600px' }],
-            },
-        },
         warehouse: {
             viewing: {
                 component: 'warehouse-panel',
@@ -56,6 +46,10 @@ export default class ContextPanelService extends Service {
                 component: 'sales-order-form-panel',
                 componentArguments: [{ isResizable: true }, { width: '600px' }],
             },
+            fulfilling: {
+                component: 'fulfill-sales-order-form-panel',
+                componentArguments: [{ isResizable: true }, { width: '720px' }],
+            },
         },
         purchaseOrder: {
             viewing: {
@@ -65,6 +59,10 @@ export default class ContextPanelService extends Service {
             editing: {
                 component: 'purchase-order-form-panel',
                 componentArguments: [{ isResizable: true }, { width: '600px' }],
+            },
+            receiving: {
+                component: 'receive-purchase-order-form-panel',
+                componentArguments: [{ isResizable: true }, { width: '720px' }],
             },
         },
         inventory: {
@@ -128,8 +126,6 @@ export default class ContextPanelService extends Service {
     @action focus(model, intent = 'viewing', options = {}) {
         const modelName = getModelName(model);
         const registry = this.registry[camelize(modelName)];
-
-        console.log('[registry]', registry);
 
         if (registry && registry[intent]) {
             this.currentContext = model;

@@ -1,0 +1,12 @@
+{{!--
+    ember-ui's base cell renders {{or @value "-"}} straight from valuePath, which
+    cannot tell "this row never had a product" from "the product was deleted after
+    this row was written". Operational records outlive what they point at, and an
+    audit row rendered as a line of dashes reads as incomplete rather than as
+    referring to something since removed.
+
+    Long-form comment deliberately: a {{! }} comment ends at its first }}.
+--}}
+<div class="relative" aria-label={{this.label}}>
+    <span class="{{@column.cellClassNames}} {{if this.isMissing 'italic text-gray-400 dark:text-gray-500'}}">{{this.label}}</span>
+</div>

@@ -1,0 +1,16 @@
+<Layout::Container>
+    <Layout::Section>
+        <Layout::Section::Header @title={{@model.count_number}} @badge={{@model.status}} @titleClass="whitespace-nowrap" @badgeClass="whitespace-nowrap">
+            {{#each this.actionButtons as |button|}}
+                <Button @icon={{button.icon}} @type={{or button.type "default"}} @text={{button.text}} @onClick={{button.fn}} @wrapperClass="ml-2" />
+            {{/each}}
+            <Button @icon="list" @type="default" @text={{t "operations.cycle-counts.back-to-list"}} @onClick={{transition-to "operations.cycle-counts.index"}} @wrapperClass="ml-2" />
+        </Layout::Section::Header>
+
+        <Layout::Section::Body>
+            <div class="space-y-3 p-4">
+                {{outlet}}
+            </div>
+        </Layout::Section::Body>
+    </Layout::Section>
+</Layout::Container>

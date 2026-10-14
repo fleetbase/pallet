@@ -2,13 +2,42 @@
 
 namespace Fleetbase\Pallet\Models;
 
+use Fleetbase\Models\Company;
 use Fleetbase\Models\Model;
+use Fleetbase\Models\User;
 use Fleetbase\Traits\HasApiModelBehavior;
+use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * Generated from the table schema, the model's casts and its relation methods.
+ * PHPStan cannot see Eloquent's magic properties without these; every one of them
+ * was a reported error before.
+ *
+ * @property ?int                                                        $id
+ * @property string                                                      $uuid
+ * @property ?string                                                     $public_id
+ * @property ?string                                                     $company_uuid
+ * @property ?string                                                     $created_by_uuid
+ * @property ?string                                                     $warehouse_uuid
+ * @property ?string                                                     $aisle_uuid
+ * @property ?string                                                     $rack_number
+ * @property ?string                                                     $capacity
+ * @property ?array                                                      $meta
+ * @property ?\Illuminate\Support\Carbon                                 $created_at
+ * @property ?\Illuminate\Support\Carbon                                 $updated_at
+ * @property ?\Illuminate\Support\Carbon                                 $deleted_at
+ * @property WarehouseAisle|null                                         $aisle
+ * @property \Illuminate\Database\Eloquent\Collection<int, WarehouseBin> $bins
+ * @property \Fleetbase\Pallet\Models\Company|null                       $company
+ * @property \Fleetbase\Pallet\Models\User|null                          $createdBy
+ */
 class WarehouseRack extends Model
 {
     use HasUuid;
+    use HasPublicId;
     use HasApiModelBehavior;
 
     /**
@@ -16,14 +45,14 @@ class WarehouseRack extends Model
      *
      * @var string
      */
-    protected $payloadKey = 'warehouse_aisle';
+    protected $payloadKey = 'warehouse_rack';
 
     /**
      * The type of public Id to generate.
      *
      * @var string
      */
-    protected $publicIdType = 'warehouse_aisle';
+    protected $publicIdType = 'warehouse_rack';
 
     /**
      * The database table used by the model.
@@ -49,9 +78,10 @@ class WarehouseRack extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
+        'warehouse_uuid',
         'uuid',
         'public_id',
         'company_uuid',
@@ -65,7 +95,7 @@ class WarehouseRack extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'meta' => 'json',
@@ -73,39 +103,30 @@ class WarehouseRack extends Model
 
     /**
      * Relationship with the company associated with the warehouse rack.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function company()
+    public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class, 'company_uuid', 'uuid');
     }
 
     /**
      * Relationship with the user who created the warehouse rack.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function createdBy()
+    public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by_uuid', 'uuid');
     }
 
     /**
      * Relationship with the aisle associated with the warehouse rack.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function aisle()
+    public function aisle(): BelongsTo
     {
         return $this->belongsTo(WarehouseAisle::class, 'aisle_uuid', 'uuid');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function bins()
+    public function bins(): HasMany
     {
-        return $this->hasMany(WarehouseBin::class, 'rack_uuid');
+        return $this->hasMany(WarehouseBin::class, 'rack_uuid', 'uuid');
     }
 }

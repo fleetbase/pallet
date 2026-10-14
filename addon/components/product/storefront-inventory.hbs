@@ -1,0 +1,141 @@
+<div class="pallet-storefront-inventory" ...attributes>
+    <div class="mb-4 flex flex-col gap-2 lg:flex-row lg:items-end">
+        <InputGroup @name="Storefront Product UUID" @wrapperClass="flex-1 mb-0i">
+            <Input
+                @value={{this.storefrontProductUuid}}
+                {{on "input" this.setStorefrontProductUuid}}
+                @type="text"
+                class="w-full form-input"
+                placeholder="Storefront product UUID"
+                disabled={{this.isLoading}}
+            />
+        </InputGroup>
+        <div class="flex flex-wrap gap-2">
+            <Button
+                @icon="link"
+                @type="primary"
+                @size="sm"
+                @text="Link"
+                @onClick={{this.linkStorefrontProduct}}
+                @disabled={{or this.isLoading (not this.canLink)}}
+            />
+            <Button
+                @icon="unlink"
+                @type="default"
+                @size="sm"
+                @text="Unlink"
+                @onClick={{this.unlinkStorefrontProduct}}
+                @disabled={{or this.isLoading (not this.hasStorefrontLink)}}
+            />
+            <Button
+                @icon="rotate"
+                @type="default"
+                @size="sm"
+                @text="Refresh"
+                @onClick={{this.refreshAvailability}}
+                @disabled={{this.isLoading}}
+            />
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-2 lg:grid-cols-2 text-xs dark:text-gray-100">
+        <div class="field-info-container">
+            <div class="field-name">Storefront Product UUID</div>
+            <ClickToCopy @value={{@product.storefront_product_uuid}} class="field-value">{{n-a @product.storefront_product_uuid}}</ClickToCopy>
+        </div>
+
+        <div class="field-info-container">
+            <div class="field-name">Storefront Link</div>
+            <div class="field-value">
+                <Badge @status={{if @product.storefront_product_uuid "success" "warning"}}>
+                    {{if @product.storefront_product_uuid "Linked" "Unlinked"}}
+                </Badge>
+            </div>
+        </div>
+
+        <div class="field-info-container">
+            <div class="field-name">Available to Storefront</div>
+            <div class="field-value">{{format-number @product.storefrontAvailableQuantity}}</div>
+        </div>
+
+        <div class="field-info-container">
+            <div class="field-name">Reserved for Orders</div>
+            <div class="field-value">{{format-number @product.storefrontReservedQuantity}}</div>
+        </div>
+
+        <div class="field-info-container">
+            <div class="field-name">Tracked Quantity</div>
+            <div class="field-value">{{format-number @product.storefrontTotalQuantity}}</div>
+        </div>
+
+        <div class="field-info-container">
+            <div class="field-name">Checkout State</div>
+            <div class="field-value">
+                <Badge @status={{if @product.storefrontOutOfStock "danger" "success"}}>
+                    {{if @product.storefrontOutOfStock "Out of stock" "Available"}}
+                </Badge>
+            </div>
+        </div>
+
+        <div class="field-info-container">
+            <div class="field-name">Reorder Point</div>
+            <div class="field-value">{{format-number @product.storefrontReorderPoint}}</div>
+        </div>
+
+        <div class="field-info-container">
+            <div class="field-name">Reorder Quantity</div>
+            <div class="field-value">{{format-number @product.storefrontReorderQuantity}}</div>
+        </div>
+    </div>
+
+    {{#if @product.has_variants}}
+        <div class="mt-4 overflow-x-auto">
+            <div class="mb-2 flex items-center justify-between gap-2">
+                <div class="text-xs font-semibold text-gray-700 dark:text-gray-200">Variant links</div>
+                <Button
+                    @icon="link"
+                    @type="default"
+                    @size="sm"
+                    @text="Save Variant Links"
+                    @onClick={{this.saveVariantLinks}}
+                    @disabled={{or this.isLoading (not this.canSaveVariantLinks)}}
+                />
+            </div>
+            <table class="w-full text-xs">
+                <thead>
+                    <tr class="border-b border-gray-100 dark:border-gray-700 text-gray-500 dark:text-gray-400">
+                        <th class="text-left py-2 pr-2 font-medium">Variant</th>
+                        <th class="text-left py-2 px-2 font-medium">Storefront Variant UUID</th>
+                        <th class="text-right py-2 px-2 font-medium">Available</th>
+                        <th class="text-right py-2 pl-2 font-medium">Reserved</th>
+                        <th class="text-right py-2 pl-2 font-medium">State</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each @product.variants as |variant|}}
+                        <tr class="border-b border-gray-100 dark:border-gray-800">
+                            <td class="py-2 pr-2 font-medium">{{n-a (or variant.display_name variant.name)}}</td>
+                            <td class="py-2 px-2 text-gray-500">
+                                <Input
+                                    @value={{variant.storefront_variant_uuid}}
+                                    {{on "input" (fn this.setVariantStorefrontUuid variant)}}
+                                    @type="text"
+                                    class="w-full form-input pallet-storefront-inventory-variant-input"
+                                    placeholder="Storefront variant UUID"
+                                    disabled={{this.isLoading}}
+                                />
+                            </td>
+                            <td class="py-2 px-2 text-right">{{format-number (or variant.storefrontAvailableQuantity 0)}}</td>
+                            <td class="py-2 pl-2 text-right">{{format-number (or variant.storefrontReservedQuantity 0)}}</td>
+                            <td class="py-2 pl-2 text-right">
+                                <Badge @status={{if variant.storefrontOutOfStock "danger" "success"}}>
+                                    {{if variant.storefrontOutOfStock "Out" "Ready"}}
+                                </Badge>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    {{/if}}
+</div>

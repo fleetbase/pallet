@@ -1,0 +1,86 @@
+<div class="form-wrapper" ...attributes>
+    <ContentPanel @title={{t "sales-order.sections.details"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 text-xs no-input-group-padding">
+            <InputGroup @name={{t "sales-order.fields.order-number"}} @wrapperClass="col-span-2">
+                {{! `order_number` is the resource's alias for the system-generated
+                    public_id — there is no such column and it is not fillable, so this
+                    was an editable box whose value could never be saved. Show it. }}
+                <Input @value={{@resource.order_number}} @type="text" class="w-full form-input" placeholder={{t "sales-order.fields.order-number"}} disabled={{true}} readonly />
+            </InputGroup>
+            <InputGroup @name={{t "sales-order.fields.customer"}}>
+                <ModelSelect
+                    @modelName="contact"
+                    @selectedModel={{@resource.customer}}
+                    @placeholder={{t "sales-order.fields.select-customer"}}
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{this.setCustomer}}
+                    @disabled={{cannot-write @resource}}
+                    as |model|
+                >
+                    {{model.name}}
+                </ModelSelect>
+            </InputGroup>
+            <InputGroup @name={{t "sales-order.fields.warehouse"}}>
+                <ModelSelect
+                    @modelName="warehouse"
+                    @selectedModel={{@resource.warehouse}}
+                    @placeholder={{t "sales-order.fields.select-warehouse"}}
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{this.setWarehouse}}
+                    @disabled={{cannot-write @resource}}
+                    as |model|
+                >
+                    {{model.name}}
+                </ModelSelect>
+            </InputGroup>
+            <InputGroup @name={{t "common.status"}}>
+                <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                    <PowerSelect
+                        @options={{this.statusOptions}}
+                        @selected={{@resource.status}}
+                        @onChange={{set-model-attr @resource "status"}}
+                        @placeholder={{t "common.select-status"}}
+                        @triggerClass="form-select form-input"
+                        @disabled={{cannot-write @resource}}
+                        as |status|
+                    >
+                        {{t (concat "status." status)}}
+                    </PowerSelect>
+                </div>
+            </InputGroup>
+            <InputGroup @name={{t "sales-order.fields.expected-shipment"}}>
+                <Input @value={{@resource.expected_delivery_at}} @type="date" class="w-full form-input" disabled={{cannot-write @resource}} />
+            </InputGroup>
+            <InputGroup @name={{t "common.notes"}} @wrapperClass="col-span-2">
+                <Textarea @value={{@resource.comments}} class="w-full form-input" placeholder={{t "common.notes"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+        </div>
+    </ContentPanel>
+    {{!
+        Line items had no editor anywhere in the console: you could create an order
+        but never say what was on it, and every line in the data got there through
+        the API. This component already implemented the whole editor and was
+        rendered nowhere.
+
+        Only for a saved order — the endpoint is nested under the order's own id,
+        so there is nothing to post against until it exists.
+    }}
+    {{#if @resource.id}}
+        <SalesOrderPanel::Items @salesOrder={{@resource}} @wrapperClass="bordered-top" />
+    {{else}}
+        <ContentPanel @title={{t "sales-order.sections.line-items"}} @open={{true}} @wrapperClass="bordered-top">
+            <div class="px-4 py-6 text-sm text-gray-500 dark:text-gray-400">
+                {{t "sales-order.save-before-line-items"}}
+            </div>
+        </ContentPanel>
+    {{/if}}
+
+    <CustomField::Yield @subject={{@resource}} @wrapperClass="bordered-top" />
+    <ContentPanel @title={{t "common.metadata"}} @open={{true}} @wrapperClass="bordered-top">
+        <MetadataEditor @value={{@resource.meta}} @onChange={{fn (mut @resource.meta)}} />
+    </ContentPanel>
+</div>

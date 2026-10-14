@@ -1,11 +1,15 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
+import { action, get } from '@ember/object';
 import { isBlank } from '@ember/utils';
 import { task, timeout } from 'ember-concurrency';
+import { getOwner } from '@ember/application';
+import relatedRecordLabel from '../../utils/related-record-label';
+import placeholderImage from '../../utils/placeholder-image';
 
 export default class InventoryExpiredStockController extends Controller {
+    @service intl;
     /**
      * Inject the `notifications` service
      *
@@ -83,7 +87,13 @@ export default class InventoryExpiredStockController extends Controller {
      *
      * @var {String}
      */
-    @tracked sort = '-created_at';
+    /*
+     * No client default: the server orders this view by expiry ascending — longest
+     * expired first, which is the order it gets worked. Sending '-created_at'
+     * overrode that and sorted a write-off worklist by when the row happened to be
+     * created.
+     */
+    @tracked sort = null;
 
     /**
      * The filterable param `sku`
@@ -125,36 +135,76 @@ export default class InventoryExpiredStockController extends Controller {
      *
      * @var {Array}
      */
+    get placeholderImage() {
+        return placeholderImage(getOwner(this));
+    }
+
     @tracked columns = [
         {
-            label: 'Product',
+            // ember-ui's shared identity cell, as on the inventory list. The
+            // bespoke cell/product-info it replaces stacked a title, a meta line,
+            // a description and three placeholder badges into every row; the SKU
+            // it used to need a column of its own for is an identifier chip here.
+            label: this.intl.t('columns.product'),
             valuePath: 'product.name',
+            labelValue: (row) =>
+                relatedRecordLabel(row, {
+                    uuidPath: 'product_uuid',
+                    relationPath: 'product',
+                    missingLabel: this.intl.t('inventory.product-unavailable'),
+                }),
+            identifierPath: 'product.sku',
+            mediaUrl: (row) => get(row, 'product.photo_url') || this.placeholderImage,
+            imageSizeClass: 'h-5 w-5',
+            showStatusDot: false,
             action: this.viewInventory,
-            width: '170px',
-            cellComponent: 'cell/product-info',
-            modelPath: 'product',
+            width: '240px',
+            cellComponent: 'table/cell/resource-identity',
             resizable: true,
             sortable: true,
             filterable: true,
             filterComponent: 'filter/string',
         },
         {
-            label: 'Product SKU',
+            label: this.intl.t('columns.product-sku'),
             valuePath: 'product.sku',
             cellComponent: 'click-to-copy',
             width: '120px',
+            hidden: true,
             resizable: true,
             sortable: true,
             filterable: true,
             filterComponent: 'filter/string',
         },
         {
-            label: 'Quantity',
+            // Same must-never as the index: `quantity` unlabelled is ambiguous.
+            label: this.intl.t('inventory.fields.on-hand'),
             valuePath: 'quantity',
-            width: '120px',
+            cellComponent: 'cell/count',
+            width: '100px',
         },
         {
-            label: 'Batch',
+            // The screen is "expired stock" and did not show an expiry date. Every
+            // row was expired and none of them said when, so there was no way to tell
+            // last week's problem from last year's.
+            label: this.intl.t('columns.expiry-date'),
+            valuePath: 'expiryDate',
+            sortParam: 'expiry_date_at',
+            width: '120px',
+            resizable: true,
+            sortable: true,
+        },
+        {
+            // How long it has been sitting expired — the number that decides what gets
+            // written off first. The server orders by expiry ascending, so the worst
+            // is already at the top and this column says by how much.
+            label: this.intl.t('inventory.fields.days-over'),
+            valuePath: 'daysOverExpiry',
+            cellComponent: 'cell/count',
+            width: '100px',
+        },
+        {
+            label: this.intl.t('columns.batch'),
             valuePath: 'batch.name',
             width: '120px',
             cellComponent: 'click-to-copy',
@@ -164,7 +214,7 @@ export default class InventoryExpiredStockController extends Controller {
             filterComponent: 'filter/string',
         },
         {
-            label: 'Status',
+            label: this.intl.t('common.status'),
             valuePath: 'status',
             cellComponent: 'table/cell/status',
             width: '10%',
@@ -174,7 +224,7 @@ export default class InventoryExpiredStockController extends Controller {
             filterComponent: 'filter/multi-option',
         },
         {
-            label: 'Last Stocked',
+            label: this.intl.t('columns.last-stocked'),
             valuePath: 'createdAt',
             sortParam: 'created_at',
             width: '10%',
@@ -184,7 +234,7 @@ export default class InventoryExpiredStockController extends Controller {
             filterComponent: 'filter/date',
         },
         {
-            label: 'Updated At',
+            label: this.intl.t('common.updated-at'),
             valuePath: 'updatedAt',
             sortParam: 'updated_at',
             width: '10%',
@@ -206,11 +256,11 @@ export default class InventoryExpiredStockController extends Controller {
             width: '10%',
             actions: [
                 {
-                    label: 'View Inventory',
+                    label: this.intl.t('actions.view-inventory'),
                     fn: this.viewInventory,
                 },
                 {
-                    label: 'Edit Inventory',
+                    label: this.intl.t('actions.edit-inventory'),
                     fn: this.editInventory,
                 },
             ],
@@ -262,7 +312,7 @@ export default class InventoryExpiredStockController extends Controller {
      * @void
      */
     @action viewInventory(inventory) {
-        return this.transitionToRoute('inventory.index.details', inventory);
+        return this.hostRouter.transitionTo('console.pallet.inventory.index.details', inventory);
     }
 
     /**
@@ -272,11 +322,11 @@ export default class InventoryExpiredStockController extends Controller {
      * @void
      */
     @action createInventory() {
-        return this.transitionToRoute('inventory.index.new');
+        return this.hostRouter.transitionTo('console.pallet.inventory.index.new');
     }
 
     @action makeStockAdjustment() {
-        return this.transitionToRoute('inventory.index.new-stock-adjustment');
+        return this.hostRouter.transitionTo('console.pallet.inventory.index.new-stock-adjustment');
     }
 
     /**
@@ -287,6 +337,6 @@ export default class InventoryExpiredStockController extends Controller {
      * @void
      */
     @action async editInventory(inventory) {
-        return this.transitionToRoute('inventory.index.edit', inventory);
+        return this.hostRouter.transitionTo('console.pallet.inventory.index.edit', inventory);
     }
 }

@@ -28,7 +28,10 @@
             </div>
         </div>
     </ContentPanel>
-    <ContentPanel @title="Dimensions" @open={{false}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-900">
+    <ContentPanel @title="Storefront Inventory" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-900">
+        <Product::StorefrontInventory @product={{@product}} />
+    </ContentPanel>
+    <ContentPanel @title="Dimensions" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-900">
         <div class="grid grid-cols-1 gap-2 lg:grid-cols-2 lg:gap-4 text-xs dark:text-gray-100">
 
             <div class="field-info-container">
@@ -53,13 +56,13 @@
 
         </div>
     </ContentPanel>
-    <ContentPanel @title="Uploaded images" @open={{false}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-900">
+    <ContentPanel @title="Uploaded images" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-900">
         <div class="w-14 flex items-center justify-start">
             <div class="grid grid-cols-1 gap-2 lg:grid-cols-2 lg:gap-4 text-xs dark:text-gray-100">
                 <div class="w-14 flex items-center justify-start">
                     <Image
                         src={{@product.photo_url}}
-                        @fallbackSrc={{config "defaultValues.productImage"}}
+                        @fallbackSrc={{config "defaultValues.placeholderImage"}}
                         alt={{this.product.name}}
                         height="48"
                         width="48"

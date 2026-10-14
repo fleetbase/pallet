@@ -1,0 +1,52 @@
+<div class="pallet-dashboard-widget flex h-full min-h-0 flex-col overflow-hidden rounded-md border bg-white shadow-sm dark:bg-gray-800" ...attributes>
+    <div class="pallet-widget-header">
+        <div>
+            <div class="pallet-widget-title">{{t "widgets.titles.top-movers"}}</div>
+            <div class="pallet-widget-subtitle">{{t "widgets.subtitles.top-movers"}}</div>
+        </div>
+        <FaIcon @icon="arrow-trend-up" class="text-gray-400" />
+    </div>
+    <div class="pallet-widget-scroll-body">
+        {{#if this.loadTopProducts.isRunning}}
+            <div class="pallet-widget-empty"><Spinner /></div>
+        {{else if this.error}}
+            <div class="pallet-widget-empty">{{this.error}}</div>
+        {{else if (eq this.products.length 0)}}
+            <div class="pallet-widget-empty">
+                <div>
+                    <FaIcon @icon="arrow-trend-up" class="mb-2 text-2xl" />
+                    <div>{{t "widgets.empty.no-movement"}}</div>
+                </div>
+            </div>
+        {{else}}
+            <div class="space-y-2">
+            {{#each this.productBars as |product index|}}
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-gray-400 dark:text-gray-500 w-4 flex-shrink-0 text-right">
+                        {{add index 1}}
+                    </span>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between mb-0.5">
+                            <span class="text-xs font-medium text-gray-700 dark:text-gray-300 truncate">
+                                {{n-a product.name}}
+                            </span>
+                            <span class="text-xs text-gray-500 dark:text-gray-400 ml-2 flex-shrink-0">
+                                {{product.movement_count}}
+                                moves
+                            </span>
+                        </div>
+                        <div class="grid grid-cols-10 gap-0.5">
+                            {{#each product.filledSegments}}
+                                <div class="h-1.5 rounded-full bg-indigo-500"></div>
+                            {{/each}}
+                            {{#each product.emptySegments}}
+                                <div class="h-1.5 rounded-full bg-gray-100 dark:bg-gray-700"></div>
+                            {{/each}}
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+            </div>
+        {{/if}}
+    </div>
+</div>

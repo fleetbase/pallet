@@ -13,13 +13,18 @@ export default class AdminProductCategoryComponent extends Component {
     @service hostRouter;
     @tracked categories = [];
     @tracked selectedCategory;
-    @tracked isLoading = false;
     @tracked buttonTitle = null;
+    @tracked isLoading = false;
+    @tracked isDeleting = false;
 
     constructor() {
         super(...arguments);
         this.category = this.args.category;
         this.fetchCategoryHierarchy();
+    }
+
+    getRecordUuid(record) {
+        return record?.uuid ?? record?.id;
     }
 
     @action async addCategory() {
@@ -39,13 +44,13 @@ export default class AdminProductCategoryComponent extends Component {
                     file,
                     {
                         path: `uploads/${category.company_uuid}/product-category-icon/${dasherize(category.name ?? this.currentUser.companyId)}`,
-                        subject_uuid: category.id,
+                        subject_uuid: this.getRecordUuid(category),
                         subject_type: `category`,
                         type: `category_icon`,
                     },
                     (uploadedFile) => {
                         category.setProperties({
-                            icon_file_uuid: uploadedFile.id,
+                            icon_file_uuid: this.getRecordUuid(uploadedFile),
                             icon_url: uploadedFile.url,
                             icon: uploadedFile,
                         });
@@ -64,15 +69,23 @@ export default class AdminProductCategoryComponent extends Component {
     }
 
     @action async fetchCategoryHierarchy() {
-        const allCategories = await this.store.query('category', {
-            for: 'pallet_product',
-            with_subcategories: true,
-        });
+        this.isLoading = true;
 
-        this.categories = allCategories.filter((category) => !category.parent);
-        this.categories.forEach((parentCategory) => {
-            parentCategory.subcategories = allCategories.filter((subcategory) => subcategory.parent?.id === parentCategory.id);
-        });
+        try {
+            const allCategories = await this.store.query('category', {
+                for: 'pallet_product',
+                with_subcategories: true,
+            });
+
+            this.categories = allCategories.filter((category) => !category.parent);
+            this.categories.forEach((parentCategory) => {
+                parentCategory.subcategories = allCategories.filter((subcategory) => subcategory.parent?.id === parentCategory.id);
+            });
+        } catch (error) {
+            this.notifications.serverError(error);
+        } finally {
+            this.isLoading = false;
+        }
     }
 
     @action async addSubCategory(parentCategory) {
@@ -94,13 +107,13 @@ export default class AdminProductCategoryComponent extends Component {
                     file,
                     {
                         path: `uploads/${category.company_uuid}/product-category-icon/${dasherize(category.name ?? this.currentUser.companyId)}`,
-                        subject_uuid: category.id,
+                        subject_uuid: this.getRecordUuid(category),
                         subject_type: `category`,
                         type: `category_icon`,
                     },
                     (uploadedFile) => {
                         category.setProperties({
-                            icon_file_uuid: uploadedFile.id,
+                            icon_file_uuid: this.getRecordUuid(uploadedFile),
                             icon_url: uploadedFile.url,
                             icon: uploadedFile,
                         });
@@ -115,25 +128,32 @@ export default class AdminProductCategoryComponent extends Component {
                     this.notifications.success('New subcategory created.');
                     await this.fetchCategoryHierarchy();
                 } catch (error) {
-                    this.notifications.error('Error creating subcategory.');
-                    console.error('Error creating subcategory:', error);
+                    this.notifications.serverError(error);
+                    modal.stopLoading();
                 }
             },
         });
     }
 
-    @action async deleteCategory(category) {
-        const confirmation = confirm(`Are you sure you want to delete the category "${category.name}"?`);
+    @action deleteCategory(category) {
+        return this.modalsManager.confirm({
+            title: `Are you sure you want to delete the category "${category.name}"?`,
+            body: 'Products assigned to this category will no longer be categorized.',
+            confirm: async (modal) => {
+                modal.startLoading();
+                this.isDeleting = true;
 
-        if (confirmation) {
-            try {
-                await category.destroyRecord();
-                this.notifications.success('Category deleted successfully.');
-                await this.fetchCategoryHierarchy();
-            } catch (error) {
-                this.notifications.error('Error deleting category.');
-                console.error('Error deleting category:', error);
-            }
-        }
+                try {
+                    await category.destroyRecord();
+                    this.notifications.success('Category deleted successfully.');
+                    await this.fetchCategoryHierarchy();
+                } catch (error) {
+                    this.notifications.serverError(error);
+                    modal.stopLoading();
+                } finally {
+                    this.isDeleting = false;
+                }
+            },
+        });
     }
 }

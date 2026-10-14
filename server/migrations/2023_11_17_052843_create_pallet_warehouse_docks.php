@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePalletWarehouseDocks extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -19,7 +19,7 @@ class CreatePalletWarehouseDocks extends Migration
             $table->string('public_id')->nullable()->unique();
             $table->foreignUuid('company_uuid')->nullable()->index()->references('uuid')->on('companies');
             $table->foreignUuid('created_by_uuid')->nullable()->index()->references('uuid')->on('users');
-            $table->foreignUuid('warehouse_uuid')->nullable()->index()->references('uuid')->on('places');
+            $table->foreignUuid('warehouse_uuid')->nullable()->index()->references('uuid')->on('pallet_warehouses');
             $table->string('dock_number')->nullable();
             $table->string('direction')->nullable();
             $table->string('capacity')->nullable();
@@ -40,4 +40,4 @@ class CreatePalletWarehouseDocks extends Migration
     {
         Schema::dropIfExists('pallet_warehouse_docks');
     }
-}
+};

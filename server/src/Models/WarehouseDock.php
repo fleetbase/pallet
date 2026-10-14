@@ -2,13 +2,42 @@
 
 namespace Fleetbase\Pallet\Models;
 
+use Fleetbase\Models\Company;
 use Fleetbase\Models\Model;
+use Fleetbase\Models\User;
 use Fleetbase\Traits\HasApiModelBehavior;
+use Fleetbase\Traits\HasPublicId;
 use Fleetbase\Traits\HasUuid;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * Generated from the table schema, the model's casts and its relation methods.
+ * PHPStan cannot see Eloquent's magic properties without these; every one of them
+ * was a reported error before.
+ *
+ * @property ?int                                  $id
+ * @property string                                $uuid
+ * @property ?string                               $public_id
+ * @property ?string                               $company_uuid
+ * @property ?string                               $created_by_uuid
+ * @property ?string                               $warehouse_uuid
+ * @property ?string                               $dock_number
+ * @property ?string                               $direction
+ * @property ?string                               $capacity
+ * @property ?string                               $status
+ * @property ?string                               $type
+ * @property ?array                                $meta
+ * @property ?\Illuminate\Support\Carbon           $created_at
+ * @property ?\Illuminate\Support\Carbon           $updated_at
+ * @property ?\Illuminate\Support\Carbon           $deleted_at
+ * @property \Fleetbase\Pallet\Models\Company|null $company
+ * @property \Fleetbase\Pallet\Models\User|null    $createdBy
+ * @property Warehouse|null                        $warehouse
+ */
 class WarehouseDock extends Model
 {
     use HasUuid;
+    use HasPublicId;
     use HasApiModelBehavior;
 
     /**
@@ -49,7 +78,7 @@ class WarehouseDock extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'uuid',
@@ -68,7 +97,7 @@ class WarehouseDock extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'meta' => 'json',
@@ -76,31 +105,25 @@ class WarehouseDock extends Model
 
     /**
      * Relationship with the company associated with the warehouse dock.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function company()
+    public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class, 'company_uuid', 'uuid');
     }
 
     /**
      * Relationship with the user who created the warehouse dock.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function createdBy()
+    public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by_uuid', 'uuid');
     }
 
     /**
      * Relationship with the warehouse associated with the warehouse dock.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function warehouse()
+    public function warehouse(): BelongsTo
     {
-        return $this->belongsTo(Place::class, 'warehouse_uuid', 'uuid');
+        return $this->belongsTo(Warehouse::class, 'warehouse_uuid', 'uuid');
     }
 }
