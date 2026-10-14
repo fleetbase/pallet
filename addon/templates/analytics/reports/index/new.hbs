@@ -1,0 +1,14 @@
+<Layout::Resource::Panel
+    class="pallet-overlay-fill"
+    @resource={{this.report}}
+    @controller={{this}}
+    @headerTitle={{t "common.create-new-resource" resource=(lowercase (t "resource.report"))}}
+    @saveTask={{this.save}}
+    @onPressCancel={{this.cancel}}
+    @onOverlayReady={{fn (mut this.overlay)}}
+    @width="800px"
+    @authSchema="iam"
+>
+    <ReportBuilder @report={{this.report}} @extension="pallet" />
+    <Spacer @height="300px" />
+</Layout::Resource::Panel>

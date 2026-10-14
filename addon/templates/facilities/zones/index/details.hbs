@@ -1,0 +1,16 @@
+<Layout::Resource::Panel
+    class="pallet-overlay-fill"
+    @resource={{@model}}
+    @controller={{this}}
+    @headerComponent={{component "warehouse-zone/panel-header" resource=@model}}
+    @headerTitle={{@model.name}}
+    @actionButtons={{this.actionButtons}}
+    @onPressCancel={{transition-to "facilities.zones.index"}}
+    @onOverlayReady={{fn (mut this.overlay)}}
+    @headerClass="no-bottom-border"
+    @bodyClass="no-scroll"
+>
+    <TabNavigation @tabs={{this.tabs}} @containerClass="tab-navigation-fill" @contentClass="scrollable" @tablistClass="pl-2">
+        {{outlet}}
+    </TabNavigation>
+</Layout::Resource::Panel>

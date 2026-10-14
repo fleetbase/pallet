@@ -1,0 +1,92 @@
+{{!
+    The event-type filter used to be passed as <:subheader>, which
+    Layout::Resource::Tabular does not have — it never rendered, so the filter
+    was unreachable from the screen.
+}}
+<div class="flex items-center space-x-2 px-4 pt-3 pb-1">
+    <BasicDropdown as |dd|>
+        <dd.Trigger>
+            <button
+                type="button"
+                class="inline-flex items-center px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"
+            >
+                {{#if this.event_type}}
+                    {{t "audit.filter_event_type"}}:
+                    {{this.event_type}}
+                {{else}}
+                    {{t "audit.all_events"}}
+                {{/if}}
+                <FaIcon @icon="chevron-down" class="ml-1 h-3 w-3" />
+            </button>
+        </dd.Trigger>
+        <dd.Content class="z-50 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded shadow-lg min-w-max">
+            <ul class="py-1 text-sm text-gray-700 dark:text-gray-200">
+                {{#each this.eventTypeOptions as |opt|}}
+                    <li>
+                        <button
+                            type="button"
+                            class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 {{if (eq this.event_type opt.value) 'font-semibold'}}"
+                            {{on "click" (fn this.filterByEventType opt.value)}}
+                        >
+                            {{opt.label}}
+                        </button>
+                    </li>
+                {{/each}}
+            </ul>
+        </dd.Content>
+    </BasicDropdown>
+
+    {{#if (or this.event_type this.auditable_type this.query)}}
+        <button type="button" class="inline-flex items-center px-3 py-1.5 text-sm text-red-600 dark:text-red-400 hover:underline" {{on "click" this.clearFilters}}>
+            <FaIcon @icon="times" class="mr-1 h-3 w-3" />
+            {{t "common.clear-filters"}}
+        </button>
+    {{/if}}
+</div>
+
+{{!
+    The audit trail is append-only, so this screen passes no @onPressNew and no
+    bulk-delete options — that, not a @canCreate flag, is how Tabular hides them.
+}}
+{{!
+    Tabular with a block: the block replaces its Table but keeps the search and filter
+    chrome around it, which is how this screen gets expandable rows without losing the
+    header it already had.
+
+    §G's must-never is showing before and after as a raw JSON blob in the row. The diff
+    is a field-by-field table in the expanded row instead, and only the fields that
+    actually changed appear in it.
+}}
+<Layout::Resource::Tabular
+    @resource="audit"
+    @title={{t "audit.title"}}
+    @searchQuery={{this.query}}
+    @onSearch={{perform this.search}}
+    @data={{@model}}
+    @columns={{this.columns}}
+    @page={{this.page}}
+    @onPageChange={{fn (mut this.page)}}
+    @setupTable={{fn (mut this.table)}}
+    @controller={{this}}
+>
+    <Table
+        @rows={{@model}}
+        @columns={{this.columns}}
+        @canExpand={{true}}
+        @selectable={{false}}
+        @pagination={{true}}
+        @paginationMeta={{@model.meta}}
+        @page={{this.page}}
+        @onPageChange={{fn (mut this.page)}}
+        as |Table|
+    >
+        <Table.head />
+        <Table.body as |body|>
+            <body.expanded-row as |audit|>
+                <Audit::Diff @resource={{audit}} />
+            </body.expanded-row>
+        </Table.body>
+    </Table>
+</Layout::Resource::Tabular>
+
+{{outlet}}

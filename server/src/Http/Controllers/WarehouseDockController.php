@@ -2,7 +2,7 @@
 
 namespace Fleetbase\Pallet\Http\Controllers;
 
-class WarehouseSectionController extends PalletResourceController
+class WarehouseDockController extends PalletResourceController
 {
     /**
      * The resource to query.

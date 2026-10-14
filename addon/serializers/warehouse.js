@@ -9,8 +9,10 @@ export default class WarehouseSerializer extends ApplicationSerializer.extend(Em
      */
     get attrs() {
         return {
+            place: { embedded: 'always' },
             sections: { embedded: 'always' },
             docks: { embedded: 'always' },
+            zones: { embedded: 'always' },
         };
     }
 }

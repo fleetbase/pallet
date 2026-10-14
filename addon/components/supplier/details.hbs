@@ -1,0 +1,50 @@
+<div class="details-wrapper" ...attributes>
+    <ContentPanel @title={{t "supplier.sections.details"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-2 gap-2 text-xs dark:text-gray-100">
+            <div class="field-info-container">
+                <div class="field-name">{{t "common.id"}}</div>
+                <ClickToCopy @value={{@resource.public_id}} class="field-value">{{n-a @resource.public_id}}</ClickToCopy>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "common.name"}}</div>
+                <div class="field-value">{{n-a @resource.name}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "common.email"}}</div>
+                <div class="field-value">{{n-a @resource.email}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "common.phone"}}</div>
+                <div class="field-value">{{n-a @resource.phone}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "supplier.fields.type"}}</div>
+                <div class="field-value">{{smart-humanize @resource.type}}</div>
+            </div>
+            <div class="field-info-container">
+                <div class="field-name">{{t "common.status"}}</div>
+                <div class="field-value">
+                    <Badge @status={{@resource.status}}>{{smart-humanize @resource.status}}</Badge>
+                </div>
+            </div>
+            <div class="field-info-container md:col-span-2">
+                <div class="field-name">{{t "common.description"}}</div>
+                <div class="field-value">{{n-a @resource.description}}</div>
+            </div>
+        </div>
+    </ContentPanel>
+    <CustomField::Yield @subject={{@resource}} @viewMode={{true}} @wrapperClass="bordered-top" />
+    {{! What have we ordered from them, and what do they supply. Both collapsed and
+        loaded on open — most visits to a supplier want neither. }}
+    <ContentPanel @title={{t "supplier.sections.purchase-orders"}} @open={{false}} @wrapperClass="bordered-top" @panelBodyWrapperClass="px-0i">
+        <Supplier::PurchaseOrders @resource={{@resource}} />
+    </ContentPanel>
+
+    <ContentPanel @title={{t "supplier.sections.products"}} @open={{false}} @wrapperClass="bordered-top" @panelBodyWrapperClass="px-0i">
+        <Supplier::Products @resource={{@resource}} />
+    </ContentPanel>
+
+    <ContentPanel @title={{t "common.metadata"}} @open={{false}} @wrapperClass="bordered-top" @panelBodyWrapperClass={{unless (is-object-empty @resource.meta) "px-0i" ""}}>
+        <MetadataViewer @metadata={{@resource.meta}} />
+    </ContentPanel>
+</div>

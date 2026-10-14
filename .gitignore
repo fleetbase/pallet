@@ -30,6 +30,8 @@
 composer.lock
 /server_vendor
 /server/vendor/
+/vendor
+/.phpunit.cache
 composer.lock
 .phpunit.result.cache
 .php_cs.cache

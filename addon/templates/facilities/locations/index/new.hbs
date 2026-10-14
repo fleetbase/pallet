@@ -1,0 +1,12 @@
+<Layout::Resource::Panel
+    class="pallet-overlay-fill"
+    @resource={{this.binLocation}}
+    @controller={{this}}
+    @headerTitle="Create a new bin location"
+    @saveTask={{this.save}}
+    @onPressCancel={{this.cancel}}
+    @onOverlayReady={{fn (mut this.overlay)}}
+>
+    <BinLocation::Form @resource={{this.binLocation}} @controller={{this}} />
+    <Spacer @height="200px" />
+</Layout::Resource::Panel>

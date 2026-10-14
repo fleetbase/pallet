@@ -6,15 +6,15 @@ use Fleetbase\FleetOps\Providers\FleetOpsServiceProvider;
 use Fleetbase\Providers\CoreServiceProvider;
 
 if (!class_exists(CoreServiceProvider::class)) {
-    throw new \Exception('Storefront cannot be loaded without `fleetbase/core-api` installed!');
+    throw new \Exception('Pallet cannot be loaded without `fleetbase/core-api` installed!');
 }
 
 if (!class_exists(FleetOpsServiceProvider::class)) {
-    throw new \Exception('Storefront cannot be loaded without `fleetbase/fleetops-api` installed!');
+    throw new \Exception('Pallet cannot be loaded without `fleetbase/fleetops-api` installed!');
 }
 
 /**
- * Billing extension service provider.
+ * Pallet WMS extension service provider.
  */
 class PalletServiceProvider extends CoreServiceProvider
 {
@@ -24,6 +24,16 @@ class PalletServiceProvider extends CoreServiceProvider
      * @var array
      */
     public $observers = [];
+
+    /**
+     * The console commands registered with the service provider.
+     *
+     * @var array
+     */
+    public $commands = [
+        \Fleetbase\Pallet\Console\Commands\ReleaseExpiredReservations::class,
+        \Fleetbase\Pallet\Console\Commands\SeedStarterReports::class,
+    ];
 
     /**
      * Register any application services.
@@ -42,6 +52,11 @@ class PalletServiceProvider extends CoreServiceProvider
     {
         $this->app->register(CoreServiceProvider::class);
         $this->app->register(FleetOpsServiceProvider::class);
+
+        // Without this the report builder mounted on the analytics screen has no data
+        // sources at all — its table list reads "No results found" and no report can be
+        // built. FleetOps and the other extensions register the same way.
+        $this->app->register(ReportSchemaServiceProvider::class);
     }
 
     /**
@@ -53,8 +68,12 @@ class PalletServiceProvider extends CoreServiceProvider
      */
     public function boot()
     {
+        $this->registerCommands();
+        $this->scheduleCommands(function ($schedule) {
+            // abandoned checkouts otherwise hold reserved stock forever
+            $schedule->command('pallet:release-expired-reservations')->everyFiveMinutes()->storeOutputInDb();
+        });
         $this->registerObservers();
-        $this->registerExpansionsFrom(__DIR__ . '/../Expansions');
         $this->loadRoutesFrom(__DIR__ . '/../routes.php');
         $this->loadMigrationsFrom(__DIR__ . '/../../migrations');
     }

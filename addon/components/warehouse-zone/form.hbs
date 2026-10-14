@@ -1,0 +1,72 @@
+<div class="form-wrapper" ...attributes>
+    <ContentPanel @title={{t "warehouse.sections.details"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 text-xs no-input-group-padding">
+            <InputGroup @name={{t "common.name"}} @wrapperClass="col-span-2">
+                <Input @value={{@resource.name}} @type="text" class="w-full form-input" placeholder={{t "common.name"}} disabled={{cannot-write @resource}} />
+            </InputGroup>
+            <InputGroup @name={{t "operations.common.warehouse"}}>
+                <ModelSelect
+                    @modelName="warehouse"
+                    @selectedModel={{@resource.warehouse}}
+                    @placeholder={{t "operations.common.warehouse"}}
+                    @triggerClass="form-select form-input"
+                    @infiniteScroll={{false}}
+                    @renderInPlace={{true}}
+                    @onChange={{this.setWarehouse}}
+                    @disabled={{cannot-write @resource}}
+                    as |model|
+                >
+                    {{n-a (or model.name model.address)}}
+                </ModelSelect>
+            </InputGroup>
+            <InputGroup @name={{t "facilities.zones.code"}}>
+                <Input @value={{@resource.code}} @type="text" class="w-full form-input" placeholder="RCV" disabled={{cannot-write @resource}} />
+            </InputGroup>
+            <InputGroup @name={{t "operations.common.type"}}>
+                <Select
+                    class="w-full form-input form-select"
+                    @options={{this.typeOptions}}
+                    @value={{@resource.type}}
+                    @onSelect={{fn (mut @resource.type)}}
+                    @humanize={{true}}
+                    @disabled={{cannot-write @resource}}
+                />
+            </InputGroup>
+            <InputGroup @name={{t "warehouse.fields.status"}}>
+                <Select
+                    class="w-full form-input form-select"
+                    @options={{this.statusOptions}}
+                    @value={{@resource.status}}
+                    @onSelect={{fn (mut @resource.status)}}
+                    @humanize={{true}}
+                    @disabled={{cannot-write @resource}}
+                />
+            </InputGroup>
+        </div>
+    </ContentPanel>
+
+    <ContentPanel @title={{t "warehouse.sections.capacity"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 text-xs no-input-group-padding">
+            <InputGroup @name={{t "facilities.zones.capacity"}}>
+                <Input @value={{@resource.capacity}} @type="number" class="w-full form-input" placeholder="0" disabled={{cannot-write @resource}} />
+            </InputGroup>
+            <InputGroup @name={{t "warehouse.fields.current-utilization"}}>
+                <Input @value={{@resource.current_utilization}} @type="number" class="w-full form-input" placeholder="0" disabled={{cannot-write @resource}} />
+            </InputGroup>
+            <InputGroup>
+                <Checkbox
+                    @value={{@resource.temperature_controlled}}
+                    @onChange={{fn (mut @resource.temperature_controlled)}}
+                    @disabled={{cannot-write @resource}}
+                    @label={{t "facilities.zones.temperature-controlled"}}
+                />
+            </InputGroup>
+        </div>
+    </ContentPanel>
+
+    <CustomField::Yield @subject={{@resource}} @wrapperClass="bordered-top" />
+
+    <ContentPanel @title={{t "common.metadata"}} @open={{true}} @wrapperClass="bordered-top">
+        <MetadataEditor @value={{@resource.meta}} @onChange={{fn (mut @resource.meta)}} />
+    </ContentPanel>
+</div>

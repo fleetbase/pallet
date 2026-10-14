@@ -1,0 +1,125 @@
+<div class="details-wrapper" ...attributes>
+    {{!
+        Restructured against SCREENS.md §C. Code, type and status were filed under
+        Capacity, which is not where anyone looks for them; the panel is for how full the
+        building is, not what it is called.
+
+        The two-column stacked grid also predates the module's field pattern — one line
+        per field under a group heading, as inventory/details.hbs established.
+    }}
+    <ContentPanel @title={{t "warehouse.sections.details"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="text-xs">
+            <div class="pallet-field-group-heading">{{t "product.groups.identity"}}</div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "common.id"}}</div>
+                <ClickToCopy @value={{@resource.public_id}} class="field-value font-mono">{{n-a @resource.public_id}}</ClickToCopy>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "common.name"}}</div>
+                <div class="field-value">{{n-a @resource.name}}</div>
+            </div>
+            {{#if @resource.code}}
+                <div class="field-info-container field-vertical-container dashed-bottom">
+                    <div class="field-name">{{t "warehouse.fields.code"}}</div>
+                    <ClickToCopy @value={{@resource.code}} class="field-value font-mono">{{@resource.code}}</ClickToCopy>
+                </div>
+            {{/if}}
+            {{#if @resource.type}}
+                <div class="field-info-container field-vertical-container dashed-bottom">
+                    <div class="field-name">{{t "warehouse.fields.type"}}</div>
+                    <div class="field-value">{{smart-humanize @resource.type}}</div>
+                </div>
+            {{/if}}
+            <div class="field-info-container field-vertical-container{{if @resource.meta.description ' dashed-bottom'}}">
+                <div class="field-name">{{t "common.status"}}</div>
+                <div class="field-value">
+                    <Badge @status={{@resource.status}}>{{smart-humanize @resource.status}}</Badge>
+                </div>
+            </div>
+            {{#if @resource.meta.description}}
+                <div class="field-info-container field-vertical-container">
+                    <div class="field-name">{{t "common.description"}}</div>
+                    <div class="field-value">{{@resource.meta.description}}</div>
+                </div>
+            {{/if}}
+
+            <div class="pallet-field-group-heading">{{t "warehouse.groups.contact"}}</div>
+            {{#if @resource.phone}}
+                <div class="field-info-container field-vertical-container dashed-bottom">
+                    <div class="field-name">{{t "common.phone"}}</div>
+                    <div class="field-value">{{@resource.phone}}</div>
+                </div>
+            {{/if}}
+            {{#if @resource.email}}
+                <div class="field-info-container field-vertical-container dashed-bottom">
+                    <div class="field-name">{{t "common.email"}}</div>
+                    <div class="field-value">{{@resource.email}}</div>
+                </div>
+            {{/if}}
+            <div class="field-info-container field-vertical-container">
+                <div class="field-name">{{t "common.address"}}</div>
+                <div class="field-value">{{n-a @resource.address}}</div>
+            </div>
+        </div>
+    </ContentPanel>
+
+    <ContentPanel @title={{t "warehouse.sections.capacity"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="text-xs">
+            <div class="pallet-field-group-heading">{{t "warehouse.groups.utilisation"}}</div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "warehouse.fields.capacity"}}</div>
+                <div class="field-value tabular-nums">{{n-a (format-number @resource.capacity)}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                {{!
+                    current_utilization is a unit count, cast integer on the model — it is
+                    NOT a percentage. This panel used to append a per-cent sign to it, so
+                    250 units against a capacity of 1000 read as "250%". The real figure is
+                    the server's computed utilization_percentage, which divides current by
+                    capacity and multiplies by 100.
+                }}
+                <div class="field-name">{{t "warehouse.fields.current-utilization"}}</div>
+                <div class="field-value tabular-nums">{{n-a (format-number @resource.current_utilization)}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container">
+                <div class="field-name">{{t "warehouse.fields.utilisation-percentage"}}</div>
+                <div class="field-value tabular-nums">
+                    {{#if @resource.utilization_percentage}}{{@resource.utilization_percentage}}%{{else}}&ndash;{{/if}}
+                </div>
+            </div>
+
+            <div class="pallet-field-group-heading">{{t "warehouse.groups.structure"}}</div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "warehouse.fields.total-zones"}}</div>
+                <div class="field-value tabular-nums">{{format-number @resource.total_zones}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "warehouse.fields.total-bins"}}</div>
+                <div class="field-value tabular-nums">{{format-number @resource.total_bins}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "warehouse.fields.total-docks"}}</div>
+                <div class="field-value tabular-nums">{{format-number @resource.total_docks}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container">
+                <div class="field-name">{{t "warehouse.fields.stock-items"}}</div>
+                <div class="field-value tabular-nums">{{format-number @resource.stock_items}}</div>
+            </div>
+        </div>
+    </ContentPanel>
+
+    {{! Zones, not bins — §C's must-never is a flat 4,000-row bin list. }}
+    <ContentPanel @title={{t "warehouse.sections.structure"}} @open={{false}} @wrapperClass="bordered-top" @panelBodyWrapperClass="px-0i">
+        <Warehouse::Structure @resource={{@resource}} />
+    </ContentPanel>
+
+    <ContentPanel @title={{t "warehouse.sections.docks"}} @open={{false}} @wrapperClass="bordered-top" @panelBodyWrapperClass="px-0i">
+        <Warehouse::Docks @resource={{@resource}} />
+    </ContentPanel>
+
+    <CustomField::Yield @subject={{@resource}} @viewMode={{true}} @wrapperClass="bordered-top" />
+
+    <ContentPanel @title={{t "common.metadata"}} @open={{false}} @wrapperClass="bordered-top" @panelBodyWrapperClass={{unless (is-object-empty @resource.meta) "px-0i" ""}}>
+        <MetadataViewer @metadata={{@resource.meta}} />
+    </ContentPanel>
+</div>
