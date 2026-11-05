@@ -25,8 +25,8 @@
     ],
     "require": {
         "php": "^8.0",
-        "fleetbase/core-api": "^1.4.27",
-        "fleetbase/fleetops-api": "^0.5.2",
+        "fleetbase/core-api": "^1.6.74",
+        "fleetbase/fleetops-api": "^0.6.75",
         "php-http/guzzle7-adapter": "^1.0",
         "psr/http-factory-implementation": "*"
     },
@@ -35,7 +35,7 @@
         "nunomaduro/collision": "^5.11.0|^6.4.0",
         "pestphp/pest": "^1.22.6",
         "phpstan/phpstan": "^1.10.38",
-        "symfony/var-dumper": "^5.4.29"
+        "symfony/var-dumper": "^5.4.29|^6.2"
     },
     "repositories": [
         {
