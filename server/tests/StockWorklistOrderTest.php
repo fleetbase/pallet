@@ -53,7 +53,7 @@ test('expired stock is ordered by expiry ascending, longest expired first', func
         ->orderBy('latest_expiry_date_at', 'asc')
         ->get();
 
-    $ages = $rows->map(fn ($row) => (int) round(now()->diffInDays($row->latest_expiry_date_at)))->all();
+    $ages = $rows->map(fn ($row) => (int) round(now()->diffInDays($row->latest_expiry_date_at, true)))->all();
 
     expect($ages)->toBe([90, 30, 2]);
 });
