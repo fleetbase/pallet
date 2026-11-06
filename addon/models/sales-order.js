@@ -1,4 +1,4 @@
-import Model, { attr, belongsTo } from '@ember-data/model';
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import { computed } from '@ember/object';
 import { format as formatDate, isValid as isValidDate, formatDistanceToNow } from 'date-fns';
 
@@ -8,33 +8,44 @@ export default class SalesOrderModel extends Model {
     @attr('string') public_id;
     @attr('string') company_uuid;
     @attr('string') supplier_uuid;
+    @attr('string') warehouse_uuid;
     @attr('string') created_by_uuid;
     @attr('string') transaction_uuid;
     @attr('string') assigned_to_uuid;
     @attr('string') point_of_contact_uuid;
+    @attr('string') customer_uuid;
+    @attr('string') customer_type;
 
     /** @relationships */
     @belongsTo('company') company;
     @belongsTo('user') createdBy;
     @belongsTo('transaction') transaction;
     @belongsTo('user') assignedTo;
-    @belongsTo('vendor') supplier;
+    @belongsTo('supplier') supplier;
+    @belongsTo('warehouse') warehouse;
     @belongsTo('contact') pointOfContact;
+    @belongsTo('contact') customer;
+    @hasMany('sales-order-item', { async: false }) items;
 
     /** @attributes */
+    @attr('string') order_number;
+    @attr('number') item_count;
+    @attr('number') total_value;
     @attr('string') status;
     @attr('string') customer_reference_code;
     @attr('string') reference_code;
     @attr('string') reference_url;
     @attr('string') description;
     @attr('string') comments;
+    @attr('raw') meta;
+
+    /** @date */
     @attr('date') order_date_at;
     @attr('date') expected_delivery_at;
     @attr('date') created_at;
     @attr('date') updated_at;
 
     /** @computed */
-
     @computed('created_at') get createdAgo() {
         if (!isValidDate(this.created_at)) {
             return null;
@@ -81,7 +92,13 @@ export default class SalesOrderModel extends Model {
         if (!isValidDate(this.expected_delivery_at)) {
             return null;
         }
-
         return formatDate(this.expected_delivery_at, 'yyyy-MM-dd');
+    }
+
+    @computed('order_date_at') get orderDate() {
+        if (!isValidDate(this.order_date_at)) {
+            return null;
+        }
+        return formatDate(this.order_date_at, 'PPP');
     }
 }

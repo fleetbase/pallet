@@ -1,0 +1,16 @@
+{{!
+    Was a ContentPanel wrapping a raw <table> with px-4 py-3 cells and no
+    controller at all — so no search, sorting, pagination, column picker or bulk
+    select. Same conversion as the operations screens.
+}}
+<Layout::Resource::Tabular
+    @title={{t "inventory.screens.batches-list"}}
+    @searchQuery={{this.query}}
+    @onSearch={{perform this.search}}
+    @data={{@model}}
+    @columns={{this.columns}}
+    @page={{this.page}}
+    @onPageChange={{fn (mut this.page)}}
+    @setupTable={{fn (mut this.table)}}
+    @controller={{this}}
+/>

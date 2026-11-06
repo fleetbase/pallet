@@ -1,0 +1,15 @@
+{{!
+    The count sheet is its own working screen, not a panel: a counter walking an aisle
+    needs the whole width for bin, product and the count input, and nothing else.
+}}
+<Layout::Container>
+    <Layout::Section>
+        <Layout::Section::Header @title={{@model.count_number}} @badge={{@model.status}} @titleClass="whitespace-nowrap" @badgeClass="whitespace-nowrap">
+            <Button @icon="file-invoice" @type="default" @text={{t "operations.cycle-counts.count.back-to-count"}} @onClick={{this.transitionBack}} @wrapperClass="ml-2" />
+        </Layout::Section::Header>
+
+        <Layout::Section::Body>
+            <CycleCount::CountSheet @resource={{@model}} />
+        </Layout::Section::Body>
+    </Layout::Section>
+</Layout::Container>

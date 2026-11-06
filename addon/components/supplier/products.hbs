@@ -1,0 +1,26 @@
+<div class="text-xs" ...attributes {{did-insert (perform this.load)}}>
+    {{#if this.load.isRunning}}
+        <div class="py-2 text-gray-400">{{t "common.loading"}}</div>
+    {{else if this.products.length}}
+        <table class="w-full text-xs dark:text-gray-100">
+            <thead>
+                <tr class="border-b border-gray-200 text-left whitespace-nowrap text-gray-500 uppercase dark:border-gray-700">
+                    <th class="px-3 py-2 font-medium">{{t "columns.product"}}</th>
+                    <th class="px-3 py-2 font-medium">{{t "product.fields.sku"}}</th>
+                    <th class="px-3 py-2 text-right font-medium">{{t "product.fields.available-stock"}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each this.products as |product|}}
+                    <tr class="border-b border-gray-100 dark:border-gray-800">
+                        <td class="truncate px-3 py-2">{{n-a product.name}}</td>
+                        <td class="truncate px-3 py-2 font-mono">{{n-a product.sku}}</td>
+                        <td class="px-3 py-2 text-right tabular-nums">{{format-number (or product.available_stock 0)}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    {{else}}
+        <div class="py-1 text-gray-400">{{t "supplier.empty.no-products"}}</div>
+    {{/if}}
+</div>

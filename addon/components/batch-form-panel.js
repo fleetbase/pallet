@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import { task } from 'ember-concurrency';
 import contextComponentCallback from '@fleetbase/ember-core/utils/context-component-callback';
 import applyContextComponentArguments from '@fleetbase/ember-core/utils/apply-context-component-arguments';
 
@@ -38,12 +39,6 @@ export default class BatchFormPanelComponent extends Component {
     @tracked context;
 
     /**
-     * Indicates whether the component is in a loading state.
-     * @type {boolean}
-     */
-    @tracked isLoading = false;
-
-    /**
      * Fuel Report status
      * @type {Array}
      */
@@ -56,6 +51,17 @@ export default class BatchFormPanelComponent extends Component {
         super(...arguments);
         this.batch = this.args.batch;
         applyContextComponentArguments(this);
+    }
+
+    getRecordUuid(record) {
+        return record?.uuid ?? record?.id;
+    }
+
+    @action setProduct(product) {
+        this.batch.product = product;
+        this.batch.product_uuid = this.getRecordUuid(product);
+        this.batch.variant = null;
+        this.batch.variant_uuid = null;
     }
 
     /**
@@ -75,31 +81,21 @@ export default class BatchFormPanelComponent extends Component {
      * @action
      * @returns {Promise<any>}
      */
-    @action save() {
+    @task *saveTask() {
         const { batch } = this;
 
         this.loader.showLoader('.next-content-overlay-panel-container', { loadingMessage: 'Saving batch...', preserveTargetPosition: true });
-        this.isLoading = true;
-
         contextComponentCallback(this, 'onBeforeSave', batch);
 
         try {
-            return batch
-                .save()
-                .then((batch) => {
-                    this.notifications.success(`Batch saved successfully.`);
-                    contextComponentCallback(this, 'onAfterSave', batch);
-                })
-                .catch((error) => {
-                    this.notifications.serverError(error);
-                })
-                .finally(() => {
-                    this.loader.removeLoader('.next-content-overlay-panel-container ');
-                    this.isLoading = false;
-                });
+            const savedBatch = yield batch.save();
+            this.notifications.success(`Batch saved successfully.`);
+            contextComponentCallback(this, 'onAfterSave', savedBatch);
+            return savedBatch;
         } catch (error) {
+            this.notifications.serverError(error);
+        } finally {
             this.loader.removeLoader('.next-content-overlay-panel-container ');
-            this.isLoading = false;
         }
     }
 

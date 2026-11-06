@@ -1,0 +1,52 @@
+<div class="text-xs" ...attributes {{did-insert (perform this.load)}}>
+    {{#if this.load.isRunning}}
+        <div class="py-2 text-gray-400">{{t "common.loading"}}</div>
+    {{else if this.zones.length}}
+        <table class="w-full text-xs dark:text-gray-100">
+            <thead>
+                <tr class="border-b border-gray-200 text-left whitespace-nowrap text-gray-500 uppercase dark:border-gray-700">
+                    <th class="px-3 py-2 font-medium">{{t "warehouse.fields.zone"}}</th>
+                    <th class="px-3 py-2 font-medium">{{t "common.type"}}</th>
+                    <th class="px-3 py-2 text-right font-medium">{{t "warehouse.fields.capacity"}}</th>
+                    <th class="px-3 py-2 text-right font-medium">{{t "warehouse.fields.utilisation-percentage"}}</th>
+                    <th class="px-3 py-2 font-medium">{{t "common.status"}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each this.zones as |zone|}}
+                    <tr class="border-b border-gray-100 dark:border-gray-800">
+                        <td class="px-3 py-2">
+                            <div class="truncate font-medium text-gray-700 dark:text-gray-200">{{n-a zone.name}}</div>
+                            {{#if zone.code}}
+                                <div class="truncate font-mono text-gray-400">{{zone.code}}</div>
+                            {{/if}}
+                        </td>
+                        <td class="px-3 py-2">
+                            {{smart-humanize (n-a zone.type)}}
+                            {{#if zone.temperature_controlled}}
+                                {{! Temperature control changes what may be stored here, so it
+                                    belongs on the row rather than one level down. }}
+                                <Badge @type="sky" @hideStatusDot={{true}} class="ml-1">{{t "warehouse.fields.temperature-controlled"}}</Badge>
+                            {{/if}}
+                        </td>
+                        <td class="px-3 py-2 text-right tabular-nums">{{n-a (format-number zone.capacity)}}</td>
+                        {{! The percentage, never current_utilization with a sign glued on —
+                            that is the defect this panel's sibling had. }}
+                        <td class="px-3 py-2 text-right tabular-nums">
+                            {{#if zone.utilization_percentage}}{{zone.utilization_percentage}}%{{else}}&ndash;{{/if}}
+                        </td>
+                        <td class="px-3 py-2">
+                            {{#if zone.status}}
+                                <Badge @status={{zone.status}}>{{smart-humanize zone.status}}</Badge>
+                            {{else}}
+                                <span class="text-gray-400">&ndash;</span>
+                            {{/if}}
+                        </td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    {{else}}
+        <div class="py-1 text-gray-400">{{t "warehouse.empty.no-zones"}}</div>
+    {{/if}}
+</div>
