@@ -1,6 +1,21 @@
-> v0.0.2 ~ "A working warehouse: stock-safe operations, a consumable API and a rebuilt console"
+> v0.1.0 ~ "Laravel 12 and core-api 2.0"
 
 ---
+## Highlights
+
+- **Laravel 12.** The server package now runs on Laravel 12 with Carbon 3 and requires `fleetbase/core-api` ^2.0. It installs into the Laravel 12 Fleetbase API (fleetbase/fleetbase v0.8.0); v0.0.2 was never tagged, so this is the first Laravel 12 release and the first release after v0.0.1.
+- **No security advisory exceptions.** `composer audit` reports no advisories on the Laravel 12 dependency set, so the Composer advisory workarounds are gone.
+
+---
+## Upgrading
+
+- **Requires fleetbase/core-api v2.0.0** (Laravel 12, PHP 8.2 or later). Upgrade the API to fleetbase/fleetbase v0.8.0 first, then this extension.
+- **Requires** `fleetbase/fleetops-api` ^0.7.0. Install those Laravel 12 releases first.
+- Run `php artisan migrate` after upgrading.
+
+---
+# Also in this release: the untagged v0.0.2 work
+
 ## Highlights
 
 v0.0.1 was a scaffold. v0.0.2 is the first release of Pallet that runs end to end: products, warehouses, stock, purchase and sales orders, and the operations in between, with the stock arithmetic guarded and the console rebuilt on the same patterns as the other Fleetbase extensions.
