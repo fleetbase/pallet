@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -47,13 +46,13 @@ return new class extends Migration
 
         // one column drop per call: SQLite cannot combine multiple drops
         Schema::table('pallet_stock_transactions', function (Blueprint $table) {
-            if (Schema::getConnection()->getDriverName() !== 'sqlite') {
-                $table->dropForeign(['inventory_uuid']);
-            }
+            $table->dropForeign(['inventory_uuid']);
+            $table->dropIndex(['inventory_uuid']);
             $table->dropColumn('inventory_uuid');
         });
 
         Schema::table('pallet_stock_transactions', function (Blueprint $table) {
+            $table->dropIndex(['transaction_date_at']);
             $table->dropColumn('transaction_date_at');
         });
     }

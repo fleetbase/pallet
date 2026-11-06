@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -31,24 +30,19 @@ return new class extends Migration
      */
     public function down()
     {
-        // one column drop per call and no dropForeign on SQLite: SQLite can
-        // neither drop foreign keys nor combine multiple column drops
-        $sqlite = Schema::getConnection()->getDriverName() === 'sqlite';
-
+        // one column drop per call: SQLite cannot combine multiple column drops
         if (Schema::hasColumn('pallet_stock_adjustment', 'warehouse_uuid')) {
-            Schema::table('pallet_stock_adjustment', function (Blueprint $table) use ($sqlite) {
-                if (!$sqlite) {
-                    $table->dropForeign(['warehouse_uuid']);
-                }
+            Schema::table('pallet_stock_adjustment', function (Blueprint $table) {
+                $table->dropForeign(['warehouse_uuid']);
+                $table->dropIndex(['warehouse_uuid']);
                 $table->dropColumn('warehouse_uuid');
             });
         }
 
         if (Schema::hasColumn('pallet_stock_adjustment', 'inventory_uuid')) {
-            Schema::table('pallet_stock_adjustment', function (Blueprint $table) use ($sqlite) {
-                if (!$sqlite) {
-                    $table->dropForeign(['inventory_uuid']);
-                }
+            Schema::table('pallet_stock_adjustment', function (Blueprint $table) {
+                $table->dropForeign(['inventory_uuid']);
+                $table->dropIndex(['inventory_uuid']);
                 $table->dropColumn('inventory_uuid');
             });
         }

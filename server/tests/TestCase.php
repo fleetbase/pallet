@@ -5,6 +5,7 @@ namespace Fleetbase\Pallet\Tests;
 use Composer\InstalledVersions;
 use Fleetbase\Pallet\Providers\PalletServiceProvider;
 use Illuminate\Contracts\Console\Kernel as ConsoleKernel;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as TestbenchTestCase;
@@ -112,18 +113,16 @@ abstract class TestCase extends TestbenchTestCase
 
     /**
      * Several Pallet tables carry MySQL spatial columns (the layout `area`
-     * polygons). Doctrine has no SQLite mapping for them, so any schema
-     * change touching those tables blows up during introspection; treat them
-     * as text for the SQLite lane.
+     * polygons). Laravel 12 introspects the schema without Doctrine, so those
+     * columns need no type mapping on SQLite; only the spatial SQL functions do.
      */
     private function mapSpatialTypesForSqlite(): void
     {
-        $platform = DB::connection()->getDoctrineConnection()->getDatabasePlatform();
-
-        foreach (['polygon', 'point', 'geometry', 'linestring', 'multipolygon'] as $spatialType) {
-            if (!$platform->hasDoctrineTypeMappingFor($spatialType)) {
-                $platform->registerDoctrineTypeMapping($spatialType, 'text');
-            }
+        // On MySQL the spatial fork's connection supplies a Blueprint with polygon().
+        // Laravel 11 dropped polygon() from its own Blueprint, so give the SQLite lane
+        // the same column as a geometry.
+        if (!Blueprint::hasMacro('polygon')) {
+            Blueprint::macro('polygon', fn (string $column) => $this->geometry($column, 'polygon'));
         }
 
         // Writing a Place emits ST_GeomFromText(...) as raw SQL. SQLite has no such

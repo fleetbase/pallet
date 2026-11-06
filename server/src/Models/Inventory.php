@@ -307,7 +307,7 @@ class Inventory extends Model
             return false;
         }
 
-        return $this->expiry_date_at->isFuture() && $this->expiry_date_at->diffInDays(now()) <= 30;
+        return $this->expiry_date_at->isFuture() && (int) $this->expiry_date_at->diffInDays(now(), true) <= 30;
     }
 
     /**
@@ -325,7 +325,7 @@ class Inventory extends Model
             return 0;
         }
 
-        return $this->expiry_date_at->diffInDays(now());
+        return (int) $this->expiry_date_at->diffInDays(now(), true);
     }
 
     /**
