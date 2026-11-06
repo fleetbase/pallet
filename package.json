@@ -1,6 +1,6 @@
 {
     "name": "@fleetbase/pallet-engine",
-    "version": "0.0.2",
+    "version": "0.1.0",
     "description": "Inventory & Warehouse Management Extension for Fleetbase",
     "keywords": [
         "fleetbase-extension",
