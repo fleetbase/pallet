@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -25,7 +24,6 @@ return new class extends Migration
             $table->integer('sort_order')->default(0);
             $table->timestamps();
             $table->softDeletes();
-
         });
 
         // Inventory Reservations
@@ -72,7 +70,6 @@ return new class extends Migration
             $table->json('meta')->nullable();
             $table->timestamps();
             $table->softDeletes();
-
         });
 
         // Bin Locations
@@ -173,7 +170,6 @@ return new class extends Migration
             $table->json('meta')->nullable();
             $table->timestamps();
             $table->softDeletes();
-
         });
 
         // Cycle Counts
@@ -222,7 +218,6 @@ return new class extends Migration
             $table->json('meta')->nullable();
             $table->timestamps();
             $table->softDeletes();
-
         });
 
         // Stock Transfers
@@ -265,7 +260,6 @@ return new class extends Migration
             $table->json('meta')->nullable();
             $table->timestamps();
             $table->softDeletes();
-
         });
 
         // Add new columns to existing pallet_inventories table
@@ -363,6 +357,10 @@ return new class extends Migration
             foreach ($columns as $column) {
                 if (Schema::hasColumn('pallet_inventories', $column)) {
                     Schema::table('pallet_inventories', function (Blueprint $table) use ($column) {
+                        // SQLite rebuilds the table on a column drop and fails on an index left behind.
+                        if (Schema::hasIndex('pallet_inventories', [$column])) {
+                            $table->dropIndex([$column]);
+                        }
                         $table->dropColumn($column);
                     });
                 }
