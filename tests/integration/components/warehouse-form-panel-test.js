@@ -12,7 +12,7 @@ module('Integration | Component | warehouse-form-panel', function (hooks) {
         await render(hbs`<WarehouseFormPanel @warehouse={{this.warehouse}} />`);
 
         assert.dom('.next-content-overlay').exists();
-        assert.dom('.next-content-overlay').includesText('New Warehouse');
+        assert.dom('.next-content-overlay-panel-title').includesText('New Warehouse');
     });
 
     test('it titles an existing warehouse by name', async function (assert) {
@@ -21,6 +21,6 @@ module('Integration | Component | warehouse-form-panel', function (hooks) {
         await render(hbs`<WarehouseFormPanel @warehouse={{this.warehouse}} />`);
 
         assert.dom('.next-content-overlay').includesText('North DC');
-        assert.dom('.next-content-overlay').doesNotIncludeText('New Warehouse');
+        assert.dom('.next-content-overlay-panel-title').doesNotIncludeText('New Warehouse');
     });
 });

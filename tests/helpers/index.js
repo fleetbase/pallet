@@ -1,5 +1,15 @@
 import { setupApplicationTest as upstreamSetupApplicationTest, setupRenderingTest as upstreamSetupRenderingTest, setupTest as upstreamSetupTest } from 'ember-qunit';
 import { setupIntl } from 'ember-intl/test-support';
+import resetStorages from 'ember-local-storage/test-support/reset-storage';
+
+// ember-local-storage caches its storage proxies at module scope, so without a reset a
+// test reads proxies owned by the previous test's (destroyed) container.
+function setupStorageReset(hooks) {
+    hooks.afterEach(function () {
+        window.localStorage.clear();
+        resetStorages();
+    });
+}
 
 // This file exists to provide wrappers around ember-qunit's
 // test setup functions. This way, you can easily extend the setup that is
@@ -7,6 +17,7 @@ import { setupIntl } from 'ember-intl/test-support';
 
 function setupApplicationTest(hooks, options) {
     upstreamSetupApplicationTest(hooks, options);
+    setupStorageReset(hooks);
 
     // Additional setup for application tests can be done here.
     //
@@ -26,6 +37,7 @@ function setupApplicationTest(hooks, options) {
 
 function setupRenderingTest(hooks, options) {
     upstreamSetupRenderingTest(hooks, options);
+    setupStorageReset(hooks);
 
     // ember-intl must have its locale before the first render; otherwise the first `t`
     // sets it mid-render and Glimmer rejects the update.
@@ -36,6 +48,7 @@ function setupRenderingTest(hooks, options) {
 
 function setupTest(hooks, options) {
     upstreamSetupTest(hooks, options);
+    setupStorageReset(hooks);
 
     // Additional setup for unit tests can be done here.
 }

@@ -12,7 +12,7 @@ module('Integration | Component | batch-form-panel', function (hooks) {
         await render(hbs`<BatchFormPanel @batch={{this.batch}} />`);
 
         assert.dom('.next-content-overlay').exists();
-        assert.dom('.next-content-overlay').includesText('Add Batch');
+        assert.dom('.next-content-overlay-panel-title').includesText('Add Batch');
     });
 
     test('it titles an existing batch by name', async function (assert) {
@@ -21,6 +21,6 @@ module('Integration | Component | batch-form-panel', function (hooks) {
         await render(hbs`<BatchFormPanel @batch={{this.batch}} />`);
 
         assert.dom('.next-content-overlay').includesText('Batch 7');
-        assert.dom('.next-content-overlay').doesNotIncludeText('Add Batch');
+        assert.dom('.next-content-overlay-panel-title').doesNotIncludeText('Add Batch');
     });
 });
