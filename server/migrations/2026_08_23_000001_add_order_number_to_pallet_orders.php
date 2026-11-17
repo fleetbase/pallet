@@ -101,16 +101,8 @@ return new class extends Migration {
 
     private function hasIndex(string $table, string $index): bool
     {
-        try {
-            return Schema::getConnection()
-                ->getDoctrineSchemaManager()
-                ->introspectTable($table)
-                ->hasIndex($index);
-        } catch (Throwable $e) {
-            // SQLite in the test harness has no doctrine introspection for some
-            // index shapes; treating it as absent is safe because both callers
-            // are guarded and adding a duplicate index would throw loudly.
-            return false;
-        }
+        // Laravel 11+ reads indexes through the schema builder on every driver;
+        // Doctrine's schema manager is gone.
+        return Schema::hasIndex($table, $index);
     }
 };

@@ -95,7 +95,7 @@ class WarehouseController extends PalletResourceController
                     $input['place_uuid'] = $place->uuid;
                 }
             }, function ($request, $warehouse) {
-                $docks = $request->array('warehouse.docks', []);
+                $docks = $request->inputArray('warehouse.docks', []);
                 foreach ($docks as $dock) {
                     WarehouseDock::create(array_merge($dock, [
                         'warehouse_uuid'  => $warehouse->uuid,
@@ -104,7 +104,7 @@ class WarehouseController extends PalletResourceController
                     ]));
                 }
 
-                $sections = $request->array('warehouse.sections', []);
+                $sections = $request->inputArray('warehouse.sections', []);
                 foreach ($sections as $section) {
                     $createdSection = WarehouseSection::create(array_merge($section, [
                         'warehouse_uuid'  => $warehouse->uuid,
@@ -206,7 +206,7 @@ class WarehouseController extends PalletResourceController
                     $input['place_uuid'] = $place->uuid;
                 }
             }, function ($request, $warehouse) {
-                $docks = $request->array('warehouse.docks', []);
+                $docks = $request->inputArray('warehouse.docks', []);
                 foreach ($docks as $dock) {
                     WarehouseDock::updateOrCreate(
                         ['uuid' => data_get($dock, 'uuid')],
@@ -214,7 +214,7 @@ class WarehouseController extends PalletResourceController
                     );
                 }
 
-                $sections = $request->array('warehouse.sections', []);
+                $sections = $request->inputArray('warehouse.sections', []);
                 foreach ($sections as $section) {
                     WarehouseSection::updateOrCreate(
                         ['uuid' => data_get($section, 'uuid')],

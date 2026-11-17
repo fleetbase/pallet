@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -33,23 +32,18 @@ return new class extends Migration
      */
     public function down()
     {
-        // no dropForeign on SQLite: SQLite cannot drop foreign keys
-        $sqlite = Schema::getConnection()->getDriverName() === 'sqlite';
-
-        Schema::table('pallet_purchase_orders', function (Blueprint $table) use ($sqlite) {
+        Schema::table('pallet_purchase_orders', function (Blueprint $table) {
             if (Schema::hasColumn('pallet_purchase_orders', 'warehouse_uuid')) {
-                if (!$sqlite) {
-                    $table->dropForeign(['warehouse_uuid']);
-                }
+                $table->dropForeign(['warehouse_uuid']);
+                $table->dropIndex(['warehouse_uuid']);
                 $table->dropColumn('warehouse_uuid');
             }
         });
 
-        Schema::table('pallet_sales_orders', function (Blueprint $table) use ($sqlite) {
+        Schema::table('pallet_sales_orders', function (Blueprint $table) {
             if (Schema::hasColumn('pallet_sales_orders', 'warehouse_uuid')) {
-                if (!$sqlite) {
-                    $table->dropForeign(['warehouse_uuid']);
-                }
+                $table->dropForeign(['warehouse_uuid']);
+                $table->dropIndex(['warehouse_uuid']);
                 $table->dropColumn('warehouse_uuid');
             }
         });
