@@ -6,21 +6,13 @@ import { hbs } from 'ember-cli-htmlbars';
 module('Integration | Component | batch-panel', function (hooks) {
     setupRenderingTest(hooks);
 
-    test('it renders', async function (assert) {
-        // Set any properties with this.set('myProperty', 'value');
-        // Handle any actions with this.set('myAction', function(val) { ... });
+    test('it shows the batch with its details tab', async function (assert) {
+        this.batch = this.owner.lookup('service:store').createRecord('batch', { public_id: 'batch_7', name: 'Batch 7' });
 
-        await render(hbs`<BatchPanel />`);
+        await render(hbs`<BatchPanel @batch={{this.batch}} />`);
 
-        assert.dom(this.element).hasText('');
-
-        // Template block usage:
-        await render(hbs`
-      <BatchPanel>
-        template block text
-      </BatchPanel>
-    `);
-
-        assert.dom(this.element).hasText('template block text');
+        assert.dom('.next-content-overlay').includesText('Batch Details');
+        assert.dom('.next-content-overlay').includesText('batch_7');
+        assert.dom('.ui-tabs .ui-tab.active').includesText('Details');
     });
 });

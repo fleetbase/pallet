@@ -6,21 +6,13 @@ import { hbs } from 'ember-cli-htmlbars';
 module('Integration | Component | supplier-panel', function (hooks) {
     setupRenderingTest(hooks);
 
-    test('it renders', async function (assert) {
-        // Set any properties with this.set('myProperty', 'value');
-        // Handle any actions with this.set('myAction', function(val) { ... });
+    test('it shows the supplier with its details tab', async function (assert) {
+        this.supplier = this.owner.lookup('service:store').createRecord('supplier', { public_id: 'supplier_1', name: 'Acme Supply' });
 
-        await render(hbs`<SupplierPanel />`);
+        await render(hbs`<SupplierPanel @supplier={{this.supplier}} />`);
 
-        assert.dom(this.element).hasText('');
-
-        // Template block usage:
-        await render(hbs`
-      <SupplierPanel>
-        template block text
-      </SupplierPanel>
-    `);
-
-        assert.dom(this.element).hasText('template block text');
+        assert.dom('.next-content-overlay').includesText('Supplier Details');
+        assert.dom('.next-content-overlay').includesText('Acme Supply');
+        assert.dom('.ui-tabs .ui-tab.active').includesText('Details');
     });
 });

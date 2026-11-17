@@ -6,21 +6,23 @@ import { hbs } from 'ember-cli-htmlbars';
 module('Integration | Component | admin/product-category', function (hooks) {
     setupRenderingTest(hooks);
 
-    test('it renders', async function (assert) {
-        // Set any properties with this.set('myProperty', 'value');
-        // Handle any actions with this.set('myAction', function(val) { ... });
+    hooks.beforeEach(function () {
+        this.queries = [];
+        const store = this.owner.lookup('service:store');
+        store.query = async (modelName, params) => {
+            this.queries.push({ modelName, params });
+            const parent = { id: 'cat_1', name: 'Pallets', parent: null };
+            const child = { id: 'cat_2', name: 'Euro pallets', parent };
+            return [parent, child];
+        };
+    });
 
+    test('it loads product categories and lists the top-level ones', async function (assert) {
         await render(hbs`<Admin::ProductCategory />`);
 
-        assert.dom(this.element).hasText('');
-
-        // Template block usage:
-        await render(hbs`
-      <Admin::ProductCategory>
-        template block text
-      </Admin::ProductCategory>
-    `);
-
-        assert.dom(this.element).hasText('template block text');
+        assert.deepEqual(this.queries, [{ modelName: 'category', params: { for: 'pallet_product', with_subcategories: true } }]);
+        assert.dom(this.element).includesText('Categories');
+        assert.dom(this.element).includesText('Pallets');
+        assert.dom(this.element).includesText('Add category');
     });
 });

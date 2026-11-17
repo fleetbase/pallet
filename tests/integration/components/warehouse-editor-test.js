@@ -6,21 +6,24 @@ import { hbs } from 'ember-cli-htmlbars';
 module('Integration | Component | warehouse-editor', function (hooks) {
     setupRenderingTest(hooks);
 
-    test('it renders', async function (assert) {
-        // Set any properties with this.set('myProperty', 'value');
-        // Handle any actions with this.set('myAction', function(val) { ... });
+    // The console layout provides this outlet; the editor's overlay is wormholed into it.
+    hooks.beforeEach(function () {
+        this.outlet = document.createElement('div');
+        this.outlet.id = 'warehouse-overlay-render-outlet';
+        document.body.appendChild(this.outlet);
+    });
 
-        await render(hbs`<WarehouseEditor />`);
+    hooks.afterEach(function () {
+        this.outlet.remove();
+    });
 
-        assert.dom(this.element).hasText('');
+    test('it renders the editor trigger and wormholes the editor overlay', async function (assert) {
+        this.warehouse = this.owner.lookup('service:store').createRecord('warehouse', { public_id: 'warehouse_1', name: 'North DC' });
 
-        // Template block usage:
-        await render(hbs`
-      <WarehouseEditor>
-        template block text
-      </WarehouseEditor>
-    `);
+        await render(hbs`<WarehouseEditor @warehouse={{this.warehouse}} />`);
 
-        assert.dom(this.element).hasText('template block text');
+        assert.dom(this.element).includesText('Warehouse Editor');
+        assert.dom('.next-content-overlay', this.outlet).exists();
+        assert.dom(this.outlet).includesText('Add Section');
     });
 });

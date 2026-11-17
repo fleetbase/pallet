@@ -6,21 +6,21 @@ import { hbs } from 'ember-cli-htmlbars';
 module('Integration | Component | supplier-form-panel', function (hooks) {
     setupRenderingTest(hooks);
 
-    test('it renders', async function (assert) {
-        // Set any properties with this.set('myProperty', 'value');
-        // Handle any actions with this.set('myAction', function(val) { ... });
+    test('it titles a new supplier', async function (assert) {
+        this.supplier = this.owner.lookup('service:store').createRecord('supplier', {});
 
-        await render(hbs`<SupplierFormPanel />`);
+        await render(hbs`<SupplierFormPanel @supplier={{this.supplier}} />`);
 
-        assert.dom(this.element).hasText('');
+        assert.dom('.next-content-overlay').exists();
+        assert.dom('.next-content-overlay').includesText('Add Supplier');
+    });
 
-        // Template block usage:
-        await render(hbs`
-      <SupplierFormPanel>
-        template block text
-      </SupplierFormPanel>
-    `);
+    test('it titles an existing supplier by name', async function (assert) {
+        this.supplier = this.owner.lookup('service:store').createRecord('supplier', { name: 'Acme Supply', public_id: 'supplier_1' });
 
-        assert.dom(this.element).hasText('template block text');
+        await render(hbs`<SupplierFormPanel @supplier={{this.supplier}} />`);
+
+        assert.dom('.next-content-overlay').includesText('Acme Supply');
+        assert.dom('.next-content-overlay').doesNotIncludeText('Add Supplier');
     });
 });

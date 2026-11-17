@@ -6,21 +6,12 @@ import { hbs } from 'ember-cli-htmlbars';
 module('Integration | Component | inventory-form-panel', function (hooks) {
     setupRenderingTest(hooks);
 
-    test('it renders', async function (assert) {
-        // Set any properties with this.set('myProperty', 'value');
-        // Handle any actions with this.set('myAction', function(val) { ... });
+    test('it titles a new inventory', async function (assert) {
+        this.inventory = this.owner.lookup('service:store').createRecord('inventory', {});
 
-        await render(hbs`<InventoryFormPanel />`);
+        await render(hbs`<InventoryFormPanel @inventory={{this.inventory}} />`);
 
-        assert.dom(this.element).hasText('');
-
-        // Template block usage:
-        await render(hbs`
-      <InventoryFormPanel>
-        template block text
-      </InventoryFormPanel>
-    `);
-
-        assert.dom(this.element).hasText('template block text');
+        assert.dom('.next-content-overlay').exists();
+        assert.dom('.next-content-overlay').includesText('Add Inventory');
     });
 });
