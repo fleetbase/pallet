@@ -1,0 +1,186 @@
+<div class="p-4 space-y-4">
+    <ContentPanel @title="Line Items" @open={{true}} @pad={{false}} @panelBodyClass="bg-white dark:bg-gray-900">
+        {{! Summary row }}
+        <div class="flex items-center justify-between px-4 py-2 border-b border-gray-100 dark:border-gray-700 text-xs text-gray-500 dark:text-gray-400">
+            <span>{{this.itemCount}} item(s)</span>
+            {{#if this.totalValue}}
+                <span class="font-medium text-gray-700 dark:text-gray-200">
+                    Total:
+                    {{@purchaseOrder.currency}}
+                    {{this.totalValue}}
+                </span>
+            {{/if}}
+        </div>
+
+        {{! Items table }}
+        <table class="w-full text-xs">
+            <thead>
+                <tr class="border-b border-gray-100 dark:border-gray-700 text-gray-500 dark:text-gray-400">
+                    <th class="text-left px-4 py-2 font-medium">Product</th>
+                    <th class="text-left px-4 py-2 font-medium">Variant</th>
+                    <th class="text-left px-4 py-2 font-medium">SKU</th>
+                    <th class="text-right px-4 py-2 font-medium">Qty</th>
+                    <th class="text-right px-4 py-2 font-medium">Unit Price</th>
+                    <th class="text-right px-4 py-2 font-medium">Total</th>
+                    <th class="text-center px-4 py-2 font-medium">Status</th>
+                    <th class="px-4 py-2"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each this.items as |item|}}
+                    {{#if (eq this.editingItem.id item.id)}}
+                        {{! Inline edit row }}
+                        <tr class="border-b border-gray-100 dark:border-gray-700 bg-blue-50 dark:bg-blue-900/20">
+                            <td class="px-4 py-2">
+                                <ModelSelect
+                                    @modelName="pallet-product"
+                                    @selectedModel={{this.editingItem.product}}
+                                    @placeholder="Select product"
+                                    @triggerClass="form-select form-input text-xs"
+                                    @infiniteScroll={{false}}
+                                    @renderInPlace={{true}}
+                                    @onChange={{this.setEditingProduct}}
+                                    as |model|
+                                >
+                                    {{model.name}}
+                                </ModelSelect>
+                            </td>
+                            <td class="px-4 py-2">
+                                {{#if this.editingItem.product.has_variants}}
+                                    <PowerSelect
+                                        @options={{this.editingItem.product.variants}}
+                                        @selected={{find-by "uuid" this.editingItem.variant_uuid this.editingItem.product.variants}}
+                                        @onChange={{this.setEditingVariant}}
+                                        @placeholder="Select variant"
+                                        @triggerClass="form-select form-input text-xs"
+                                        as |variant|
+                                    >
+                                        {{n-a (or variant.display_name variant.name)}}
+                                    </PowerSelect>
+                                {{else}}
+                                    <span class="text-gray-400">—</span>
+                                {{/if}}
+                            </td>
+                            <td class="px-4 py-2">
+                                <Input @value={{this.editingItem.sku}} class="form-input w-full text-xs" placeholder="SKU" />
+                            </td>
+                            <td class="px-4 py-2">
+                                <Input @type="number" @value={{this.editingItem.quantity}} class="form-input w-20 text-xs text-right" placeholder="0" />
+                            </td>
+                            <td class="px-4 py-2">
+                                <Input @type="number" @value={{this.editingItem.unit_price}} class="form-input w-24 text-xs text-right" placeholder="0.00" />
+                            </td>
+                            <td class="px-4 py-2 text-right text-gray-400">—</td>
+                            <td class="px-4 py-2"></td>
+                            <td class="px-4 py-2">
+                                <div class="flex items-center gap-1">
+                                    <Button @icon="check" @type="primary" @size="xs" @onClick={{this.saveEditingItem}} @helpText="Save" />
+                                    <Button @icon="times" @type="default" @size="xs" @onClick={{this.cancelEditing}} @helpText="Cancel" />
+                                </div>
+                            </td>
+                        </tr>
+                    {{else}}
+                        {{! Read row }}
+                        <tr class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                            <td class="px-4 py-2 font-medium text-gray-800 dark:text-gray-100">
+                                {{n-a item.product.name}}
+                            </td>
+                            <td class="px-4 py-2 text-gray-500 dark:text-gray-400">{{n-a (or item.variant.display_name item.variant.name)}}</td>
+                            <td class="px-4 py-2 text-gray-500 dark:text-gray-400">{{n-a item.sku}}</td>
+                            <td class="px-4 py-2 text-right">
+                                {{item.quantity}}
+                                {{#if item.quantity_received}}
+                                    <span class="text-gray-400">({{item.quantity_received}} rcvd)</span>
+                                {{/if}}
+                            </td>
+                            <td class="px-4 py-2 text-right">{{n-a item.unit_price}}</td>
+                            <td class="px-4 py-2 text-right font-medium">{{n-a item.total_price}}</td>
+                            <td class="px-4 py-2 text-center">
+                                <Badge @status={{item.status}} />
+                            </td>
+                            <td class="px-4 py-2">
+                                <div class="flex items-center gap-1 justify-end">
+                                    {{! the server refuses both of these on a closed order, and refuses
+                                         a delete once stock has received against the line; disable them
+                                         here so the console does not offer what it cannot do }}
+                                    <Button @icon="pen" @type="default" @size="xs" @onClick={{fn this.startEditingItem item}} @disabled={{this.isReadOnly}} @helpText="Edit item" />
+                                    <Button
+                                        @icon="trash"
+                                        @type="danger"
+                                        @size="xs"
+                                        @onClick={{fn this.removeItem item}}
+                                        @disabled={{or this.isReadOnly item.quantity_received}}
+                                        @helpText="Remove item"
+                                    />
+                                </div>
+                            </td>
+                        </tr>
+                    {{/if}}
+                {{/each}}
+            </tbody>
+        </table>
+
+        {{! New item row }}
+        {{#if this.isAddingItem}}
+            <div class="border-t border-gray-100 dark:border-gray-700 px-4 py-3 bg-green-50 dark:bg-green-900/20">
+                <div class="grid grid-cols-6 gap-2 items-end">
+                    <div>
+                        <label class="block text-xs text-gray-500 mb-1">Product</label>
+                        <ModelSelect
+                            @modelName="pallet-product"
+                            @selectedModel={{this.newItem.product}}
+                            @placeholder="Select product"
+                            @triggerClass="form-select form-input text-xs"
+                            @infiniteScroll={{false}}
+                            @renderInPlace={{true}}
+                            @onChange={{this.setNewProduct}}
+                            as |model|
+                        >
+                            {{model.name}}
+                        </ModelSelect>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-500 mb-1">Variant</label>
+                        {{#if this.newItem.product.has_variants}}
+                            <PowerSelect
+                                @options={{this.newItem.product.variants}}
+                                @selected={{find-by "uuid" this.newItem.variant_uuid this.newItem.product.variants}}
+                                @onChange={{this.setNewVariant}}
+                                @placeholder="Select variant"
+                                @triggerClass="form-select form-input text-xs"
+                                as |variant|
+                            >
+                                {{n-a (or variant.display_name variant.name)}}
+                            </PowerSelect>
+                        {{else}}
+                            <Input class="form-input w-full text-xs" disabled={{true}} placeholder="No variants" />
+                        {{/if}}
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-500 mb-1">SKU</label>
+                        <Input @value={{this.newItem.sku}} class="form-input w-full text-xs" placeholder="SKU" />
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-500 mb-1">Quantity</label>
+                        <Input @type="number" @value={{this.newItem.quantity}} class="form-input w-full text-xs" placeholder="0" />
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-500 mb-1">Unit Price</label>
+                        <Input @type="number" @value={{this.newItem.unit_price}} class="form-input w-full text-xs" placeholder="0.00" />
+                    </div>
+                    <div class="flex gap-1">
+                        <Button @icon="plus" @type="primary" @size="sm" @text="Add" @onClick={{this.addItem}} />
+                        <Button @icon="times" @type="default" @size="sm" @onClick={{this.cancelAddingItem}} />
+                    </div>
+                </div>
+            </div>
+        {{/if}}
+
+        {{! Add item button }}
+        {{#unless this.isAddingItem}}
+            <div class="px-4 py-2 border-t border-gray-100 dark:border-gray-700">
+                <Button @icon="plus" @type="default" @size="sm" @text="Add Line Item" @onClick={{this.startAddingItem}} @disabled={{this.isReadOnly}} />
+            </div>
+        {{/unless}}
+    </ContentPanel>
+</div>

@@ -2,21 +2,13 @@
 
 namespace Fleetbase\Pallet\Http\Filter;
 
-use Fleetbase\Http\Filter\Filter;
 use Fleetbase\Pallet\Support\Utils;
 
-class ProductFilter extends Filter
+class ProductFilter extends PalletFilter
 {
-    public function queryForInternal()
-    {
-        $this->builder->where('company_uuid', $this->session->get('company'));
-        $this->builder->where('type', 'pallet-product');
-    }
-
     public function query(?string $query)
     {
         $this->builder->search($query);
-        $this->builder->where('type', 'pallet-product');
     }
 
     public function name(?string $name)
@@ -41,7 +33,7 @@ class ProductFilter extends Filter
 
     public function price(?string $price)
     {
-        $this->builder->searchWhere('price', $price);
+        $this->builder->searchWhere('unit_price', $price);
     }
 
     public function salePrice(?string $salePrice)
@@ -72,6 +64,23 @@ class ProductFilter extends Filter
     public function weight(?string $weight)
     {
         $this->builder->searchWhere('weight', $weight);
+    }
+
+    /**
+     * Scope products to one supplier.
+     *
+     * `supplier` was already declared in the model's $filterParams, but no method
+     * existed to act on it, so the parameter was accepted and silently ignored — the
+     * listing came back unfiltered and looked like the supplier stocked everything.
+     */
+    public function supplier(?string $supplierUuid)
+    {
+        $this->builder->where('supplier_uuid', $supplierUuid);
+    }
+
+    public function category(?string $categoryUuid)
+    {
+        $this->builder->where('category_uuid', $categoryUuid);
     }
 
     public function createdAt($createdAt)

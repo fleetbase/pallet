@@ -1,0 +1,5 @@
+{{#if this.badge}}
+    <Badge @status={{this.badge.status}} @type={{this.badge.type}} @hideStatusDot={{true}}>{{this.badge.text}}</Badge>
+{{else}}
+    <span class="text-gray-400">–</span>
+{{/if}}

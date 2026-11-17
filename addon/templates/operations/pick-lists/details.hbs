@@ -1,0 +1,21 @@
+{{!
+    Header arguments per the lessons in iteration 22: @badge (not @status) for the
+    status pill, no subtitle (the title column is a fixed quarter of the header), and
+    a nowrap title because the badge takes a further 110px of that quarter.
+}}
+<Layout::Container>
+    <Layout::Section>
+        <Layout::Section::Header @title={{@model.pick_list_number}} @badge={{@model.status}} @titleClass="whitespace-nowrap" @badgeClass="whitespace-nowrap">
+            {{#each this.actionButtons as |button|}}
+                <Button @icon={{button.icon}} @type={{or button.type "default"}} @text={{button.text}} @onClick={{button.fn}} @wrapperClass="ml-2" />
+            {{/each}}
+            <Button @icon="list" @type="default" @text={{t "operations.pick-lists.back-to-list"}} @onClick={{transition-to "operations.pick-lists.index"}} @wrapperClass="ml-2" />
+        </Layout::Section::Header>
+
+        <Layout::Section::Body>
+            <div class="space-y-3 p-4">
+                {{outlet}}
+            </div>
+        </Layout::Section::Body>
+    </Layout::Section>
+</Layout::Container>

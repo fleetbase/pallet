@@ -1,0 +1,46 @@
+<div class="pallet-dashboard-widget flex h-full min-h-0 flex-col overflow-hidden rounded-md border bg-white shadow-sm dark:bg-gray-800" ...attributes>
+    <div class="pallet-widget-header">
+        <div>
+            <div class="pallet-widget-title">{{t "widgets.titles.recent-activity"}}</div>
+            <div class="pallet-widget-subtitle">Operational audit events across inventory workflows</div>
+        </div>
+        <FaIcon @icon="clock-rotate-left" class="text-gray-400" />
+    </div>
+    <div class="pallet-widget-scroll-body p-0">
+        {{#if this.loadActivity.isRunning}}
+            <div class="pallet-widget-empty"><Spinner /></div>
+        {{else if this.error}}
+            <div class="pallet-widget-empty">{{this.error}}</div>
+        {{else if (eq this.events.length 0)}}
+            <div class="pallet-widget-empty">
+                <div>
+                    <FaIcon @icon="clock-rotate-left" class="mb-2 text-2xl" />
+                    <div>{{t "widgets.empty.no-activity"}}</div>
+                </div>
+            </div>
+        {{else}}
+            <div class="divide-y divide-gray-50 dark:divide-gray-800">
+            {{#each this.events as |event|}}
+                <div class="flex items-start gap-3 px-3 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <div class="mt-0.5 flex-shrink-0">
+                        <FaIcon @icon={{this.eventIcon event.event_type}} class="text-sm {{this.eventColor event.event_type}}" />
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs font-medium text-gray-800 dark:text-gray-100 truncate">
+                            {{n-a event.action}}
+                            {{#if event.subjectLabel}}
+                                <span class="text-gray-500 dark:text-gray-400">· {{event.subjectLabel}}</span>
+                            {{/if}}
+                        </p>
+                        <p class="text-xs text-gray-400 mt-0.5">
+                            {{n-a event.performedBy.name}}
+                            &middot;
+                            <span title={{event.created_at}}>{{format-date-fns event.created_at "MMM d, HH:mm"}}</span>
+                        </p>
+                    </div>
+                </div>
+            {{/each}}
+            </div>
+        {{/if}}
+    </div>
+</div>

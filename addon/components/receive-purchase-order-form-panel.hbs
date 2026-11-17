@@ -1,0 +1,188 @@
+<Overlay @position="right" @noBackdrop={{true}} @fullHeight={{true}} @isResizable={{true}} @width="1100px" @overlayClass="pallet-overlay-has-footer">
+    <Overlay::Header @title={{t "purchase-order.receive.title"}} @status={{or this.purchaseOrder.order_number this.purchaseOrder.public_id}} @hideStatusDot={{true}} @disableBadgeHumanize={{true}} @createdAt={{this.purchaseOrder.createdAt}}>
+        <:actions>
+            <Button @type="default" @icon="times" @helpText="Close" @onClick={{this.onPressCancel}} />
+
+        </:actions>
+    </Overlay::Header>
+
+    {{!
+        No @increaseInnerBodyHeightBy here. It inflates the body's inner wrapper by
+        that many pixels, and these two panels are the only ones in the module that
+        pair it with an Overlay::Footer — so the primary action sat at y=1014 in a
+        941px viewport, below the fold, with 450px of empty space above it.
+    }}
+    <Overlay::Body>
+        <div class="p-4 space-y-4">
+
+            {{! PO Summary }}
+            <ContentPanel @title="Order Summary" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-900">
+                <div class="grid grid-cols-3 gap-3 text-xs dark:text-gray-100">
+                    <div class="field-info-container">
+                        <div class="field-name">{{t "purchase-order.receive.po-number"}}</div>
+                        <div class="field-value font-medium">{{n-a this.purchaseOrder.order_number}}</div>
+                    </div>
+                    <div class="field-info-container">
+                        <div class="field-name">Supplier</div>
+                        <div class="field-value">{{n-a this.purchaseOrder.supplier.name}}</div>
+                    </div>
+                    <div class="field-info-container">
+                        <div class="field-name">Status</div>
+                        <div class="field-value"><Badge @status={{this.purchaseOrder.status}} /></div>
+                    </div>
+                    <div class="field-info-container">
+                        <div class="field-name">Reference</div>
+                        <div class="field-value">{{n-a this.purchaseOrder.reference_code}}</div>
+                    </div>
+                    <div class="field-info-container">
+                        <div class="field-name">Expected Delivery</div>
+                        <div class="field-value">{{n-a this.purchaseOrder.expected_delivery_at}}</div>
+                    </div>
+                    <div class="field-info-container">
+                        <div class="field-name">Total Items</div>
+                        <div class="field-value">{{this.purchaseOrder.item_count}}</div>
+                    </div>
+                </div>
+            </ContentPanel>
+
+            {{! Receive Items }}
+            <ContentPanel @title="Receive Items" @open={{true}} @pad={{false}} @panelBodyClass="bg-white dark:bg-gray-900">
+                {{#unless this.hasWarehouseContext}}
+                    <div class="px-3 py-2 text-xs text-yellow-800 bg-yellow-50 border-b border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-700 dark:text-yellow-200">
+                        <FaIcon @icon="triangle-exclamation" class="mr-1" />
+                        Select a warehouse on this order before receiving stock.
+                    </div>
+                {{/unless}}
+                {{#if this.hasNoReceivableItems}}
+                    <div class="p-6 text-center text-gray-400 dark:text-gray-500 text-sm">
+                        <FaIcon @icon="check-circle" class="text-green-500 text-2xl mb-2" />
+                        <p>All items on this purchase order have already been received.</p>
+                    </div>
+                {{else}}
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full text-xs">
+                            <thead class="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                                <tr>
+                                    <th class="px-3 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Product</th>
+                                    <th class="px-3 py-2 text-right font-medium text-gray-500 dark:text-gray-400">Ordered</th>
+                                    <th class="px-3 py-2 text-right font-medium text-gray-500 dark:text-gray-400">Received</th>
+                                    <th class="px-3 py-2 text-right font-medium text-gray-500 dark:text-gray-400">Outstanding</th>
+                                    <th class="px-3 py-2 text-right font-medium text-gray-500 dark:text-gray-400 w-24">Receive Now</th>
+                                    <th class="px-3 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Zone</th>
+                                    <th class="px-3 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Bin</th>
+                                    <th class="px-3 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Lot #</th>
+                                    <th class="px-3 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Expiry</th>
+                                    <th class="px-3 py-2 text-left font-medium text-gray-500 dark:text-gray-400">Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+                                {{#each this.receivableItems as |item|}}
+                                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                                        <td class="px-3 py-2 font-medium text-gray-800 dark:text-gray-100">
+                                            {{n-a item.product.name}}
+                                            {{#if item.variant}}
+                                                <span class="block text-gray-500 font-normal">{{n-a (or item.variant.display_name item.variant.name)}}</span>
+                                            {{/if}}
+                                            {{#if item.sku}}
+                                                <span class="block text-gray-400 font-normal">{{item.sku}}</span>
+                                            {{/if}}
+                                        </td>
+                                        <td class="px-3 py-2 text-right text-gray-600 dark:text-gray-300">
+                                            {{item.quantity}}
+                                        </td>
+                                        <td class="px-3 py-2 text-right text-gray-600 dark:text-gray-300">
+                                            {{item.quantity_received}}
+                                        </td>
+                                        <td class="px-3 py-2 text-right font-medium text-orange-600 dark:text-orange-400">
+                                            {{item.outstanding_quantity}}
+                                        </td>
+                                        <td class="px-3 py-2">
+                                            <Input
+                                                @type="number"
+                                                @value={{(get (this.getReceiptEntry item) "quantity_received")}}
+                                                min="0"
+                                                max={{item.outstanding_quantity}}
+                                                class="form-input w-full text-xs text-right"
+                                                placeholder="0"
+                                                {{on "input" (fn this.updateReceiptField item "quantity_received")}}
+                                            />
+                                        </td>
+                                        <td class="px-3 py-2 min-w-40">
+                                            <ModelSelect
+                                                @modelName="warehouse-zone"
+                                                @selectedModel={{(get (this.getReceiptEntry item) "zone")}}
+                                                @placeholder="Zone"
+                                                @triggerClass="form-select form-input text-xs"
+                                                @infiniteScroll={{false}}
+                                                @renderInPlace={{true}}
+                                                @onChange={{fn this.setReceiptZone item}}
+                                                as |zone|
+                                            >
+                                                {{n-a (or zone.name zone.public_id)}}
+                                            </ModelSelect>
+                                        </td>
+                                        <td class="px-3 py-2 min-w-40">
+                                            <ModelSelect
+                                                @modelName="bin-location"
+                                                @selectedModel={{(get (this.getReceiptEntry item) "binLocation")}}
+                                                @placeholder="Bin"
+                                                @triggerClass="form-select form-input text-xs"
+                                                @infiniteScroll={{false}}
+                                                @renderInPlace={{true}}
+                                                @onChange={{fn this.setReceiptBinLocation item}}
+                                                as |binLocation|
+                                            >
+                                                {{n-a (or binLocation.bin_number binLocation.barcode)}}
+                                            </ModelSelect>
+                                        </td>
+                                        <td class="px-3 py-2">
+                                            <Input
+                                                @value={{(get (this.getReceiptEntry item) "lot_number")}}
+                                                class="form-input w-full text-xs"
+                                                placeholder="LOT-001"
+                                                {{on "input" (fn this.updateReceiptField item "lot_number")}}
+                                            />
+                                        </td>
+                                        <td class="px-3 py-2">
+                                            <Input
+                                                @type="date"
+                                                @value={{(get (this.getReceiptEntry item) "expiry_date")}}
+                                                class="form-input w-full text-xs"
+                                                {{on "input" (fn this.updateReceiptField item "expiry_date")}}
+                                            />
+                                        </td>
+                                        <td class="px-3 py-2">
+                                            <Input
+                                                @value={{(get (this.getReceiptEntry item) "notes")}}
+                                                class="form-input w-full text-xs"
+                                                placeholder="Notes..."
+                                                {{on "input" (fn this.updateReceiptField item "notes")}}
+                                            />
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                {{/if}}
+            </ContentPanel>
+
+        </div>
+    </Overlay::Body>
+
+    <Overlay::Footer>
+        <div class="flex items-center justify-end gap-2 p-4">
+            <Button @type="default" @text="Cancel" @onClick={{this.onPressCancel}} />
+            {{#unless this.hasNoReceivableItems}}
+                <Button
+                    @type="primary"
+                    @icon="truck-ramp-box"
+                    @text="Receive Goods"
+                    @isLoading={{this.receiveOrder.isRunning}}
+                    @disabled={{or this.receiveOrder.isRunning (not this.hasWarehouseContext)}}
+                    @onClick={{perform this.receiveOrder}}
+                />
+            {{/unless}}
+        </div>
+    </Overlay::Footer>
+</Overlay>

@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import { task } from 'ember-concurrency';
 import { isBlank } from '@ember/utils';
 import Point from '@fleetbase/fleetops-data/utils/geojson/point';
 import contextComponentCallback from '@fleetbase/ember-core/utils/context-component-callback';
@@ -45,12 +46,6 @@ export default class WarehouseFormPanelComponent extends Component {
     @tracked context;
 
     /**
-     * Indicates whether the component is in a loading state.
-     * @type {boolean}
-     */
-    @tracked isLoading = false;
-
-    /**
      * The coordinates input component instance.
      * @type {CoordinateInputComponent}
      */
@@ -82,31 +77,21 @@ export default class WarehouseFormPanelComponent extends Component {
      * @action
      * @returns {Promise<any>}
      */
-    @action save() {
+    @task *saveTask() {
         const { warehouse } = this;
 
         this.loader.showLoader('.next-content-overlay-panel-container', { loadingMessage: 'Saving place...', preserveTargetPosition: true });
-        this.isLoading = true;
-
         contextComponentCallback(this, 'onBeforeSave', warehouse);
 
         try {
-            return warehouse
-                .save()
-                .then((warehouse) => {
-                    this.notifications.success(`Warehouse (${warehouse.name}) saved successfully.`);
-                    contextComponentCallback(this, 'onAfterSave', warehouse);
-                })
-                .catch((error) => {
-                    this.notifications.serverError(error);
-                })
-                .finally(() => {
-                    this.loader.removeLoader('.next-content-overlay-panel-container ');
-                    this.isLoading = false;
-                });
+            const savedWarehouse = yield warehouse.save();
+            this.notifications.success(`Warehouse (${savedWarehouse.name}) saved successfully.`);
+            contextComponentCallback(this, 'onAfterSave', savedWarehouse);
+            return savedWarehouse;
         } catch (error) {
+            this.notifications.serverError(error);
+        } finally {
             this.loader.removeLoader('.next-content-overlay-panel-container ');
-            this.isLoading = false;
         }
     }
 
@@ -151,6 +136,17 @@ export default class WarehouseFormPanelComponent extends Component {
     }
 
     /**
+     * Sets the warehouse phone number from the phone input.
+     *
+     * @action
+     * @param {string} phone - The E164 formatted phone number.
+     * @memberof WarehouseFormPanelComponent
+     */
+    @action setPhone(phone) {
+        this.warehouse.phone = phone;
+    }
+
+    /**
      * Performs reverse geocoding given latitude and longitude. Updates place properties with the geocoding result.
      *
      * @action
@@ -190,7 +186,7 @@ export default class WarehouseFormPanelComponent extends Component {
      * @param {number} coordinates.longitude - Longitude value.
      * @memberof WarehouseFormPanelComponent
      */
-    @action updatePlaceCoordinates({ latitude, longitude }) {
+    @action updateWarehouseCoordinates({ latitude, longitude }) {
         const location = new Point(longitude, latitude);
 
         this.warehouse.setProperties({ location });
@@ -202,5 +198,13 @@ export default class WarehouseFormPanelComponent extends Component {
         }
 
         this.warehouse.meta[property] = value;
+    }
+
+    @action setWarehouseType(event) {
+        this.warehouse.type = event.target.value;
+    }
+
+    @action setWarehouseStatus(event) {
+        this.warehouse.status = event.target.value;
     }
 }

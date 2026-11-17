@@ -1,5 +1,5 @@
 <div class="p-4 space-y-4">
-    <ContentPanel @title="Map" @open={{false}}>
+    <ContentPanel @title="Map" @open={{true}}>
         <LeafletMap class="w-full h-48 rounded-b-md shadow-md" @lat={{@warehouse.latitude}} @lng={{@warehouse.longitude}} @zoom={{17}} @zoomControl={{false}} as |layers|>
             <layers.tile @url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png" />
             <layers.marker

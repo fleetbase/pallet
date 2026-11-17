@@ -2,109 +2,100 @@ import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { task } from 'ember-concurrency';
 
 export default class InventoryIndexEditController extends Controller {
-    /**
-     * Inject the `hostRouter` service
-     *
-     * @memberof ManagementInventorysIndexEditController
-     */
     @service hostRouter;
-
-    /**
-     * Inject the `hostRouter` service
-     *
-     * @memberof ManagementInventorysIndexEditController
-     */
+    @service intl;
+    @service notifications;
     @service modalsManager;
+    @service events;
 
-    /**
-     * The overlay component context.
-     *
-     * @memberof ManagementInventorysIndexEditController
-     */
     @tracked overlay;
 
     /**
-     * When exiting the overlay.
-     *
-     * @return {Transition}
-     * @memberof ManagementInventorysIndexEditController
+     * The panel header's action buttons. The template binds this; without it the
+     * edit panel renders no way back to the record's details.
      */
-    @action transitionBack(inventory) {
-        if (inventory.hasDirtyAttributes) {
-            return this.confirmContinueWithUnsavedChanges(inventory, {
-                confirm: () => {
-                    inventory.rollbackAttributes();
-                    return this.transitionToRoute('inventory.index');
-                },
-            });
-        }
-
-        return this.transitionToRoute('inventory.index');
-    }
-
-    /**
-     * Set the overlay component context object.
-     *
-     * @param {OverlayContext} overlay
-     * @memberof ManagementInventorysIndexEditController
-     */
-    @action setOverlayContext(overlay) {
-        this.overlay = overlay;
-    }
-
-    /**
-     * When inventory details button is clicked in overlay.
-     *
-     * @param {InventoryModel} inventory
-     * @return {Promise}
-     * @memberof ManagementInventorysIndexEditController
-     */
-    @action onViewDetails(inventory) {
-        // check if inventory record has been edited and prompt for confirmation
-        if (inventory.hasDirtyAttributes) {
-            return this.confirmContinueWithUnsavedChanges(inventory);
-        }
-
-        return this.transitionToRoute('inventory.index.details', inventory);
-    }
-
-    /**
-     * Trigger a route refresh and focus the new inventory created.
-     *
-     * @param {InventoryModel} inventory
-     * @return {Promise}
-     * @memberof ManagementInventorysIndexEditController
-     */
-    @action onAfterSave(inventory) {
-        if (this.overlay) {
-            this.overlay.close();
-        }
-
-        this.hostRouter.refresh();
-        return this.transitionToRoute('inventory.index.details', inventory);
-    }
-
-    /**
-     * Prompts the user to confirm if they wish to continue with unsaved changes.
-     *
-     * @method
-     * @param {InventoryModel} inventory - The inventory object with unsaved changes.
-     * @param {Object} [options={}] - Additional options for configuring the modal.
-     * @returns {Promise} A promise that resolves when the user confirms, and transitions to a new route.
-     * @memberof ManagementInventorysIndexEditController
-     */
-    confirmContinueWithUnsavedChanges(inventory, options = {}) {
-        return this.modalsManager.confirm({
-            title: 'Continue Without Saving?',
-            body: 'Unsaved changes to this inventory will be lost. Click continue to proceed.',
-            acceptButtonText: 'Continue without saving',
-            confirm: () => {
-                inventory.rollbackAttributes();
-                return this.transitionToRoute('inventory.index.details', inventory);
+    get actionButtons() {
+        return [
+            {
+                icon: 'eye',
+                fn: this.view,
             },
-            ...options,
+        ];
+    }
+
+    /**
+     * The template bound @saveTask={{this.save}} and @onPressCancel={{this.cancel}}
+     * but neither existed here, so the panel rendered no save button at all: you
+     * could open the edit form, change anything you liked, and have no way to keep
+     * it. Mirrors the warehouse edit controller, which is the working example.
+     */
+    @task *save(inventory) {
+        try {
+            yield inventory.save();
+            this.events.trackResourceUpdated(inventory);
+            this.overlay?.close();
+
+            yield this.hostRouter.transitionTo('console.pallet.inventory.index.details', inventory);
+            this.notifications.success(
+                this.intl.t('common.resource-updated-success', {
+                    resource: 'Inventory',
+                    resourceName: inventory.get('product.name') ?? inventory.public_id,
+                })
+            );
+        } catch (error) {
+            this.notifications.serverError(error);
+        }
+    }
+
+    @action cancel() {
+        if (this.model.hasDirtyAttributes) {
+            return this.confirmContinueWithUnsavedChanges(this.model, 'console.pallet.inventory.index');
+        }
+
+        return this.hostRouter.transitionTo('console.pallet.inventory.index');
+    }
+
+    @action view() {
+        if (this.model.hasDirtyAttributes) {
+            return this.confirmContinueWithUnsavedChanges(this.model, 'console.pallet.inventory.index.details', this.model);
+        }
+
+        return this.hostRouter.transitionTo('console.pallet.inventory.index.details', this.model);
+    }
+
+    /**
+     * The list route has no dynamic segment, so passing the record to it threw
+     * "More context objects were passed than there are dynamic segments" — the
+     * modal closed, rollbackAttributes() had already discarded the edits, and the
+     * transition never ran. Cancel lost your work and left you on the form.
+     * Models are passed explicitly now, and only where the route takes one.
+     */
+    confirmContinueWithUnsavedChanges(inventory, routeName, ...models) {
+        return this.modalsManager.confirm({
+            title: this.intl.t('common.continue-without-saving'),
+            body: this.intl.t('common.continue-without-saving-prompt', { resource: 'Inventory' }),
+            acceptButtonText: this.intl.t('common.continue'),
+            confirm: async () => {
+                inventory.rollbackAttributes();
+                /*
+                 * The modal tears itself down as the transition starts, and that
+                 * teardown aborts the transition Ember has already begun. The
+                 * navigation still completes — measured landing on the list — but
+                 * awaiting it here turned the abort into an unhandled rejection and
+                 * an uncaught TransitionAborted in the console on every cancel.
+                 * Swallow only that; a real routing failure still throws.
+                 */
+                try {
+                    await this.hostRouter.transitionTo(routeName, ...models);
+                } catch (error) {
+                    if (error?.name !== 'TransitionAborted') {
+                        throw error;
+                    }
+                }
+            },
         });
     }
 }

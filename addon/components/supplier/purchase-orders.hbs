@@ -1,0 +1,26 @@
+<div class="text-xs" ...attributes {{did-insert (perform this.load)}}>
+    {{#if this.load.isRunning}}
+        <div class="py-2 text-gray-400">{{t "common.loading"}}</div>
+    {{else if this.orders.length}}
+        <table class="w-full text-xs dark:text-gray-100">
+            <thead>
+                <tr class="border-b border-gray-200 text-left whitespace-nowrap text-gray-500 uppercase dark:border-gray-700">
+                    <th class="px-3 py-2 font-medium">{{t "purchase-order.fields.order-number"}}</th>
+                    <th class="px-3 py-2 font-medium">{{t "common.status"}}</th>
+                    <th class="px-3 py-2 font-medium">{{t "common.created-at"}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each this.orders as |order|}}
+                    <tr class="border-b border-gray-100 dark:border-gray-800">
+                        <td class="px-3 py-2 font-mono">{{n-a order.order_number}}</td>
+                        <td class="px-3 py-2"><Badge @status={{order.status}}>{{smart-humanize order.status}}</Badge></td>
+                        <td class="px-3 py-2 whitespace-nowrap">{{n-a order.createdAtShort}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    {{else}}
+        <div class="py-1 text-gray-400">{{t "supplier.empty.no-purchase-orders"}}</div>
+    {{/if}}
+</div>

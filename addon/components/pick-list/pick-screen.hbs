@@ -1,0 +1,142 @@
+<div class="flex h-full flex-col" ...attributes>
+    <div class="sticky top-0 z-10 border-b border-gray-200 bg-white px-4 py-3 dark:border-gray-700 dark:bg-gray-900">
+        <div class="flex flex-row items-center space-x-4">
+            <div class="flex-1">
+                <input
+                    type="text"
+                    value={{this.scan}}
+                    placeholder={{t "operations.pick-lists.pick.scan-placeholder"}}
+                    aria-label={{t "operations.pick-lists.pick.scan-placeholder"}}
+                    class="w-full form-input"
+                    disabled={{not this.isOpen}}
+                    {{on "input" this.setScan}}
+                    {{on "keydown" this.onScan}}
+                    {{did-insert this.registerScanField}}
+                />
+            </div>
+            <div class="whitespace-nowrap text-xs text-gray-500 dark:text-gray-400">
+                {{t "operations.pick-lists.pick.progress" picked=this.progress.picked lines=this.progress.lines short=this.progress.short}}
+            </div>
+        </div>
+        {{#if this.lastError}}
+            <div class="mt-2 text-xs text-amber-600 dark:text-amber-300">{{this.lastError}}</div>
+        {{/if}}
+        {{#unless this.isOpen}}
+            <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">{{t "operations.pick-lists.pick.not-open"}}</div>
+        {{/unless}}
+    </div>
+
+    <div class="flex-1 overflow-y-auto p-4">
+        {{#if this.currentLine}}
+            {{!
+                One line, large. §F's must-never here is a table with no current-line
+                focus — the picker is at a bin looking at a shelf, not reading a grid.
+            }}
+            <div class="rounded-md border border-blue-300 bg-blue-50 p-4 dark:border-blue-700 dark:bg-blue-900">
+                <div class="text-xs uppercase text-blue-700 dark:text-blue-200">{{t "operations.pick-lists.pick.current"}}</div>
+                <div class="mt-1 font-mono text-3xl font-semibold text-gray-800 dark:text-gray-50">
+                    {{n-a this.currentLine.item.binLocation.bin_number}}
+                </div>
+                <div class="mt-2 text-lg text-gray-700 dark:text-gray-100">{{n-a this.currentLine.item.product.name}}</div>
+                <div class="text-xs text-gray-500 dark:text-gray-400">{{n-a this.currentLine.item.product.sku}}</div>
+
+                <div class="mt-3 flex flex-row items-baseline space-x-6">
+                    <div>
+                        <div class="text-xs uppercase text-gray-500 dark:text-gray-400">{{t "operations.pick-lists.pick.quantity"}}</div>
+                        <div class="text-2xl font-semibold tabular-nums text-gray-800 dark:text-gray-50">{{format-number this.currentLine.requested}}</div>
+                    </div>
+                    {{#if this.currentLine.item.lot_number}}
+                        {{! FEFO: the lot is named, and only that lot may be scanned. }}
+                        <div>
+                            <div class="text-xs uppercase text-gray-500 dark:text-gray-400">{{t "operations.pick-lists.pick.lot"}}</div>
+                            <div class="font-mono text-lg text-amber-600 dark:text-amber-300">{{this.currentLine.item.lot_number}}</div>
+                        </div>
+                    {{/if}}
+                </div>
+
+                {{#if this.isShorting}}
+                    <div class="mt-4 space-y-2 border-t border-blue-200 pt-3 dark:border-blue-700">
+                        <div class="text-xs text-gray-600 dark:text-gray-300">{{t "operations.pick-lists.pick.short-explain"}}</div>
+                        <div class="flex flex-row items-center space-x-2">
+                            <input
+                                type="number"
+                                min="0"
+                                max={{this.currentLine.requested}}
+                                value={{this.shortQuantity}}
+                                placeholder={{t "operations.pick-lists.pick.found"}}
+                                aria-label={{t "operations.pick-lists.pick.found"}}
+                                class="w-24 text-right form-input"
+                                {{on "input" this.setShortQuantity}}
+                            />
+                            <input
+                                type="text"
+                                value={{this.shortReason}}
+                                placeholder={{t "operations.pick-lists.pick.reason"}}
+                                aria-label={{t "operations.pick-lists.pick.reason"}}
+                                class="flex-1 form-input"
+                                {{on "input" this.setShortReason}}
+                            />
+                            <Button @type="primary" @text={{t "operations.pick-lists.pick.record-short"}} @isLoading={{this.confirmPick.isRunning}} @onClick={{this.submitShort}} />
+                            <Button @type="default" @text={{t "common.cancel"}} @onClick={{this.cancelShort}} />
+                        </div>
+                    </div>
+                {{else}}
+                    <div class="mt-4 flex flex-row items-center space-x-2">
+                        <Button
+                            @icon="check"
+                            @type="primary"
+                            @text={{t "operations.pick-lists.pick.confirm"}}
+                            @disabled={{not this.isOpen}}
+                            @isLoading={{this.confirmPick.isRunning}}
+                            @onClick={{perform this.confirmPick this.currentLine}}
+                        />
+                        <Button @icon="triangle-exclamation" @type="default" @text={{t "operations.pick-lists.pick.short"}} @disabled={{not this.isOpen}} @onClick={{this.startShort}} />
+                        <Button @icon="forward" @type="default" @text={{t "operations.pick-lists.pick.skip"}} @disabled={{not this.isOpen}} @onClick={{this.skipLine}} />
+                    </div>
+                {{/if}}
+            </div>
+        {{else if this.isComplete}}
+            <div class="rounded-md border border-emerald-300 bg-emerald-50 p-4 text-sm text-emerald-800 dark:border-emerald-700 dark:bg-emerald-900 dark:text-emerald-100">
+                {{t "operations.pick-lists.pick.all-picked"}}
+            </div>
+        {{else}}
+            <div class="text-xs text-gray-500 dark:text-gray-400">{{t "operations.pick-lists.no-items"}}</div>
+        {{/if}}
+
+        {{#if this.remaining.length}}
+            {{! The rest of the route: context for where the picker is walking next, not a grid to edit. }}
+            <div class="mt-6">
+                <div class="mb-2 text-xs uppercase text-gray-500 dark:text-gray-400">{{t "operations.pick-lists.pick.up-next"}}</div>
+                <table class="w-full text-xs dark:text-gray-100">
+                    <tbody>
+                        {{#each this.remaining key="uuid" as |line|}}
+                            <tr class="border-b border-gray-100 dark:border-gray-800 {{if line.isSkipped 'opacity-50'}}">
+                                <td class="w-12 px-3 py-2 text-right tabular-nums text-gray-400">{{n-a line.item.sequence_number}}</td>
+                                <td class="px-3 py-2 font-mono">{{n-a line.item.binLocation.bin_number}}</td>
+                                <td class="px-3 py-2">{{n-a line.item.product.name}}</td>
+                                <td class="px-3 py-2 text-right tabular-nums">{{format-number line.requested}}</td>
+                                <td class="px-3 py-2 text-right text-gray-400">{{if line.isSkipped (t "operations.pick-lists.pick.skipped")}}</td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        {{/if}}
+    </div>
+
+    <div class="border-t border-gray-200 bg-white px-4 py-3 dark:border-gray-700 dark:bg-gray-900">
+        <div class="flex flex-row items-center justify-between">
+            <div class="text-xs text-gray-500 dark:text-gray-400">
+                {{t "operations.pick-lists.pick.progress" picked=this.progress.picked lines=this.progress.lines short=this.progress.short}}
+            </div>
+            <Button
+                @icon="check"
+                @type="primary"
+                @text={{t "operations.pick-lists.pick.complete"}}
+                @disabled={{not this.isComplete}}
+                @isLoading={{this.completePickList.isRunning}}
+                @onClick={{perform this.completePickList}}
+            />
+        </div>
+    </div>
+</div>

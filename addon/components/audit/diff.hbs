@@ -1,0 +1,43 @@
+<div class="text-xs" ...attributes>
+    {{#if this.changes.length}}
+        <div class="mb-1 uppercase text-gray-400">{{t "audit.diff.changed"}}</div>
+        <table class="sub-table w-full">
+            <thead>
+                <tr class="text-left uppercase text-gray-400">
+                    <th class="w-1/4 py-2 pr-3">{{t "audit.diff.field"}}</th>
+                    <th class="px-3 py-2">{{t "audit.diff.before"}}</th>
+                    <th class="px-3 py-2">{{t "audit.diff.after"}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each this.changes key="key" as |change|}}
+                    <tr class="border-t border-gray-100 dark:border-gray-800">
+                        <td class="py-2 pr-3 font-medium text-gray-700 dark:text-gray-200">{{smart-humanize change.key}}</td>
+                        <td class="px-3 py-2 text-red-500 line-through">{{n-a change.before}}</td>
+                        <td class="px-3 py-2 text-emerald-500">{{n-a change.after}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    {{/if}}
+
+    {{#if this.meta.length}}
+        <div class="{{if this.changes.length 'mt-3'}} mb-1 uppercase text-gray-400">{{t "audit.diff.context"}}</div>
+        <table class="sub-table w-full">
+            <tbody>
+                {{#each this.meta key="key" as |entry|}}
+                    <tr class="border-t border-gray-100 dark:border-gray-800">
+                        <td class="w-1/4 py-2 pr-3 font-medium text-gray-700 dark:text-gray-200">{{smart-humanize entry.key}}</td>
+                        <td class="px-3 py-2 text-gray-500 dark:text-gray-400">{{n-a entry.value}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    {{/if}}
+
+    {{#unless this.hasDetail}}
+        {{! An event that changed nothing and carried no context is a real case — a
+            transition logged for the record. Saying so beats an empty panel. }}
+        <div class="py-2 text-gray-500 dark:text-gray-400">{{t "audit.diff.no-detail"}}</div>
+    {{/unless}}
+</div>

@@ -1,0 +1,222 @@
+<div class="details-wrapper" ...attributes>
+    {{!
+        Rebuilt on the pattern inventory/details.hbs established. This was a
+        parallel design system: a hero repeating the name, photo, id, SKU, barcode
+        and status the overlay header already shows, stat tiles, boxed info-list
+        cards, four full-height empty panels each carrying two lines of
+        explanatory copy, hardcoded English titles, and eight panels every one of
+        which was open — 980px of scrolling inside a 760px panel for a product
+        with almost nothing recorded against it.
+
+        It also stacked the placeholders UI_CONVENTIONS §5 warns about: "Untitled
+        product", "No SKU", "No barcode", "Uncategorized", "No supplier", "Not
+        set", "No product description has been added yet.". Optional fields are
+        guarded now, so what stays on screen is what the record actually holds.
+    }}
+    <ContentPanel @title={{t "product.sections.details"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="text-xs">
+            <div class="pallet-field-group-heading">{{t "product.groups.identity"}}</div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "common.id"}}</div>
+                <ClickToCopy @value={{@resource.public_id}} class="field-value font-mono">{{n-a @resource.public_id}}</ClickToCopy>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "common.status"}}</div>
+                <div class="field-value">
+                    <Badge @status={{@resource.status}}>{{smart-humanize @resource.status}}</Badge>
+                </div>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "product.fields.sku"}}</div>
+                <ClickToCopy @value={{@resource.sku}} class="field-value font-mono">{{n-a @resource.sku}}</ClickToCopy>
+            </div>
+            {{#if @resource.barcode}}
+                <div class="field-info-container field-vertical-container dashed-bottom">
+                    <div class="field-name">{{t "product.fields.barcode"}}</div>
+                    <ClickToCopy @value={{@resource.barcode}} class="field-value font-mono">{{@resource.barcode}}</ClickToCopy>
+                </div>
+            {{/if}}
+            {{#if @resource.description}}
+                <div class="field-info-container field-vertical-container dashed-bottom">
+                    <div class="field-name">{{t "common.description"}}</div>
+                    <div class="field-value">{{@resource.description}}</div>
+                </div>
+            {{/if}}
+
+            <div class="pallet-field-group-heading">{{t "product.groups.organization"}}</div>
+            {{#if @resource.category.name}}
+                <div class="field-info-container field-vertical-container dashed-bottom">
+                    <div class="field-name">{{t "product.fields.category"}}</div>
+                    <div class="field-value">{{@resource.category.name}}</div>
+                </div>
+            {{/if}}
+            {{#if @resource.supplier.name}}
+                <div class="field-info-container field-vertical-container dashed-bottom">
+                    <div class="field-name">{{t "product.fields.supplier"}}</div>
+                    <div class="field-value">{{@resource.supplier.name}}</div>
+                </div>
+            {{/if}}
+            {{#if @resource.internal_id}}
+                <div class="field-info-container field-vertical-container dashed-bottom">
+                    <div class="field-name">{{t "common.internal-id"}}</div>
+                    <ClickToCopy @value={{@resource.internal_id}} class="field-value font-mono">{{@resource.internal_id}}</ClickToCopy>
+                </div>
+            {{/if}}
+            <div class="field-info-container field-vertical-container">
+                <div class="field-name">{{t "common.created-at"}}</div>
+                <div class="field-value">{{n-a @resource.createdAtShort}}</div>
+            </div>
+        </div>
+    </ContentPanel>
+
+    <ContentPanel @title={{t "product.sections.stock"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="text-xs">
+            <div class="pallet-field-group-heading">{{t "product.groups.on-hand"}}</div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "product.fields.available-stock"}}</div>
+                <div class="field-value tabular-nums">{{format-number this.availableStock}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "product.fields.reserved-stock"}}</div>
+                <div class="field-value tabular-nums">{{format-number this.reservedStock}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container">
+                <div class="field-name">{{t "product.fields.total-stock"}}</div>
+                <div class="field-value tabular-nums">{{format-number this.totalStock}}</div>
+            </div>
+
+            <div class="pallet-field-group-heading">{{t "product.groups.thresholds"}}</div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "product.fields.reorder-point"}}</div>
+                <div class="field-value tabular-nums">{{format-number this.reorderPoint}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container">
+                <div class="field-name">{{t "product.fields.reorder-quantity"}}</div>
+                <div class="field-value tabular-nums">{{format-number @resource.reorder_quantity}}</div>
+            </div>
+        </div>
+    </ContentPanel>
+
+    {{!
+        §B asks the quantity panel for the totals "then a per-warehouse breakdown table".
+        The totals above are sums across every warehouse, so on their own they say how
+        much exists and not where any of it is. Showing the parts answers that better
+        than labelling the whole as a sum would.
+
+        Collapsed: most visits to a product want its details, not its distribution, and
+        the panel only fetches when opened.
+    }}
+    <ContentPanel @title={{t "product.sections.warehouse-stock"}} @open={{false}} @wrapperClass="bordered-top" @panelBodyWrapperClass="px-0i">
+        <Product::WarehouseStock @resource={{@resource}} />
+    </ContentPanel>
+
+    <ContentPanel @title={{t "product.sections.pricing"}} @open={{true}} @wrapperClass="bordered-top">
+        <div class="text-xs">
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "product.fields.unit-cost"}}</div>
+                <div class="field-value tabular-nums">{{format-currency @resource.unit_cost @resource.currency}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "product.fields.unit-price"}}</div>
+                <div class="field-value tabular-nums">{{format-currency @resource.unit_price @resource.currency}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "product.fields.sale-price"}}</div>
+                <div class="field-value tabular-nums">{{format-currency @resource.sale_price @resource.currency}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container">
+                <div class="field-name">{{t "product.fields.declared-value"}}</div>
+                <div class="field-value tabular-nums">{{format-currency @resource.declared_value @resource.currency}}</div>
+            </div>
+        </div>
+    </ContentPanel>
+
+    {{! Open only when there is something to show — a single-SKU product should not have to collapse an empty panel. }}
+    <ContentPanel @title={{t "product.sections.variants"}} @open={{this.hasVariants}} @wrapperClass="bordered-top" @panelBodyWrapperClass={{if this.hasVariants "px-0i" ""}}>
+        {{#if this.hasVariants}}
+            <table class="w-full text-xs dark:text-gray-100">
+                <thead>
+                    <tr class="whitespace-nowrap border-b border-gray-200 text-left text-gray-500 uppercase dark:border-gray-700">
+                        <th class="w-2/5 px-3 py-2 font-medium">{{t "product.sections.variants"}}</th>
+                        <th class="px-3 py-2 font-medium">{{t "product.fields.sku"}}</th>
+                        <th class="px-3 py-2 text-right font-medium">{{t "product.fields.available-stock"}}</th>
+                        <th class="px-3 py-2 font-medium">{{t "product.sections.storefront"}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each @resource.variants as |variant|}}
+                        <tr class="border-b border-gray-100 dark:border-gray-800">
+                            <td class="px-3 py-2">
+                                <div class="truncate font-medium text-gray-700 dark:text-gray-200">{{n-a (or variant.display_name variant.name)}}</div>
+                                {{#if variant.optionSummary}}
+                                    <div class="truncate text-gray-400">{{variant.optionSummary}}</div>
+                                {{/if}}
+                            </td>
+                            <td class="truncate px-3 py-2 font-mono">{{n-a variant.sku}}</td>
+                            <td class="px-3 py-2 text-right tabular-nums">{{format-number (or variant.available_stock 0)}}</td>
+                            <td class="px-3 py-2">
+                                <Badge @status={{if variant.storefront_variant_uuid "success" "warning"}} @hideStatusDot={{true}}>
+                                    {{if variant.storefront_variant_uuid "Linked" "Unlinked"}}
+                                </Badge>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        {{else}}
+            <div class="py-1 text-xs text-gray-400">{{t "product.fields.no-variants"}}</div>
+        {{/if}}
+    </ContentPanel>
+
+    <ContentPanel @title={{t "product.sections.measurements"}} @open={{false}} @wrapperClass="bordered-top">
+        <div class="text-xs">
+            <div class="pallet-field-group-heading">{{t "product.groups.physical"}}</div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "product.sections.dimensions"}}</div>
+                <div class="field-value tabular-nums">{{n-a @resource.dimensionsSummary}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container dashed-bottom">
+                <div class="field-name">{{t "common.weight"}}</div>
+                <div class="field-value tabular-nums">{{n-a @resource.weightSummary}}</div>
+            </div>
+            <div class="field-info-container field-vertical-container">
+                <div class="field-name">{{t "product.fields.shelf-life-days"}}</div>
+                <div class="field-value tabular-nums">{{n-a @resource.shelf_life_days}}</div>
+            </div>
+
+            <div class="pallet-field-group-heading">{{t "product.groups.handling"}}</div>
+            <div class="field-info-container field-vertical-container">
+                <div class="field-name">{{t "product.fields.tracking"}}</div>
+                <div class="field-value">{{@resource.traceabilitySummary}}</div>
+            </div>
+        </div>
+    </ContentPanel>
+
+    <ContentPanel @title={{t "product.sections.storefront"}} @open={{false}} @wrapperClass="bordered-top">
+        <Product::StorefrontInventory @product={{@resource}} />
+    </ContentPanel>
+
+    <ContentPanel @title={{t "product.sections.media"}} @open={{false}} @wrapperClass="bordered-top">
+        {{#if this.hasImages}}
+            <div class="pallet-product-detail-media-strip">
+                {{#each @resource.files as |file|}}
+                    <Image src={{file.url}} @fallbackSrc={{config "defaultValues.placeholderImage"}} alt={{file.original_filename}} />
+                {{/each}}
+            </div>
+        {{else}}
+            <div class="py-1 text-xs text-gray-400">{{t "product.fields.no-images"}}</div>
+        {{/if}}
+    </ContentPanel>
+
+    <CustomField::Yield @subject={{@resource}} @viewMode={{true}} @wrapperClass="bordered-top" />
+
+    <ContentPanel
+        @title={{t "common.metadata"}}
+        @open={{false}}
+        @actionButtons={{this.metadataButtons}}
+        @wrapperClass="bordered-top"
+        @panelBodyWrapperClass={{unless (is-object-empty @resource.meta) "px-0i" ""}}
+    >
+        <MetadataViewer @metadata={{@resource.meta}} />
+    </ContentPanel>
+</div>

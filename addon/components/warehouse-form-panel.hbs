@@ -1,17 +1,78 @@
-<Overlay @onLoad={{this.setOverlayContext}} @position="right" @noBackdrop={{true}} @fullHeight={{true}} @isResizeble={{or this.isResizable @isResizable}} @width={{or this.width @width "600px"}}>
-    <Overlay::Header @title={{if this.warehouse.public_id this.warehouse.name "New Warehouse"}} @status={{this.warehouse.public_id}} @hideStatusDot={{true}} @createdAt={{this.warehouse.createdAt}} @titleWrapperClass="leading-5">
-        <div class="flex flex-1 justify-end">
-            <Button @icon={{if this.warehouse.id "save" "check"}} @type="primary" @text={{if this.warehouse.id "Save Warehouse" "Create Warehouse"}} @onClick={{this.save}} @wrapperClass="mr-2" />
+<Overlay
+    @onLoad={{this.setOverlayContext}}
+    @position="right"
+    @noBackdrop={{true}}
+    @fullHeight={{true}}
+    @isResizable={{or this.isResizable @isResizable}}
+    @width={{or this.width @width "600px"}}
+>
+    <Overlay::Header
+        @title={{if this.warehouse.public_id this.warehouse.name "New Warehouse"}}
+        @status={{this.warehouse.public_id}}
+        @hideStatusDot={{true}}
+        @createdAt={{this.warehouse.createdAt}}
+        @titleWrapperClass="leading-5"
+    >
+        <:actions>
+            <Button
+                @icon={{if this.warehouse.id "save" "check"}}
+                @type="primary"
+                @text={{if this.warehouse.id "Save Warehouse" "Create Warehouse"}}
+                @onClick={{perform this.saveTask}}
+                @wrapperClass="mr-2"
+                @isLoading={{this.saveTask.isRunning}}
+                @disabled={{this.saveTask.isRunning}}
+            />
             <Button @type="default" @icon="times" @helpText={{if this.warehouse.id "Cancel edit warehouse" "Cancel new warehouse"}} @onClick={{this.onPressCancel}} />
-        </div>
+        </:actions>
     </Overlay::Header>
 
     <Overlay::Body @wrapperClass="new-service-rate-overlay-body px-4 space-y-4 pt-4" @increaseInnerBodyHeightBy={{1000}}>
         <div class="flex-1 space-y-4">
-            <ContentPanel @title="Details" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
+            <ContentPanel @title="Warehouse Details" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
                 <InputGroup @name="Name" @wrapperClass="col-span-2">
-                    <Input @value={{this.warehouse.name}} @type="text" class="w-full form-input" placeholder="Name" />
+                    <Input @value={{this.warehouse.name}} @type="text" class="w-full form-input" placeholder="Warehouse name" />
                 </InputGroup>
+                <InputGroup @name="Code" @wrapperClass="col-span-1">
+                    <Input @value={{this.warehouse.code}} @type="text" class="w-full form-input" placeholder="e.g. WH-001" />
+                </InputGroup>
+                <InputGroup @name="Type" @wrapperClass="col-span-1">
+                    <div class="relative">
+                        <select class="w-full form-input form-select" value={{this.warehouse.type}} {{on "change" this.setWarehouseType}}>
+                            <option value="">Select type...</option>
+                            <option value="standard" selected={{eq this.warehouse.type "standard"}}>Standard</option>
+                            <option value="cold-storage" selected={{eq this.warehouse.type "cold-storage"}}>Cold Storage</option>
+                            <option value="hazmat" selected={{eq this.warehouse.type "hazmat"}}>Hazmat</option>
+                            <option value="bonded" selected={{eq this.warehouse.type "bonded"}}>Bonded</option>
+                            <option value="distribution" selected={{eq this.warehouse.type "distribution"}}>Distribution Center</option>
+                            <option value="fulfillment" selected={{eq this.warehouse.type "fulfillment"}}>Fulfillment Center</option>
+                        </select>
+                    </div>
+                </InputGroup>
+                <InputGroup @name="Status" @wrapperClass="col-span-1">
+                    <div class="relative">
+                        <select class="w-full form-input form-select" value={{this.warehouse.status}} {{on "change" this.setWarehouseStatus}}>
+                            <option value="active" selected={{eq this.warehouse.status "active"}}>Active</option>
+                            <option value="inactive" selected={{eq this.warehouse.status "inactive"}}>Inactive</option>
+                            <option value="maintenance" selected={{eq this.warehouse.status "maintenance"}}>Maintenance</option>
+                        </select>
+                    </div>
+                </InputGroup>
+                <InputGroup @name="Capacity (units)" @wrapperClass="col-span-1">
+                    <Input @value={{this.warehouse.capacity}} @type="number" class="w-full form-input" placeholder="0" />
+                </InputGroup>
+                <InputGroup @name="Phone">
+                    <PhoneInput @value={{this.warehouse.phone}} @autocomplete="nope" @onInput={{this.setPhone}} class="form-input w-full" />
+                </InputGroup>
+                <InputGroup @name="Email" @wrapperClass="col-span-2">
+                    <Input @value={{this.warehouse.email}} @type="email" class="w-full form-input" placeholder="warehouse@company.com" />
+                </InputGroup>
+                <InputGroup @wrapperClass="col-span-2">
+                    <Checkbox @value={{this.warehouse.is_default}} @onChange={{fn (mut this.warehouse.is_default)}} @label="Set as default warehouse" />
+                </InputGroup>
+            </ContentPanel>
+
+            <ContentPanel @title="Address" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
                 <InputGroup @name="Street 1" @value={{this.warehouse.street1}} @wrapperClass="col-span-3">
                     <AutocompleteInput @value={{this.warehouse.street1}} @fetchUrl="places/lookup" @onSelect={{this.onAutocomplete}} placeholder="Street 1" class="w-full" as |result|>
                         {{result.address}}
@@ -20,31 +81,32 @@
                 <InputGroup @name="Street 2" @autocomplete="nope" @value={{this.warehouse.street2}} @wrapperClass="col-span-3" />
                 <InputGroup @name="Neighborhood" @autocomplete="nope" @value={{this.warehouse.neighborhood}} />
                 <InputGroup @name="Building" @autocomplete="nope" @value={{this.warehouse.building}} />
-                <InputGroup @name="Security Access Code" @autocomplete="nope" @value={{this.warehouse.security_access_code}} />
                 <InputGroup @name="Postal Code" @autocomplete="nope" @value={{this.warehouse.postal_code}} />
                 <InputGroup @name="City" @autocomplete="nope" @value={{this.warehouse.city}} />
                 <InputGroup @name="State" @autocomplete="nope" @value={{this.warehouse.province}} />
                 <InputGroup @name="Country" @wrapperClass="col-span-2">
-                    <CountrySelect class="w-full form-input form-select form-datalist" @value={{this.warehouse.country}} @onChange={{fn (mut this.warehouse.country)}} warehouseholder="Country" />
+                    <CountrySelect
+                        class="w-full form-input form-select form-datalist"
+                        @value={{this.warehouse.country}}
+                        @onChange={{fn (mut this.warehouse.country)}}
+                        placeholder="Country"
+                    />
                 </InputGroup>
                 <InputGroup @name="Coordinates" @wrapperClass="col-span-2">
-                    <CoordinatesInput @value={{this.warehouse.location}} @onChange={{this.updateWarehouseCoordinates}} @onGeocode={{this.onAutocomplete}} @onUpdatedFromMap={{this.onReverseGeocode}} @onInit={{this.setCoordinatesInput}} />
+                    <CoordinatesInput
+                        @value={{this.warehouse.location}}
+                        @onChange={{this.updateWarehouseCoordinates}}
+                        @onGeocode={{this.onAutocomplete}}
+                        @onUpdatedFromMap={{this.onReverseGeocode}}
+                        @onInit={{this.setCoordinatesInput}}
+                    />
                 </InputGroup>
-                <div class="col-span-1"></div>
-                <InputGroup @name="Phone">
-                    <PhoneInput @value={{this.warehouse.phone}} @autocomplete="nope" @onInput={{this.phone}} class="form-input w-full" />
-                </InputGroup>
-                <InputGroup @name="Description" @helpText="Additional description text of entity." @wrapperClass="col-span-2 mb-2">
+            </ContentPanel>
+
+            <ContentPanel @title="Additional Info" @open={{true}} @pad={{true}} @panelBodyClass="bg-white dark:bg-gray-800">
+                <InputGroup @name="Description" @helpText="Additional description text." @wrapperClass="col-span-2 mb-2">
                     <Textarea @value={{this.warehouse.meta.description}} type="text" class="w-full form-input" placeholder="Description" />
                 </InputGroup>
-                <InputGroup @wrapperClass="col-span-2">
-                    <Checkbox @value={{this.warehouse.meta.structural}} @onChange={{fn this.updateMetaProperty "structural"}} @label="Structural" />
-                </InputGroup>
-                <InputGroup @wrapperClass="col-span-2">
-                    <Checkbox @value={{this.warehouse.meta.external}} @onChange={{fn this.updateMetaProperty "external"}} @label="External" />
-                </InputGroup>
-
-                {{!-- <WarehouseEditor @warehouse={{this.warehouse}} /> --}}
             </ContentPanel>
         </div>
     </Overlay::Body>

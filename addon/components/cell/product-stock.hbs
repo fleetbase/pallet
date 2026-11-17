@@ -1,0 +1,22 @@
+<div class="pallet-product-metric-cell" ...attributes>
+    <div class="pallet-product-metric-cell-headline">
+        <Badge @status={{this.stockBadgeStatus}} @hideStatusDot={{true}}>{{this.stockLabel}}</Badge>
+    </div>
+    <div class="pallet-product-metric-cell-grid">
+        <span>
+            <strong>{{format-number this.available}}</strong>
+            Available
+        </span>
+        <span>
+            <strong>{{format-number this.reserved}}</strong>
+            Reserved
+        </span>
+        <span>
+            <strong>{{format-number this.total}}</strong>
+            Total
+        </span>
+    </div>
+    {{#if this.isLowStock}}
+        <div class="pallet-product-metric-cell-note">At or below reorder point</div>
+    {{/if}}
+</div>

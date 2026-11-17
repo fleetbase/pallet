@@ -1,0 +1,133 @@
+{{!
+    Was three stacked ContentPanels — two always-open forms and a raw <table>
+    below them — so the list started two thirds of the way down the screen. The
+    table was px-4 py-3 with a Storefront Context cell that stacked checkout,
+    cart, line and key on four lines, making every row four lines tall whether or
+    not the reservation came from a storefront.
+
+    The list is now Layout::Resource::Tabular like the rest of the module. Making
+    a reservation sits behind the New button; the storefront lookup is a support
+    tool, so it sits behind a header action. Both are overlays.
+}}
+<Layout::Resource::Tabular
+    @title={{t "operations.reservations.title"}}
+    @searchQuery={{this.query}}
+    @onSearch={{perform this.search}}
+    @data={{this.reservations}}
+    @columns={{this.columns}}
+    @page={{this.page}}
+    @onPageChange={{fn (mut this.page)}}
+    @setupTable={{fn (mut this.table)}}
+    @controller={{this}}
+    @actionButtons={{this.actionButtons}}
+    @onPressNew={{this.startCreatingReservation}}
+/>
+
+{{#if this.isCreatingReservation}}
+    <Overlay @position="right" @noBackdrop={{true}} @fullHeight={{true}} @isResizable={{true}} @width="720px">
+        <Overlay::Header @title={{t "operations.reservations.create"}} @hideStatusDot={{true}}>
+            <:actions>
+                <Button @icon="check" @type="primary" @text={{t "operations.reservations.reserve"}} @onClick={{this.createReservation}} @wrapperClass="mr-2" />
+                <Button @type="default" @icon="times" @helpText={{t "common.cancel"}} @onClick={{this.cancelCreatingReservation}} />
+            </:actions>
+        </Overlay::Header>
+
+        <Overlay::Body @wrapperClass="px-4 pt-4" @increaseInnerBodyHeightBy={{700}}>
+            <div class="grid grid-cols-1 gap-2 text-xs lg:grid-cols-2 no-input-group-padding">
+                <InputGroup @name={{t "operations.common.product"}}>
+                    <ModelSelect
+                        @modelName="pallet-product"
+                        @selectedModel={{this.newReservation.product}}
+                        @placeholder={{t "operations.common.product"}}
+                        @triggerClass="form-select form-input"
+                        @infiniteScroll={{false}}
+                        @renderInPlace={{true}}
+                        @onChange={{this.setReservationProduct}}
+                        as |model|
+                    >
+                        {{model.name}}
+                    </ModelSelect>
+                </InputGroup>
+
+                <InputGroup @name={{t "operations.common.variant"}}>
+                    <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                        <PowerSelect
+                            @options={{this.newReservation.product.variants}}
+                            @selected={{this.newReservation.variant}}
+                            @onChange={{this.setReservationVariant}}
+                            @placeholder={{t "operations.common.variant"}}
+                            @triggerClass="form-select form-input"
+                            @disabled={{not this.newReservation.product.has_variants}}
+                            as |variant|
+                        >
+                            {{n-a (or variant.display_name variant.name)}}
+                        </PowerSelect>
+                    </div>
+                </InputGroup>
+
+                <InputGroup @name={{t "operations.common.warehouse"}}>
+                    <ModelSelect
+                        @modelName="warehouse"
+                        @selectedModel={{this.newReservation.warehouse}}
+                        @placeholder={{t "operations.common.warehouse"}}
+                        @triggerClass="form-select form-input"
+                        @infiniteScroll={{false}}
+                        @renderInPlace={{true}}
+                        @onChange={{this.setReservationWarehouse}}
+                        as |model|
+                    >
+                        {{n-a (or model.name model.address)}}
+                    </ModelSelect>
+                </InputGroup>
+
+                <InputGroup @name={{t "operations.common.quantity"}}>
+                    <Input @value={{this.newReservation.quantity}} @type="number" class="w-full form-input" placeholder="Qty" />
+                </InputGroup>
+
+                <InputGroup @name={{t "operations.reservations.expires"}}>
+                    <Input @value={{this.newReservation.expires_at}} @type="datetime-local" class="w-full form-input" />
+                </InputGroup>
+
+            </div>
+        </Overlay::Body>
+    </Overlay>
+{{/if}}
+
+{{#if this.isLookingUpContext}}
+    <Overlay @position="right" @noBackdrop={{true}} @fullHeight={{true}} @isResizable={{true}} @width="720px">
+        <Overlay::Header @title={{t "operations.reservations.context-title"}} @hideStatusDot={{true}}>
+            <:actions>
+                <Button @icon="magnifying-glass" @type="primary" @text={{t "operations.reservations.lookup"}} @onClick={{this.lookupStorefrontContext}} @wrapperClass="mr-2" />
+                <Button @type="default" @icon="times" @helpText={{t "common.close"}} @onClick={{this.closeContextLookup}} />
+            </:actions>
+        </Overlay::Header>
+
+        <Overlay::Body @wrapperClass="px-4 pt-4" @increaseInnerBodyHeightBy={{700}}>
+            <div class="grid grid-cols-1 gap-2 text-xs lg:grid-cols-2 no-input-group-padding">
+                <InputGroup @name={{t "operations.reservations.checkout"}}>
+                    <Input @value={{this.storefrontContext.storefront_checkout_uuid}} @type="text" class="w-full form-input" placeholder="Checkout UUID" />
+                </InputGroup>
+                <InputGroup @name={{t "operations.reservations.cart"}}>
+                    <Input @value={{this.storefrontContext.storefront_cart_uuid}} @type="text" class="w-full form-input" placeholder="Cart UUID" />
+                </InputGroup>
+                <InputGroup @name={{t "operations.reservations.order"}}>
+                    <Input @value={{this.storefrontContext.storefront_order_uuid}} @type="text" class="w-full form-input" placeholder="Order UUID" />
+                </InputGroup>
+                <InputGroup @name={{t "operations.reservations.line"}}>
+                    <Input @value={{this.storefrontContext.storefront_line_uuid}} @type="text" class="w-full form-input" placeholder="Line UUID" />
+                </InputGroup>
+                <InputGroup @name={{t "operations.reservations.reservation-key"}}>
+                    <Input @value={{this.storefrontContext.storefront_reservation_key}} @type="text" class="w-full form-input" placeholder="Key" />
+                </InputGroup>
+            </div>
+
+            <div class="mt-3 flex flex-wrap items-center gap-2">
+                <Button @icon="unlock" @type="default" @text={{t "operations.reservations.release"}} @onClick={{this.releaseStorefrontContext}} />
+                <Button @icon="check" @type="default" @text={{t "operations.reservations.fulfill"}} @onClick={{this.fulfillStorefrontContext}} />
+                {{#if this.hasContextReservations}}
+                    <Button @icon="times" @type="default" @text={{t "operations.reservations.clear"}} @onClick={{this.clearStorefrontContextResults}} />
+                {{/if}}
+            </div>
+        </Overlay::Body>
+    </Overlay>
+{{/if}}

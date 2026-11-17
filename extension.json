@@ -1,6 +1,6 @@
 {
     "name": "Pallet",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Inventory & Warehouse Management Extension for Fleetbase",
     "repository": "https://github.com/fleetbase/pallet",
     "license": "AGPL-3.0-or-later",

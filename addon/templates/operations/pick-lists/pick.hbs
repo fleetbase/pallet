@@ -1,0 +1,11 @@
+<Layout::Container>
+    <Layout::Section>
+        <Layout::Section::Header @title={{@model.pick_list_number}} @badge={{@model.status}} @titleClass="whitespace-nowrap" @badgeClass="whitespace-nowrap">
+            <Button @icon="list" @type="default" @text={{t "operations.pick-lists.pick.back-to-list"}} @onClick={{this.transitionBack}} @wrapperClass="ml-2" />
+        </Layout::Section::Header>
+
+        <Layout::Section::Body>
+            <PickList::PickScreen @resource={{@model}} />
+        </Layout::Section::Body>
+    </Layout::Section>
+</Layout::Container>

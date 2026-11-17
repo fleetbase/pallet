@@ -7,8 +7,11 @@
     @width={{or this.width @width "600px"}}
 >
     <Overlay::Header @title="Purchase Order Details" @status={{this.purchaseOrder.public_id}} @hideStatusDot={{true}} @createdAt={{this.purchaseOrder.createdAt}}>
-        <Button @type="default" @icon="pen" @helpText="Edit sales order" @onClick={{this.onEdit}} @wrapperClass="mr-2" />
-        <Button @type="default" @icon="times" @helpText={{if this.purchaseOrder.id "Cancel edit sales order" "Cancel new sales order"}} @onClick={{this.onPressCancel}} />
+        <:actions>
+            <Button @type="default" @icon="pen" @helpText="Edit sales order" @onClick={{this.onEdit}} @wrapperClass="mr-2" />
+            <Button @type="default" @icon="times" @helpText={{if this.purchaseOrder.id "Cancel edit sales order" "Cancel new sales order"}} @onClick={{this.onPressCancel}} />
+
+        </:actions>
     </Overlay::Header>
     <Overlay::Body class="no-padding" @increaseInnerBodyHeightBy={{1000}}>
         <div class="section-header-actions w-full overflow-x-scroll lg:overflow-x-auto">
