@@ -6,21 +6,13 @@ import { hbs } from 'ember-cli-htmlbars';
 module('Integration | Component | inventory-panel', function (hooks) {
     setupRenderingTest(hooks);
 
-    test('it renders', async function (assert) {
-        // Set any properties with this.set('myProperty', 'value');
-        // Handle any actions with this.set('myAction', function(val) { ... });
+    test('it shows the inventory with its details tab', async function (assert) {
+        this.inventory = this.owner.lookup('service:store').createRecord('inventory', { public_id: 'inventory_3' });
 
-        await render(hbs`<InventoryPanel />`);
+        await render(hbs`<InventoryPanel @inventory={{this.inventory}} />`);
 
-        assert.dom(this.element).hasText('');
-
-        // Template block usage:
-        await render(hbs`
-      <InventoryPanel>
-        template block text
-      </InventoryPanel>
-    `);
-
-        assert.dom(this.element).hasText('template block text');
+        assert.dom('.next-content-overlay').includesText('Inventory Details');
+        assert.dom('.next-content-overlay').includesText('inventory_3');
+        assert.dom('.ui-tabs .ui-tab.active').includesText('Details');
     });
 });

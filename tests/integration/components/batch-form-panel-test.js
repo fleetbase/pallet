@@ -6,21 +6,21 @@ import { hbs } from 'ember-cli-htmlbars';
 module('Integration | Component | batch-form-panel', function (hooks) {
     setupRenderingTest(hooks);
 
-    test('it renders', async function (assert) {
-        // Set any properties with this.set('myProperty', 'value');
-        // Handle any actions with this.set('myAction', function(val) { ... });
+    test('it titles a new batch', async function (assert) {
+        this.batch = this.owner.lookup('service:store').createRecord('batch', {});
 
-        await render(hbs`<BatchFormPanel />`);
+        await render(hbs`<BatchFormPanel @batch={{this.batch}} />`);
 
-        assert.dom(this.element).hasText('');
+        assert.dom('.next-content-overlay').exists();
+        assert.dom('.next-content-overlay-panel-title').includesText('Add Batch');
+    });
 
-        // Template block usage:
-        await render(hbs`
-      <BatchFormPanel>
-        template block text
-      </BatchFormPanel>
-    `);
+    test('it titles an existing batch by name', async function (assert) {
+        this.batch = this.owner.lookup('service:store').createRecord('batch', { name: 'Batch 7', public_id: 'batch_7' });
 
-        assert.dom(this.element).hasText('template block text');
+        await render(hbs`<BatchFormPanel @batch={{this.batch}} />`);
+
+        assert.dom('.next-content-overlay').includesText('Batch 7');
+        assert.dom('.next-content-overlay-panel-title').doesNotIncludeText('Add Batch');
     });
 });

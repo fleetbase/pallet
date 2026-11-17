@@ -6,21 +6,12 @@ import { hbs } from 'ember-cli-htmlbars';
 module('Integration | Component | stock-adjustment-form-panel', function (hooks) {
     setupRenderingTest(hooks);
 
-    test('it renders', async function (assert) {
-        // Set any properties with this.set('myProperty', 'value');
-        // Handle any actions with this.set('myAction', function(val) { ... });
+    test('it titles a new stock adjustment', async function (assert) {
+        this.stockAdjustment = this.owner.lookup('service:store').createRecord('stock-adjustment', {});
 
-        await render(hbs`<StockAdjustmentFormPanel />`);
+        await render(hbs`<StockAdjustmentFormPanel @stockAdjustment={{this.stockAdjustment}} />`);
 
-        assert.dom(this.element).hasText('');
-
-        // Template block usage:
-        await render(hbs`
-      <StockAdjustmentFormPanel>
-        template block text
-      </StockAdjustmentFormPanel>
-    `);
-
-        assert.dom(this.element).hasText('template block text');
+        assert.dom('.next-content-overlay').exists();
+        assert.dom('.next-content-overlay').includesText('Make Stock Adjustment');
     });
 });

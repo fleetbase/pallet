@@ -6,21 +6,12 @@ import { hbs } from 'ember-cli-htmlbars';
 module('Integration | Component | sales-order-form-panel', function (hooks) {
     setupRenderingTest(hooks);
 
-    test('it renders', async function (assert) {
-        // Set any properties with this.set('myProperty', 'value');
-        // Handle any actions with this.set('myAction', function(val) { ... });
+    test('it titles a new sales order', async function (assert) {
+        this.salesOrder = this.owner.lookup('service:store').createRecord('sales-order', {});
 
-        await render(hbs`<SalesOrderFormPanel />`);
+        await render(hbs`<SalesOrderFormPanel @salesOrder={{this.salesOrder}} />`);
 
-        assert.dom(this.element).hasText('');
-
-        // Template block usage:
-        await render(hbs`
-      <SalesOrderFormPanel>
-        template block text
-      </SalesOrderFormPanel>
-    `);
-
-        assert.dom(this.element).hasText('template block text');
+        assert.dom('.next-content-overlay').exists();
+        assert.dom('.next-content-overlay').includesText('New Sales Order');
     });
 });

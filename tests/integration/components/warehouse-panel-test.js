@@ -6,21 +6,13 @@ import { hbs } from 'ember-cli-htmlbars';
 module('Integration | Component | warehouse-panel', function (hooks) {
     setupRenderingTest(hooks);
 
-    test('it renders', async function (assert) {
-        // Set any properties with this.set('myProperty', 'value');
-        // Handle any actions with this.set('myAction', function(val) { ... });
+    test('it shows the warehouse with its details tab', async function (assert) {
+        this.warehouse = this.owner.lookup('service:store').createRecord('warehouse', { public_id: 'warehouse_1', name: 'North DC', latitude: 1.3521, longitude: 103.8198 });
 
-        await render(hbs`<WarehousePanel />`);
+        await render(hbs`<WarehousePanel @warehouse={{this.warehouse}} />`);
 
-        assert.dom(this.element).hasText('');
-
-        // Template block usage:
-        await render(hbs`
-      <WarehousePanel>
-        template block text
-      </WarehousePanel>
-    `);
-
-        assert.dom(this.element).hasText('template block text');
+        assert.dom('.next-content-overlay').includesText('North DC');
+        assert.dom('.next-content-overlay').includesText('Details');
+        assert.dom('.ui-tabs .ui-tab.active').includesText('Details');
     });
 });

@@ -6,21 +6,22 @@ import { hbs } from 'ember-cli-htmlbars';
 module('Integration | Component | inventory-form-panel', function (hooks) {
     setupRenderingTest(hooks);
 
-    test('it renders', async function (assert) {
-        // Set any properties with this.set('myProperty', 'value');
-        // Handle any actions with this.set('myAction', function(val) { ... });
+    // The form's custom fields resolve their owner through the signed-in user's company,
+    // which the console always has loaded before a form can open.
+    hooks.beforeEach(function () {
+        const store = this.owner.lookup('service:store');
+        store.push({ data: { id: 'company_1', type: 'company', attributes: { public_id: 'company_1' } } });
+        this.owner.lookup('service:current-user').user = { id: 'user_1', company_uuid: 'company_1' };
+    });
 
-        await render(hbs`<InventoryFormPanel />`);
+    test('it titles a new inventory', async function (assert) {
+        // the inventory route always creates the record with a fresh batch
+        const store = this.owner.lookup('service:store');
+        this.inventory = store.createRecord('inventory', { type: 'pallet-inventory', batch: store.createRecord('batch'), meta: {} });
 
-        assert.dom(this.element).hasText('');
+        await render(hbs`<InventoryFormPanel @inventory={{this.inventory}} />`);
 
-        // Template block usage:
-        await render(hbs`
-      <InventoryFormPanel>
-        template block text
-      </InventoryFormPanel>
-    `);
-
-        assert.dom(this.element).hasText('template block text');
+        assert.dom('.next-content-overlay').exists();
+        assert.dom('.next-content-overlay').includesText('Add Inventory');
     });
 });
