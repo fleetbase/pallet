@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'dummy/tests/helpers';
 import { render } from '@ember/test-helpers';
@@ -7,13 +6,12 @@ import { hbs } from 'ember-cli-htmlbars';
 module('Integration | Component | inventory-form-panel', function (hooks) {
     setupRenderingTest(hooks);
 
+    // The form's custom fields resolve their owner through the signed-in user's company,
+    // which the console always has loaded before a form can open.
     hooks.beforeEach(function () {
-        // TEMP DEBUG
-        const Ember = window.Ember || require('ember').default;
-        Ember.onerror = (e) => {
-            console.error('DEBUGSTACK ' + (e && e.stack));
-        };
-        window.addEventListener('error', (ev) => console.error('DEBUGSTACK2 ' + (ev.error && ev.error.stack)));
+        const store = this.owner.lookup('service:store');
+        store.push({ data: { id: 'company_1', type: 'company', attributes: { public_id: 'company_1' } } });
+        this.owner.lookup('service:current-user').user = { id: 'user_1', company_uuid: 'company_1' };
     });
 
     test('it titles a new inventory', async function (assert) {
