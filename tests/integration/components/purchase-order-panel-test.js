@@ -6,21 +6,13 @@ import { hbs } from 'ember-cli-htmlbars';
 module('Integration | Component | purchase-order-panel', function (hooks) {
     setupRenderingTest(hooks);
 
-    test('it renders', async function (assert) {
-        // Set any properties with this.set('myProperty', 'value');
-        // Handle any actions with this.set('myAction', function(val) { ... });
+    test('it shows the purchase order with its details tab', async function (assert) {
+        this.purchaseOrder = this.owner.lookup('service:store').createRecord('purchase-order', { public_id: 'po_42' });
 
-        await render(hbs`<PurchaseOrderPanel />`);
+        await render(hbs`<PurchaseOrderPanel @purchaseOrder={{this.purchaseOrder}} />`);
 
-        assert.dom(this.element).hasText('');
-
-        // Template block usage:
-        await render(hbs`
-      <PurchaseOrderPanel>
-        template block text
-      </PurchaseOrderPanel>
-    `);
-
-        assert.dom(this.element).hasText('template block text');
+        assert.dom('.next-content-overlay').includesText('Purchase Order Details');
+        assert.dom('.next-content-overlay').includesText('po_42');
+        assert.dom('.ui-tabs .ui-tab.active').includesText('Details');
     });
 });

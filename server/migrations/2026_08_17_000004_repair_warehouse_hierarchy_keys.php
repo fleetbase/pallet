@@ -5,8 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -58,19 +57,22 @@ return new class extends Migration
     public function down()
     {
         foreach (['pallet_warehouse_bins', 'pallet_warehouse_racks'] as $table) {
-            Schema::table($table, function (Blueprint $blueprint) use ($table) {
-                if (Schema::getConnection()->getDriverName() !== 'sqlite') {
-                    $blueprint->dropForeign([$table . '_warehouse_uuid_foreign']);
-                }
+            Schema::table($table, function (Blueprint $blueprint) {
+                $blueprint->dropForeign(['warehouse_uuid']);
+                $blueprint->dropIndex(['warehouse_uuid']);
                 $blueprint->dropColumn('warehouse_uuid');
             });
         }
 
         Schema::table('pallet_warehouse_aisles', function (Blueprint $table) {
+            $table->dropForeign(['zone_uuid']);
+            $table->dropIndex(['zone_uuid']);
             $table->dropColumn('zone_uuid');
         });
 
         Schema::table('pallet_warehouse_aisles', function (Blueprint $table) {
+            $table->dropForeign(['warehouse_uuid']);
+            $table->dropIndex(['warehouse_uuid']);
             $table->dropColumn('warehouse_uuid');
         });
     }

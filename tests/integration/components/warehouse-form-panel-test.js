@@ -6,21 +6,21 @@ import { hbs } from 'ember-cli-htmlbars';
 module('Integration | Component | warehouse-form-panel', function (hooks) {
     setupRenderingTest(hooks);
 
-    test('it renders', async function (assert) {
-        // Set any properties with this.set('myProperty', 'value');
-        // Handle any actions with this.set('myAction', function(val) { ... });
+    test('it titles a new warehouse', async function (assert) {
+        this.warehouse = this.owner.lookup('service:store').createRecord('warehouse', {});
 
-        await render(hbs`<WarehouseFormPanel />`);
+        await render(hbs`<WarehouseFormPanel @warehouse={{this.warehouse}} />`);
 
-        assert.dom(this.element).hasText('');
+        assert.dom('.next-content-overlay').exists();
+        assert.dom('.next-content-overlay-panel-title').includesText('New Warehouse');
+    });
 
-        // Template block usage:
-        await render(hbs`
-      <WarehouseFormPanel>
-        template block text
-      </WarehouseFormPanel>
-    `);
+    test('it titles an existing warehouse by name', async function (assert) {
+        this.warehouse = this.owner.lookup('service:store').createRecord('warehouse', { name: 'North DC', public_id: 'warehouse_1' });
 
-        assert.dom(this.element).hasText('template block text');
+        await render(hbs`<WarehouseFormPanel @warehouse={{this.warehouse}} />`);
+
+        assert.dom('.next-content-overlay').includesText('North DC');
+        assert.dom('.next-content-overlay-panel-title').doesNotIncludeText('New Warehouse');
     });
 });
